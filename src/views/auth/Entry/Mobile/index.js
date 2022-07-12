@@ -1,0 +1,87 @@
+import React from 'react';
+import { Box } from '@mui/material';
+import Logo from 'src/assets/img/LogoBTS.svg';
+import InputLabel from 'src/components/Mobile/InputLabel';
+import LinkButton from 'src/components/Mobile/Button/Link';
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+
+function EntryMobile(props) {
+  const history = useHistory();
+  console.log('mobile', props.location.state.mobile);
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: 0,
+        // gap: '159px',
+        gap: '90px',
+        position: 'absolute',
+        width: '90%',
+        // height: '317px',
+        left: '20px',
+        top: '222px'
+      }}
+    >
+      <img
+        src={Logo}
+        alt="logo"
+        style={{ width: '121.27px', height: '50px' }}
+      />
+
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          padding: 0,
+          gap: '15px'
+        }}
+      >
+        <InputLabel>جهت ورود، یکی از روش‌های زیر را انتخاب کنید:</InputLabel>
+        <LinkButton
+          variant={'outlined'}
+          onClick={() => {
+            history.push({
+              pathname: '/password',
+              state: {
+                mobile: props.location.state.mobile
+              }
+            });
+          }}
+        >
+          {'ورود با رمز عبور'}
+        </LinkButton>
+        <LinkButton
+          variant={'outlined'}
+          onClick={() => {
+            axios
+              .post('http://192.168.1.4:8000/api/users/request_otp/', {
+                username: props.location.state.mobile
+              })
+              .then(res => {
+                console.log('response', res.data.last_update);
+                if (res.status === 200) {
+                  history.push({
+                    pathname: '/otp',
+                    state: {
+                      mobile: props.location.state.mobile,
+                      lastUpdate: res.data.last_update,
+                      status: 'entry'
+                    }
+                  });
+                }
+              });
+          }}
+        >
+          {'ورود با رمز عبور یک بار مصرف'}
+        </LinkButton>
+        <InputLabel>شماره همراه یا ایمیل خود را اشتباه وارد کردید؟</InputLabel>
+      </Box>
+    </Box>
+  );
+}
+
+export default EntryMobile;
