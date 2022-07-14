@@ -1,0 +1,23 @@
+export default {
+  username: 'نام کاربری',
+  password: 'کلمه عبور',
+  Users: 'کاربران',
+  AddUser: 'افزودن کاربر',
+  FirstName: 'نام',
+  LastName: 'نام خانوادگی',
+  EmailAddress: 'آدرس ایمیل',
+  Password: 'رمز عبور',
+  ConfirmPassword: 'تایید رمز عبور',
+  MustBeAValidEmail: 'ایمیل معتبر نیست',
+  EmailIsRequired: 'ایمیل اجباری است',
+  NameIsRequired: 'نام اجباری است',
+  FamilyIsRequired: 'نام خانوادگی اجباری است',
+  PhoneMustBeNumber: 'شماره تلفن باید عدد باشد',
+  PasswordMustContainAtLeast8Characters:
+   'رمز عبور باید حداقل 8 کاراکتر باشد',
+  EnterYourPassword: 'رمز عبور خود را وارد نمایید',
+  ConfirmYourPassword: 'رمز عبور خود را تایید فرمایید',
+  PasswordDoesNotMatch: 'رمز عبور یکی نیست',
+  SeeAll: 'نمایش همه',
+  UserAdded: 'کاربر افزوده شد',
+};

@@ -1,0 +1,300 @@
+import React, { useEffect, useState } from 'react';
+import FilterButton from 'src/components/Mobile/Button/Filter';
+import CommentItem from './CommentItem';
+import InputLabel from 'src/components/Mobile/InputLabel';
+import ConfirmButton from 'src/components/Mobile/Button/Confirm';
+import { useHistory } from 'react-router-dom';
+import CustomizedDialogs from 'src/components/Desktop/Dialog';
+import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
+import { Autocomplete, Box, TextField } from '@mui/material';
+
+const top100Films = [
+  { label: 'The Shawshank Redemption', year: 1994 },
+  { label: 'The Godfather', year: 1972 },
+  { label: 'The Godfather: Part II', year: 1974 },
+  { label: 'The Dark Knight', year: 2008 },
+  { label: '12 Angry Men', year: 1957 },
+  { label: "Schindler's List", year: 1993 },
+  { label: 'Pulp Fiction', year: 1994 },
+  {
+    label: 'The Lord of the Rings: The Return of the King',
+    year: 2003
+  },
+  { label: 'The Good, the Bad and the Ugly', year: 1966 },
+  { label: 'Fight Club', year: 1999 },
+  {
+    label: 'The Lord of the Rings: The Fellowship of the Ring',
+    year: 2001
+  },
+  {
+    label: 'Star Wars: Episode V - The Empire Strikes Back',
+    year: 1980
+  },
+  { label: 'Forrest Gump', year: 1994 },
+  { label: 'Inception', year: 2010 },
+  {
+    label: 'The Lord of the Rings: The Two Towers',
+    year: 2002
+  },
+  { label: "One Flew Over the Cuckoo's Nest", year: 1975 },
+  { label: 'Goodfellas', year: 1990 },
+  { label: 'The Matrix', year: 1999 },
+  { label: 'Seven Samurai', year: 1954 },
+  {
+    label: 'Star Wars: Episode IV - A New Hope',
+    year: 1977
+  },
+  { label: 'City of God', year: 2002 },
+  { label: 'Se7en', year: 1995 },
+  { label: 'The Silence of the Lambs', year: 1991 },
+  { label: "It's a Wonderful Life", year: 1946 },
+  { label: 'Life Is Beautiful', year: 1997 },
+  { label: 'The Usual Suspects', year: 1995 },
+  { label: 'Léon: The Professional', year: 1994 },
+  { label: 'Spirited Away', year: 2001 },
+  { label: 'Saving Private Ryan', year: 1998 },
+  { label: 'Once Upon a Time in the West', year: 1968 },
+  { label: 'American History X', year: 1998 },
+  { label: 'Interstellar', year: 2014 },
+  { label: 'Casablanca', year: 1942 },
+  { label: 'City Lights', year: 1931 },
+  { label: 'Psycho', year: 1960 },
+  { label: 'The Green Mile', year: 1999 },
+  { label: 'The Intouchables', year: 2011 },
+  { label: 'Modern Times', year: 1936 },
+  { label: 'Raiders of the Lost Ark', year: 1981 },
+  { label: 'Rear Window', year: 1954 },
+  { label: 'The Pianist', year: 2002 },
+  { label: 'The Departed', year: 2006 },
+  { label: 'Terminator 2: Judgment Day', year: 1991 },
+  { label: 'Back to the Future', year: 1985 },
+  { label: 'Whiplash', year: 2014 },
+  { label: 'Gladiator', year: 2000 },
+  { label: 'Memento', year: 2000 },
+  { label: 'The Prestige', year: 2006 },
+  { label: 'The Lion King', year: 1994 },
+  { label: 'Apocalypse Now', year: 1979 },
+  { label: 'Alien', year: 1979 },
+  { label: 'Sunset Boulevard', year: 1950 },
+  {
+    label:
+      'Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb',
+    year: 1964
+  },
+  { label: 'The Great Dictator', year: 1940 },
+  { label: 'Cinema Paradiso', year: 1988 },
+  { label: 'The Lives of Others', year: 2006 },
+  { label: 'Grave of the Fireflies', year: 1988 },
+  { label: 'Paths of Glory', year: 1957 },
+  { label: 'Django Unchained', year: 2012 },
+  { label: 'The Shining', year: 1980 },
+  { label: 'WALL·E', year: 2008 },
+  { label: 'American Beauty', year: 1999 },
+  { label: 'The Dark Knight Rises', year: 2012 },
+  { label: 'Princess Mononoke', year: 1997 },
+  { label: 'Aliens', year: 1986 },
+  { label: 'Oldboy', year: 2003 },
+  { label: 'Once Upon a Time in America', year: 1984 },
+  { label: 'Witness for the Prosecution', year: 1957 },
+  { label: 'Das Boot', year: 1981 },
+  { label: 'Citizen Kane', year: 1941 },
+  { label: 'North by Northwest', year: 1959 },
+  { label: 'Vertigo', year: 1958 },
+  {
+    label: 'Star Wars: Episode VI - Return of the Jedi',
+    year: 1983
+  },
+  { label: 'Reservoir Dogs', year: 1992 },
+  { label: 'Braveheart', year: 1995 },
+  { label: 'M', year: 1931 },
+  { label: 'Requiem for a Dream', year: 2000 },
+  { label: 'Amélie', year: 2001 },
+  { label: 'A Clockwork Orange', year: 1971 },
+  { label: 'Like Stars on Earth', year: 2007 },
+  { label: 'Taxi Driver', year: 1976 },
+  { label: 'Lawrence of Arabia', year: 1962 },
+  { label: 'Double Indemnity', year: 1944 },
+  {
+    label: 'Eternal Sunshine of the Spotless Mind',
+    year: 2004
+  },
+  { label: 'Amadeus', year: 1984 },
+  { label: 'To Kill a Mockingbird', year: 1962 },
+  { label: 'Toy Story 3', year: 2010 },
+  { label: 'Logan', year: 2017 },
+  { label: 'Full Metal Jacket', year: 1987 },
+  { label: 'Dangal', year: 2016 },
+  { label: 'The Sting', year: 1973 },
+  { label: '2001: A Space Odyssey', year: 1968 },
+  { label: "Singin' in the Rain", year: 1952 },
+  { label: 'Toy Story', year: 1995 },
+  { label: 'Bicycle Thieves', year: 1948 },
+  { label: 'The Kid', year: 1921 },
+  { label: 'Inglourious Basterds', year: 2009 },
+  { label: 'Snatch', year: 2000 },
+  { label: '3 Idiots', year: 2009 },
+  { label: 'Monty Python and the Holy Grail', year: 1975 }
+];
+export default function CommentsList({ selected, setSelected }) {
+  const [Comments, setComments] = useState([
+    {
+      id: 1,
+      name: 'دفاتر و کارشناسان فروش',
+      seen: true,
+      expireDate: 'ارسال ۲/۲۰'
+    },
+    {
+      id: 2,
+      name: 'دفاتر و کارشناسان فروش',
+      seen: false,
+      expireDate: 'ارسال ۲/۲۰'
+    },
+    {
+      id: 3,
+      name: 'دفاتر و کارشناسان فروش',
+      seen: true,
+      expireDate: 'ارسال ۲/۲۰'
+    },
+    {
+      id: 4,
+      name: 'دفاتر و کارشناسان فروش',
+      seen: false,
+      expireDate: 'ارسال ۲/۲۰'
+    },
+    {
+      id: 5,
+      name: 'دفاتر و کارشناسان فروش',
+      seen: true,
+      expireDate: 'ارسال ۲/۲۰'
+    },
+    {
+      id: 6,
+      name: 'دفاتر و کارشناسان فروش',
+      seen: true,
+      expireDate: 'ارسال ۲/۲۰'
+    },
+    {
+      id: 7,
+      name: 'دفاتر و کارشناسان فروش',
+      seen: false,
+      expireDate: 'ارسال ۲/۲۰'
+    }
+  ]);
+  const history = useHistory();
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '14px 15px 6px',
+          gap: '10px',
+          // position: 'sticky',
+          // top: '45px',
+          // width: '100%',
+          height: '57px',
+          // backgroundColor: '#E5E5E5',
+          zIndex: 100
+        }}
+      >
+        <InputLabel>نظرات من</InputLabel>
+        <ConfirmButton
+          style={{ width: '150px' }}
+          onClick={() => {
+            // history.push('/club/newComment');
+            setOpen(true);
+          }}
+        >
+          ایجاد نظر جدید
+        </ConfirmButton>
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          padding: '12px 0px 0px',
+          gap: '14px',
+          // height: '640px',
+          overflowY: 'auto'
+        }}
+      >
+        {Comments.map((item, index) => {
+          return (
+            <CommentItem
+              data={item}
+              key={index}
+              selected={selected}
+              setSelected={setSelected}
+            />
+          );
+        })}
+      </Box>
+      <CustomizedDialogs
+        title={'ایجاد نظر جدید'}
+        open={open}
+        handleClose={() => setOpen(false)}
+        content={
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              padding: '8px 16px 12px',
+              gap: '32px',
+              width: '372px'
+              // height: '750px'
+            }}
+          >
+            <Box sx={{ width: '100%' }}>
+              <InputLabel>موضوع</InputLabel>
+              <Autocomplete
+                disablePortal
+                fullWidth
+                id="combo-box-demo"
+                options={top100Films}
+                // sx={{ width: 300 }}
+                renderInput={params => (
+                  <TextField {...params} placeholder="مثلا فنی" fullWidth />
+                )}
+              />
+            </Box>
+            <Box sx={{ width: '100%' }}>
+              <InputLabel>متن نظر</InputLabel>
+              <TextField
+                fullWidth
+                multiline
+                rows={5}
+                placeholder={'بنویسید ...'}
+              />
+            </Box>
+            <ConfirmButton disabled={false} variant="outlined">
+              {'آپلود فایل'}
+            </ConfirmButton>
+          </Box>
+        }
+        actions={
+          <Box
+            sx={{
+              display: 'inline-flex',
+              justifyContent: 'space-between',
+              gap: 2,
+              width: '1',
+              padding: '12px 21px'
+              // borderTop: '0.5px solid #D3D2D2'
+            }}
+          >
+            <ConfirmButton disabled={false} variant="outlined">
+              {'لغو'}
+            </ConfirmButton>
+            <ConfirmButton disabled={false}>{'ثبت نظر'}</ConfirmButton>
+          </Box>
+        }
+      />
+    </>
+  );
+}
