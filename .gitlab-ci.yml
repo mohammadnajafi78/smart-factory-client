@@ -8,7 +8,7 @@ Build Source:
   needs: []
   image: node:14.17.1-alpine3.13
   script:
-    - yarn
+    - yarn install --network-timeout 1000000
     - echo -e "$DEV_ENV" > .env
     # - echo 'VITE_VERSION = "'${CI_COMMIT_TAG}'"' >> .env
     - yarn build
