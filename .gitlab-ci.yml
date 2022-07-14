@@ -1,0 +1,61 @@
+stages:
+  - build-src
+  - build-image
+  - deploy
+
+Build Source:
+  stage: build-src
+  needs: []
+  image: node:14.17.1-alpine3.13
+  script:
+    - yarn
+    - echo -e "$DEV_ENV" > .env
+    # - echo 'VITE_VERSION = "'${CI_COMMIT_TAG}'"' >> .env
+    - yarn build
+  artifacts:
+    paths:
+      - build/
+#   rules:
+    # - if: $CI_COMMIT_TAG =~ /^v?[0-9]+[.][0-9]+([.][0-9]+)-alpha[.][0-9]+?$/
+  only:
+    - main
+  tags:
+    - build-runner2
+
+build:
+  stage: build-image
+  image: docker:20.10.9
+  needs: [Build Source]
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build --pull -t git.bts-co.com:5050/root/bts-front-app:dev .
+    - docker push git.bts-co.com:5050/root/bts-front-app:dev
+  artifacts:
+    paths:
+      - build/
+#   rules:
+#     - if: $CI_COMMIT_TAG =~ /^v?[0-9]+[.][0-9]+([.][0-9]+)-alpha[.][0-9]+?$/
+  only:
+    - main
+  tags:
+    - build-runner2
+
+deploy:
+  stage: deploy
+  environment:
+    name: development
+  # image: docker:20.10.9
+  needs: [build]
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker image prune -f
+    - docker pull git.bts-co.com:5050/root/bts-front-app:dev
+    - docker service update --force --image git.bts-co.com:5050/root/bts-front-app:dev bts_Ui-dev --with-registry-auth
+    
+  only:
+    - main
+  tags:
+    - dev-server-deployment
+
