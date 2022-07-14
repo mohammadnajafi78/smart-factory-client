@@ -6,9 +6,9 @@ stages:
 Build Source:
   stage: build-src
   needs: []
-  image: node:14.17.1-alpine3.13
+  image: git.bts-co.com:5050/root/bts-front-app/node-14.17.1-alpine3.13-yarn:v1
   script:
-    - yarn
+    # - yarn
     - echo -e "$DEV_ENV" > .env
     # - echo 'VITE_VERSION = "'${CI_COMMIT_TAG}'"' >> .env
     - yarn build
