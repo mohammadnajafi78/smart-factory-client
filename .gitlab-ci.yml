@@ -6,7 +6,7 @@ stages:
 Build Source:
   stage: build-src
   needs: []
-  image: node:14.17.1-alpine3.13
+  image: docker:20.10.9
   script:
     - docker build --pull -t git.bts-co.com:5050/root/bts-front-app:dev .
     - yarn install --network-timeout 1000000
