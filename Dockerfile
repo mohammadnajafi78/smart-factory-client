@@ -1,5 +1,10 @@
-FROM nginx:1.12-alpine
-COPY build /usr/share/nginx/html
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
+#FROM nginx:1.12-alpine
+#COPY build /usr/share/nginx/html
+#COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+#EXPOSE 80
+
+
+FROM node:14.17.1-alpine3.13
+
+COPY ./ ./ 
 
