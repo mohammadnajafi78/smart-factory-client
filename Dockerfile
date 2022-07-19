@@ -12,8 +12,9 @@ RUN yarn install --network-timeout 1000000
 
 COPY . .
 RUN yarn build
+RUN ls
 
 FROM nginx:1.12-alpine
-COPY build /usr/share/nginx/html
+COPY --from=build-step build /usr/share/nginx/html
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
