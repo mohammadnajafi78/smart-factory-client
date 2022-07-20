@@ -44,7 +44,7 @@ export default function AwardsBox() {
           flexDirection: 'column',
           justifyContent: 'space-between',
           alignItems: 'flex-start',
-          padding: '10px 15px',
+          padding: '10px 0px',
           gap: '10px',
 
           width: '100%',

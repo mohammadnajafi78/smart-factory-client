@@ -28,7 +28,7 @@ export default function ReceivedMobile() {
           justifyContent: 'center',
           alignItems: 'center',
           padding: '14px 0px 6px',
-          gap: '10px',
+          gap: '2px',
           position: 'sticky',
           top: '40px',
           // width: '385px',
