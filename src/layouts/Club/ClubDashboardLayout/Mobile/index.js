@@ -10,7 +10,6 @@ const useStyles = makeStyles(theme => ({
     flex: '1 1 auto',
     paddingTop: 49,
     backgroundColor: '#E5E5E5'
-    // height: '100vh'
     // overflow: 'hidden'
   },
   contentContainer: {
@@ -21,7 +20,8 @@ const useStyles = makeStyles(theme => ({
   content: {
     flex: '1 1 auto',
     height: '100%',
-    paddingBottom: '100px'
+    paddingBottom: '100px',
+    width: '100%'
     // overflow: 'auto'
   },
   paper: {
@@ -42,7 +42,13 @@ export default function ClubDashboardLayoutMobile({ children }) {
 
   return (
     <>
-      <div style={{ backgroundColor: '#E5E5E5' }}>
+      <div
+        style={{
+          backgroundColor: '#E5E5E5',
+          width: '100%',
+          height: '100%'
+        }}
+      >
         <TopBar
           onMobileNavOpen={event => {
             setMobileNavOpen(true);
