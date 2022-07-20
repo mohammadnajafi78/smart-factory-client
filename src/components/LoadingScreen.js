@@ -7,9 +7,9 @@ import makeStyles from '@mui/styles/makeStyles';
 const useStyles = makeStyles(theme => ({
   root: {
     alignItems: 'center',
-    backgroundColor: theme.palette.background.default,
+    // backgroundColor: theme.palette.background.default,
     display: 'flex',
-    flexDirection: 'column',
+    // flexDirection: 'column',
     height: '100%',
     justifyContent: 'center',
     minHeight: '100%',
