@@ -61,7 +61,7 @@ export default function ReceivedMobile() {
       <Box
         sx={{
           position: 'fixed',
-          bottom: '9%',
+          bottom: '11%',
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
