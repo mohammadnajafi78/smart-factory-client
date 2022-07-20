@@ -157,9 +157,9 @@ export default function NewCommentMobile() {
           flexDirection: 'column',
           alignItems: 'flex-start',
           padding: '21px',
-          gap: '32px',
+          gap: '22px',
           width: '100%',
-          height: '750px'
+          height: '79vh'
         }}
       >
         <InputLabelHeader>نظر جدید</InputLabelHeader>
