@@ -52,7 +52,11 @@ export default function AwardsBox() {
           marginTop: '6px'
         }}
       >
-        <InputLabel style={{ fontSize: '18px' }}>جوایز</InputLabel>
+        <InputLabel
+          style={{ fontSize: '18px', fontWeight: 500, paddingRight: '15px' }}
+        >
+          جوایز
+        </InputLabel>
         <Box
           sx={{
             display: 'flex',

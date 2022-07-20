@@ -21,7 +21,7 @@ export default function Item({ data }) {
         background: '#FFFFFF',
         boxShadow: '0px 0px 8px rgba(146, 146, 146, 0.25)',
         borderRadius: '8px',
-        width: '95%',
+        width: '93%',
         height: '145px'
         // overflow: 'auto'
       }}
