@@ -6,14 +6,14 @@ import NavBar from './NavBar';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
-    display: 'flex',
+    // display: 'flex',
     flex: '1 1 auto',
     paddingTop: 49,
     backgroundColor: '#E5E5E5'
     // overflow: 'hidden'
   },
   contentContainer: {
-    display: 'flex',
+    // display: 'flex',
     flex: '1 1 auto'
     // overflow: 'hidden'
   },
