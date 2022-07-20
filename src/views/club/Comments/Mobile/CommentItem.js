@@ -45,7 +45,7 @@ export default function CommentItem({ data }) {
           alignItems: 'center',
           padding: '12px',
           gap: '15px',
-          width: '94%',
+          width: '93%',
           height: '114px',
           background: '#FFFFFF',
           boxShadow: '0px 0px 8px rgba(146, 146, 146, 0.25)',

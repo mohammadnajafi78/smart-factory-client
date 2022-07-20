@@ -59,7 +59,7 @@ export default function AwardsBox() {
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            padding: '0px 30px',
+            padding: '0px 10px',
             gap: '15px',
 
             width: '100%',
@@ -74,7 +74,6 @@ export default function AwardsBox() {
                   setOpenFirst(true);
                 }}
               >
-                {/* <Home /> */}
                 <img src={Chest} width="74" height="68" />
               </IconButton>
             );

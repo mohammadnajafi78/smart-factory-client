@@ -37,10 +37,18 @@ export default function AwardsList() {
           zIndex: 100
         }}
       >
-        <FilterButton>همه</FilterButton>
-        <FilterButton>جوایز</FilterButton>
-        <FilterButton>قرعه کشی</FilterButton>
-        <FilterButton>هدایا تبلیغاتی</FilterButton>
+        <FilterButton style={{ fontWeight: 300, fontSize: '12px' }}>
+          همه
+        </FilterButton>
+        <FilterButton style={{ fontWeight: 300, fontSize: '12px' }}>
+          جوایز
+        </FilterButton>
+        <FilterButton style={{ fontWeight: 300, fontSize: '12px' }}>
+          قرعه کشی
+        </FilterButton>
+        <FilterButton style={{ fontWeight: 300, fontSize: '12px' }}>
+          هدایا تبلیغاتی
+        </FilterButton>
       </Box>
       <Box
         sx={{

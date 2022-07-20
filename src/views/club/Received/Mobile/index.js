@@ -38,10 +38,18 @@ export default function ReceivedMobile() {
           zIndex: 100
         }}
       >
-        <FilterButton>همه</FilterButton>
-        <FilterButton>جوایز</FilterButton>
-        <FilterButton>قرعه کشی</FilterButton>
-        <FilterButton>هدایا تبلیغاتی</FilterButton>
+        <FilterButton style={{ fontWeight: 300, fontSize: '12px' }}>
+          همه
+        </FilterButton>
+        <FilterButton style={{ fontWeight: 300, fontSize: '12px' }}>
+          جوایز
+        </FilterButton>
+        <FilterButton style={{ fontWeight: 300, fontSize: '12px' }}>
+          قرعه کشی
+        </FilterButton>
+        <FilterButton style={{ fontWeight: 300, fontSize: '12px' }}>
+          هدایا تبلیغاتی
+        </FilterButton>
       </Box>
       <Box
         sx={{
@@ -61,14 +69,14 @@ export default function ReceivedMobile() {
       <Box
         sx={{
           position: 'fixed',
-          bottom: '11%',
+          bottom: '9%',
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
           backgroundColor: 'white',
-          height: '73px',
+          height: '78px',
           padding: '10px'
         }}
       >

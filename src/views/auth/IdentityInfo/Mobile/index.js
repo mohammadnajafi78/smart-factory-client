@@ -40,7 +40,7 @@ function IdentityInfoMobile(props) {
             .patch(
               `${API_BASE_URL}/api/users/${
                 JSON.parse(localStorage.getItem('user')).id
-              }`,
+              }/`,
               { first_name: values.name, last_name: values.family },
               {
                 headers: {
