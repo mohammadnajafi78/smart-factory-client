@@ -5,6 +5,7 @@ import InputLabel from 'src/components/Mobile/InputLabel';
 import LinkButton from 'src/components/Mobile/Button/Link';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE_URL } from 'src/utils/urls';
 
 function EntryMobile(props) {
   const history = useHistory();
@@ -58,7 +59,7 @@ function EntryMobile(props) {
           variant={'outlined'}
           onClick={() => {
             axios
-              .post('http://192.168.1.4:8000/api/users/request_otp/', {
+              .post(`${API_BASE_URL}/api/users/request_otp/`, {
                 username: props.location.state.mobile
               })
               .then(res => {

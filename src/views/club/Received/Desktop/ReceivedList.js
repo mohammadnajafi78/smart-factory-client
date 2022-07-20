@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import FilterButton from 'src/components/Mobile/Button/Filter';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
+import FilterButton from 'src/components/Desktop/Button/Filter';
 import ReceivedItem from './Item';
 import { useHistory } from 'react-router-dom';
-import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Desktop/InputLabel';
-// import Received from './CommentBox';
-// import ReceivedList from './ReceivedList';
+import Scan from 'src/assets/img/icons/scan-qr.svg';
+import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 
 export default function ReceivedListDesktop({ selected, setSelected }) {
   const history = useHistory();
@@ -80,19 +79,23 @@ export default function ReceivedListDesktop({ selected, setSelected }) {
           padding: '12px 12px 0px',
           gap: '20px',
           width: '100%',
+          padding: '40px 30px 0px',
           paddingBottom: '40px'
         }}
       >
-        <InputLabel style={{ color: '#00346D' }}>جوایز دریافتی</InputLabel>
+        <InputLabelHeader style={{ color: '#00346D' }}>
+          جوایز دریافتی
+        </InputLabelHeader>
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
             alignItems: 'center',
             gap: '10px',
             width: '100%',
             height: '57px'
+            // padding: '0px 30px'
           }}
         >
           <FilterButton>همه</FilterButton>
@@ -127,7 +130,7 @@ export default function ReceivedListDesktop({ selected, setSelected }) {
         sx={{
           position: 'absolute',
           bottom: '0%',
-          width: '35%',
+          width: '40%',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -135,7 +138,8 @@ export default function ReceivedListDesktop({ selected, setSelected }) {
           backgroundColor: 'white',
           height: '79px',
           padding: '10px',
-          gap: '10px'
+          gap: '10px',
+          padding: '0px 30px 0px'
         }}
       >
         <ConfirmButton
@@ -145,6 +149,7 @@ export default function ReceivedListDesktop({ selected, setSelected }) {
             width: '70%'
           }}
         >
+          <img src={Scan} style={{ marginLeft: '3px' }} />
           دریافت جایزه
         </ConfirmButton>
       </Box>

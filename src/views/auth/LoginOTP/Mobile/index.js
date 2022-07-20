@@ -9,6 +9,7 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import CountDown from 'src/utils/CountDown';
 import moment from 'moment';
+import { API_BASE_URL } from 'src/utils/urls';
 
 function LoginOTPMobile(props) {
   const history = useHistory();
@@ -61,7 +62,7 @@ function LoginOTPMobile(props) {
       onSubmit={async (values, { setErrors, setSubmitting }) => {
         if (props.location.state.status === 'entry') {
           axios
-            .post('http://192.168.1.4:8000/api/users/login_with_otp/', {
+            .post(`${API_BASE_URL}/api/users/login_with_otp/`, {
               verification_code: `${values.input1 +
                 values.input2 +
                 values.input3 +
@@ -83,7 +84,7 @@ function LoginOTPMobile(props) {
             });
         } else {
           axios
-            .post('http://192.168.1.4:8000/api/users/mobile_verification/', {
+            .post(`${API_BASE_URL}/api/users/mobile_verification/`, {
               verification_code: `${values.input1 +
                 values.input2 +
                 values.input3 +

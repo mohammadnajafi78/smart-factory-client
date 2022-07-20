@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import { Box, Drawer } from '@mui/material';
-import { ChevronLeft, Star } from 'react-feather';
-import InputLabel from 'src/components/Mobile/InputLabel';
-import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
-import LinkIconButton from 'src/components/Mobile/Button/LinkIcon';
+import { Box } from '@mui/material';
+import InputLabel from 'src/components/Desktop/InputLabel';
+import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
+import IconButton from 'src/components/Desktop/Button/Icon';
 import Received from 'src/assets/img/icons/received.svg';
 import makeStyles from '@mui/styles/makeStyles';
 import QR from 'src/assets/img/icons/qr.jpeg';
-import { height } from '@mui/system';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 
@@ -51,7 +48,8 @@ export default function ReceivedItemDesktop({ selected }) {
               flexDirection: 'column',
               alignItems: 'flex-start',
               padding: '0px',
-              gap: '16px'
+              gap: '16px',
+              width: '100%'
               // height: '570px'
             }}
           >
@@ -105,10 +103,7 @@ export default function ReceivedItemDesktop({ selected }) {
             </Box>
           </Box>
 
-          <LinkIconButton
-            style={{ width: '400px' }}
-            onClick={() => setOpen(true)}
-          >
+          <IconButton style={{ width: '400px' }} onClick={() => setOpen(true)}>
             <img
               src={Received}
               width="26px"
@@ -116,7 +111,7 @@ export default function ReceivedItemDesktop({ selected }) {
               style={{ color: 'white' }}
             />
             <div>انتقال جایزه</div>
-          </LinkIconButton>
+          </IconButton>
         </Box>
       </Box>
       <CustomizedDialogs

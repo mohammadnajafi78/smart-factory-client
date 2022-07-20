@@ -29,7 +29,7 @@ export default function CompetitionDesktop() {
           overflow: 'auto'
         }}
       >
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: '100%', padding: '40px 30px 0px' }}>
           <CompetitionListDesktop
             selected={selected}
             setSelected={setSelected}

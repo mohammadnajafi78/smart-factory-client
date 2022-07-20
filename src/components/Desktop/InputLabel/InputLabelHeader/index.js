@@ -8,8 +8,8 @@ function InputLabelHeader({ children, ...rest }) {
       sx={{
         fontStyle: 'bold',
         fontWeight: 700,
-        fontSize: '20px',
-        height: '26px',
+        fontSize: '16px',
+        // height: '26px',
         textAlign: 'start',
         color: '#000000',
         whiteSpace: 'break-spaces'

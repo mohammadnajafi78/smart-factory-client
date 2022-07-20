@@ -9,6 +9,7 @@ import { Star } from 'react-feather';
 import Received from 'src/assets/img/icons/received.svg';
 import Presents from 'src/assets/img/icons/presents.svg';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
+import { AttachFile } from '@mui/icons-material';
 
 const top100Films = [
   { label: 'The Shawshank Redemption', year: 1994 },
@@ -180,6 +181,7 @@ export default function NewCommentMobile() {
           <TextField fullWidth multiline rows={5} placeholder={'بنویسید ...'} />
         </Box>
         <ConfirmButton disabled={false} variant="outlined">
+          <AttachFile />
           {'آپلود فایل'}
         </ConfirmButton>
       </Box>

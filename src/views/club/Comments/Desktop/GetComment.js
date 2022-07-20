@@ -31,7 +31,7 @@ export default function GetCommentDesktop({ selected }) {
         flexDirection: 'column',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: '24px 0px 0px !important',
+        padding: '24px 30px 0px !important',
         gap: '20px',
         background: '#FFFFFF',
         width: '100%'
@@ -89,7 +89,8 @@ export default function GetCommentDesktop({ selected }) {
           height: '260px',
           background: '#FAFAFA',
           border: '0.5px solid #D3D2D2',
-          borderRadius: '8px'
+          borderRadius: '8px',
+          width: '100%'
         }}
       >
         <Box
@@ -100,7 +101,8 @@ export default function GetCommentDesktop({ selected }) {
             padding: '0px',
             gap: '12px',
             paddingBottom: '15px',
-            borderBottom: '0.5px solid #D3D2D2'
+            borderBottom: '0.5px solid #D3D2D2',
+            width: '100%'
           }}
         >
           <Box

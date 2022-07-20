@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { ChevronLeft, Star } from 'react-feather';
-import { NavLink } from 'react-router-dom';
-import InputLabel from 'src/components/Mobile/InputLabel';
-import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
+import { ChevronLeft } from 'react-feather';
+import InputLabel from 'src/components/Desktop/InputLabel';
 import { Drawer } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { useHistory } from 'react-router-dom';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import LinkButton from 'src/components/Mobile/Button/Link';
+import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import Rating from '@mui/material/Rating';
-import { ClassNames } from '@emotion/react';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -45,7 +41,7 @@ export default function CommentItem({ data, selected, setSelected }) {
           alignItems: 'center',
           padding: '12px',
           gap: '15px',
-          width: '94%',
+          width: '100%',
           height: '114px',
           background:
             selected && data.id === selected.id ? '#CCEEF0' : '#FFFFFF',

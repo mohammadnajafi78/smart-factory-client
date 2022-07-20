@@ -7,6 +7,7 @@ import { Formik } from 'formik';
 import Autocomplete from '@mui/material/Autocomplete';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { API_BASE_URL } from 'src/utils/urls';
 
 function LocationMobile() {
   const [provinces, setProvinces] = useState(null);
@@ -17,7 +18,7 @@ function LocationMobile() {
 
   useEffect(() => {
     axios
-      .get('http://192.168.1.4:8000/api/utils/provinces/?country_id=25', {
+      .get(`${API_BASE_URL}/api/utils/provinces/?country_id=25`, {
         headers: {
           'x-auth-token': localStorage.getItem('token')
         }
@@ -32,14 +33,11 @@ function LocationMobile() {
   useEffect(() => {
     if (provinceId !== null) {
       axios
-        .get(
-          `http://192.168.1.4:8000/api/utils/cities/?province_id=${provinceId}`,
-          {
-            headers: {
-              'x-auth-token': localStorage.getItem('token')
-            }
+        .get(`${API_BASE_URL}/api/utils/cities/?province_id=${provinceId}`, {
+          headers: {
+            'x-auth-token': localStorage.getItem('token')
           }
-        )
+        })
         .then(res => {
           if (res.status === 200) {
             setCities(res.data);
@@ -74,7 +72,7 @@ function LocationMobile() {
 
         axios
           .post(
-            `http://192.168.1.4:8000/api/utils/location/`,
+            `${API_BASE_URL}/api/utils/location/`,
             { country_id: 25, province_id: provinceId, city_id: cityId },
             {
               headers: {

@@ -7,6 +7,7 @@ import { Formik } from 'formik';
 import ReCAPTCHA from 'react-google-recaptcha';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { API_BASE_URL } from 'src/utils/urls';
 
 const TEST_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
 function EnterPasswordMobile(props) {
@@ -34,7 +35,7 @@ function EnterPasswordMobile(props) {
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           console.log('password');
           axios
-            .post('http://192.168.1.4:8000/api/users/', {
+            .post(`${API_BASE_URL}/api/users/`, {
               mobile: props.location.state.mobile,
               password: values.password
             })

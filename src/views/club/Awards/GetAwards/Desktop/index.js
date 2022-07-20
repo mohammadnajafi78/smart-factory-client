@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Divider, Drawer } from '@mui/material';
-import LinkIconButton from 'src/components/Mobile/Button/LinkIcon';
-import LinkButton from 'src/components/Mobile/Button/Link';
-import InputLabel from 'src/components/Mobile/InputLabel';
-import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
-import { Star } from 'react-feather';
+import IconButton from 'src/components/Desktop/Button/Icon';
+import LinkButton from 'src/components/Desktop/Button/Link';
+import InputLabel from 'src/components/Desktop/InputLabel';
 import Received from 'src/assets/img/icons/received.svg';
 import Presents from 'src/assets/img/icons/presents.svg';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
+import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import makeStyles from '@mui/styles/makeStyles';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
 
@@ -25,7 +23,6 @@ export default function GetAwardDesktop({ selected }) {
   const data = { name: 'iPhone13', score: '۵۰۰۰', expireDate: '۲۰ اردیبهشت' };
   const [openFirst, setOpenFirst] = useState(false);
   const [openSecond, setOpenSecond] = useState(false);
-  const classes = useStyles();
 
   return (
     <>
@@ -63,7 +60,7 @@ export default function GetAwardDesktop({ selected }) {
           </InputLabel>
         </Box>
         <Box>
-          <LinkIconButton
+          <IconButton
             onClick={() => setOpenFirst(true)}
             style={{ width: '400px' }}
           >
@@ -74,7 +71,7 @@ export default function GetAwardDesktop({ selected }) {
               style={{ color: 'white' }}
             />
             <div>دریافت جایزه</div>
-          </LinkIconButton>
+          </IconButton>
         </Box>
       </Box>
       <CustomizedDialogs
@@ -118,7 +115,7 @@ export default function GetAwardDesktop({ selected }) {
               gap: 2,
               width: '100%',
               height: '76px',
-              borderTop: '0.5px solid #D3D2D2',
+              // borderTop: '0.5px solid #D3D2D2',
               padding: '12px 16px'
             }}
           >
@@ -177,7 +174,7 @@ export default function GetAwardDesktop({ selected }) {
               gap: 2,
               width: '100%',
               height: '76px',
-              borderTop: '0.5px solid #D3D2D2',
+              // borderTop: '0.5px solid #D3D2D2',
               padding: '12px 16px'
             }}
           >

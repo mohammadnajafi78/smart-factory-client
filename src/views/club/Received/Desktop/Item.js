@@ -1,8 +1,7 @@
 import { Box } from '@mui/material';
 import React from 'react';
-import { ChevronLeft, Star } from 'react-feather';
-// import { NavLink } from 'react-router-dom';
-import InputLabel from 'src/components/Mobile/InputLabel';
+import { ChevronLeft } from 'react-feather';
+import InputLabel from 'src/components/Desktop/InputLabel';
 import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 import { useHistory } from 'react-router-dom';
 
@@ -17,7 +16,7 @@ export default function Item({ data, selected, setSelected }) {
         alignItems: 'center',
         padding: '12px',
         gap: '15px',
-        width: '94%',
+        width: '100%',
         height: '114px',
         background: selected && data.id === selected.id ? '#CCEEF0' : '#FFFFFF',
         boxShadow: '0px 0px 8px rgba(146, 146, 146, 0.25)',

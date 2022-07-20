@@ -7,6 +7,7 @@ import { Formik } from 'formik';
 import ReCAPTCHA from 'react-google-recaptcha';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { API_BASE_URL } from 'src/utils/urls';
 
 const TEST_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
 function LoginPassMobile(props) {
@@ -42,7 +43,7 @@ function LoginPassMobile(props) {
           //   }
           console.log('pass');
           axios
-            .post('http://192.168.1.4:8000/api/users/login_with_pass/', {
+            .post(`${API_BASE_URL}/api/users/login_with_pass/`, {
               username: props.location.state.mobile,
               password: values.input
             })

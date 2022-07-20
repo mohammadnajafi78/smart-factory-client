@@ -4,8 +4,7 @@ import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import FilterButton from 'src/components/Mobile/Button/Filter';
 import ReceivedItem from './Item';
 import { useHistory } from 'react-router-dom';
-// import Received from './CommentBox';
-// import ReceivedList from './ReceivedList';
+import Scan from 'src/assets/img/icons/scan-qr.svg';
 
 export default function ReceivedMobile() {
   const history = useHistory();
@@ -76,6 +75,7 @@ export default function ReceivedMobile() {
         <ConfirmButton
           style={{ margin: '0px 10px', backgroundColor: '#00346D' }}
         >
+          <img src={Scan} style={{ marginLeft: '3px' }} />
           دریافت جایزه
         </ConfirmButton>
       </Box>

@@ -119,7 +119,7 @@ export default function CompetitionMobile() {
           sx={{
             position: scroll < 180 ? 'absolute' : 'sticky',
             top: scroll < 180 ? '175px' : '60px',
-            left: '25px',
+            left: '21px',
             width: '90%'
             // zIndex: 9999
           }}

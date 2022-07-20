@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import { Box, Divider, Drawer, Grid, IconButton } from '@mui/material';
-import InputLabel from 'src/components/Mobile/InputLabel';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import LinkButton from 'src/components/Mobile/Button/Link';
+import { Box, Grid, IconButton } from '@mui/material';
+import InputLabel from 'src/components/Desktop/InputLabel';
+import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
+import LinkButton from 'src/components/Desktop/Button/Link';
 import makeStyles from '@mui/styles/makeStyles';
 import Chest from 'src/assets/img/icons/chest-win-close.svg';
 import ChestWinOpen from 'src/assets/img/icons/chest-win-open.svg';
 import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 import { useHistory } from 'react-router-dom';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
-// import ChestIcon from 'src/assets/img/icons/chest.svg';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -43,7 +42,7 @@ export default function AwardsBox() {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'space-between',
+          justifyContent: 'space-around',
           alignItems: 'flex-start',
           padding: '10px 15px',
           gap: '10px',
@@ -127,7 +126,7 @@ export default function AwardsBox() {
               gap: 2,
               width: '100%',
               height: '76px',
-              borderTop: '0.5px solid #D3D2D2',
+              // borderTop: '0.5px solid #D3D2D2',
               padding: '12px 16px'
             }}
           >

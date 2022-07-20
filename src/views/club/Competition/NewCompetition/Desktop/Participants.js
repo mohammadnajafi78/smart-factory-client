@@ -1,13 +1,7 @@
 import { Box, Rating } from '@mui/material';
 import React from 'react';
-import { ChevronLeft, Star } from 'react-feather';
-// import { NavLink } from 'react-router-dom';
-import InputLabel from 'src/components/Mobile/InputLabel';
-import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 import { useHistory } from 'react-router-dom';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import Image from 'src/assets/img/06.jpg';
-import Comment from 'src/assets/img/icons/comment.svg';
 
 export default function Item({ data }) {
   const history = useHistory();

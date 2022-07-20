@@ -51,6 +51,11 @@ const routes = [
   },
   {
     exact: true,
+    path: '/table',
+    component: lazy(() => import('src/components/TableExample'))
+  },
+  {
+    exact: true,
     guard: GuestGuard,
     path: '/',
     component: lazy(() => import('src/views/auth/Login'))

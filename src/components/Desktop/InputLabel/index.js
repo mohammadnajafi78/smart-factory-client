@@ -8,7 +8,7 @@ function InputLabelHeader({ children, ...rest }) {
       sx={{
         // fontStyle: 'regular',
         fontWeight: 400,
-        fontSize: '16px',
+        fontSize: '14px',
         // lineHeight: '26px',
         // minHeight: '26px',
         textAlign: 'start',

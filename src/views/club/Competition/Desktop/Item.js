@@ -1,11 +1,9 @@
-import { Box } from '@mui/material';
 import React from 'react';
-import { ChevronLeft, Star } from 'react-feather';
-// import { NavLink } from 'react-router-dom';
-import InputLabel from 'src/components/Mobile/InputLabel';
-import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
+import { Box } from '@mui/material';
+import { ChevronLeft } from 'react-feather';
+import InputLabel from 'src/components/Desktop/InputLabel';
 import { useHistory } from 'react-router-dom';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
+import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 
 export default function Item({ data, selected, setSelected }) {
   const history = useHistory();
@@ -21,7 +19,7 @@ export default function Item({ data, selected, setSelected }) {
         background: selected && data.id === selected.id ? '#CCEEF0' : '#FFFFFF',
         boxShadow: '0px 0px 8px rgba(146, 146, 146, 0.25)',
         borderRadius: '8px',
-        width: '95%',
+        width: '100%',
         height: '145px'
         // overflow: 'auto'
       }}
@@ -47,7 +45,7 @@ export default function Item({ data, selected, setSelected }) {
         >
           {data.title}
         </InputLabelHeader>
-        <InputLabel style={{ color: '26px', fontSize: '14px' }}>
+        <InputLabel style={{ color: '#7B7979', fontSize: '14px' }}>
           {data.description}
         </InputLabel>
       </Box>

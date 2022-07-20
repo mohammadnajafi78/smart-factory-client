@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import FilterButton from 'src/components/Mobile/Button/Filter';
 import CommentItem from './CommentItem';
-import InputLabel from 'src/components/Mobile/InputLabel';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
+import InputLabel from 'src/components/Desktop/InputLabel';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { useHistory } from 'react-router-dom';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
-import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import { Autocomplete, Box, TextField } from '@mui/material';
+import { AttachFile } from '@mui/icons-material';
 
 const top100Films = [
   { label: 'The Shawshank Redemption', year: 1994 },
@@ -273,6 +272,7 @@ export default function CommentsList({ selected, setSelected }) {
               />
             </Box>
             <ConfirmButton disabled={false} variant="outlined">
+              <AttachFile />
               {'آپلود فایل'}
             </ConfirmButton>
           </Box>

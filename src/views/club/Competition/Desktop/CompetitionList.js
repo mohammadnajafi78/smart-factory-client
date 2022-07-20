@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Box } from '@mui/material';
 import { useHistory } from 'react-router-dom';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
-import InputLabel from 'src/components/Mobile/InputLabel';
+import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
+import InputLabel from 'src/components/Desktop/InputLabel';
 import Item from './Item';
-import LinkIconButton from 'src/components/Mobile/Button/LinkIcon';
+import LinkIconButton from 'src/components/Desktop/Button/LinkIcon';
 import Present from 'src/assets/img/icons/present.svg';
 
 export default function CompetitionListDesktop({
@@ -79,11 +79,10 @@ export default function CompetitionListDesktop({
         // height: '1000px'
         // overflow: 'auto'
       }}
-      id="test"
     >
       <Box
         sx={{
-          width: '95%',
+          width: '100%',
           height: '174.17px',
           filter: 'drop-shadow(1px 1px 8px rgba(82, 82, 82, 0.25))',
           background:
@@ -134,7 +133,8 @@ export default function CompetitionListDesktop({
           flexDirection: 'column',
           alignItems: 'flex-start',
           padding: '12px 0px 0px',
-          gap: '4px'
+          gap: '4px',
+          width: '100%'
 
           // width: 360px;
           // height: '380.83px'
@@ -142,7 +142,7 @@ export default function CompetitionListDesktop({
       >
         <InputLabelHeader
           style={{
-            padding: '16px 14px 4px',
+            padding: '0px 14px 4px',
             gap: '10px'
           }}
         >
@@ -154,7 +154,8 @@ export default function CompetitionListDesktop({
             flexDirection: 'column',
             alignItems: 'center',
             padding: '12px 0px 0px',
-            gap: '14px'
+            gap: '14px',
+            width: '100%'
             // overflow: 'auto',
             // height: '510px'
           }}

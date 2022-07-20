@@ -76,7 +76,7 @@ function EnterPasswordDesktop() {
                 height: '100%'
               }}
             >
-              <Box>
+              <Box sx={{ width: '100%' }}>
                 <InputLabelHeader>ورود با رمز عبور</InputLabelHeader>
                 <Box sx={{ mt: 2 }}>
                   <InputLabel>جهت ورود، اطلاعات زیر را وارد کنید:</InputLabel>
@@ -108,7 +108,7 @@ function EnterPasswordDesktop() {
                       }}
                     />
                   </Box>
-                  <Box sx={{ mt: 1 }}>
+                  {/* <Box sx={{ mt: 1 }}>
                     <ReCAPTCHA
                       style={{
                         display: 'inline-block',
@@ -124,7 +124,7 @@ function EnterPasswordDesktop() {
                       // asyncScriptOnLoad={this.asyncScriptOnLoad}
                       hl="fa"
                     />
-                  </Box>
+                  </Box> */}
                 </Box>
               </Box>
               <Box

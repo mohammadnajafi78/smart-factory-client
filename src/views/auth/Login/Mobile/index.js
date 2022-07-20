@@ -7,6 +7,7 @@ import Button from 'src/components/Mobile/Button/Confirm';
 import InputLabelFooter from 'src/components/Mobile/InputLabel/InputLabelFooter';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { API_BASE_URL } from 'src/utils/urls';
 
 function LoginMobile() {
   const history = useHistory();
@@ -60,7 +61,7 @@ function LoginMobile() {
               try {
                 axios
                   .get(
-                    `http://192.168.1.4:8000/api/users/login_or_register?mobile=${values.input}`
+                    `${API_BASE_URL}/api/users/login_or_register?mobile=${values.input}`
                   )
                   .then(res => {
                     // if (res.status === 200) {
@@ -68,7 +69,7 @@ function LoginMobile() {
                     // }
                     if (res.status === 204) {
                       axios
-                        .post('http://192.168.1.4:8000/api/users/register/', {
+                        .post(`${API_BASE_URL}/api/users/register/`, {
                           mobile: values.input
                         })
                         .then(result => {

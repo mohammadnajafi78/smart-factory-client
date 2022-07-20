@@ -27,7 +27,7 @@ export default function AwardsDesktop() {
           overflow: 'auto'
         }}
       >
-        <Box>
+        <Box sx={{ width: '100%', padding: '40px 30px 30px' }}>
           <Awards />
           <AwardsList selected={selected} setSelected={setSelected} />
         </Box>

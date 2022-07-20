@@ -6,6 +6,7 @@ import InputLabel from 'src/components/Mobile/InputLabel';
 import { Formik } from 'formik';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { API_BASE_URL } from 'src/utils/urls';
 
 function IdentityInfoMobile(props) {
   const history = useHistory();
@@ -37,7 +38,7 @@ function IdentityInfoMobile(props) {
           console.log('patch', values);
           axios
             .patch(
-              `http://192.168.1.4:8000/api/users/${
+              `${API_BASE_URL}/api/users/${
                 JSON.parse(localStorage.getItem('user')).id
               }`,
               { first_name: values.name, last_name: values.family },

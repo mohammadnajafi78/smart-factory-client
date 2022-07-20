@@ -19,12 +19,12 @@ export default function Confirm({ children, ...rest }) {
         border: rest.disabled
           ? '1px solid #CCEEF0 !important'
           : '1px solid #00AAB5',
-        minHeight: '45px',
+        minHeight: '44px',
         borderRadius: '4px',
         fontStyle: 'normal',
         fontWeight: 400,
         fontSize: '16px',
-        lineHeight: '25px',
+        lineHeight: '24px',
         fontFamily: 'IRANSans'
       }}
       {...rest}

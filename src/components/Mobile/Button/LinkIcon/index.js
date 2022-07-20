@@ -22,7 +22,11 @@ export default function Link({ children, variant, ...rest }) {
         fontWeight: 400,
         width: '100%',
         margin: 0,
-        fontFamily: 'IRANSans'
+        fontFamily: 'IRANSans',
+        '&:hover': {
+          background: '#00346D',
+          color: 'white'
+        }
       }}
       {...rest}
     >

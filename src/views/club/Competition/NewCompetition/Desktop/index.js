@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { useHistory } from 'react-router-dom';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
-import InputLabel from 'src/components/Mobile/InputLabel';
+import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
+import InputLabel from 'src/components/Desktop/InputLabel';
 import Participants from './Participants';
-import LinkIconButton from 'src/components/Mobile/Button/LinkIcon';
-import Present from 'src/assets/img/icons/present.svg';
+import IconButton from 'src/components/Desktop/Button/Icon';
+import Competition from 'src/assets/img/icons/competition.svg';
 import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 
 export default function NewCompetitionDesktop() {
@@ -57,7 +56,8 @@ export default function NewCompetitionDesktop() {
           alignItems: 'flex-start',
           padding: '16px 16px 0px',
           gap: '30px',
-          borderBottom: '0.5px solid #D3D2D2'
+          borderBottom: '0.5px solid #D3D2D2',
+          width: '100%'
         }}
       >
         <Box
@@ -180,19 +180,19 @@ export default function NewCompetitionDesktop() {
               height: '60px'
             }}
           >
-            <LinkIconButton
+            <IconButton
               style={{ width: '400px' }}
               // onClick={() => {
               // }}
             >
               <img
-                src={Present}
+                src={Competition}
                 width="26px"
                 height="20px"
                 style={{ color: 'white' }}
               />
               <div>شرکت در مسابقه</div>
-            </LinkIconButton>
+            </IconButton>
           </Box>
         </Box>
       </Box>

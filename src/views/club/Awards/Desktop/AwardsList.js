@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
-import FilterButton from 'src/components/Mobile/Button/Filter';
+import FilterButton from 'src/components/Desktop/Button/Filter';
 import AwardItem from './AwardItem';
 
 export default function AwardsList({ selected, setSelected }) {
@@ -20,13 +20,14 @@ export default function AwardsList({ selected, setSelected }) {
         sx={{
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
           alignItems: 'center',
           padding: '14px 15px 6px',
           gap: '10px',
           width: '100%',
           height: '57px',
-          backgroundColor: '#E5E5E5',
+          // padding: '0px 30px',
+          // backgroundColor: '#E5E5E5',
           zIndex: 100
         }}
       >
