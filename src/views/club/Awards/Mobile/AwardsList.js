@@ -26,7 +26,7 @@ export default function AwardsList() {
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
-          padding: '14px 15px 6px',
+          padding: '14px 0px 6px',
           gap: '10px',
           position: 'sticky',
           top: '45px',
