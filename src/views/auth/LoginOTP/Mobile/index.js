@@ -115,7 +115,8 @@ function LoginOTPMobile(props) {
         handleSubmit,
         isSubmitting,
         touched,
-        values
+        values,
+        setFieldValue
       }) => (
         <form
           noValidate
@@ -168,6 +169,11 @@ function LoginOTPMobile(props) {
                     document.getElementById('input2').focus();
                   }
                 }}
+                onKeyDown={e => {
+                  if (e.code === 'Backspace') {
+                    document.getElementById('input1').focus();
+                  }
+                }}
               />
               <TextField
                 id="input2"
@@ -186,6 +192,12 @@ function LoginOTPMobile(props) {
                   handleChange(event, 'input2');
                   if (event.target.value.length === 1) {
                     document.getElementById('input3').focus();
+                  }
+                }}
+                onKeyDown={e => {
+                  console.log('event', e.keyCode);
+                  if (e.code === 'Backspace') {
+                    document.getElementById('input1').focus();
                   }
                 }}
               />
@@ -208,6 +220,11 @@ function LoginOTPMobile(props) {
                     document.getElementById('input4').focus();
                   }
                 }}
+                onKeyDown={e => {
+                  if (e.code === 'Backspace') {
+                    document.getElementById('input2').focus();
+                  }
+                }}
               />
               <TextField
                 id="input4"
@@ -226,6 +243,11 @@ function LoginOTPMobile(props) {
                   handleChange(event, 'input4');
                   if (event.target.value.length === 1) {
                     document.getElementById('input5').focus();
+                  }
+                }}
+                onKeyDown={e => {
+                  if (e.code === 'Backspace') {
+                    document.getElementById('input3').focus();
                   }
                 }}
               />
@@ -248,6 +270,11 @@ function LoginOTPMobile(props) {
                     document.getElementById('input6').focus();
                   }
                 }}
+                onKeyDown={e => {
+                  if (e.code === 'Backspace') {
+                    document.getElementById('input4').focus();
+                  }
+                }}
               />
               <TextField
                 id="input6"
@@ -264,13 +291,24 @@ function LoginOTPMobile(props) {
                 value={values.input6}
                 onChange={event => {
                   handleChange(event, 'input6');
-                  handleSubmit();
+                  if (event.target.value.length === 1) {
+                    document.getElementById('input6').focus();
+                    handleSubmit();
+                  }
+                }}
+                onKeyDown={e => {
+                  if (e.code === 'Backspace') {
+                    setFieldValue('input6', '');
+                    document.getElementById('input5').focus();
+                  }
                 }}
               />
             </Box>
           </Box>
           <Box>
-            <InputLabel>شماره همراه خود را اشتباه وارد کردید؟</InputLabel>
+            <InputLabel id={'input7'}>
+              شماره همراه خود را اشتباه وارد کردید؟
+            </InputLabel>
             {!reSend && (
               <DisableButton disabled={isSubmitting}>
                 <CountDown

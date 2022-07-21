@@ -26,15 +26,6 @@ function IdentityInfoMobile(props) {
           return errors;
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
-          //   try {
-          //     await login(values.username, values.password);
-          //     setSubmitting(false);
-          //   } catch (err) {
-          //     setErrors({
-          //       submit: t('login.validation')
-          //     });
-          //     setSubmitting(false);
-          //   }
           console.log('patch', values);
           axios
             .patch(

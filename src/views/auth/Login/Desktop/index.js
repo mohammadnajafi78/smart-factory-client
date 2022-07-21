@@ -6,8 +6,13 @@ import Button from 'src/components/Desktop/Button/Confirm';
 import InputLabelFooter from 'src/components/Desktop/InputLabel/InputLabelFooter';
 import { Box, TextField, Divider } from '@mui/material';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import { API_BASE_URL } from 'src/utils/urls';
 
 function LoginDesktop() {
+  const history = useHistory();
+
   return (
     <LoginFrame>
       <Box
@@ -33,20 +38,49 @@ function LoginDesktop() {
           validate={values => {
             const errors = {};
             if (!values.input) {
-              errors.username = 'نام کاربری اجباری می باشد';
+              errors.input = 'نام کاربری اجباری می باشد';
             }
             return errors;
           }}
           onSubmit={async (values, { setErrors, setSubmitting }) => {
-            //   try {
-            //     await login(values.username, values.password);
-            //     setSubmitting(false);
-            //   } catch (err) {
-            //     setErrors({
-            //       submit: t('login.validation')
-            //     });
-            //     setSubmitting(false);
-            //   }
+            try {
+              console.log('values ', values);
+              axios
+                .get(
+                  `${API_BASE_URL}/api/users/login_or_register?mobile=${values.input}`
+                )
+                .then(res => {
+                  if (res.status === 204) {
+                    axios
+                      .post(`${API_BASE_URL}/api/users/register/`, {
+                        mobile: values.input
+                      })
+                      .then(result => {
+                        if (result.status === 200) {
+                          history.push({
+                            pathname: `/otp`,
+                            state: {
+                              mobile: values.input,
+                              lastUpdate: result.data.last_update
+                            }
+                          });
+                        } else console.log('error');
+                      });
+                  } else if (res.status === 200)
+                    history.push({
+                      pathname: '/entry',
+                      state: {
+                        mobile: values.input
+                      }
+                    });
+                });
+              setSubmitting(false);
+            } catch (err) {
+              // setErrors({
+              //   submit: t('login.validation')
+              // });
+              setSubmitting(false);
+            }
           }}
         >
           {({
@@ -77,8 +111,7 @@ function LoginDesktop() {
                     جهت ورود یا ثبت‌نام شماره همراه یا ایمیل خود را وارد کنید
                   </InputLabel>
                   <TextField
-                    id="my-input"
-                    aria-describedby="my-helper-text"
+                    id="input"
                     placeholder="ورود شماره همراه یا ایمیل"
                     fullWidth
                     sx={{
@@ -87,6 +120,8 @@ function LoginDesktop() {
                       fontSize: '16px',
                       mt: 2
                     }}
+                    value={values.input}
+                    onChange={handleChange}
                   />
                 </Box>
               </div>

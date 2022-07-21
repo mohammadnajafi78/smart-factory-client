@@ -42,6 +42,7 @@ function EnterPasswordMobile(props) {
             .then(res => {
               if (res.status === 200) {
                 localStorage.setItem('user', JSON.stringify(res.data.data));
+                localStorage.setItem('token', res.headers['x-auth-token']);
                 history.push('/identity');
               }
             });

@@ -4,6 +4,7 @@ import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import { Formik } from 'formik';
+import { useHistory } from 'react-router-dom';
 
 const arr = [
   'فروشگاه',
@@ -14,6 +15,7 @@ const arr = [
   'پرسنل شرکت'
 ];
 function WorkMobile() {
+  const history = useHistory();
   return (
     <Formik
       initialValues={{

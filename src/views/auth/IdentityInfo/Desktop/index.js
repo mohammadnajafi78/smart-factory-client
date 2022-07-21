@@ -5,8 +5,13 @@ import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import { Formik } from 'formik';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import { API_BASE_URL } from 'src/utils/urls';
 
-function IdentityInfoDesktop() {
+function IdentityInfoDesktop(props) {
+  const history = useHistory();
+
   return (
     <LoginFrame>
       <Box
@@ -27,25 +32,36 @@ function IdentityInfoDesktop() {
       >
         <Formik
           initialValues={{
-            input: ''
+            name: '',
+            family: ''
           }}
           validate={values => {
             const errors = {};
-            if (!values.input) {
-              errors.username = 'نام کاربری اجباری می باشد';
-            }
+            // if (!values.input) {
+            //   errors.username = 'نام کاربری اجباری می باشد';
+            // }
             return errors;
           }}
           onSubmit={async (values, { setErrors, setSubmitting }) => {
-            //   try {
-            //     await login(values.username, values.password);
-            //     setSubmitting(false);
-            //   } catch (err) {
-            //     setErrors({
-            //       submit: t('login.validation')
-            //     });
-            //     setSubmitting(false);
-            //   }
+            console.log('patch', values);
+            axios
+              .patch(
+                `${API_BASE_URL}/api/users/${
+                  JSON.parse(localStorage.getItem('user')).id
+                }/`,
+                { first_name: values.name, last_name: values.family },
+                {
+                  headers: {
+                    'x-auth-token': localStorage.getItem('token')
+                  }
+                }
+              )
+              .then(res => {
+                if (res.status === 200) {
+                  history.push('/location');
+                }
+              });
+            setSubmitting(false);
           }}
         >
           {({
@@ -77,7 +93,7 @@ function IdentityInfoDesktop() {
                 <Box sx={{ mt: 2 }}>
                   <InputLabel style={{ marginRight: '5px' }}>نام</InputLabel>
                   <TextField
-                    id="my-input"
+                    id="name"
                     aria-describedby="my-helper-text"
                     fullWidth
                     // placeholder="رمز عبور"
@@ -86,6 +102,8 @@ function IdentityInfoDesktop() {
                       borderRadius: '4px',
                       margin: '6px 3px'
                     }}
+                    value={values.name}
+                    onChange={handleChange}
                   />
                 </Box>
                 <Box sx={{ mt: 2 }}>
@@ -93,7 +111,7 @@ function IdentityInfoDesktop() {
                     نام خانوادگی
                   </InputLabel>
                   <TextField
-                    id="my-input"
+                    id="family"
                     aria-describedby="my-helper-text"
                     fullWidth
                     // placeholder="رمز عبور"
@@ -102,6 +120,8 @@ function IdentityInfoDesktop() {
                       borderRadius: '4px',
                       margin: '6px 3px'
                     }}
+                    value={values.family}
+                    onChange={handleChange}
                   />
                 </Box>
               </Box>
@@ -118,7 +138,13 @@ function IdentityInfoDesktop() {
                 <ConfirmButton disabled={true} variant="outlined">
                   {'قبلی'}
                 </ConfirmButton>
-                <ConfirmButton disabled={false}>{'بعدی'}</ConfirmButton>
+                <ConfirmButton
+                  disabled={false}
+                  type="submit"
+                  onClick={() => handleSubmit()}
+                >
+                  {'بعدی'}
+                </ConfirmButton>
               </Box>
             </form>
           )}

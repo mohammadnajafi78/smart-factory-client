@@ -5,6 +5,7 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader
 import InputLabel from 'src/components/Desktop/InputLabel';
 import { Formik } from 'formik';
 import LoginFrame from 'src/components/Desktop/LoginFrame';
+import { useHistory } from 'react-router-dom';
 
 const arr = [
   'فروشگاه',
@@ -16,6 +17,7 @@ const arr = [
 ];
 function WorkDesktop() {
   const [selected, setSelected] = useState(null);
+  const history = useHistory();
 
   return (
     <LoginFrame>
@@ -143,10 +145,16 @@ function WorkDesktop() {
                   width: '100%'
                 }}
               >
-                <ConfirmButton disabled={false} variant="outlined">
+                <ConfirmButton
+                  disabled={false}
+                  variant="outlined"
+                  onClick={() => history.push('/location')}
+                >
                   {'قبلی'}
                 </ConfirmButton>
-                <ConfirmButton disabled={false}>{'بعدی'}</ConfirmButton>
+                <ConfirmButton disabled={false} onClick={handleSubmit}>
+                  {'بعدی'}
+                </ConfirmButton>
               </Box>
             </form>
           )}

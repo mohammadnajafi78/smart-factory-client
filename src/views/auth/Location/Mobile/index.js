@@ -33,7 +33,7 @@ function LocationMobile() {
   useEffect(() => {
     if (provinceId !== null) {
       axios
-        .get(`${API_BASE_URL}/api/utils/cities/?province_id=${provinceId}`, {
+        .get(`${API_BASE_URL}/api/utils/cities/?province__id=${provinceId}`, {
           headers: {
             'x-auth-token': localStorage.getItem('token')
           }
@@ -60,16 +60,6 @@ function LocationMobile() {
         return errors;
       }}
       onSubmit={async (values, { setErrors, setSubmitting }) => {
-        //   try {
-        //     await login(values.username, values.password);
-        //     setSubmitting(false);
-        //   } catch (err) {
-        //     setErrors({
-        //       submit: t('login.validation')
-        //     });
-        //     setSubmitting(false);
-        //   }
-
         axios
           .post(
             `${API_BASE_URL}/api/utils/location/`,
@@ -134,7 +124,6 @@ function LocationMobile() {
                 fullWidth
                 id="province"
                 options={provinces}
-                // sx={{ width: 300 }}
                 renderInput={params => (
                   <TextField {...params} placeholder="استان" fullWidth />
                 )}
@@ -155,7 +144,7 @@ function LocationMobile() {
                   <TextField {...params} placeholder="شهر" fullWidth />
                 )}
                 onChange={(event, newValue) => {
-                  setCityId(newValue.id);
+                  if (newValue) setCityId(newValue.id);
                 }}
               />
             </Box>

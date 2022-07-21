@@ -53,7 +53,7 @@ function LoginMobile() {
             validate={values => {
               const errors = {};
               if (!values.input) {
-                errors.username = 'نام کاربری اجباری می باشد';
+                errors.input = 'نام کاربری اجباری می باشد';
               }
               return errors;
             }}
@@ -64,9 +64,6 @@ function LoginMobile() {
                     `${API_BASE_URL}/api/users/login_or_register?mobile=${values.input}`
                   )
                   .then(res => {
-                    // if (res.status === 200) {
-                    console.log('res', res);
-                    // }
                     if (res.status === 204) {
                       axios
                         .post(`${API_BASE_URL}/api/users/register/`, {
@@ -78,7 +75,7 @@ function LoginMobile() {
                               pathname: `/otp`,
                               state: {
                                 mobile: values.input,
-                                lastUpdate: res.data.last_update
+                                lastUpdate: result.data.last_update
                               }
                             });
                           } else console.log('error');
@@ -93,9 +90,9 @@ function LoginMobile() {
                   });
                 setSubmitting(false);
               } catch (err) {
-                setErrors({
-                  submit: t('login.validation')
-                });
+                // setErrors({
+                //   submit: t('login.validation')
+                // });
                 setSubmitting(false);
               }
             }}
@@ -126,7 +123,6 @@ function LoginMobile() {
                   </InputLabel>
                   <TextField
                     id="input"
-                    aria-describedby="my-helper-text"
                     placeholder="ورود شماره همراه یا ایمیل"
                     fullWidth
                     sx={{ height: '44px', textAlign: 'left', fontSize: '16px' }}

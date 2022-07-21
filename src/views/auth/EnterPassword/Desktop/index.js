@@ -6,9 +6,13 @@ import InputLabel from 'src/components/Desktop/InputLabel';
 import { Formik } from 'formik';
 import ReCAPTCHA from 'react-google-recaptcha';
 import LoginFrame from 'src/components/Desktop/LoginFrame';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import { API_BASE_URL } from 'src/utils/urls';
 
-function EnterPasswordDesktop() {
+function EnterPasswordDesktop(props) {
   const recaptchaRef = useRef();
+  const history = useHistory();
 
   function onChange(value) {
     console.log('Captcha value:', value);
@@ -34,25 +38,31 @@ function EnterPasswordDesktop() {
       >
         <Formik
           initialValues={{
-            input: ''
+            password: '',
+            password2: ''
           }}
           validate={values => {
             const errors = {};
-            if (!values.input) {
-              errors.username = 'نام کاربری اجباری می باشد';
-            }
+            // if (!values.input) {
+            //   errors.username = 'نام کاربری اجباری می باشد';
+            // }
             return errors;
           }}
           onSubmit={async (values, { setErrors, setSubmitting }) => {
-            //   try {
-            //     await login(values.username, values.password);
-            //     setSubmitting(false);
-            //   } catch (err) {
-            //     setErrors({
-            //       submit: t('login.validation')
-            //     });
-            //     setSubmitting(false);
-            //   }
+            console.log('password');
+            axios
+              .post(`${API_BASE_URL}/api/users/`, {
+                mobile: props.location.state.mobile,
+                password: values.password
+              })
+              .then(res => {
+                if (res.status === 200) {
+                  localStorage.setItem('user', JSON.stringify(res.data.data));
+                  localStorage.setItem('token', res.headers['x-auth-token']);
+                  history.push('/identity');
+                }
+              });
+            setSubmitting(false);
           }}
         >
           {({
@@ -84,7 +94,7 @@ function EnterPasswordDesktop() {
                 <Box>
                   <Box sx={{ mt: 2 }}>
                     <TextField
-                      id="my-input"
+                      id="password"
                       aria-describedby="my-helper-text"
                       fullWidth
                       placeholder="رمز عبور"
@@ -93,11 +103,13 @@ function EnterPasswordDesktop() {
                         borderRadius: '4px',
                         margin: '6px 3px'
                       }}
+                      value={values.password}
+                      onChange={handleChange}
                     />
                   </Box>
                   <Box>
                     <TextField
-                      id="my-input"
+                      id="password2"
                       aria-describedby="my-helper-text"
                       fullWidth
                       placeholder="تکرار رمز عبور"
@@ -106,6 +118,8 @@ function EnterPasswordDesktop() {
                         borderRadius: '4px',
                         margin: '6px 3px'
                       }}
+                      value={values.password2}
+                      onChange={handleChange}
                     />
                   </Box>
                   {/* <Box sx={{ mt: 1 }}>

@@ -9,7 +9,6 @@ import { API_BASE_URL } from 'src/utils/urls';
 
 function EntryMobile(props) {
   const history = useHistory();
-  console.log('mobile', props.location.state.mobile);
   return (
     <Box
       sx={{

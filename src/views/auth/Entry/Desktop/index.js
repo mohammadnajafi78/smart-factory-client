@@ -4,8 +4,13 @@ import { Box } from '@mui/material';
 import Logo from 'src/assets/img/LogoBTS.svg';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import LinkButton from 'src/components/Desktop/Button/Link';
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+import { API_BASE_URL } from 'src/utils/urls';
 
-function EntryDesktop() {
+function EntryDesktop(props) {
+  const history = useHistory();
+
   return (
     <LoginFrame>
       <Box
@@ -58,8 +63,43 @@ function EntryDesktop() {
             <InputLabel>
               جهت ورود، یکی از روش‌های زیر را انتخاب کنید:
             </InputLabel>
-            <LinkButton>{'ورود با رمز عبور'}</LinkButton>
-            <LinkButton>{'ورود با رمز عبور یک بار مصرف'}</LinkButton>
+            <LinkButton
+              variant={'outlined'}
+              onClick={() => {
+                history.push({
+                  pathname: '/password',
+                  state: {
+                    mobile: props.location.state.mobile
+                  }
+                });
+              }}
+            >
+              {'ورود با رمز عبور'}
+            </LinkButton>
+            <LinkButton
+              variant={'outlined'}
+              onClick={() => {
+                axios
+                  .post(`${API_BASE_URL}/api/users/request_otp/`, {
+                    username: props.location.state.mobile
+                  })
+                  .then(res => {
+                    console.log('response', res.data.last_update);
+                    if (res.status === 200) {
+                      history.push({
+                        pathname: '/otp',
+                        state: {
+                          mobile: props.location.state.mobile,
+                          lastUpdate: res.data.last_update,
+                          status: 'entry'
+                        }
+                      });
+                    }
+                  });
+              }}
+            >
+              {'ورود با رمز عبور یک بار مصرف'}
+            </LinkButton>
           </Box>
         </Box>
         <Box>
