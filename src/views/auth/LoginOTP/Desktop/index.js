@@ -6,11 +6,12 @@ import InputLabel from 'src/components/Desktop/InputLabel';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import DisableButton from 'src/components/Desktop/Button/Disable';
 import LoginFrame from 'src/components/Desktop/LoginFrame';
-import axios from 'axios';
+import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import CountDown from 'src/utils/CountDown';
 import moment from 'moment';
 import { API_BASE_URL } from 'src/utils/urls';
+import axios from 'axios';
 
 function LoginOTPDesktop(props) {
   const history = useHistory();
@@ -80,7 +81,7 @@ function LoginOTPDesktop(props) {
           }}
           onSubmit={async (values, { setErrors, setSubmitting }) => {
             if (props.location.state.status === 'entry') {
-              axios
+              httpService
                 .post(`${API_BASE_URL}/api/users/login_with_otp/`, {
                   verification_code: `${values.input1 +
                     values.input2 +
@@ -94,6 +95,7 @@ function LoginOTPDesktop(props) {
                   if (res.status === 200) {
                     localStorage.setItem('token', res.headers['x-auth-token']);
                     localStorage.setItem('user', JSON.stringify(res.data.data));
+                    axios.defaults.headers.Authorization = `Bearer ${res.headers['x-auth-token']}`;
                     history.push('/club/awards');
                   }
                 })
@@ -102,7 +104,7 @@ function LoginOTPDesktop(props) {
                   alert('کد اشتباه وارد شده است');
                 });
             } else {
-              axios
+              httpService
                 .post(`${API_BASE_URL}/api/users/mobile_verification/`, {
                   verification_code: `${values.input1 +
                     values.input2 +

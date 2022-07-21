@@ -5,7 +5,7 @@ import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader'
 import InputLabel from 'src/components/Mobile/InputLabel';
 import { Formik } from 'formik';
 import ReCAPTCHA from 'react-google-recaptcha';
-import axios from 'axios';
+import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 
@@ -42,7 +42,7 @@ function LoginPassMobile(props) {
           //     setSubmitting(false);
           //   }
           console.log('pass');
-          axios
+          httpService
             .post(`${API_BASE_URL}/api/users/login_with_pass/`, {
               username: props.location.state.mobile,
               password: values.input
@@ -51,6 +51,7 @@ function LoginPassMobile(props) {
               if (res.status === 200) {
                 localStorage.setItem('token', res.headers['x-auth-token']);
                 localStorage.setItem('user', JSON.stringify(res.data.data));
+                axios.defaults.headers.Authorization = `Bearer ${res.headers['x-auth-token']}`;
                 history.push('/club/awards');
               }
             });

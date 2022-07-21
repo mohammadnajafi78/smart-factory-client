@@ -6,9 +6,9 @@ import Button from 'src/components/Desktop/Button/Confirm';
 import InputLabelFooter from 'src/components/Desktop/InputLabel/InputLabelFooter';
 import { Box, TextField, Divider } from '@mui/material';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
-import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
+import httpService from 'src/utils/httpService';
 
 function LoginDesktop() {
   const history = useHistory();
@@ -45,13 +45,13 @@ function LoginDesktop() {
           onSubmit={async (values, { setErrors, setSubmitting }) => {
             try {
               console.log('values ', values);
-              axios
+              httpService
                 .get(
                   `${API_BASE_URL}/api/users/login_or_register?mobile=${values.input}`
                 )
                 .then(res => {
                   if (res.status === 204) {
-                    axios
+                    httpService
                       .post(`${API_BASE_URL}/api/users/register/`, {
                         mobile: values.input
                       })

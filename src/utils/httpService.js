@@ -2,13 +2,13 @@ import axios from 'axios';
 // import { toast } from "react-toastify";
 // import { log } from "./logService";
 
-let token = null;
-let headers = {};
-token = localStorage.getItem('token');
-if (token) {
-  headers['x-auth-token'] = token;
-}
-axios.defaults.headers.common = headers;
+// let token = null;
+// let headers = {};
+// token = localStorage.getItem('token');
+// if (token) {
+//   headers['Authorization'] = `Bearer ${token}`;
+// }
+// axios.defaults.headers.common = headers;
 
 axios.interceptors.response.use(null, error => {
   const expectedError =

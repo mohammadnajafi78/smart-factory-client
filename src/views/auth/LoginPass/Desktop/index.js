@@ -5,7 +5,7 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader
 import InputLabel from 'src/components/Desktop/InputLabel';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import LoginFrame from 'src/components/Desktop/LoginFrame';
-import axios from 'axios';
+import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 
@@ -43,7 +43,7 @@ function LoginPassDesktop(props) {
           }}
           onSubmit={async (values, { setErrors, setSubmitting }) => {
             console.log('pass');
-            axios
+            httpService
               .post(`${API_BASE_URL}/api/users/login_with_pass/`, {
                 username: props.location.state.mobile,
                 password: values.input
@@ -52,6 +52,7 @@ function LoginPassDesktop(props) {
                 if (res.status === 200) {
                   localStorage.setItem('token', res.headers['x-auth-token']);
                   localStorage.setItem('user', JSON.stringify(res.data.data));
+                  axios.defaults.headers.Authorization = `Bearer ${res.headers['x-auth-token']}`;
                   history.push('/club/awards');
                 }
               });

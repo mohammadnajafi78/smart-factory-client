@@ -5,7 +5,7 @@ import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader'
 import InputLabel from 'src/components/Mobile/InputLabel';
 import { Formik } from 'formik';
 import ReCAPTCHA from 'react-google-recaptcha';
-import axios from 'axios';
+import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 
@@ -34,7 +34,7 @@ function EnterPasswordMobile(props) {
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           console.log('password');
-          axios
+          httpService
             .post(`${API_BASE_URL}/api/users/`, {
               mobile: props.location.state.mobile,
               password: values.password
@@ -43,6 +43,7 @@ function EnterPasswordMobile(props) {
               if (res.status === 200) {
                 localStorage.setItem('user', JSON.stringify(res.data.data));
                 localStorage.setItem('token', res.headers['x-auth-token']);
+                axios.defaults.headers.Authorization = `Bearer ${res.headers['x-auth-token']}`;
                 history.push('/identity');
               }
             });

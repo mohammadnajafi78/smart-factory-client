@@ -6,9 +6,10 @@ import InputLabel from 'src/components/Desktop/InputLabel';
 import { Formik } from 'formik';
 import ReCAPTCHA from 'react-google-recaptcha';
 import LoginFrame from 'src/components/Desktop/LoginFrame';
-import axios from 'axios';
+import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
+import axios from 'axios';
 
 function EnterPasswordDesktop(props) {
   const recaptchaRef = useRef();
@@ -50,7 +51,7 @@ function EnterPasswordDesktop(props) {
           }}
           onSubmit={async (values, { setErrors, setSubmitting }) => {
             console.log('password');
-            axios
+            httpService
               .post(`${API_BASE_URL}/api/users/`, {
                 mobile: props.location.state.mobile,
                 password: values.password
@@ -59,6 +60,7 @@ function EnterPasswordDesktop(props) {
                 if (res.status === 200) {
                   localStorage.setItem('user', JSON.stringify(res.data.data));
                   localStorage.setItem('token', res.headers['x-auth-token']);
+                  axios.defaults.headers.Authorization = `Bearer ${res.headers['x-auth-token']}`;
                   history.push('/identity');
                 }
               });

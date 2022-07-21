@@ -5,7 +5,7 @@ import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader'
 import InputLabel from 'src/components/Mobile/InputLabel';
 import { Formik } from 'formik';
 import Autocomplete from '@mui/material/Autocomplete';
-import axios from 'axios';
+import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 
@@ -17,12 +17,8 @@ function LocationMobile() {
   const history = useHistory();
 
   useEffect(() => {
-    axios
-      .get(`${API_BASE_URL}/api/utils/provinces/?country_id=25`, {
-        headers: {
-          'x-auth-token': localStorage.getItem('token')
-        }
-      })
+    httpService
+      .get(`${API_BASE_URL}/api/utils/provinces/?country_id=25`)
       .then(res => {
         if (res.status === 200) {
           setProvinces(res.data);
@@ -32,12 +28,8 @@ function LocationMobile() {
 
   useEffect(() => {
     if (provinceId !== null) {
-      axios
-        .get(`${API_BASE_URL}/api/utils/cities/?province__id=${provinceId}`, {
-          headers: {
-            'x-auth-token': localStorage.getItem('token')
-          }
-        })
+      httpService
+        .get(`${API_BASE_URL}/api/utils/cities/?province__id=${provinceId}`)
         .then(res => {
           if (res.status === 200) {
             setCities(res.data);
@@ -53,23 +45,19 @@ function LocationMobile() {
         city: ''
       }}
       validate={values => {
-        const errors = {};
-        if (!values.input) {
-          errors.username = 'نام کاربری اجباری می باشد';
-        }
-        return errors;
+        // const errors = {};
+        // if (!values.input) {
+        //   errors.username = 'نام کاربری اجباری می باشد';
+        // }
+        // return errors;
       }}
       onSubmit={async (values, { setErrors, setSubmitting }) => {
-        axios
-          .post(
-            `${API_BASE_URL}/api/utils/location/`,
-            { country_id: 25, province_id: provinceId, city_id: cityId },
-            {
-              headers: {
-                'x-auth-token': localStorage.getItem('token')
-              }
-            }
-          )
+        httpService
+          .post(`${API_BASE_URL}/api/utils/locations/`, {
+            country_id: 25,
+            province_id: provinceId,
+            city_id: cityId
+          })
           .then(res => {
             if (res.status === 200) {
               history.push('/work');
@@ -162,12 +150,11 @@ function LocationMobile() {
               onClick={() => {
                 history.push('/identity');
               }}
+              type={'button'}
             >
               {'قبلی'}
             </ConfirmButton>
-            <ConfirmButton disabled={false} onClick={handleSubmit}>
-              {'بعدی'}
-            </ConfirmButton>
+            <ConfirmButton disabled={isSubmitting}>{'بعدی'}</ConfirmButton>
           </Box>
         </form>
       )}

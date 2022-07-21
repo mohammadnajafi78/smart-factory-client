@@ -5,7 +5,7 @@ import Logo from 'src/assets/img/LogoBTS.svg';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import LinkButton from 'src/components/Desktop/Button/Link';
 import { useHistory } from 'react-router-dom';
-import axios from 'axios';
+import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 
 function EntryDesktop(props) {
@@ -79,7 +79,7 @@ function EntryDesktop(props) {
             <LinkButton
               variant={'outlined'}
               onClick={() => {
-                axios
+                httpService
                   .post(`${API_BASE_URL}/api/users/request_otp/`, {
                     username: props.location.state.mobile
                   })

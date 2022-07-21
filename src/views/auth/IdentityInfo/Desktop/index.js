@@ -5,9 +5,11 @@ import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import { Formik } from 'formik';
-import axios from 'axios';
+import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
+import axios from 'axios';
+import axiosInstance from 'src/utils/axios';
 
 function IdentityInfoDesktop(props) {
   const history = useHistory();
@@ -44,17 +46,12 @@ function IdentityInfoDesktop(props) {
           }}
           onSubmit={async (values, { setErrors, setSubmitting }) => {
             console.log('patch', values);
-            axios
+            httpService
               .patch(
                 `${API_BASE_URL}/api/users/${
                   JSON.parse(localStorage.getItem('user')).id
                 }/`,
-                { first_name: values.name, last_name: values.family },
-                {
-                  headers: {
-                    'x-auth-token': localStorage.getItem('token')
-                  }
-                }
+                { first_name: values.name, last_name: values.family }
               )
               .then(res => {
                 if (res.status === 200) {
@@ -135,16 +132,14 @@ function IdentityInfoDesktop(props) {
                   gap: 2
                 }}
               >
-                <ConfirmButton disabled={true} variant="outlined">
+                <ConfirmButton
+                  disabled={true}
+                  variant="outlined"
+                  type={'button'}
+                >
                   {'قبلی'}
                 </ConfirmButton>
-                <ConfirmButton
-                  disabled={false}
-                  type="submit"
-                  onClick={() => handleSubmit()}
-                >
-                  {'بعدی'}
-                </ConfirmButton>
+                <ConfirmButton disabled={isSubmitting}>{'بعدی'}</ConfirmButton>
               </Box>
             </form>
           )}

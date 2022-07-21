@@ -5,7 +5,7 @@ import { Formik } from 'formik';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import Button from 'src/components/Mobile/Button/Confirm';
 import InputLabelFooter from 'src/components/Mobile/InputLabel/InputLabelFooter';
-import axios from 'axios';
+import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 
@@ -59,13 +59,13 @@ function LoginMobile() {
             }}
             onSubmit={async (values, { setErrors, setSubmitting }) => {
               try {
-                axios
+                httpService
                   .get(
                     `${API_BASE_URL}/api/users/login_or_register?mobile=${values.input}`
                   )
                   .then(res => {
                     if (res.status === 204) {
-                      axios
+                      httpService
                         .post(`${API_BASE_URL}/api/users/register/`, {
                           mobile: values.input
                         })

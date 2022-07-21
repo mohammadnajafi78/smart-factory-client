@@ -4,7 +4,7 @@ import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import { Formik } from 'formik';
-import axios from 'axios';
+import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 
@@ -27,17 +27,12 @@ function IdentityInfoMobile(props) {
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           console.log('patch', values);
-          axios
+          httpService
             .patch(
               `${API_BASE_URL}/api/users/${
                 JSON.parse(localStorage.getItem('user')).id
               }/`,
-              { first_name: values.name, last_name: values.family },
-              {
-                headers: {
-                  'x-auth-token': localStorage.getItem('token')
-                }
-              }
+              { first_name: values.name, last_name: values.family }
             )
             .then(res => {
               if (res.status === 200) {

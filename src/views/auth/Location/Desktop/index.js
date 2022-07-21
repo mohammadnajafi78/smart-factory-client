@@ -1,29 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import LoginFrame from 'src/components/Desktop/LoginFrame';
 import { Box, TextField } from '@mui/material';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
-import InputLabel from 'src/components/Mobile/InputLabel';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
+import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
+import InputLabel from 'src/components/Desktop/InputLabel';
 import { Formik } from 'formik';
 import Autocomplete from '@mui/material/Autocomplete';
-import axios from 'axios';
+import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 
 function LocationDesktop() {
-  const [provinces, setProvinces] = useState(null);
+  const [provinces, setProvinces] = useState([]);
   const [provinceId, setProvinceId] = useState(null);
   const [cities, setCities] = useState([]);
   const [cityId, setCityId] = useState(null);
   const history = useHistory();
 
   useEffect(() => {
-    axios
-      .get(`${API_BASE_URL}/api/utils/provinces/?country_id=25`, {
-        headers: {
-          'x-auth-token': localStorage.getItem('token')
-        }
-      })
+    httpService
+      .get(`${API_BASE_URL}/api/utils/provinces/?country_id=25`)
       .then(res => {
         if (res.status === 200) {
           setProvinces(res.data);
@@ -33,12 +29,8 @@ function LocationDesktop() {
 
   useEffect(() => {
     if (provinceId !== null) {
-      axios
-        .get(`${API_BASE_URL}/api/utils/cities/?province__id=${provinceId}`, {
-          headers: {
-            'x-auth-token': localStorage.getItem('token')
-          }
-        })
+      httpService
+        .get(`${API_BASE_URL}/api/utils/cities/?province__id=${provinceId}`)
         .then(res => {
           if (res.status === 200) {
             setCities(res.data);
@@ -71,23 +63,20 @@ function LocationDesktop() {
             city: ''
           }}
           validate={values => {
-            const errors = {};
-            if (!values.input) {
-              errors.username = 'نام کاربری اجباری می باشد';
-            }
-            return errors;
+            // const errors = {};
+            // if (!values.input) {
+            //   errors.username = 'نام کاربری اجباری می باشد';
+            // }
+            // return errors;
           }}
           onSubmit={async (values, { setErrors, setSubmitting }) => {
-            axios
-              .post(
-                `${API_BASE_URL}/api/utils/location/`,
-                { country_id: 25, province_id: provinceId, city_id: cityId },
-                {
-                  headers: {
-                    'x-auth-token': localStorage.getItem('token')
-                  }
-                }
-              )
+            console.log('inside');
+            httpService
+              .post(`${API_BASE_URL}/api/utils/locations/`, {
+                country_id: 25,
+                province_id: provinceId,
+                city_id: cityId
+              })
               .then(res => {
                 if (res.status === 200) {
                   history.push('/work');
@@ -106,7 +95,7 @@ function LocationDesktop() {
             values
           }) => (
             <form
-              noValidate
+              // noValidate
               onSubmit={handleSubmit}
               style={{
                 display: 'flex',
@@ -131,8 +120,11 @@ function LocationDesktop() {
                       <TextField {...params} placeholder="استان" fullWidth />
                     )}
                     onChange={(event, newValue) => {
-                      setProvinceId(newValue.id);
+                      if (newValue) setProvinceId(newValue.id);
                     }}
+                    isOptionEqualToValue={(option, value) =>
+                      option.label === value.label
+                    }
                   />
                 </Box>
                 <Box sx={{ mt: 2 }}>
@@ -149,6 +141,9 @@ function LocationDesktop() {
                     onChange={(event, newValue) => {
                       if (newValue) setCityId(newValue.id);
                     }}
+                    isOptionEqualToValue={(option, value) =>
+                      option.label === value.label
+                    }
                   />
                 </Box>
               </Box>
@@ -163,17 +158,16 @@ function LocationDesktop() {
                 }}
               >
                 <ConfirmButton
-                  disabled={false}
+                  disabled={true}
                   variant="outlined"
                   onClick={() => {
                     history.push('/identity');
                   }}
+                  type={'button'}
                 >
                   {'قبلی'}
                 </ConfirmButton>
-                <ConfirmButton disabled={false} onClick={handleSubmit}>
-                  {'بعدی'}
-                </ConfirmButton>
+                <ConfirmButton disabled={isSubmitting}>{'بعدی'}</ConfirmButton>
               </Box>
             </form>
           )}
