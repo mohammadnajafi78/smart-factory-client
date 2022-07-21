@@ -193,7 +193,7 @@ function LoginOTPDesktop(props) {
                       }
                     }}
                     onKeyDown={e => {
-                      if (e.code === 'Backspace') {
+                      if (e.keyCode === 8) {
                         document.getElementById('input1').focus();
                       }
                     }}
@@ -219,10 +219,11 @@ function LoginOTPDesktop(props) {
                     }}
                     onKeyDown={e => {
                       console.log('event', e.keyCode);
-                      if (e.code === 'Backspace') {
+                      if (e.keyCode === 8) {
                         document.getElementById('input1').focus();
                       }
                     }}
+                    type="tel"
                   />
                   <TextField
                     id="input3"
@@ -244,7 +245,7 @@ function LoginOTPDesktop(props) {
                       }
                     }}
                     onKeyDown={e => {
-                      if (e.code === 'Backspace') {
+                      if (e.keyCode === 8) {
                         document.getElementById('input2').focus();
                       }
                     }}
@@ -269,7 +270,7 @@ function LoginOTPDesktop(props) {
                       }
                     }}
                     onKeyDown={e => {
-                      if (e.code === 'Backspace') {
+                      if (e.keyCode === 8) {
                         document.getElementById('input3').focus();
                       }
                     }}
@@ -294,7 +295,7 @@ function LoginOTPDesktop(props) {
                       }
                     }}
                     onKeyDown={e => {
-                      if (e.code === 'Backspace') {
+                      if (e.keyCode === 8) {
                         document.getElementById('input4').focus();
                       }
                     }}
@@ -320,7 +321,7 @@ function LoginOTPDesktop(props) {
                       }
                     }}
                     onKeyDown={e => {
-                      if (e.code === 'Backspace') {
+                      if (e.keyCode === 8) {
                         setFieldValue('input6', '');
                         document.getElementById('input5').focus();
                       }

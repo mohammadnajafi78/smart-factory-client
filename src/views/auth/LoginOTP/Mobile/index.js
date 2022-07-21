@@ -153,6 +153,7 @@ function LoginOTPMobile(props) {
             >
               <TextField
                 id="input1"
+                type="tel"
                 aria-describedby="my-helper-text"
                 // placeholder="ورود شماره همراه یا ایمیل"
                 fullWidth
@@ -171,13 +172,14 @@ function LoginOTPMobile(props) {
                   }
                 }}
                 onKeyDown={e => {
-                  if (e.code === 'Backspace') {
+                  if (e.keyCode === 8) {
                     document.getElementById('input1').focus();
                   }
                 }}
               />
               <TextField
                 id="input2"
+                type="tel"
                 aria-describedby="my-helper-text"
                 // placeholder="ورود شماره همراه یا ایمیل"
                 fullWidth
@@ -197,13 +199,14 @@ function LoginOTPMobile(props) {
                 }}
                 onKeyDown={e => {
                   console.log('event', e.keyCode);
-                  if (e.code === 'Backspace') {
+                  if (e.keyCode === 8) {
                     document.getElementById('input1').focus();
                   }
                 }}
               />
               <TextField
                 id="input3"
+                type="tel"
                 aria-describedby="my-helper-text"
                 // placeholder="ورود شماره همراه یا ایمیل"
                 fullWidth
@@ -222,13 +225,14 @@ function LoginOTPMobile(props) {
                   }
                 }}
                 onKeyDown={e => {
-                  if (e.code === 'Backspace') {
+                  if (e.keyCode === 8) {
                     document.getElementById('input2').focus();
                   }
                 }}
               />
               <TextField
                 id="input4"
+                type="tel"
                 aria-describedby="my-helper-text"
                 // placeholder="ورود شماره همراه یا ایمیل"
                 fullWidth
@@ -247,13 +251,14 @@ function LoginOTPMobile(props) {
                   }
                 }}
                 onKeyDown={e => {
-                  if (e.code === 'Backspace') {
+                  if (e.keyCode === 8) {
                     document.getElementById('input3').focus();
                   }
                 }}
               />
               <TextField
                 id="input5"
+                type="tel"
                 aria-describedby="my-helper-text"
                 // placeholder="ورود شماره همراه یا ایمیل"
                 fullWidth
@@ -272,13 +277,14 @@ function LoginOTPMobile(props) {
                   }
                 }}
                 onKeyDown={e => {
-                  if (e.code === 'Backspace') {
+                  if (e.keyCode === 8) {
                     document.getElementById('input4').focus();
                   }
                 }}
               />
               <TextField
                 id="input6"
+                type="tel"
                 aria-describedby="my-helper-text"
                 // placeholder="ورود شماره همراه یا ایمیل"
                 fullWidth
@@ -298,7 +304,7 @@ function LoginOTPMobile(props) {
                   }
                 }}
                 onKeyDown={e => {
-                  if (e.code === 'Backspace') {
+                  if (e.keyCode === 8) {
                     setFieldValue('input6', '');
                     document.getElementById('input5').focus();
                   }
