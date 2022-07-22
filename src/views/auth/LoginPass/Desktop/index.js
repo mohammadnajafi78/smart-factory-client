@@ -8,6 +8,7 @@ import LoginFrame from 'src/components/Desktop/LoginFrame';
 import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
+import axios from 'axios';
 
 function LoginPassDesktop(props) {
   const history = useHistory();
