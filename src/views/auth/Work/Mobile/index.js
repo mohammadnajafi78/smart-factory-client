@@ -6,6 +6,8 @@ import InputLabel from 'src/components/Mobile/InputLabel';
 import { Formik } from 'formik';
 import { useHistory } from 'react-router-dom';
 import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
+import axios from 'axios';
 
 // const arr = [
 //   'فروشگاه',
@@ -20,8 +22,13 @@ function WorkMobile() {
   const [works, setWorks] = useState([]);
 
   useEffect(() => {
-    httpService
-      .get(`${API_BASE_URL}/api/users/user_type/activity_list/`)
+    axios
+      .get(`${API_BASE_URL}/api/users/user_type/activity_list/`, {
+        headers: {
+          Authorizations: `Bearer ${localStorage.getItem('token')}`,
+          'Access-Control-Allow-Origin': '*'
+        }
+      })
       .then(res => {
         if (res.status === 200) {
           setWorks(res.data);

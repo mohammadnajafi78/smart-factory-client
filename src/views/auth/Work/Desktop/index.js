@@ -25,7 +25,7 @@ function WorkDesktop() {
 
   useEffect(() => {
     axios
-      .get(`${API_BASE_URL}/api/users/user_type/activity_list/`, {
+      .get(`${API_BASE_URL}/api/users/user_type/activity_list`, {
         headers: {
           Authorizations: `Bearer ${localStorage.getItem('token')}`,
           'Access-Control-Allow-Origin': '*'
