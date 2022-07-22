@@ -128,6 +128,7 @@ function LoginMobile() {
                     sx={{ height: '44px', textAlign: 'left', fontSize: '16px' }}
                     value={values.input}
                     onChange={handleChange}
+                    type="tel"
                   />
                 </Box>
                 <Box

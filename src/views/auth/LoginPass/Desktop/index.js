@@ -104,6 +104,7 @@ function LoginPassDesktop(props) {
                     }}
                     value={values.input}
                     onChange={handleChange}
+                    type="password"
                   />
                   {/* <ReCAPTCHA
                   style={{

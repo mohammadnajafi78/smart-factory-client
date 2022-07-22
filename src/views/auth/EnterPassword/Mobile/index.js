@@ -94,6 +94,7 @@ function EnterPasswordMobile(props) {
                     }}
                     value={values.password}
                     onChange={handleChange}
+                    type="password"
                   />
                 </Box>
                 <Box>
@@ -109,6 +110,7 @@ function EnterPasswordMobile(props) {
                     }}
                     value={values.password2}
                     onChange={handleChange}
+                    type="password"
                   />
                 </Box>
                 {/* <Box sx={{ mt: 1 }}>

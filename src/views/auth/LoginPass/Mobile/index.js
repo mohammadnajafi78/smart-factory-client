@@ -111,6 +111,7 @@ function LoginPassMobile(props) {
                   }}
                   value={values.input}
                   onChange={handleChange}
+                  type="password"
                 />
                 {/* <ReCAPTCHA
                   style={{

@@ -57,7 +57,7 @@ function WorkMobile() {
             flexDirection: 'column',
             justifyContent: 'space-between',
             padding: '0px',
-            gap: '159px',
+            // gap: '159px',
             position: 'absolute',
             width: '90%',
             height: '90%',
