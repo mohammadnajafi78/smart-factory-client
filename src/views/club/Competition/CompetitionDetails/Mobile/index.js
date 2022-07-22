@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Box } from '@mui/material';
-import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
-import InputLabel from 'src/components/Desktop/InputLabel';
+import { useHistory } from 'react-router-dom';
+import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
+import InputLabel from 'src/components/Mobile/InputLabel';
 import Participants from './Participants';
-import IconButton from 'src/components/Desktop/Button/Icon';
-import Competition from 'src/assets/img/icons/competition.svg';
+import LinkIconButton from 'src/components/Mobile/Button/LinkIcon';
+import Present from 'src/assets/img/icons/present.svg';
 import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 
-export default function NewCompetitionDesktop() {
+export default function CompetitionDetailsMobile() {
   const [awards, setAwards] = useState(['1', '2', '3', '4']);
   const [participants, setParticipants] = useState(['1', '2', '3', '4']);
 
@@ -17,12 +18,12 @@ export default function NewCompetitionDesktop() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '20px 0px 50px'
+        padding: '12px 10px 0px'
       }}
     >
       <Box
         sx={{
-          width: '95%',
+          width: '100%',
           height: '140px',
           background:
             'linear-gradient(91.93deg, #5FD5DD -10%, #00AAB5 109.19%)',
@@ -54,10 +55,9 @@ export default function NewCompetitionDesktop() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
-          padding: '16px 16px 0px',
+          padding: '16px 0px 0px',
           gap: '30px',
-          borderBottom: '0.5px solid #D3D2D2',
-          width: '100%'
+          borderBottom: '0.5px solid #D3D2D2'
         }}
       >
         <Box
@@ -91,8 +91,8 @@ export default function NewCompetitionDesktop() {
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
-              padding: '0px',
-              gap: '12px'
+              // padding: '3px',
+              gap: '6px'
             }}
           >
             {awards.map((item, key) => {
@@ -105,7 +105,7 @@ export default function NewCompetitionDesktop() {
                     alignItems: 'center',
                     padding: '10px 16px',
                     gap: '10px',
-                    width: '73px',
+                    width: '65px',
                     height: '84px',
                     background: '#FFFFFF',
                     borderRadius: '8px'
@@ -145,55 +145,26 @@ export default function NewCompetitionDesktop() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
-          padding: '12px',
+          padding: '12px 0px',
           width: '100%',
           gap: '10px',
           marginTop: '6px'
         }}
       >
         <InputLabelHeader style={{ marginBottom: '6px' }}>
-          شرکت کنندگان
+          تصویر شما
         </InputLabelHeader>
         <Box
           sx={{
-            display: 'grid',
-            // flexDirection: 'column',
-            // alignItems: 'center',
-            padding: '0px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '2px',
             gap: '16px',
-            width: '100%',
-            gridTemplateColumns: 'repeat(2, 1fr)'
+            width: '100%'
           }}
         >
-          {participants.map((item, key) => {
-            return <Participants data={item} key={key} />;
-          })}
-          <Box
-            sx={{
-              position: 'absolute',
-              bottom: '0%',
-              width: '55%',
-              backgroundColor: 'white',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: '60px'
-            }}
-          >
-            <IconButton
-              style={{ width: '400px' }}
-              // onClick={() => {
-              // }}
-            >
-              <img
-                src={Competition}
-                width="26px"
-                height="20px"
-                style={{ color: 'white' }}
-              />
-              <div>شرکت در مسابقه</div>
-            </IconButton>
-          </Box>
+          <Participants />
         </Box>
       </Box>
     </Box>

@@ -115,6 +115,7 @@ export default function CompetitionListDesktop({
         <LinkIconButton
           onClick={() => {
             setNewCompetition(true);
+            setSelected(null);
           }}
         >
           <img
@@ -166,6 +167,7 @@ export default function CompetitionListDesktop({
               key={key}
               selected={selected}
               setSelected={setSelected}
+              setNewCompetition={setNewCompetition}
             />
           ))}
         </Box>

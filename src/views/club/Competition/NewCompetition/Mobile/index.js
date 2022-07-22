@@ -18,12 +18,12 @@ export default function NewCompetitionMobile() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '12px 0px 0px'
+        padding: '12px 10px 0px'
       }}
     >
       <Box
         sx={{
-          width: '95%',
+          width: '100%',
           height: '140px',
           background:
             'linear-gradient(91.93deg, #5FD5DD -10%, #00AAB5 109.19%)',
@@ -55,7 +55,7 @@ export default function NewCompetitionMobile() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
-          padding: '16px 16px 0px',
+          padding: '16px 0px 0px',
           gap: '30px',
           borderBottom: '0.5px solid #D3D2D2'
         }}
@@ -91,8 +91,8 @@ export default function NewCompetitionMobile() {
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
-              padding: '0px',
-              gap: '12px'
+              // padding: '3px',
+              gap: '6px'
             }}
           >
             {awards.map((item, key) => {
@@ -105,7 +105,7 @@ export default function NewCompetitionMobile() {
                     alignItems: 'center',
                     padding: '10px 16px',
                     gap: '10px',
-                    width: '73px',
+                    width: '65px',
                     height: '84px',
                     background: '#FFFFFF',
                     borderRadius: '8px'
@@ -145,7 +145,7 @@ export default function NewCompetitionMobile() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
-          padding: '12px',
+          padding: '12px 0px',
           width: '100%',
           gap: '10px',
           marginTop: '6px'
@@ -159,7 +159,7 @@ export default function NewCompetitionMobile() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            padding: '0px',
+            padding: '2px',
             gap: '16px',
             width: '100%'
           }}

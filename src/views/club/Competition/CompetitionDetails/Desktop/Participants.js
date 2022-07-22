@@ -1,13 +1,7 @@
 import { Box, Rating } from '@mui/material';
 import React from 'react';
-import { ChevronLeft, Star } from 'react-feather';
-// import { NavLink } from 'react-router-dom';
-import InputLabel from 'src/components/Mobile/InputLabel';
-import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 import { useHistory } from 'react-router-dom';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import Image from 'src/assets/img/06.jpg';
-import Comment from 'src/assets/img/icons/comment.svg';
 
 export default function Item({ data }) {
   const history = useHistory();
@@ -17,7 +11,7 @@ export default function Item({ data }) {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
-        padding: '16px 0px',
+        padding: '16px 12px',
         gap: '12px',
         background: '#FFFFFF',
         boxShadow: '1px 1px 8px rgba(214, 212, 212, 0.25)',
@@ -45,15 +39,15 @@ export default function Item({ data }) {
         sx={{
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-end',
           alignItems: 'center',
-          padding: '5px',
+          padding: '0px',
           gap: '36px',
           width: '100%'
         }}
       >
         {/* <Box> */}
-        <img src={Comment} />
+        {/* <img src={Comment} /> */}
         <Rating value={1} size="small" readOnly />
         {/* </Box> */}
         {/* <Box

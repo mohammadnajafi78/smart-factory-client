@@ -138,7 +138,7 @@ const routes = [
   },
   {
     path: '/club',
-    // guard: AuthGuard,
+    // guard: GuestGuard,
     guard: GuestGuard,
     layout: ClubDashboardLayout,
     routes: [
@@ -185,108 +185,116 @@ const routes = [
         )
       },
       {
-        component: () => <Redirect to="/404" />
-      }
-    ]
-  },
-  {
-    path: '/docs',
-    layout: DocsLayout,
-    routes: [
-      {
         exact: true,
-        path: '/docs',
-        component: () => <Redirect to="/docs/welcome" />
-      },
-      {
-        exact: true,
-        path: '/docs/welcome',
-        component: lazy(() => import('src/views/docs/WelcomeView'))
-      },
-      {
-        exact: true,
-        path: '/docs/getting-started',
-        component: lazy(() => import('src/views/docs/GettingStartedView'))
-      },
-      {
-        exact: true,
-        path: '/docs/environment-variables',
-        component: lazy(() => import('src/views/docs/EnvironmentVariablesView'))
-      },
-      {
-        exact: true,
-        path: '/docs/deployment',
-        component: lazy(() => import('src/views/docs/DeploymentView'))
-      },
-      {
-        exact: true,
-        path: '/docs/api-calls',
-        component: lazy(() => import('src/views/docs/APICallsView'))
-      },
-      {
-        exact: true,
-        path: '/docs/analytics',
-        component: lazy(() => import('src/views/docs/AnalyticsView'))
-      },
-      {
-        exact: true,
-        path: '/docs/authentication',
-        component: lazy(() => import('src/views/docs/AuthenticationView'))
-      },
-      {
-        exact: true,
-        path: '/docs/routing',
-        component: lazy(() => import('src/views/docs/RoutingView'))
-      },
-      {
-        exact: true,
-        path: '/docs/settings',
-        component: lazy(() => import('src/views/docs/SettingsView'))
-      },
-      {
-        exact: true,
-        path: '/docs/state-management',
-        component: lazy(() => import('src/views/docs/StateManagementView'))
-      },
-      {
-        exact: true,
-        path: '/docs/theming',
-        component: lazy(() => import('src/views/docs/ThemingView'))
-      },
-      {
-        exact: true,
-        path: '/docs/support',
-        component: lazy(() => import('src/views/docs/SupportView'))
-      },
-      {
-        exact: true,
-        path: '/docs/changelog',
-        component: lazy(() => import('src/views/docs/ChangelogView'))
-      },
-      {
-        component: () => <Redirect to="/404" />
-      }
-    ]
-  },
-  {
-    path: '*',
-    layout: MainLayout,
-    routes: [
-      {
-        exact: true,
-        path: '/',
-        component: HomeView
-      },
-      {
-        exact: true,
-        path: '/pricing',
-        component: lazy(() => import('src/views/pricing/PricingView'))
+        path: '/club/competitionDetails',
+        layout: ClubDashboardLayoutBack,
+        component: lazy(() =>
+          import('src/views/club/Competition/CompetitionDetails')
+        )
       },
       {
         component: () => <Redirect to="/404" />
       }
     ]
   }
+  // {
+  //   path: '/docs',
+  //   layout: DocsLayout,
+  //   routes: [
+  //     {
+  //       exact: true,
+  //       path: '/docs',
+  //       component: () => <Redirect to="/docs/welcome" />
+  //     },
+  //     {
+  //       exact: true,
+  //       path: '/docs/welcome',
+  //       component: lazy(() => import('src/views/docs/WelcomeView'))
+  //     },
+  //     {
+  //       exact: true,
+  //       path: '/docs/getting-started',
+  //       component: lazy(() => import('src/views/docs/GettingStartedView'))
+  //     },
+  //     {
+  //       exact: true,
+  //       path: '/docs/environment-variables',
+  //       component: lazy(() => import('src/views/docs/EnvironmentVariablesView'))
+  //     },
+  //     {
+  //       exact: true,
+  //       path: '/docs/deployment',
+  //       component: lazy(() => import('src/views/docs/DeploymentView'))
+  //     },
+  //     {
+  //       exact: true,
+  //       path: '/docs/api-calls',
+  //       component: lazy(() => import('src/views/docs/APICallsView'))
+  //     },
+  //     {
+  //       exact: true,
+  //       path: '/docs/analytics',
+  //       component: lazy(() => import('src/views/docs/AnalyticsView'))
+  //     },
+  //     {
+  //       exact: true,
+  //       path: '/docs/authentication',
+  //       component: lazy(() => import('src/views/docs/AuthenticationView'))
+  //     },
+  //     {
+  //       exact: true,
+  //       path: '/docs/routing',
+  //       component: lazy(() => import('src/views/docs/RoutingView'))
+  //     },
+  //     {
+  //       exact: true,
+  //       path: '/docs/settings',
+  //       component: lazy(() => import('src/views/docs/SettingsView'))
+  //     },
+  //     {
+  //       exact: true,
+  //       path: '/docs/state-management',
+  //       component: lazy(() => import('src/views/docs/StateManagementView'))
+  //     },
+  //     {
+  //       exact: true,
+  //       path: '/docs/theming',
+  //       component: lazy(() => import('src/views/docs/ThemingView'))
+  //     },
+  //     {
+  //       exact: true,
+  //       path: '/docs/support',
+  //       component: lazy(() => import('src/views/docs/SupportView'))
+  //     },
+  //     {
+  //       exact: true,
+  //       path: '/docs/changelog',
+  //       component: lazy(() => import('src/views/docs/ChangelogView'))
+  //     },
+  //     {
+  //       component: () => <Redirect to="/404" />
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '*',
+  //   layout: MainLayout,
+  //   routes: [
+  //     {
+  //       exact: true,
+  //       path: '/',
+  //       component: HomeView
+  //     },
+  //     {
+  //       exact: true,
+  //       path: '/pricing',
+  //       component: lazy(() => import('src/views/pricing/PricingView'))
+  //     },
+  //     {
+  //       component: () => <Redirect to="/404" />
+  //     }
+  //   ]
+  // }
 ];
 
 export default routes;

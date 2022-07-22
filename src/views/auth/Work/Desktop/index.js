@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, ButtonGroup, Button } from '@mui/material';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
@@ -6,6 +6,9 @@ import InputLabel from 'src/components/Desktop/InputLabel';
 import { Formik } from 'formik';
 import LoginFrame from 'src/components/Desktop/LoginFrame';
 import { useHistory } from 'react-router-dom';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
+import axios from 'axios';
 
 const arr = [
   'فروشگاه',
@@ -17,7 +20,23 @@ const arr = [
 ];
 function WorkDesktop() {
   const [selected, setSelected] = useState(null);
+  const [works, setWorks] = useState([]);
   const history = useHistory();
+
+  useEffect(() => {
+    axios
+      .get(`${API_BASE_URL}/api/users/user_type/activity_list/`, {
+        headers: {
+          Authorizations: `Bearer ${localStorage.getItem('token')}`,
+          'Access-Control-Allow-Origin': '*'
+        }
+      })
+      .then(res => {
+        if (res.status === 200) {
+          setWorks(res.data);
+        }
+      });
+  }, []);
 
   return (
     <LoginFrame>
@@ -95,43 +114,44 @@ function WorkDesktop() {
                     sx={{ gap: 2, boxShadow: 'none' }}
                     // color="#CCEEF0"
                   >
-                    {arr.map((item, index) => {
-                      return (
-                        <Button
-                          key={index}
-                          sx={{
-                            backgroundColor:
-                              selected === index
-                                ? '#DFF2F2 !important'
-                                : '#F7FCFC',
-                            border: '1px solid #CCEEF0 !important',
-                            borderRadius: '4px !important',
-                            padding: '12px',
-                            height: '48px',
-                            fontStyle: 'normal',
-                            fontWeight: selected === index ? 600 : 400,
-                            fontSize: '16px',
-                            lineHeight: '24px',
-                            color:
-                              selected === index
-                                ? '#231F20 !important'
-                                : '#231F20',
-                            fontFamily: 'IRANSans',
-                            justifyContent: 'start',
+                    {works &&
+                      works.map((item, index) => {
+                        return (
+                          <Button
+                            key={index}
+                            sx={{
+                              backgroundColor:
+                                selected === index
+                                  ? '#DFF2F2 !important'
+                                  : '#F7FCFC',
+                              border: '1px solid #CCEEF0 !important',
+                              borderRadius: '4px !important',
+                              padding: '12px',
+                              height: '48px',
+                              fontStyle: 'normal',
+                              fontWeight: selected === index ? 600 : 400,
+                              fontSize: '16px',
+                              lineHeight: '24px',
+                              color:
+                                selected === index
+                                  ? '#231F20 !important'
+                                  : '#231F20',
+                              fontFamily: 'IRANSans',
+                              justifyContent: 'start',
 
-                            '&:hover': {
-                              color: '#231F20 !important',
-                              backgroundColor: '#DFF2F2 !important',
-                              fontWeight: 600,
-                              fontSize: '16px'
-                            }
-                          }}
-                          onClick={() => setSelected(index)}
-                        >
-                          {item}
-                        </Button>
-                      );
-                    })}
+                              '&:hover': {
+                                color: '#231F20 !important',
+                                backgroundColor: '#DFF2F2 !important',
+                                fontWeight: 600,
+                                fontSize: '16px'
+                              }
+                            }}
+                            onClick={() => setSelected(index)}
+                          >
+                            {item.translate}
+                          </Button>
+                        );
+                      })}
                   </ButtonGroup>
                 </Box>
               </Box>

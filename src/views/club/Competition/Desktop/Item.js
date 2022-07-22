@@ -5,7 +5,12 @@ import InputLabel from 'src/components/Desktop/InputLabel';
 import { useHistory } from 'react-router-dom';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 
-export default function Item({ data, selected, setSelected }) {
+export default function Item({
+  data,
+  selected,
+  setSelected,
+  setNewCompetition
+}) {
   const history = useHistory();
   return (
     <Box
@@ -23,7 +28,10 @@ export default function Item({ data, selected, setSelected }) {
         height: '145px'
         // overflow: 'auto'
       }}
-      onClick={() => setSelected(data)}
+      onClick={() => {
+        setSelected(data);
+        setNewCompetition(false);
+      }}
     >
       <Box
         sx={{

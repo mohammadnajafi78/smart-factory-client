@@ -82,6 +82,9 @@ export default function Item({ data }) {
             fontWeight: 400,
             cursor: 'pointer'
           }}
+          onClick={() => {
+            history.push('/club/competitionDetails');
+          }}
         >
           مشاهده
           <ChevronLeft color="#00AAB5" height={'15px'} />

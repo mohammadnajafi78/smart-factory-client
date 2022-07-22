@@ -119,7 +119,11 @@ export default function GetAwardDesktop({ selected }) {
               padding: '12px 16px'
             }}
           >
-            <ConfirmButton disabled={false} variant="outlined">
+            <ConfirmButton
+              disabled={false}
+              variant="outlined"
+              onClick={() => setOpenFirst(false)}
+            >
               {'خیر'}
             </ConfirmButton>
             <ConfirmButton

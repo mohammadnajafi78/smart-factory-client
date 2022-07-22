@@ -4,17 +4,14 @@ import PropTypes from 'prop-types';
 import useAuth from '../hooks/useAuth';
 
 const AuthGuard = ({ children }) => {
-  const { isAuthenticated } = useAuth();
+  // const { isAuthenticated } = useAuth();
 
+  const isAuthenticated = localStorage.getItem('token');
   if (!isAuthenticated) {
     return <Redirect to="/login" />;
   }
 
-  return (
-    <>
-      {children}
-    </>
-  );
+  return <>{children}</>;
 };
 
 AuthGuard.propTypes = {

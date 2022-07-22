@@ -1,21 +1,34 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Box, ButtonGroup, Button } from '@mui/material';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import { Formik } from 'formik';
 import { useHistory } from 'react-router-dom';
+import httpService from 'src/utils/httpService';
 
-const arr = [
-  'فروشگاه',
-  'مهندس / مجری تاسیسات',
-  'مهندس طراح / ناظر',
-  'پیمانکار',
-  'کارفرما',
-  'پرسنل شرکت'
-];
+// const arr = [
+//   'فروشگاه',
+//   'مهندس / مجری تاسیسات',
+//   'مهندس طراح / ناظر',
+//   'پیمانکار',
+//   'کارفرما',
+//   'پرسنل شرکت'
+// ];
 function WorkMobile() {
   const history = useHistory();
+  const [works, setWorks] = useState([]);
+
+  useEffect(() => {
+    httpService
+      .get(`${API_BASE_URL}/api/users/user_type/activity_list/`)
+      .then(res => {
+        if (res.status === 200) {
+          setWorks(res.data);
+        }
+      });
+  }, []);
+
   return (
     <Formik
       initialValues={{
@@ -77,35 +90,36 @@ function WorkMobile() {
                 sx={{ gap: 2, boxShadow: 'none' }}
                 // color="#CCEEF0"
               >
-                {arr.map((item, index) => {
-                  return (
-                    <Button
-                      key={index}
-                      sx={{
-                        backgroundColor: '#F7FCFC',
-                        border: '1px solid #CCEEF0 !important',
-                        borderRadius: '4px !important',
-                        padding: '12px',
-                        height: '48px',
-                        fontStyle: 'normal',
-                        fontWeight: 400,
-                        fontSize: '16px',
-                        lineHeight: '24px',
-                        color: '#231F20',
-                        fontFamily: 'IRANSans',
+                {works &&
+                  works.map((item, index) => {
+                    return (
+                      <Button
+                        key={index}
+                        sx={{
+                          backgroundColor: '#F7FCFC',
+                          border: '1px solid #CCEEF0 !important',
+                          borderRadius: '4px !important',
+                          padding: '12px',
+                          height: '48px',
+                          fontStyle: 'normal',
+                          fontWeight: 400,
+                          fontSize: '16px',
+                          lineHeight: '24px',
+                          color: '#231F20',
+                          fontFamily: 'IRANSans',
 
-                        '&:hover': {
-                          color: '#231F20 !important',
-                          backgroundColor: '#DFF2F2 !important',
-                          fontWeight: 600,
-                          fontSize: '16px'
-                        }
-                      }}
-                    >
-                      {item}
-                    </Button>
-                  );
-                })}
+                          '&:hover': {
+                            color: '#231F20 !important',
+                            backgroundColor: '#DFF2F2 !important',
+                            fontWeight: 600,
+                            fontSize: '16px'
+                          }
+                        }}
+                      >
+                        {item.translate}
+                      </Button>
+                    );
+                  })}
               </ButtonGroup>
             </Box>
           </Box>

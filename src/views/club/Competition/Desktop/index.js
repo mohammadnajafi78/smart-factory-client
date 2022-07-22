@@ -4,6 +4,7 @@ import { Box } from '@mui/material';
 import Competition from 'src/assets/img/icons/competition.svg';
 import CompetitionListDesktop from './CompetitionList';
 import NewCompetitionDesktop from '../NewCompetition/Desktop';
+import CompetitionDetailsDesktop from '../CompetitionDetails/Desktop';
 // import ReceivedItemDesktop from '../ReceivedItem/Desktop';
 
 export default function CompetitionDesktop() {
@@ -49,9 +50,7 @@ export default function CompetitionDesktop() {
         {newCompetition ? (
           <NewCompetitionDesktop />
         ) : selected ? (
-          // <GetCommentDesktop selected={selected} />
-          // <ReceivedItemDesktop selected={selected} />
-          <></>
+          <CompetitionDetailsDesktop />
         ) : (
           <Box
             sx={{

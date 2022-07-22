@@ -218,7 +218,7 @@ export default function GetAwardMobile() {
             }}
           >
             <img src={Presents} alt="awards" width={'61px'} height={'60px'} />
-            <InputLabelHeader>
+            <InputLabelHeader style={{ textAlign: 'center' }}>
               آیا از دریافت این جایزه مطمئن هستید؟
             </InputLabelHeader>
           </Box>
@@ -233,7 +233,11 @@ export default function GetAwardMobile() {
               padding: '12px 16px'
             }}
           >
-            <ConfirmButton disabled={false} variant="outlined">
+            <ConfirmButton
+              disabled={false}
+              variant="outlined"
+              onClick={() => setOpenFirst(false)}
+            >
               {'خیر'}
             </ConfirmButton>
             <ConfirmButton

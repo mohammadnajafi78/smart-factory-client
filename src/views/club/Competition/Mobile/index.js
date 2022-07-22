@@ -119,14 +119,15 @@ export default function CompetitionMobile() {
           sx={{
             position: scroll < 180 ? 'absolute' : 'sticky',
             top: scroll < 180 ? '175px' : '60px',
-            left: '21px',
+            left: '17px',
             width: '90%'
             // zIndex: 9999
           }}
         >
           <LinkIconButton
-          // onClick={() => {
-          // }}
+            onClick={() => {
+              history.push('/club/newCompetition');
+            }}
           >
             <img
               src={Present}

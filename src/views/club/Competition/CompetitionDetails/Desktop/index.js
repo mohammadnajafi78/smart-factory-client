@@ -7,7 +7,7 @@ import IconButton from 'src/components/Desktop/Button/Icon';
 import Competition from 'src/assets/img/icons/competition.svg';
 import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 
-export default function NewCompetitionDesktop() {
+export default function CompetitionDetailsDesktop() {
   const [awards, setAwards] = useState(['1', '2', '3', '4']);
   const [participants, setParticipants] = useState(['1', '2', '3', '4']);
 
@@ -56,7 +56,7 @@ export default function NewCompetitionDesktop() {
           alignItems: 'flex-start',
           padding: '16px 16px 0px',
           gap: '30px',
-          borderBottom: '0.5px solid #D3D2D2',
+          // borderBottom: '0.5px solid #D3D2D2',
           width: '100%'
         }}
       >
@@ -152,48 +152,18 @@ export default function NewCompetitionDesktop() {
         }}
       >
         <InputLabelHeader style={{ marginBottom: '6px' }}>
-          شرکت کنندگان
+          تصویر شما
         </InputLabelHeader>
         <Box
           sx={{
             display: 'grid',
-            // flexDirection: 'column',
-            // alignItems: 'center',
             padding: '0px',
             gap: '16px',
             width: '100%',
             gridTemplateColumns: 'repeat(2, 1fr)'
           }}
         >
-          {participants.map((item, key) => {
-            return <Participants data={item} key={key} />;
-          })}
-          <Box
-            sx={{
-              position: 'absolute',
-              bottom: '0%',
-              width: '55%',
-              backgroundColor: 'white',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: '60px'
-            }}
-          >
-            <IconButton
-              style={{ width: '400px' }}
-              // onClick={() => {
-              // }}
-            >
-              <img
-                src={Competition}
-                width="26px"
-                height="20px"
-                style={{ color: 'white' }}
-              />
-              <div>شرکت در مسابقه</div>
-            </IconButton>
-          </Box>
+          <Participants />
         </Box>
       </Box>
     </Box>
