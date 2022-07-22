@@ -10,10 +10,12 @@ import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 import axios from 'axios';
+import useAuth from 'src/hooks/useAuth';
 
 function EnterPasswordDesktop(props) {
   const recaptchaRef = useRef();
   const history = useHistory();
+  const { registry } = useAuth();
 
   function onChange(value) {
     console.log('Captcha value:', value);
@@ -58,9 +60,9 @@ function EnterPasswordDesktop(props) {
               })
               .then(res => {
                 if (res.status === 200) {
-                  localStorage.setItem('user', JSON.stringify(res.data.data));
                   localStorage.setItem('token', res.headers['x-auth-token']);
-                  axios.defaults.headers.Authorization = `Bearer ${res.headers['x-auth-token']}`;
+                  registry(res.headers['x-auth-token']);
+                  localStorage.setItem('user', JSON.stringify(res.data));
                   history.push('/identity');
                 }
               });

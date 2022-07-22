@@ -6,9 +6,13 @@ import InputLabel from 'src/components/Desktop/InputLabel';
 import { Formik } from 'formik';
 import LoginFrame from 'src/components/Desktop/LoginFrame';
 import { useHistory } from 'react-router-dom';
-import httpService from 'src/utils/httpService';
+// import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+// import axios from 'src/utils/axios';
+// import httpService from 'src/utils/httpService';
 import axios from 'axios';
+import { Http } from '@mui/icons-material';
+import httpService from 'src/utils/httpService';
 
 const arr = [
   'فروشگاه',
@@ -19,19 +23,30 @@ const arr = [
   'پرسنل شرکت'
 ];
 function WorkDesktop() {
-  const [selected, setSelected] = useState(null);
   const [works, setWorks] = useState([]);
+  const [selected, setSelected] = useState([]);
   const history = useHistory();
 
   useEffect(() => {
     httpService
       .get(`${API_BASE_URL}/api/users/user_type/activity_list`)
       .then(res => {
-        if (res.status === 200) {
-          setWorks(res.data);
-        }
+        if (res.status === 200) setWorks(res.data);
       });
   }, []);
+
+  // async function getData() {}
+
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     // You can await here
+  //     const response = await axiosInstance.get(
+  //       `/api/users/user_type/activity_list`
+  //     );
+  //     console.log('res', response);
+  //   }
+  //   fetchData();
+  // }, []);
 
   return (
     <LoginFrame>
@@ -56,11 +71,11 @@ function WorkDesktop() {
             input: ''
           }}
           validate={values => {
-            const errors = {};
-            if (!values.input) {
-              errors.username = 'نام کاربری اجباری می باشد';
-            }
-            return errors;
+            // const errors = {};
+            // if (!values.input) {
+            //   errors.username = 'نام کاربری اجباری می باشد';
+            // }
+            // return errors;
           }}
           onSubmit={async (values, { setErrors, setSubmitting }) => {
             //   try {
@@ -72,6 +87,15 @@ function WorkDesktop() {
             //     });
             //     setSubmitting(false);
             //   }
+            httpService
+              .post(`${API_BASE_URL}/api/users/add_user_type/`, {
+                user_type: selected
+              })
+              .then(res => {
+                if (res.status === 200) {
+                  history.push('/club/awards');
+                }
+              });
           }}
         >
           {({
@@ -116,32 +140,47 @@ function WorkDesktop() {
                             key={index}
                             sx={{
                               backgroundColor:
-                                selected === index
-                                  ? '#DFF2F2 !important'
-                                  : '#F7FCFC',
+                                selected.filter(f => f.id === item.id)
+                                  .length === 0
+                                  ? '#F7FCFC'
+                                  : '#DFF2F2',
                               border: '1px solid #CCEEF0 !important',
                               borderRadius: '4px !important',
                               padding: '12px',
                               height: '48px',
                               fontStyle: 'normal',
-                              fontWeight: selected === index ? 600 : 400,
+                              fontWeight:
+                                selected.filter(f => f.id === item.id)
+                                  .length === 0
+                                  ? 400
+                                  : 600,
                               fontSize: '16px',
                               lineHeight: '24px',
                               color:
-                                selected === index
-                                  ? '#231F20 !important'
+                                selected.filter(f => f.id === item.id)
+                                  .length === 0
+                                  ? '#231F20'
                                   : '#231F20',
-                              fontFamily: 'IRANSans',
-                              justifyContent: 'start',
+                              fontFamily: 'IRANSans'
 
-                              '&:hover': {
-                                color: '#231F20 !important',
-                                backgroundColor: '#DFF2F2 !important',
-                                fontWeight: 600,
-                                fontSize: '16px'
-                              }
+                              // '&:hover': {
+                              //   color: '#231F20 !important',
+                              //   backgroundColor: '#DFF2F2 !important',
+                              //   fontWeight: 600,
+                              //   fontSize: '16px'
+                              // }
                             }}
-                            onClick={() => setSelected(index)}
+                            onClick={() => {
+                              if (
+                                selected.filter(f => f.id === item.id).length >
+                                0
+                              ) {
+                                setSelected(
+                                  selected.filter(f => f.id !== item.id)
+                                );
+                              } else
+                                setSelected(prevState => [...prevState, item]);
+                            }}
                           >
                             {item.translate}
                           </Button>
@@ -164,12 +203,11 @@ function WorkDesktop() {
                   disabled={false}
                   variant="outlined"
                   onClick={() => history.push('/location')}
+                  type="button"
                 >
                   {'قبلی'}
                 </ConfirmButton>
-                <ConfirmButton disabled={false} onClick={handleSubmit}>
-                  {'بعدی'}
-                </ConfirmButton>
+                <ConfirmButton disabled={isSubmitting}>{'بعدی'}</ConfirmButton>
               </Box>
             </form>
           )}

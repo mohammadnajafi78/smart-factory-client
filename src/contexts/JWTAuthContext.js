@@ -1,8 +1,4 @@
-import React, {
-  createContext,
-  useEffect,
-  useReducer
-} from 'react';
+import React, { createContext, useEffect, useReducer } from 'react';
 import jwtDecode from 'jwt-decode';
 import SplashScreen from 'src/components/SplashScreen';
 import axios from 'src/utils/axios';
@@ -13,7 +9,7 @@ const initialAuthState = {
   user: null
 };
 
-const isValidToken = (accessToken) => {
+const isValidToken = accessToken => {
   if (!accessToken) {
     return false;
   }
@@ -24,12 +20,13 @@ const isValidToken = (accessToken) => {
   return decoded.exp > currentTime;
 };
 
-const setSession = (accessToken) => {
+const setSession = accessToken => {
+  console.log('inja');
   if (accessToken) {
-    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('token', accessToken);
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
   } else {
-    localStorage.removeItem('accessToken');
+    localStorage.removeItem('token');
     delete axios.defaults.headers.common.Authorization;
   }
 };
@@ -81,7 +78,8 @@ const AuthContext = createContext({
   ...initialAuthState,
   method: 'JWT',
   login: () => Promise.resolve(),
-  logout: () => { },
+  logout: () => {},
+  registry: () => {},
   register: () => Promise.resolve()
 });
 
@@ -89,7 +87,10 @@ export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialAuthState);
 
   const login = async (email, password) => {
-    const response = await axios.post('/api/account/login', { email, password });
+    const response = await axios.post('/api/account/login', {
+      email,
+      password
+    });
     const { accessToken, user } = response.data;
 
     setSession(accessToken);
@@ -114,7 +115,7 @@ export const AuthProvider = ({ children }) => {
     });
     const { accessToken, user } = response.data;
 
-    window.localStorage.setItem('accessToken', accessToken);
+    window.localStorage.setItem('token', accessToken);
 
     dispatch({
       type: 'REGISTER',
@@ -124,22 +125,35 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
+  const registry = token => {
+    setSession(token);
+    dispatch({
+      type: 'INITIALISE',
+      payload: {
+        isAuthenticated: true
+        // user: null
+      }
+    });
+    // dispatch({ type: 'LOGOUT' });
+  };
+
   useEffect(() => {
     const initialise = async () => {
       try {
-        const accessToken = window.localStorage.getItem('accessToken');
+        const accessToken = window.localStorage.getItem('token');
 
         if (accessToken && isValidToken(accessToken)) {
+          console.log('setSession');
           setSession(accessToken);
 
-          const response = await axios.get('/api/account/me');
-          const { user } = response.data;
+          // const response = await axios.get('/api/account/me');
+          // const { user } = response.data;
 
           dispatch({
             type: 'INITIALISE',
             payload: {
               isAuthenticated: true,
-              user
+              user: null
             }
           });
         } else {
@@ -177,7 +191,8 @@ export const AuthProvider = ({ children }) => {
         method: 'JWT',
         login,
         logout,
-        register
+        register,
+        registry
       }}
     >
       {children}

@@ -1,13 +1,14 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Box, ButtonGroup, Button } from '@mui/material';
+import { Box, ButtonGroup, Button, ListItemIcon } from '@mui/material';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import { Formik } from 'formik';
 import { useHistory } from 'react-router-dom';
-import httpService from 'src/utils/httpService';
+// import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import axios from 'axios';
+import axios from 'src/utils/axios';
+import httpService from 'src/utils/httpService';
 
 // const arr = [
 //   'فروشگاه',
@@ -20,6 +21,7 @@ import axios from 'axios';
 function WorkMobile() {
   const history = useHistory();
   const [works, setWorks] = useState([]);
+  const [selected, setSelected] = useState([]);
 
   useEffect(() => {
     httpService
@@ -53,6 +55,15 @@ function WorkMobile() {
         //     });
         //     setSubmitting(false);
         //   }
+        httpsService
+          .post(`${API_BASE_URL}/api/users/add_user_type/`, {
+            user_type: selected
+          })
+          .then(res => {
+            if (res.status === 200) {
+              history.push('/club/awards');
+            }
+          });
       }}
     >
       {({
@@ -98,16 +109,25 @@ function WorkMobile() {
                       <Button
                         key={index}
                         sx={{
-                          backgroundColor: '#F7FCFC',
+                          backgroundColor:
+                            selected.filter(f => f.id === item.id).length === 0
+                              ? '#F7FCFC'
+                              : '#DFF2F2',
                           border: '1px solid #CCEEF0 !important',
                           borderRadius: '4px !important',
                           padding: '12px',
                           height: '48px',
                           fontStyle: 'normal',
-                          fontWeight: 400,
+                          fontWeight:
+                            selected.filter(f => f.id === item.id).length === 0
+                              ? 400
+                              : 600,
                           fontSize: '16px',
                           lineHeight: '24px',
-                          color: '#231F20',
+                          color:
+                            selected.filter(f => f.id === item.id).length === 0
+                              ? '#231F20'
+                              : '#231F20',
                           fontFamily: 'IRANSans',
 
                           '&:hover': {
@@ -116,6 +136,13 @@ function WorkMobile() {
                             fontWeight: 600,
                             fontSize: '16px'
                           }
+                        }}
+                        onClick={() => {
+                          if (
+                            selected.filter(f => f.id === item.id).length > 0
+                          ) {
+                            setSelected(selected.filter(f => f.id !== item.id));
+                          } else setSelected(prevState => [...prevState, item]);
                         }}
                       >
                         {item.translate}

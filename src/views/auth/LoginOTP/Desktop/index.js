@@ -12,10 +12,12 @@ import CountDown from 'src/utils/CountDown';
 import moment from 'moment';
 import { API_BASE_URL } from 'src/utils/urls';
 import axios from 'axios';
+import useAuth from 'src/hooks/useAuth';
 
 function LoginOTPDesktop(props) {
   const history = useHistory();
   const [reSend, setReSend] = useState(false);
+  const { registry } = useAuth();
 
   console.log('last_update', props.location.state.lastUpdate);
 
@@ -94,8 +96,8 @@ function LoginOTPDesktop(props) {
                 .then(res => {
                   if (res.status === 200) {
                     localStorage.setItem('token', res.headers['x-auth-token']);
-                    localStorage.setItem('user', JSON.stringify(res.data.data));
-                    axios.defaults.headers.Authorization = `Bearer ${res.headers['x-auth-token']}`;
+                    registry(res.headers['x-auth-token']);
+                    localStorage.setItem('user', JSON.stringify(res.data));
                     history.push('/club/awards');
                   }
                 })
@@ -159,7 +161,7 @@ function LoginOTPDesktop(props) {
               <Box>
                 <InputLabelHeader>کد تایید</InputLabelHeader>
                 <InputLabel>
-                  کد ارسال شده به 09131234567 را وارد کنید:
+                  {`کد ارسال شده به ${props.location.state.mobile} را وارد کنید:`}
                 </InputLabel>
                 <Box
                   sx={{

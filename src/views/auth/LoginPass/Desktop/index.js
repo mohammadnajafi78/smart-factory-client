@@ -9,9 +9,11 @@ import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 import axios from 'axios';
+import useAuth from 'src/hooks/useAuth';
 
 function LoginPassDesktop(props) {
   const history = useHistory();
+  const { registry } = useAuth();
 
   return (
     <LoginFrame>
@@ -52,8 +54,8 @@ function LoginPassDesktop(props) {
               .then(res => {
                 if (res.status === 200) {
                   localStorage.setItem('token', res.headers['x-auth-token']);
-                  localStorage.setItem('user', JSON.stringify(res.data.data));
-                  axios.defaults.headers.Authorization = `Bearer ${res.headers['x-auth-token']}`;
+                  registry(res.headers['x-auth-token']);
+                  localStorage.setItem('user', JSON.stringify(res.data));
                   history.push('/club/awards');
                 }
               });

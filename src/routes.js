@@ -87,21 +87,21 @@ const routes = [
   },
   {
     exact: true,
-    guard: GuestGuard,
+    guard: AuthGuard,
     path: '/identity',
     // component: lazy(() => import('src/views/auth/LoginView'))
     component: lazy(() => import('src/views/auth/IdentityInfo'))
   },
   {
     exact: true,
-    guard: GuestGuard,
+    guard: AuthGuard,
     path: '/location',
     // component: lazy(() => import('src/views/auth/LoginView'))
     component: lazy(() => import('src/views/auth/Location'))
   },
   {
     exact: true,
-    guard: GuestGuard,
+    guard: AuthGuard,
     path: '/work',
     // component: lazy(() => import('src/views/auth/LoginView'))
     component: lazy(() => import('src/views/auth/Work'))
@@ -131,7 +131,7 @@ const routes = [
   // },
   {
     exact: true,
-    guard: GuestGuard,
+    guard: AuthGuard,
     path: '/club/newComment',
     layout: ClubDashboardLayoutBackNoBottom,
     component: lazy(() => import('src/views/club/Comments/NewComment'))
@@ -139,7 +139,7 @@ const routes = [
   {
     path: '/club',
     // guard: GuestGuard,
-    guard: GuestGuard,
+    guard: AuthGuard,
     layout: ClubDashboardLayout,
     routes: [
       {

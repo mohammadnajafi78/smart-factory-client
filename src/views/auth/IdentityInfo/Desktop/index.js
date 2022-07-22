@@ -9,7 +9,8 @@ import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 import axios from 'axios';
-import axiosInstance from 'src/utils/axios';
+// import axios from 'axios';
+// import axiosInstance from 'src/utils/axios';
 
 function IdentityInfoDesktop(props) {
   const history = useHistory();
@@ -38,15 +39,15 @@ function IdentityInfoDesktop(props) {
             family: ''
           }}
           validate={values => {
-            const errors = {};
+            // const errors = {};
             // if (!values.input) {
             //   errors.username = 'نام کاربری اجباری می باشد';
             // }
-            return errors;
+            // return errors;
           }}
           onSubmit={async (values, { setErrors, setSubmitting }) => {
             console.log('patch', values);
-            httpService
+            axios
               .patch(
                 `${API_BASE_URL}/api/users/${
                   JSON.parse(localStorage.getItem('user')).id
