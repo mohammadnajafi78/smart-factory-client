@@ -5,7 +5,19 @@ import axios from 'axios';
 let token = null;
 let headers = {};
 token = localStorage.getItem('token');
-if (token) {
+
+const isValidToken = accessToken => {
+  if (!accessToken) {
+    return false;
+  }
+
+  const decoded = jwtDecode(accessToken);
+  const currentTime = Date.now() / 1000;
+
+  return decoded.exp > currentTime;
+};
+
+if (token && isValidToken(token)) {
   headers['Authorization'] = `Bearer ${token}`;
 }
 axios.defaults.headers.common = headers;
