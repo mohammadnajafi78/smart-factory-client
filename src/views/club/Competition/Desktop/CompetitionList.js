@@ -6,6 +6,8 @@ import InputLabel from 'src/components/Desktop/InputLabel';
 import Item from './Item';
 import LinkIconButton from 'src/components/Desktop/Button/LinkIcon';
 import Present from 'src/assets/img/icons/present.svg';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
 export default function CompetitionListDesktop({
   selected,
@@ -13,45 +15,13 @@ export default function CompetitionListDesktop({
   setNewCompetition
 }) {
   const history = useHistory();
-  const [competition, setCompetition] = useState([
-    {
-      id: 1,
-      title: 'مسابقه ۱',
-      description:
-        'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ    ',
-      expireDate: '۱۴۰۱/۱۲/۰۲'
-    },
-    {
-      id: 2,
-      title: 'مسابقه ۱',
-      description:
-        'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ    ',
-      expireDate: '۱۴۰۱/۱۲/۰۲'
-    },
-    {
-      id: 3,
-      title: 'مسابقه ۱',
-      description:
-        'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ    ',
-      expireDate: '۱۴۰۱/۱۲/۰۲'
-    },
-    {
-      id: 4,
-      title: 'مسابقه ۱',
-      description:
-        'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ    ',
-      expireDate: '۱۴۰۱/۱۲/۰۲'
-    },
-    {
-      id: 5,
-      title: 'مسابقه ۱',
-      description:
-        'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ    ',
-      expireDate: '۱۴۰۱/۱۲/۰۲'
-    }
-  ]);
+  const [competition, setCompetition] = useState(null);
+  const [newComp, setNewComp] = useState(null);
   const [scroll, setScroll] = useState(false);
 
+  function handleScroll() {
+    setScroll(window.pageYOffset);
+  }
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
 
@@ -60,14 +30,19 @@ export default function CompetitionListDesktop({
     };
   }, []);
 
-  function handleScroll() {
-    // console.log('inja', window.pageYOffset);
-    // if (window.pageYOffset > 140) {
-    //   setScroll(true);
-    //   // window.removeEventListener('scroll', handleScroll);
-    // } else setScroll(false);
-    setScroll(window.pageYOffset);
-  }
+  useEffect(() => {
+    httpService.get(`${API_BASE_URL}/api/club/matches/`).then(res => {
+      if (res.status === 200) {
+        setNewComp(res.data);
+      }
+    });
+
+    httpService.get(`${API_BASE_URL}/api/club/match_participant/`).then(res => {
+      if (res.status === 200) {
+        setCompetition(res.data);
+      }
+    });
+  }, []);
 
   return (
     <Box
@@ -109,13 +84,13 @@ export default function CompetitionListDesktop({
             مسابقه جدید
           </InputLabelHeader>
           <InputLabel style={{ color: '#00346D' }}>
-            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
+            {newComp && newComp[0].description}
           </InputLabel>
         </Box>
         <LinkIconButton
           onClick={() => {
             setNewCompetition(true);
-            setSelected(null);
+            setSelected(newComp && newComp[0]);
           }}
         >
           <img
@@ -161,15 +136,16 @@ export default function CompetitionListDesktop({
             // height: '510px'
           }}
         >
-          {competition.map((item, key) => (
-            <Item
-              data={item}
-              key={key}
-              selected={selected}
-              setSelected={setSelected}
-              setNewCompetition={setNewCompetition}
-            />
-          ))}
+          {competition &&
+            competition.map((item, key) => (
+              <Item
+                data={item}
+                key={key}
+                selected={selected}
+                setSelected={setSelected}
+                setNewCompetition={setNewCompetition}
+              />
+            ))}
         </Box>
       </Box>
     </Box>

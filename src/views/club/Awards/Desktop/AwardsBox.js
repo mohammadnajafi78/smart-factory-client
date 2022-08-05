@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Grid, IconButton } from '@mui/material';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
@@ -10,6 +10,8 @@ import ChestWinOpen from 'src/assets/img/icons/chest-win-open.svg';
 import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 import { useHistory } from 'react-router-dom';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -22,7 +24,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function AwardsBox() {
-  const [awards, setAwards] = useState(['1', '2', '3']);
+  const [awards, setAwards] = useState(null);
+  const [selectedBox, setSelectedBox] = useState(null);
   const [awardsOfBox, setAwardsOfBox] = useState([
     '1',
     '2',
@@ -35,6 +38,15 @@ export default function AwardsBox() {
   const [openSecond, setOpenSecond] = useState(false);
   const classes = useStyles();
   const history = useHistory();
+
+  useEffect(() => {
+    httpService.get(`${API_BASE_URL}/api/club/gift_box/`).then(res => {
+      if (res.status === 200) {
+        console.log('res', res.data);
+        setAwards(res.data);
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -66,19 +78,21 @@ export default function AwardsBox() {
             height: '68px'
           }}
         >
-          {awards.map((item, key) => {
-            return (
-              <IconButton
-                key={key}
-                onClick={() => {
-                  setOpenFirst(true);
-                }}
-              >
-                {/* <Home /> */}
-                <img src={Chest} width="74" height="68" />
-              </IconButton>
-            );
-          })}
+          {awards &&
+            awards.map((item, key) => {
+              return (
+                <IconButton
+                  key={key}
+                  onClick={() => {
+                    setOpenFirst(true);
+                    setSelectedBox(item);
+                  }}
+                >
+                  {/* <Home /> */}
+                  <img src={Chest} width="74" height="68" />
+                </IconButton>
+              );
+            })}
         </Box>
       </Box>
       <CustomizedDialogs
@@ -140,8 +154,19 @@ export default function AwardsBox() {
             <ConfirmButton
               disabled={false}
               onClick={() => {
-                setOpenFirst(false);
-                setOpenSecond(true);
+                httpService
+                  .post(
+                    `${API_BASE_URL}/api/club/gift_box/purchase_gift_box/`,
+                    {
+                      gift_box_id: selectedBox.id
+                    }
+                  )
+                  .then(res => {
+                    if (res.status === 200) {
+                      setOpenFirst(false);
+                      setOpenSecond(true);
+                    }
+                  });
               }}
             >
               {'بله'}
@@ -213,30 +238,32 @@ export default function AwardsBox() {
                   gap: '16px'
                 }}
               >
-                {awardsOfBox.map((item, key) => {
-                  return (
-                    <Grid
-                      item
-                      xs={3}
-                      justifyContent="center"
-                      alignContent={'center'}
-                      sx={{
-                        padding: '10px 16px',
-                        gap: '10px',
-                        background: '#FFFFFF',
-                        boxShadow: '2px 2px 8px rgba(146, 146, 146, 0.25)',
-                        borderRadius: '8px'
-                      }}
-                      key={key}
-                      onClick={() => {
-                        setOpenSecond(false);
-                        history.push('/club/getAwards');
-                      }}
-                    >
-                      <img src={iphone13} width="44.09px" height="60px" />
-                    </Grid>
-                  );
-                })}
+                {selectedBox &&
+                  selectedBox.gifts_list.length > 0 &&
+                  selectedBox.gifts_list.map((item, key) => {
+                    return (
+                      <Grid
+                        item
+                        xs={3}
+                        justifyContent="center"
+                        alignContent={'center'}
+                        sx={{
+                          padding: '10px 16px',
+                          gap: '10px',
+                          background: '#FFFFFF',
+                          boxShadow: '2px 2px 8px rgba(146, 146, 146, 0.25)',
+                          borderRadius: '8px'
+                        }}
+                        key={key}
+                        onClick={() => {
+                          setOpenSecond(false);
+                          history.push('/club/getAwards');
+                        }}
+                      >
+                        <img src={iphone13} width="44.09px" height="60px" />
+                      </Grid>
+                    );
+                  })}
               </Grid>
             </Box>
           </Box>

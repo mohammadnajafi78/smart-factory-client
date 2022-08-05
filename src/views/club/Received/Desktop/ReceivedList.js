@@ -137,7 +137,7 @@ export default function ReceivedListDesktop({ selected, setSelected }) {
           justifyContent: 'center',
           backgroundColor: 'white',
           height: '79px',
-          padding: '10px',
+          // padding: '10px',
           gap: '10px',
           padding: '0px 30px 0px'
         }}

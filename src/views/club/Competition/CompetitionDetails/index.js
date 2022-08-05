@@ -3,16 +3,16 @@ import { useMediaQuery, useTheme } from '@mui/material';
 import CompetitionDetailsMobile from './Mobile';
 import CompetitionDetailsDesktop from './Desktop';
 
-function CompetitionDetails() {
+function CompetitionDetails(props) {
   const theme = useTheme();
   const mobileDevice = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <>
       {mobileDevice ? (
-        <CompetitionDetailsMobile />
+        <CompetitionDetailsMobile {...props} />
       ) : (
-        <CompetitionDetailsDesktop />
+        <CompetitionDetailsDesktop {...props} />
       )}
     </>
   );

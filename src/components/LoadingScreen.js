@@ -10,9 +10,9 @@ const useStyles = makeStyles(theme => ({
     // backgroundColor: theme.palette.background.default,
     display: 'flex',
     // flexDirection: 'column',
-    height: '100%',
+    height: '90vh',
     justifyContent: 'center',
-    minHeight: '100%',
+    // minHeight: '100%',
     padding: theme.spacing(3)
   }
 }));

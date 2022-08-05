@@ -55,7 +55,8 @@ export default function CommentDesktop() {
             <p>جهت مشاهده جزئیات نظر، روی آن کلیک کنید</p>
           </Box>
         )}
-      </Box>
+      </Box>{' '}
+      */}
     </div>
   );
 }

@@ -1,4 +1,7 @@
+import React from 'react';
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
+import { useHistory } from 'react-router-dom';
 // import { toast } from "react-toastify";
 // import { log } from "./logService";
 
@@ -6,7 +9,8 @@ let token = null;
 let headers = {};
 token = localStorage.getItem('token');
 
-const isValidToken = accessToken => {
+function ValidToken(accessToken) {
+  // const history = useHistory();
   if (!accessToken) {
     return false;
   }
@@ -14,11 +18,21 @@ const isValidToken = accessToken => {
   const decoded = jwtDecode(accessToken);
   const currentTime = Date.now() / 1000;
 
-  return decoded.exp > currentTime;
-};
+  let result = decoded.exp > currentTime;
 
-if (token && isValidToken(token)) {
+  if (result > 0) return true;
+  else {
+    // history.push('/login');
+    window.history.push('/login');
+    return false;
+  }
+}
+
+if (token && ValidToken(token)) {
   headers['Authorization'] = `Bearer ${token}`;
+}
+if (token && !ValidToken(token)) {
+  history.push('/login');
 }
 axios.defaults.headers.common = headers;
 

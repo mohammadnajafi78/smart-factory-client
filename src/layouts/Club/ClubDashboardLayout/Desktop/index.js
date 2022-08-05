@@ -4,6 +4,7 @@ import Drawer from './Drawer';
 import makeStyles from '@mui/styles/makeStyles';
 import TopBar from './TopBar';
 import GetAwards from 'src/views/club/Awards/GetAwards';
+import LoadingScreen from 'src/components/LoadingScreen';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -13,7 +14,8 @@ const useStyles = makeStyles(theme => ({
     // marginRight: '120px',
     backgroundColor: '#F4F4F4',
     height: '100vh',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    justifyContent: 'center'
   },
   contentContainer: {
     display: 'flex',

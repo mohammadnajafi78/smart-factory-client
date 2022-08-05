@@ -9,6 +9,8 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import makeStyles from '@mui/styles/makeStyles';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -20,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 export default function GetAwardDesktop({ selected }) {
-  const data = { name: 'iPhone13', score: '۵۰۰۰', expireDate: '۲۰ اردیبهشت' };
+  // const data = { name: 'iPhone13', score: '۵۰۰۰', expireDate: '۲۰ اردیبهشت' };
   const [openFirst, setOpenFirst] = useState(false);
   const [openSecond, setOpenSecond] = useState(false);
 
@@ -43,6 +45,7 @@ export default function GetAwardDesktop({ selected }) {
             alignItems: 'flex-start',
             padding: '0px',
             gap: '20px',
+            width: '100%',
             // height: '570px',
             mt: 2
           }}
@@ -51,12 +54,7 @@ export default function GetAwardDesktop({ selected }) {
             توضیحات
           </InputLabel>
           <InputLabel style={{ color: '#4F4C4D' }}>
-            {selected && selected.name}
-            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-            استفاده از طراحان گرافیک است. لورم ایپسوم متن ساختگی با تولید سادگی
-            نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است. لورم ایپسوم
-            متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از
-            طراحان گرافیک است.
+            {selected && selected.description}
           </InputLabel>
         </Box>
         <Box>
@@ -129,8 +127,16 @@ export default function GetAwardDesktop({ selected }) {
             <ConfirmButton
               disabled={false}
               onClick={() => {
-                setOpenFirst(false);
-                setOpenSecond(true);
+                httpService
+                  .post(`${API_BASE_URL}/api/club/user_gifts/`, {
+                    gift: selected.id
+                  })
+                  .then(res => {
+                    if (res.status === 201) {
+                      setOpenFirst(false);
+                      setOpenSecond(true);
+                    }
+                  });
               }}
             >
               {'بله'}

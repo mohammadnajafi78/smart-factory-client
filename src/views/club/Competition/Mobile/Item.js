@@ -49,10 +49,10 @@ export default function Item({ data }) {
         <InputLabelHeader
           style={{ color: '#00346D', fontSize: '16px', fontWeight: 500 }}
         >
-          {data.title}
+          {data?.match?.name}
         </InputLabelHeader>
         <InputLabel style={{ color: '26px', fontSize: '14px' }}>
-          {data.description}
+          {data?.match?.description}
         </InputLabel>
       </Box>
       <Box
@@ -71,7 +71,7 @@ export default function Item({ data }) {
       >
         <InputLabel
           style={{ color: '#808286', fontSize: '12px' }}
-        >{`پایان: ${data.expireDate}`}</InputLabel>
+        >{`پایان: ${data?.match?.end_date}`}</InputLabel>
         <Box
           sx={{
             display: 'flex',
@@ -83,7 +83,10 @@ export default function Item({ data }) {
             cursor: 'pointer'
           }}
           onClick={() => {
-            history.push('/club/competitionDetails');
+            history.push({
+              pathname: '/club/competitionDetails',
+              state: data
+            });
           }}
         >
           مشاهده

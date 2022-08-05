@@ -92,7 +92,9 @@ export default function AwardItem({ data, selected, setSelected }) {
               color: '#00AAB5'
             }}
           >
-            <InputLabel style={{ color: '#00AAB5' }}>{data.score}</InputLabel>
+            <InputLabel style={{ color: '#00AAB5' }}>
+              {data.gift_grade}
+            </InputLabel>
             <Star style={{ width: '27px', height: '18px' }} />
           </Box>
         </Box>
@@ -112,7 +114,7 @@ export default function AwardItem({ data, selected, setSelected }) {
           <InputLabel
             style={{ fontWeight: 400, fontSize: '12px', color: '#808286' }}
           >
-            {data.expireDate}
+            {data.expire_date}
           </InputLabel>
           <Box
             sx={{

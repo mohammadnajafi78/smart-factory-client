@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useReducer } from 'react';
 import jwtDecode from 'jwt-decode';
 import SplashScreen from 'src/components/SplashScreen';
 import axios from 'src/utils/axios';
+import { useHistory } from 'react-router-dom';
 
 const initialAuthState = {
   isAuthenticated: false,
@@ -21,7 +22,6 @@ const isValidToken = accessToken => {
 };
 
 const setSession = accessToken => {
-  console.log('inja');
   if (accessToken) {
     localStorage.setItem('token', accessToken);
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
@@ -85,6 +85,7 @@ const AuthContext = createContext({
 
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialAuthState);
+  const history = useHistory();
 
   const login = async (email, password) => {
     const response = await axios.post('/api/account/login', {
@@ -153,6 +154,16 @@ export const AuthProvider = ({ children }) => {
             type: 'INITIALISE',
             payload: {
               isAuthenticated: true,
+              user: null
+            }
+          });
+        } else if (accessToken && !isValidToken(accessToken)) {
+          history.push('/login');
+          localStorage.removeItem('token');
+          dispatch({
+            type: 'INITIALISE',
+            payload: {
+              isAuthenticated: false,
               user: null
             }
           });

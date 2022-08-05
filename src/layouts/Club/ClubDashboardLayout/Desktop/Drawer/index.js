@@ -37,8 +37,16 @@ export default function DrawerComp(props) {
   );
 
   useEffect(() => {
-    console.log('selected', selected);
-  });
+    path = history.location.pathname.split('/')[2];
+    setSelected(
+      ['competition', 'awards', 'comments', 'received'].includes(
+        history.location.pathname.split('/')[2]
+      )
+        ? path
+        : 'awards'
+    );
+  }, [props]);
+
   return (
     <Drawer
       sx={{

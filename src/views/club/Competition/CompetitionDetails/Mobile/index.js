@@ -8,9 +8,8 @@ import LinkIconButton from 'src/components/Mobile/Button/LinkIcon';
 import Present from 'src/assets/img/icons/present.svg';
 import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 
-export default function CompetitionDetailsMobile() {
-  const [awards, setAwards] = useState(['1', '2', '3', '4']);
-  const [participants, setParticipants] = useState(['1', '2', '3', '4']);
+export default function CompetitionDetailsMobile(props) {
+  const [awards, setAwards] = useState(props.location.state);
 
   return (
     <Box
@@ -21,7 +20,7 @@ export default function CompetitionDetailsMobile() {
         padding: '12px 10px 0px'
       }}
     >
-      <Box
+      {/* <Box
         sx={{
           width: '100%',
           height: '140px',
@@ -49,7 +48,7 @@ export default function CompetitionDetailsMobile() {
             لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
           </InputLabel>
         </Box>
-      </Box>
+      </Box> */}
       <Box
         sx={{
           display: 'flex',
@@ -57,7 +56,8 @@ export default function CompetitionDetailsMobile() {
           alignItems: 'flex-start',
           padding: '16px 0px 0px',
           gap: '30px',
-          borderBottom: '0.5px solid #D3D2D2'
+          borderBottom: '0.5px solid #D3D2D2',
+          width: '100%'
         }}
       >
         <Box
@@ -70,10 +70,7 @@ export default function CompetitionDetailsMobile() {
           }}
         >
           <InputLabelHeader>توضیحات</InputLabelHeader>
-          <InputLabel>
-            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-            استفاده از طراحان گرافیک است.
-          </InputLabel>
+          <InputLabel>{awards && awards.match.description}</InputLabel>
         </Box>
         <Box
           sx={{
@@ -95,26 +92,27 @@ export default function CompetitionDetailsMobile() {
               gap: '6px'
             }}
           >
-            {awards.map((item, key) => {
-              return (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: '10px 16px',
-                    gap: '10px',
-                    width: '65px',
-                    height: '84px',
-                    background: '#FFFFFF',
-                    borderRadius: '8px'
-                  }}
-                >
-                  <img src={iphone13} width="44.26px" height="50px" />
-                </Box>
-              );
-            })}
+            {awards &&
+              awards.match.prizes.map((item, key) => {
+                return (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '10px 16px',
+                      gap: '10px',
+                      width: '65px',
+                      height: '84px',
+                      background: '#FFFFFF',
+                      borderRadius: '8px'
+                    }}
+                  >
+                    <img src={item.image} width="44.26px" height="50px" />
+                  </Box>
+                );
+              })}
           </Box>
         </Box>
         <Box
@@ -164,7 +162,7 @@ export default function CompetitionDetailsMobile() {
             width: '100%'
           }}
         >
-          <Participants />
+          <Participants data={awards} />
         </Box>
       </Box>
     </Box>

@@ -7,9 +7,10 @@ import IconButton from 'src/components/Desktop/Button/Icon';
 import Competition from 'src/assets/img/icons/competition.svg';
 import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 
-export default function CompetitionDetailsDesktop() {
-  const [awards, setAwards] = useState(['1', '2', '3', '4']);
-  const [participants, setParticipants] = useState(['1', '2', '3', '4']);
+export default function CompetitionDetailsDesktop({ selected }) {
+  // const [awards, setAwards] = useState(['1', '2', '3', '4']);
+  // const [participants, setParticipants] = useState(['1', '2', '3', '4']);
+  console.log('selected', selected);
 
   return (
     <Box
@@ -20,7 +21,7 @@ export default function CompetitionDetailsDesktop() {
         padding: '20px 0px 50px'
       }}
     >
-      <Box
+      {/* <Box
         sx={{
           width: '95%',
           height: '140px',
@@ -48,7 +49,7 @@ export default function CompetitionDetailsDesktop() {
             لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
           </InputLabel>
         </Box>
-      </Box>
+      </Box> */}
       <Box
         sx={{
           display: 'flex',
@@ -70,10 +71,7 @@ export default function CompetitionDetailsDesktop() {
           }}
         >
           <InputLabelHeader>توضیحات</InputLabelHeader>
-          <InputLabel>
-            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-            استفاده از طراحان گرافیک است.
-          </InputLabel>
+          <InputLabel>{selected.match.description}</InputLabel>
         </Box>
         <Box
           sx={{
@@ -95,7 +93,7 @@ export default function CompetitionDetailsDesktop() {
               gap: '12px'
             }}
           >
-            {awards.map((item, key) => {
+            {selected.match.prizes.map((item, key) => {
               return (
                 <Box
                   sx={{
@@ -111,7 +109,7 @@ export default function CompetitionDetailsDesktop() {
                     borderRadius: '8px'
                   }}
                 >
-                  <img src={iphone13} width="44.26px" height="50px" />
+                  <img src={item.image} width="44.26px" height="50px" />
                 </Box>
               );
             })}
@@ -163,7 +161,7 @@ export default function CompetitionDetailsDesktop() {
             gridTemplateColumns: 'repeat(2, 1fr)'
           }}
         >
-          <Participants />
+          <Participants data={selected} />
         </Box>
       </Box>
     </Box>

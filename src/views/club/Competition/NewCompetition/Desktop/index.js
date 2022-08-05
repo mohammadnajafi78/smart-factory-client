@@ -7,9 +7,10 @@ import IconButton from 'src/components/Desktop/Button/Icon';
 import Competition from 'src/assets/img/icons/competition.svg';
 import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 
-export default function NewCompetitionDesktop() {
-  const [awards, setAwards] = useState(['1', '2', '3', '4']);
-  const [participants, setParticipants] = useState(['1', '2', '3', '4']);
+export default function NewCompetitionDesktop({ selected }) {
+  // const [awards, setAwards] = useState(['1', '2', '3', '4']);
+  // const [participants, setParticipants] = useState(['1', '2', '3', '4']);
+  console.log('new competition', selected);
 
   return (
     <Box
@@ -42,10 +43,10 @@ export default function NewCompetitionDesktop() {
           }}
         >
           <InputLabelHeader style={{ color: '#00346D' }}>
-            مسابقه جدید
+            {selected.name}
           </InputLabelHeader>
           <InputLabel style={{ color: '#00346D' }}>
-            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
+            {selected.description}
           </InputLabel>
         </Box>
       </Box>
@@ -70,10 +71,7 @@ export default function NewCompetitionDesktop() {
           }}
         >
           <InputLabelHeader>توضیحات</InputLabelHeader>
-          <InputLabel>
-            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-            استفاده از طراحان گرافیک است.
-          </InputLabel>
+          <InputLabel>{selected.description}</InputLabel>
         </Box>
         <Box
           sx={{
@@ -95,7 +93,7 @@ export default function NewCompetitionDesktop() {
               gap: '12px'
             }}
           >
-            {awards.map((item, key) => {
+            {selected.prizes.map((item, key) => {
               return (
                 <Box
                   sx={{
@@ -111,7 +109,7 @@ export default function NewCompetitionDesktop() {
                     borderRadius: '8px'
                   }}
                 >
-                  <img src={iphone13} width="44.26px" height="50px" />
+                  <img src={item.image} width="44.26px" height="50px" />
                 </Box>
               );
             })}
@@ -165,9 +163,10 @@ export default function NewCompetitionDesktop() {
             gridTemplateColumns: 'repeat(2, 1fr)'
           }}
         >
-          {participants.map((item, key) => {
-            return <Participants data={item} key={key} />;
-          })}
+          {selected.Participants &&
+            selected.participants.map((item, key) => {
+              return <Participants data={item} key={key} />;
+            })}
           <Box
             sx={{
               position: 'absolute',

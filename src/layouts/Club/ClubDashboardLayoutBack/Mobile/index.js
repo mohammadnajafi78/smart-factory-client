@@ -6,21 +6,23 @@ import NavBar from './NavBar';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
-    display: 'flex',
+    // display: 'flex',
     flex: '1 1 auto',
     // paddingTop: 49,
-    backgroundColor: '#E5E5E5',
-    height: '100vh'
+    backgroundColor: '#E5E5E5'
+    // overflow: 'hidden'
   },
   contentContainer: {
-    display: 'flex',
+    // display: 'flex',
     flex: '1 1 auto'
     // overflow: 'hidden'
   },
   content: {
     flex: '1 1 auto',
     height: '100%',
-    overflow: 'auto'
+    // paddingBottom: '100px',
+    width: '100%'
+    // overflow: 'auto'
   },
   paper: {
     borderRadius: '20px 20px 0px 0px',
@@ -40,7 +42,13 @@ export default function ClubDashboardLayoutBackMobile({ children }) {
 
   return (
     <>
-      <div style={{ backgroundColor: '#E5E5E5' }}>
+      <div
+        style={{
+          backgroundColor: '#E5E5E5',
+          width: '100%',
+          height: '100%'
+        }}
+      >
         <TopBar
           onMobileNavOpen={event => {
             setMobileNavOpen(true);

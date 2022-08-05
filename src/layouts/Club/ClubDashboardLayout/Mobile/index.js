@@ -3,6 +3,7 @@ import BottomBar from './BottomBar';
 import TopBar from './TopBar';
 import makeStyles from '@mui/styles/makeStyles';
 import NavBar from './NavBar';
+import LoadingScreen from 'src/components/LoadingScreen';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {

@@ -48,9 +48,9 @@ export default function CompetitionDesktop() {
         }}
       >
         {newCompetition ? (
-          <NewCompetitionDesktop />
+          <NewCompetitionDesktop selected={selected} />
         ) : selected ? (
-          <CompetitionDetailsDesktop />
+          <CompetitionDetailsDesktop selected={selected} />
         ) : (
           <Box
             sx={{

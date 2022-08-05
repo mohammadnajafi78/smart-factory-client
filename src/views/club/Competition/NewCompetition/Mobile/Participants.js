@@ -45,7 +45,7 @@ export default function Item({ data }) {
         sx={{
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-end',
           alignItems: 'center',
           padding: '5px',
           gap: '36px',
@@ -53,7 +53,7 @@ export default function Item({ data }) {
         }}
       >
         {/* <Box> */}
-        <img src={Comment} />
+        {/* <img src={Comment} /> */}
         <Rating value={1} size="small" readOnly />
         {/* </Box> */}
         {/* <Box

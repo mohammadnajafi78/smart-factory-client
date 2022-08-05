@@ -10,6 +10,8 @@ import Presents from 'src/assets/img/icons/presents.svg';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import makeStyles from '@mui/styles/makeStyles';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -20,8 +22,8 @@ const useStyles = makeStyles(theme => ({
     minHeight: '40%'
   }
 }));
-export default function GetAwardMobile() {
-  const data = { name: 'iPhone13', score: '۵۰۰۰', expireDate: '۲۰ اردیبهشت' };
+export default function GetAwardMobile(props) {
+  const data = props.location.state.data;
   const [openFirst, setOpenFirst] = useState(false);
   const [openSecond, setOpenSecond] = useState(false);
   const classes = useStyles();
@@ -126,7 +128,7 @@ export default function GetAwardMobile() {
                   }}
                 >
                   <InputLabel style={{ color: '#00AAB5' }}>
-                    {data.score}
+                    {data.gift_grade}
                   </InputLabel>
                   <Star style={{ width: '27px', height: '18px' }} />
                 </Box>
@@ -151,7 +153,7 @@ export default function GetAwardMobile() {
                     color: '#808286'
                   }}
                 >
-                  {data.expireDate}
+                  {data.expire_date}
                 </InputLabel>
               </Box>
             </Box>
@@ -163,7 +165,7 @@ export default function GetAwardMobile() {
               alignItems: 'flex-start',
               padding: '0px',
               gap: '20px',
-              height: '570px',
+              // height: '300px',
               mt: 2
             }}
           >
@@ -171,12 +173,11 @@ export default function GetAwardMobile() {
               توضیحات
             </InputLabel>
             <InputLabel style={{ color: '#4F4C4D' }}>
-              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-              استفاده از طراحان گرافیک است.
+              {data.description}
             </InputLabel>
           </Box>
         </Box>
-        <Box>
+        <Box sx={{ width: '90%', position: 'absolute', bottom: 90 }}>
           <LinkIconButton onClick={() => setOpenFirst(true)}>
             <img
               src={Received}
@@ -243,8 +244,16 @@ export default function GetAwardMobile() {
             <ConfirmButton
               disabled={false}
               onClick={() => {
-                setOpenFirst(false);
-                setOpenSecond(true);
+                httpService
+                  .post(`${API_BASE_URL}/api/club/user_gifts/`, {
+                    gift: data.id
+                  })
+                  .then(res => {
+                    if (res.status === 201) {
+                      setOpenFirst(false);
+                      setOpenSecond(true);
+                    }
+                  });
               }}
             >
               {'بله'}

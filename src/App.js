@@ -34,13 +34,13 @@ const history = createBrowserHistory();
 const App = () => {
   const { settings } = useSettings();
 
-  const theme = createTheme(
-    adaptV4Theme({
-      direction: settings.direction,
-      responsiveFontSizes: settings.responsiveFontSizes,
-      theme: settings.theme
-    })
-  );
+  if (process.env.NODE_ENV !== 'development') console.log = () => {};
+
+  const theme = createTheme({
+    direction: settings.direction,
+    responsiveFontSizes: settings.responsiveFontSizes,
+    theme: settings.theme
+  });
 
   const cacheRtl = createCache({
     key: settings.direction === 'rtl' ? 'cssrtl' : 'cssltr',

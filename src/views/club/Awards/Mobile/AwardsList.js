@@ -2,21 +2,28 @@ import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import FilterButton from 'src/components/Mobile/Button/Filter';
 import AwardItem from './AwardItem';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
 export default function AwardsList() {
-  const [awards, setAwards] = useState([
-    { name: 'iPhone13', score: '۵۰۰۰', expireDate: '۲۰ اردیبهشت' },
-    { name: 'iPhone13', score: '۵۰۰۰', expireDate: '۲۰ اردیبهشت' },
-    { name: 'iPhone13', score: '۵۰۰۰', expireDate: '۲۰ اردیبهشت' },
-    { name: 'iPhone13', score: '۵۰۰۰', expireDate: '۲۰ اردیبهشت' },
-    { name: 'iPhone13', score: '۵۰۰۰', expireDate: '۲۰ اردیبهشت' },
-    { name: 'iPhone13', score: '۵۰۰۰', expireDate: '۲۰ اردیبهشت' },
-    { name: 'iPhone13', score: '۵۰۰۰', expireDate: '۲۰ اردیبهشت' }
-  ]);
+  const [awards, setAwards] = useState(null);
+  const [filters, setFilters] = useState(null);
 
-  // useEffect(() => {
-  //   console.log('scroll', window.pageYOffset);
-  // });
+  useEffect(() => {
+    httpService.get(`${API_BASE_URL}/api/club/lottery/`).then(res => {
+      if (res.status === 200) {
+        setFilters(res.data);
+        console.log('filter', res.data);
+      }
+    });
+
+    httpService.get(`${API_BASE_URL}/api/club/gifts/`).then(res => {
+      if (res.status === 200) {
+        console.log('awards', awards);
+        setAwards(res.data);
+      }
+    });
+  }, []);
 
   return (
     <div>
@@ -24,9 +31,9 @@ export default function AwardsList() {
         sx={{
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
           alignItems: 'center',
-          padding: '14px 0px 6px',
+          padding: '14px 15px 6px',
           gap: '2px',
           position: 'sticky',
           top: '45px',
@@ -37,18 +44,17 @@ export default function AwardsList() {
           zIndex: 100
         }}
       >
-        <FilterButton style={{ fontWeight: 300, fontSize: '12px' }}>
-          همه
-        </FilterButton>
-        <FilterButton style={{ fontWeight: 300, fontSize: '12px' }}>
-          جوایز
-        </FilterButton>
-        <FilterButton style={{ fontWeight: 300, fontSize: '12px' }}>
-          قرعه کشی
-        </FilterButton>
-        <FilterButton style={{ fontWeight: 300, fontSize: '12px' }}>
-          هدایا تبلیغاتی
-        </FilterButton>
+        {filters &&
+          filters.map((item, index) => {
+            return (
+              <FilterButton
+                key={index}
+                style={{ fontWeight: 300, fontSize: '12px' }}
+              >
+                {item.name}
+              </FilterButton>
+            );
+          })}
       </Box>
       <Box
         sx={{
@@ -61,9 +67,10 @@ export default function AwardsList() {
           overflowY: 'auto'
         }}
       >
-        {awards.map((item, index) => {
-          return <AwardItem data={item} key={index} />;
-        })}
+        {awards &&
+          awards.map((item, index) => {
+            return <AwardItem data={item} key={index} />;
+          })}
       </Box>
     </div>
   );

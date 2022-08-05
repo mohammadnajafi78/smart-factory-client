@@ -3,7 +3,7 @@ import React from 'react';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import ScoreIcon from 'src/assets/img/icons/score.svg';
 import Icon from 'src/components/Mobile/Icon';
-
+import UserClub from 'src/utils/userClub';
 export default function Score() {
   return (
     <Box
@@ -57,7 +57,8 @@ export default function Score() {
       >
         <Icon src={ScoreIcon} style={{ width: '16px', height: '16px' }} />
         <InputLabel style={{ color: 'white', fontSize: '12px' }}>
-          {'۶۴۰ از ۱۲۰۰'}
+          {/* {'۶۴۰ از ۱۲۰۰'} */}
+          {UserClub()}
         </InputLabel>
       </Box>
       <Box

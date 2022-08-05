@@ -5,18 +5,20 @@ import InputLabel from 'src/components/Mobile/InputLabel';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import { useHistory } from 'react-router-dom';
 import CommentItem from './CommentItem';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
 export default function CommentsList() {
-  const [Comments, setComments] = useState([
-    { name: 'دفاتر و کارشناسان فروش', seen: true, expireDate: 'ارسال ۲/۲۰' },
-    { name: 'دفاتر و کارشناسان فروش', seen: false, expireDate: 'ارسال ۲/۲۰' },
-    { name: 'دفاتر و کارشناسان فروش', seen: true, expireDate: 'ارسال ۲/۲۰' },
-    { name: 'دفاتر و کارشناسان فروش', seen: false, expireDate: 'ارسال ۲/۲۰' },
-    { name: 'دفاتر و کارشناسان فروش', seen: true, expireDate: 'ارسال ۲/۲۰' },
-    { name: 'دفاتر و کارشناسان فروش', seen: true, expireDate: 'ارسال ۲/۲۰' },
-    { name: 'دفاتر و کارشناسان فروش', seen: false, expireDate: 'ارسال ۲/۲۰' }
-  ]);
+  const [comments, setComments] = useState(null);
   const history = useHistory();
+
+  useEffect(() => {
+    httpService.get(`${API_BASE_URL}/api/club/suggestions/`).then(res => {
+      if (res.status === 200) {
+        setComments(res.data);
+      }
+    });
+  }, []);
 
   return (
     <div>
@@ -57,9 +59,10 @@ export default function CommentsList() {
           overflowY: 'auto'
         }}
       >
-        {Comments.map((item, index) => {
-          return <CommentItem data={item} key={index} />;
-        })}
+        {comments &&
+          comments.map((item, index) => {
+            return <CommentItem data={item} key={index} />;
+          })}
       </Box>
     </div>
   );

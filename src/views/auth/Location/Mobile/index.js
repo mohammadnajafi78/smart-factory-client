@@ -118,6 +118,9 @@ function LocationMobile() {
                 onChange={(event, newValue) => {
                   setProvinceId(newValue.id);
                 }}
+                isOptionEqualToValue={(option, value) =>
+                  option.label === value.label
+                }
               />
             </Box>
             <Box sx={{ mt: 2 }}>
@@ -134,6 +137,9 @@ function LocationMobile() {
                 onChange={(event, newValue) => {
                   if (newValue) setCityId(newValue.id);
                 }}
+                isOptionEqualToValue={(option, value) =>
+                  option.label === value.label
+                }
               />
             </Box>
           </Box>

@@ -2,17 +2,29 @@ import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import FilterButton from 'src/components/Desktop/Button/Filter';
 import AwardItem from './AwardItem';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
+import { resolveConfig } from 'prettier';
 
 export default function AwardsList({ selected, setSelected }) {
-  const [awards, setAwards] = useState([
-    { id: 1, name: 'iPhone13', score: '۵۰۰۰', expireDate: '۲۰ اردیبهشت' },
-    { id: 2, name: 'iPhone13', score: '۵۰۰۰', expireDate: '۲۰ اردیبهشت' },
-    { id: 3, name: 'iPhone13', score: '۵۰۰۰', expireDate: '۲۰ اردیبهشت' },
-    { id: 4, name: 'iPhone13', score: '۵۰۰۰', expireDate: '۲۰ اردیبهشت' },
-    { id: 5, name: 'iPhone13', score: '۵۰۰۰', expireDate: '۲۰ اردیبهشت' },
-    { id: 6, name: 'iPhone13', score: '۵۰۰۰', expireDate: '۲۰ اردیبهشت' },
-    { id: 7, name: 'iPhone13', score: '۵۰۰۰', expireDate: '۲۰ اردیبهشت' }
-  ]);
+  const [awards, setAwards] = useState(null);
+  const [filters, setFilters] = useState(null);
+
+  useEffect(() => {
+    httpService.get(`${API_BASE_URL}/api/club/lottery/`).then(res => {
+      if (res.status === 200) {
+        setFilters(res.data);
+        console.log('filter', res.data);
+      }
+    });
+
+    httpService.get(`${API_BASE_URL}/api/club/gifts/`).then(res => {
+      if (res.status === 200) {
+        console.log('awards', awards);
+        setAwards(res.data);
+      }
+    });
+  }, []);
 
   return (
     <div>
@@ -31,10 +43,10 @@ export default function AwardsList({ selected, setSelected }) {
           zIndex: 100
         }}
       >
-        <FilterButton>همه</FilterButton>
-        <FilterButton>جوایز</FilterButton>
-        <FilterButton>قرعه کشی</FilterButton>
-        <FilterButton>هدایا تبلیغاتی</FilterButton>
+        {filters &&
+          filters.map((item, index) => {
+            return <FilterButton key={index}>{item.name}</FilterButton>;
+          })}
       </Box>
       <Box
         sx={{
@@ -46,16 +58,17 @@ export default function AwardsList({ selected, setSelected }) {
           overflowY: 'auto'
         }}
       >
-        {awards.map((item, index) => {
-          return (
-            <AwardItem
-              data={item}
-              key={index}
-              selected={selected}
-              setSelected={setSelected}
-            />
-          );
-        })}
+        {awards &&
+          awards.map((item, index) => {
+            return (
+              <AwardItem
+                data={item}
+                key={index}
+                selected={selected}
+                setSelected={setSelected}
+              />
+            );
+          })}
       </Box>
     </div>
   );

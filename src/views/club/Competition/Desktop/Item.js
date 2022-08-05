@@ -51,10 +51,10 @@ export default function Item({
         <InputLabelHeader
           style={{ color: '#00346D', fontSize: '16px', fontWeight: 500 }}
         >
-          {data.title}
+          {data.match && data.match.name}
         </InputLabelHeader>
         <InputLabel style={{ color: '#7B7979', fontSize: '14px' }}>
-          {data.description}
+          {data.match && data.match.description}
         </InputLabel>
       </Box>
       <Box
@@ -73,7 +73,7 @@ export default function Item({
       >
         <InputLabel
           style={{ color: '#808286', fontSize: '12px' }}
-        >{`پایان: ${data.expireDate}`}</InputLabel>
+        >{`پایان: ${data.match && data.match.end_date}`}</InputLabel>
         <Box
           sx={{
             display: 'flex',

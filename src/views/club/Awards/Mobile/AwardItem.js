@@ -1,11 +1,12 @@
 import { Box } from '@mui/material';
 import React from 'react';
 import { ChevronLeft, Star } from 'react-feather';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 
 export default function AwardItem({ data }) {
+  const history = useHistory();
   return (
     <Box
       sx={{
@@ -89,7 +90,9 @@ export default function AwardItem({ data }) {
               color: '#00AAB5'
             }}
           >
-            <InputLabel style={{ color: '#00AAB5' }}>{data.score}</InputLabel>
+            <InputLabel style={{ color: '#00AAB5' }}>
+              {data.gift_grade}
+            </InputLabel>
             <Star style={{ width: '27px', height: '18px' }} />
           </Box>
         </Box>
@@ -109,7 +112,7 @@ export default function AwardItem({ data }) {
           <InputLabel
             style={{ fontWeight: 400, fontSize: '12px', color: '#808286' }}
           >
-            {data.expireDate}
+            {data.expire_date}
           </InputLabel>
           <Box
             sx={{
@@ -120,6 +123,14 @@ export default function AwardItem({ data }) {
               fontSize: '12px',
               fontWeight: 400,
               cursor: 'pointer'
+            }}
+            onClick={() => {
+              history.push({
+                pathname: '/club/getAwards',
+                state: {
+                  data
+                }
+              });
             }}
           >
             {/* <NavLink

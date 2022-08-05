@@ -6,43 +6,18 @@ import InputLabel from 'src/components/Mobile/InputLabel';
 import Item from './Item';
 import LinkIconButton from 'src/components/Mobile/Button/LinkIcon';
 import Present from 'src/assets/img/icons/present.svg';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
 export default function CompetitionMobile() {
   const history = useHistory();
-  const [competition, setCompetition] = useState([
-    {
-      title: 'مسابقه ۱',
-      description:
-        'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ    ',
-      expireDate: '۱۴۰۱/۱۲/۰۲'
-    },
-    {
-      title: 'مسابقه ۱',
-      description:
-        'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ    ',
-      expireDate: '۱۴۰۱/۱۲/۰۲'
-    },
-    {
-      title: 'مسابقه ۱',
-      description:
-        'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ    ',
-      expireDate: '۱۴۰۱/۱۲/۰۲'
-    },
-    {
-      title: 'مسابقه ۱',
-      description:
-        'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ    ',
-      expireDate: '۱۴۰۱/۱۲/۰۲'
-    },
-    {
-      title: 'مسابقه ۱',
-      description:
-        'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ    ',
-      expireDate: '۱۴۰۱/۱۲/۰۲'
-    }
-  ]);
+  const [competition, setCompetition] = useState(null);
+  const [newComp, setNewComp] = useState(null);
   const [scroll, setScroll] = useState(false);
 
+  function handleScroll() {
+    setScroll(window.pageYOffset);
+  }
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
 
@@ -51,14 +26,19 @@ export default function CompetitionMobile() {
     };
   }, []);
 
-  function handleScroll() {
-    // console.log('inja', window.pageYOffset);
-    // if (window.pageYOffset > 140) {
-    //   setScroll(true);
-    //   // window.removeEventListener('scroll', handleScroll);
-    // } else setScroll(false);
-    setScroll(window.pageYOffset);
-  }
+  useEffect(() => {
+    httpService.get(`${API_BASE_URL}/api/club/matches/`).then(res => {
+      if (res.status === 200) {
+        setNewComp(res.data);
+      }
+    });
+
+    httpService.get(`${API_BASE_URL}/api/club/match_participant/`).then(res => {
+      if (res.status === 200) {
+        setCompetition(res.data);
+      }
+    });
+  }, []);
 
   return (
     <Box
@@ -101,7 +81,7 @@ export default function CompetitionMobile() {
             مسابقه جدید
           </InputLabelHeader>
           <InputLabel style={{ color: '#00346D' }}>
-            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
+            {newComp && newComp[0].description}
           </InputLabel>
         </Box>
       </Box>
@@ -145,7 +125,8 @@ export default function CompetitionMobile() {
           flexDirection: 'column',
           alignItems: 'flex-start',
           padding: '12px 0px 0px',
-          gap: '4px'
+          gap: '4px',
+          width: '100%'
 
           // width: 360px;
           // height: '380.83px'
@@ -165,14 +146,14 @@ export default function CompetitionMobile() {
             flexDirection: 'column',
             alignItems: 'center',
             padding: '12px 0px 0px',
-            gap: '14px'
+            gap: '14px',
+            width: '100%'
             // overflow: 'auto',
             // height: '510px'
           }}
         >
-          {competition.map((item, key) => (
-            <Item data={item} key={key} />
-          ))}
+          {competition &&
+            competition.map((item, key) => <Item data={item} key={key} />)}
         </Box>
       </Box>
     </Box>

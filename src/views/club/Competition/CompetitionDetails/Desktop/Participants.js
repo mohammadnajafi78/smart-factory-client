@@ -26,7 +26,7 @@ export default function Item({ data }) {
       // }
     >
       <img
-        src={Image}
+        src={data.attach}
         style={{
           width: '100%',
           height: '222.03px',

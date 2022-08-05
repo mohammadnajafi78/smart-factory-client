@@ -11,6 +11,7 @@ import ClubDashboardLayout from 'src/layouts/Club/ClubDashboardLayout';
 import ClubDashboardLayoutBack from 'src/layouts/Club/ClubDashboardLayoutBack';
 import ClubDashboardLayoutBackNoBottom from 'src/layouts/Club/ClubDashboardLayoutBackNoBottom';
 import { useMediaQuery, useTheme } from '@mui/material';
+import ManagementDashboardLayout from './layouts/Management/ManagementDashboardLayout';
 
 export const renderRoutes = (routes = []) => (
   <Suspense fallback={<LoadingScreen />}>
@@ -191,6 +192,22 @@ const routes = [
         component: lazy(() =>
           import('src/views/club/Competition/CompetitionDetails')
         )
+      },
+      {
+        component: () => <Redirect to="/404" />
+      }
+    ]
+  },
+  {
+    path: '/management',
+    // guard: GuestGuard,
+    guard: AuthGuard,
+    layout: ManagementDashboardLayout,
+    routes: [
+      {
+        exact: true,
+        path: '/management/users',
+        component: lazy(() => import('src/views/management/Users/NewUsers'))
       },
       {
         component: () => <Redirect to="/404" />

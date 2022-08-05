@@ -12,6 +12,8 @@ import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import LinkButton from 'src/components/Mobile/Button/Link';
 import Rating from '@mui/material/Rating';
 import { ClassNames } from '@emotion/react';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -26,15 +28,15 @@ const useStyles = makeStyles(theme => ({
       color: '#D3D2D2'
     },
     '& .MuiRating-iconHover': {
-      color: '#ff3d47'
+      color: '#faaf00'
     }
   }
 }));
 export default function CommentItem({ data }) {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(false);
   const classes = useStyles();
   const history = useHistory();
+  const [open, setOpen] = useState(false);
+  const [rating, setRating] = useState(data.rate);
 
   return (
     <>
@@ -80,9 +82,9 @@ export default function CommentItem({ data }) {
             <InputLabel
               style={{ fontWeight: 500, fontSize: '16px', color: '#00346D' }}
             >
-              {data.name}
+              {data.title}
             </InputLabel>
-            {data.seen === true ? (
+            {data.response !== null ? (
               <Box
                 sx={{
                   display: 'flex',
@@ -136,7 +138,7 @@ export default function CommentItem({ data }) {
             <InputLabel
               style={{ fontWeight: 400, fontSize: '12px', color: '#808286' }}
             >
-              {data.expireDate}
+              {data.create_date}
             </InputLabel>
             <Box
               sx={{
@@ -182,9 +184,10 @@ export default function CommentItem({ data }) {
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center',
+              alignItems: 'flex-start',
               padding: '0px',
-              gap: '12px'
+              gap: '12px',
+              width: '100%'
             }}
           >
             <Box
@@ -199,10 +202,10 @@ export default function CommentItem({ data }) {
               }}
             >
               <InputLabelHeader style={{ color: '#00346D', marginBottom: 0 }}>
-                دفاتر و کارشناس فروش
+                {data.title}
               </InputLabelHeader>
               <InputLabel style={{ color: '#808286', fontSize: '14px' }}>
-                ارسال : ۲/۲۰
+                {`ارسال: ${data.create_date}`}
               </InputLabel>
             </Box>
             <Box
@@ -214,8 +217,7 @@ export default function CommentItem({ data }) {
               }}
             >
               <InputLabel style={{ color: '#7B7979', fontSize: '14px' }}>
-                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-                استفاده از طراحان گرافیک است.
+                {data.description}
               </InputLabel>
             </Box>
           </Box>
@@ -277,8 +279,7 @@ export default function CommentItem({ data }) {
                 }}
               >
                 <InputLabel style={{ color: '#4F4C4D', fontSize: '14px' }}>
-                  لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و
-                  با استفاده از طراحان گرافیک است.
+                  {data.response && data.response}
                 </InputLabel>
               </Box>
             </Box>
@@ -296,9 +297,18 @@ export default function CommentItem({ data }) {
               <InputLabel>به پاسخ کارشناس امتیاز دهید:</InputLabel>
               <Rating
                 name="simple-controlled"
-                value={0}
+                value={rating}
                 onChange={(event, newValue) => {
-                  setValue(newValue);
+                  setRating(newValue);
+                  httpService
+                    .patch(`${API_BASE_URL}/api/club/suggestions/${data.id}/`, {
+                      rate: newValue
+                    })
+                    .then(res => {
+                      if (res.status === 200) {
+                        alert('success');
+                      }
+                    });
                 }}
                 classes={{ root: classes.rating }}
               />
