@@ -10,41 +10,32 @@ let headers = {};
 token = localStorage.getItem('token');
 
 function ValidToken(accessToken) {
-  // const history = useHistory();
   if (!accessToken) {
     return false;
   }
-
   const decoded = jwtDecode(accessToken);
   const currentTime = Date.now() / 1000;
 
   return decoded.exp > currentTime;
-
-  // if (result > 0) return true;
-  // else {
-  //   localStorage.removeItem('token');
-  //   window.history.pushState({ urlPath: '/login' }, '', '/login');
-  //   return false;
-  // }
 }
 
 if (token && ValidToken(token)) {
+  console.log('inja');
   headers['Authorization'] = `Bearer ${token}`;
+  axios.defaults.headers.common = headers;
 }
 if (token && !ValidToken(token)) {
   localStorage.removeItem('token');
+  delete axios.defaults.headers.common.Authorization;
   window.history.pushState({ urlPath: '/login' }, '', '/login');
 }
 axios.defaults.headers.common = headers;
-
 axios.interceptors.response.use(null, error => {
   const expectedError =
     error.response &&
     error.response.status >= 400 &&
     error.response.status < 500;
   if (!expectedError) {
-    // log(error);
-    // toast.error('An unexpected error happened!');
     console.log(error);
   }
   return Promise.reject(error);

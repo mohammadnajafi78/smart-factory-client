@@ -26,6 +26,7 @@ const setSession = accessToken => {
     localStorage.setItem('token', accessToken);
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
   } else {
+    console.log('remove session');
     localStorage.removeItem('token');
     delete axios.defaults.headers.common.Authorization;
   }
@@ -159,6 +160,7 @@ export const AuthProvider = ({ children }) => {
           });
         } else if (accessToken && !isValidToken(accessToken)) {
           localStorage.removeItem('token');
+          delete axios.defaults.headers.common.Authorization;
           history.push('/login');
           dispatch({
             type: 'INITIALISE',

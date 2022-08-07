@@ -53,6 +53,7 @@ function LoginPassMobile(props) {
             .then(res => {
               if (res.status === 200) {
                 localStorage.setItem('token', res.headers['x-auth-token']);
+                axios.defaults.headers.common.Authorization = `Bearer ${res.headers['x-auth-token']}`;
                 registry(res.headers['x-auth-token']);
                 localStorage.setItem('user', JSON.stringify(res.data));
                 history.push('/club/awards');
