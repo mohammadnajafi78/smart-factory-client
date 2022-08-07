@@ -42,7 +42,6 @@ export default function AwardsBox() {
   useEffect(() => {
     httpService.get(`${API_BASE_URL}/api/club/gift_box/`).then(res => {
       if (res.status === 200) {
-        console.log('res', res.data);
         setAwards(res.data);
       }
     });
@@ -87,9 +86,12 @@ export default function AwardsBox() {
                     setOpenFirst(true);
                     setSelectedBox(item);
                   }}
+                  style={{ display: 'flex', flexDirection: 'column' }}
                 >
-                  {/* <Home /> */}
                   <img src={Chest} width="74" height="68" />
+                  <InputLabel
+                    style={{ color: '#00346D' }}
+                  >{`امتیاز: ${item.require_credit}`}</InputLabel>
                 </IconButton>
               );
             })}
@@ -126,7 +128,22 @@ export default function AwardsBox() {
               }}
             >
               <img src={Chest} alt="awards" />
-              <InputLabelHeader>
+              <Box sx={{ display: 'inline-flex' }}>
+                <InputLabelHeader style={{ color: '#00346D', fontWeight: 500 }}>
+                  امتیاز مورد نیاز:
+                </InputLabelHeader>
+                <InputLabelHeader
+                  style={{
+                    color: '#00346D',
+                    fontSize: '18px',
+                    fontWeight: 700
+                  }}
+                >
+                  {` ${selectedBox?.require_credit} امتیاز`}
+                </InputLabelHeader>
+              </Box>
+
+              <InputLabelHeader style={{ color: '#00346D', fontWeight: '500' }}>
                 آیا از دریافت این صندوق مطمئن هستید؟
               </InputLabelHeader>
             </Box>

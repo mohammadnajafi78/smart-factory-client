@@ -26,6 +26,7 @@ export default function FilterButton({ children, ...rest }) {
         // width: '100%'
       }}
       {...rest}
+      color="primary"
     >
       {children}
     </Button>

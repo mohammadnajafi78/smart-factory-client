@@ -10,6 +10,7 @@ export default function AwardsList({ selected, setSelected }) {
   const [awards, setAwards] = useState(null);
   const [all, setAll] = useState(null);
   const [filters, setFilters] = useState(null);
+  const [filterSelected, setFilterSelected] = useState('All');
 
   useEffect(() => {
     httpService.get(`${API_BASE_URL}/api/club/gift_type/`).then(res => {
@@ -47,10 +48,15 @@ export default function AwardsList({ selected, setSelected }) {
               <FilterButton
                 key={index}
                 onClick={() => {
+                  setFilterSelected(item.name);
                   if (item.name === 'All') setAwards(all);
                   else if (item.name !== 'Lottery' && item.name !== 'All')
                     setAwards(all.filter(f => f.gift_type === item.id));
                   else setAwards(all.filter(f => !f.gift_type));
+                }}
+                style={{
+                  backgroundColor:
+                    filterSelected === item.name && 'rgba(0, 170, 181, 0.04)'
                 }}
               >
                 {item.translate}
