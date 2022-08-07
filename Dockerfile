@@ -8,6 +8,7 @@ FROM node:14.17.1-alpine3.13 AS build-step
 
 WORKDIR /build
 COPY package.json ./
+EXPOSE NODE_OPTIONS=--max_old_space_size=4096
 RUN yarn install --network-timeout 1000000
 
 COPY . .
