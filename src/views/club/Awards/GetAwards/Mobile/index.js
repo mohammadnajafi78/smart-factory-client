@@ -12,6 +12,8 @@ import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { useHistory } from 'react-router-dom';
+import MomentFa from 'src/utils/MomentFa';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -26,6 +28,7 @@ export default function GetAwardMobile(props) {
   const data = props.location.state.data;
   const [openFirst, setOpenFirst] = useState(false);
   const [openSecond, setOpenSecond] = useState(false);
+  const history = useHistory();
   const classes = useStyles();
 
   return (
@@ -153,7 +156,7 @@ export default function GetAwardMobile(props) {
                     color: '#808286'
                   }}
                 >
-                  {data.expire_date}
+                  {MomentFa(data.expire_date)}
                 </InputLabel>
               </Box>
             </Box>
@@ -219,7 +222,9 @@ export default function GetAwardMobile(props) {
             }}
           >
             <img src={Presents} alt="awards" width={'61px'} height={'60px'} />
-            <InputLabelHeader style={{ textAlign: 'center' }}>
+            <InputLabelHeader
+              style={{ textAlign: 'center', color: '#00346D', fontWeight: 500 }}
+            >
               آیا از دریافت این جایزه مطمئن هستید؟
             </InputLabelHeader>
           </Box>
@@ -252,6 +257,16 @@ export default function GetAwardMobile(props) {
                     if (res.status === 201) {
                       setOpenFirst(false);
                       setOpenSecond(true);
+                      httpService
+                        .get(`${API_BASE_URL}/api/users/refresh_user`)
+                        .then(result => {
+                          if (result.status === 200) {
+                            localStorage.setItem(
+                              'user',
+                              JSON.stringify(result.data)
+                            );
+                          }
+                        });
                     }
                   });
               }}
@@ -291,7 +306,9 @@ export default function GetAwardMobile(props) {
             }}
           >
             <img src={Presents} alt="awards" width={'61px'} height={'60px'} />
-            <InputLabelHeader>شما جایزه را دریافت کردید</InputLabelHeader>
+            <InputLabelHeader style={{ color: '#00346D', fontWeight: 500 }}>
+              شما جایزه را دریافت کردید
+            </InputLabelHeader>
           </Box>
           <Box
             sx={{
@@ -304,7 +321,10 @@ export default function GetAwardMobile(props) {
               padding: '12px 16px'
             }}
           >
-            <LinkButton variant={'contained'}>
+            <LinkButton
+              variant={'contained'}
+              onClick={() => history.push('/club/received')}
+            >
               مشاهده جوایز در لیست دریافتی ها
             </LinkButton>
           </Box>

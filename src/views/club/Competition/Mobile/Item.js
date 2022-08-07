@@ -6,6 +6,7 @@ import InputLabel from 'src/components/Mobile/InputLabel';
 import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 import { useHistory } from 'react-router-dom';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
+import MomentFa from 'src/utils/MomentFa';
 
 export default function Item({ data }) {
   const history = useHistory();
@@ -49,10 +50,10 @@ export default function Item({ data }) {
         <InputLabelHeader
           style={{ color: '#00346D', fontSize: '16px', fontWeight: 500 }}
         >
-          {data?.match?.name}
+          {data?.name}
         </InputLabelHeader>
         <InputLabel style={{ color: '26px', fontSize: '14px' }}>
-          {data?.match?.description}
+          {data?.description}
         </InputLabel>
       </Box>
       <Box
@@ -71,7 +72,7 @@ export default function Item({ data }) {
       >
         <InputLabel
           style={{ color: '#808286', fontSize: '12px' }}
-        >{`پایان: ${data?.match?.end_date}`}</InputLabel>
+        >{`پایان: ${data && MomentFa(date.end_date)}`}</InputLabel>
         <Box
           sx={{
             display: 'flex',

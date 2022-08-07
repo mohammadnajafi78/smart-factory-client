@@ -30,6 +30,22 @@ enableES5();
 const container = document.getElementById('root');
 const root = createRoot(container);
 
+window.addEventListener(
+  'orientationchange',
+  function() {
+    if (window.orientation == -90) {
+      document.getElementById('orient').className = 'orientright';
+    }
+    if (window.orientation == 90) {
+      document.getElementById('orient').className = 'orientleft';
+    }
+    if (window.orientation == 0) {
+      document.getElementById('orient').className = '';
+    }
+  },
+  true
+);
+
 Sentry.init({
   dsn: 'https://5f56610a4f514c4c917ad87f475e9022@sentry.hamravesh.com/376',
   integrations: [new BrowserTracing()],

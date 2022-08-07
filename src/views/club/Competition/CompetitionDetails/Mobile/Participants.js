@@ -45,7 +45,7 @@ export default function Item({ data }) {
         sx={{
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'flex-end',
+          justifyContent: 'space-between',
           alignItems: 'center',
           padding: '5px',
           gap: '36px',
@@ -53,7 +53,9 @@ export default function Item({ data }) {
         }}
       >
         {/* <Box> */}
-        {/* <img src={Comment} /> */}
+        <InputLabel>{`وضعیت شما: ${
+          data.is_winner ? 'برنده' : 'بازنده'
+        }`}</InputLabel>{' '}
         <Rating value={data.overall_rate} size="small" readOnly />
         {/* </Box> */}
         {/* <Box

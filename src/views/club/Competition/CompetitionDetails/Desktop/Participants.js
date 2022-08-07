@@ -2,6 +2,7 @@ import { Box, Rating } from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import Image from 'src/assets/img/06.jpg';
+import InputLabel from 'src/components/Desktop/InputLabel';
 
 export default function Item({ data }) {
   const history = useHistory();
@@ -39,7 +40,7 @@ export default function Item({ data }) {
         sx={{
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'flex-end',
+          justifyContent: 'space-between',
           alignItems: 'center',
           padding: '0px',
           gap: '36px',
@@ -47,8 +48,10 @@ export default function Item({ data }) {
         }}
       >
         {/* <Box> */}
-        {/* <img src={Comment} /> */}
-        <Rating value={1} size="small" readOnly />
+        <InputLabel>{`وضعیت شما: ${
+          data.is_winner ? 'برنده' : 'بازنده'
+        }`}</InputLabel>
+        <Rating value={data.overall_rate} size="small" readOnly />
         {/* </Box> */}
         {/* <Box
           sx={{

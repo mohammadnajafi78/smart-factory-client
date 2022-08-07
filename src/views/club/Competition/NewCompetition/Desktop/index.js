@@ -71,7 +71,7 @@ export default function NewCompetitionDesktop({ selected }) {
           }}
         >
           <InputLabelHeader>توضیحات</InputLabelHeader>
-          <InputLabel>{selected.description}</InputLabel>
+          <InputLabel>{selected.details}</InputLabel>
         </Box>
         <Box
           sx={{
@@ -127,15 +127,11 @@ export default function NewCompetitionDesktop({ selected }) {
             width: '100%'
           }}
         >
-          <InputLabel style={{ color: '#4F4C4D' }}>
-            {'-نفر اول هارد دیسک یک ترابایت'}
-          </InputLabel>
-          <InputLabel style={{ color: '#4F4C4D' }}>
-            {'-نفر دوم حافظه SSD 256 گیگابایت'}
-          </InputLabel>
-          <InputLabel style={{ color: '#4F4C4D' }}>
-            {'-نفر سوم فلش USB 64 گیگابایت'}
-          </InputLabel>
+          {selected.prizes.map((item, key) => {
+            return (
+              <InputLabel style={{ color: '#4F4C4D' }}>{item.name}</InputLabel>
+            );
+          })}
         </Box>
       </Box>
       <Box
@@ -163,7 +159,7 @@ export default function NewCompetitionDesktop({ selected }) {
             gridTemplateColumns: 'repeat(2, 1fr)'
           }}
         >
-          {selected.Participants &&
+          {selected.participants &&
             selected.participants.map((item, key) => {
               return <Participants data={item} key={key} />;
             })}

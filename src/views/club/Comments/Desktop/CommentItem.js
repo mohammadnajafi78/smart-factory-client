@@ -8,6 +8,7 @@ import { useHistory } from 'react-router-dom';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import Rating from '@mui/material/Rating';
+import MomentFa from 'src/utils/MomentFa';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -137,7 +138,7 @@ export default function CommentItem({ data, selected, setSelected }) {
             <InputLabel
               style={{ fontWeight: 400, fontSize: '12px', color: '#808286' }}
             >
-              {data.create_date}
+              {MomentFa(data.create_date)}
             </InputLabel>
             <Box
               sx={{

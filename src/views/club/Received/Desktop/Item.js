@@ -4,6 +4,7 @@ import { ChevronLeft } from 'react-feather';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 import { useHistory } from 'react-router-dom';
+import MomentFa from 'src/utils/MomentFa';
 
 export default function Item({ data, selected, setSelected }) {
   const history = useHistory();
@@ -42,8 +43,8 @@ export default function Item({ data, selected, setSelected }) {
         }}
       >
         <img
-          src={iphone13}
-          alt={data.name}
+          src={data.gift_data.image}
+          alt={data.gift_data.name}
           style={{ width: '44px', height: '60px' }}
         />
       </Box>
@@ -75,9 +76,9 @@ export default function Item({ data, selected, setSelected }) {
           <InputLabel
             style={{ fontWeight: 500, fontSize: '16px', color: '#00346D' }}
           >
-            {data.name}
+            {data.gift_data.name}
           </InputLabel>
-          {data.free ? (
+          {data.status === 'valid' ? (
             <Box
               sx={{
                 display: 'flex',
@@ -114,7 +115,7 @@ export default function Item({ data, selected, setSelected }) {
               }}
             >
               <InputLabel style={{ color: '#F4777C', paddingLeft: 0 }}>
-                استفاده شده
+                {data.status === 'used' ? 'استفاده شده' : 'منقضی شده'}
               </InputLabel>
             </Box>
           )}
@@ -130,7 +131,7 @@ export default function Item({ data, selected, setSelected }) {
           <InputLabel
             style={{ fontWeight: 400, fontSize: '12px', color: '#828282' }}
           >
-            تاریخ کسب: ۵ اردیبهشت
+            {`تاریخ کسب: ${MomentFa(data.create_date)}`}
           </InputLabel>
           <Box
             sx={{
@@ -148,7 +149,7 @@ export default function Item({ data, selected, setSelected }) {
             <InputLabel
               style={{ fontWeight: 400, fontSize: '12px', color: '#808286' }}
             >
-              {data.expireDate}
+              {`اعتبار تا: ${MomentFa(data.expire_date)}`}
             </InputLabel>
             <Box
               sx={{

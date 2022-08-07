@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import FilterButton from 'src/components/Desktop/Button/Filter';
@@ -7,67 +7,20 @@ import { useHistory } from 'react-router-dom';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import Scan from 'src/assets/img/icons/scan-qr.svg';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
 export default function ReceivedListDesktop({ selected, setSelected }) {
   const history = useHistory();
-  const [received, setReceived] = useState([
-    {
-      id: 1,
-      name: 'iPhone13',
-      free: true,
-      expireDate: '۲۰ اردیبهشت',
-      score: '۵۰۰۰'
-    },
-    {
-      id: 2,
-      name: 'iPhone13',
-      free: false,
-      expireDate: '۲۰ اردیبهشت',
-      score: '۵۰۰۰'
-    },
-    {
-      id: 3,
-      name: 'iPhone13',
-      free: false,
-      expireDate: '۲۰ اردیبهشت',
-      score: '۵۰۰۰'
-    },
-    {
-      id: 4,
-      name: 'iPhone13',
-      free: true,
-      expireDate: '۲۰ اردیبهشت',
-      score: '۵۰۰۰'
-    },
-    {
-      id: 5,
-      name: 'iPhone13',
-      free: true,
-      expireDate: '۲۰ اردیبهشت',
-      score: '۵۰۰۰'
-    },
-    {
-      id: 6,
-      name: 'iPhone13',
-      free: false,
-      expireDate: '۲۰ اردیبهشت',
-      score: '۵۰۰۰'
-    },
-    {
-      id: 7,
-      name: 'iPhone13',
-      free: true,
-      expireDate: '۲۰ اردیبهشت',
-      score: '۵۰۰۰'
-    },
-    {
-      id: 8,
-      name: 'iPhone13',
-      free: true,
-      expireDate: '۲۰ اردیبهشت',
-      score: '۵۰۰۰'
-    }
-  ]);
+  const [received, setReceived] = useState(null);
+
+  useEffect(() => {
+    httpService.get(`${API_BASE_URL}/api/club/user_gifts/`).then(res => {
+      if (res.status === 200) {
+        setReceived(res.data);
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -86,23 +39,7 @@ export default function ReceivedListDesktop({ selected, setSelected }) {
         <InputLabelHeader style={{ color: '#00346D' }}>
           جوایز دریافتی
         </InputLabelHeader>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            gap: '10px',
-            width: '100%',
-            height: '57px'
-            // padding: '0px 30px'
-          }}
-        >
-          <FilterButton>همه</FilterButton>
-          <FilterButton>جوایز</FilterButton>
-          <FilterButton>قرعه کشی</FilterButton>
-          <FilterButton>هدایا تبلیغاتی</FilterButton>
-        </Box>
+
         <Box
           sx={{
             display: 'flex',
@@ -114,16 +51,17 @@ export default function ReceivedListDesktop({ selected, setSelected }) {
             overflowY: 'auto'
           }}
         >
-          {received.map((item, index) => {
-            return (
-              <ReceivedItem
-                data={item}
-                key={index}
-                selected={selected}
-                setSelected={setSelected}
-              />
-            );
-          })}
+          {received &&
+            received.map((item, index) => {
+              return (
+                <ReceivedItem
+                  data={item}
+                  key={index}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+              );
+            })}
         </Box>
       </Box>
       <Box

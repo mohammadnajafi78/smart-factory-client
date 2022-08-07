@@ -8,6 +8,8 @@ import makeStyles from '@mui/styles/makeStyles';
 import QR from 'src/assets/img/icons/qr.jpeg';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -20,6 +22,7 @@ const useStyles = makeStyles(theme => ({
 }));
 export default function ReceivedItemDesktop({ selected }) {
   const [open, setOpen] = useState(false);
+  const [qr, setQr] = useState(null);
   const classes = useStyles();
 
   return (
@@ -54,10 +57,7 @@ export default function ReceivedItemDesktop({ selected }) {
             }}
           >
             <InputLabelHeader>توضیحات</InputLabelHeader>
-            <InputLabel>
-              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-              استفاده از طراحان گرافیک است.
-            </InputLabel>
+            <InputLabel>{selected.gift_data.description}</InputLabel>
 
             <Box
               sx={{
@@ -103,7 +103,21 @@ export default function ReceivedItemDesktop({ selected }) {
             </Box>
           </Box>
 
-          <IconButton style={{ width: '400px' }} onClick={() => setOpen(true)}>
+          <IconButton
+            style={{ width: '400px' }}
+            onClick={() => {
+              setOpen(true);
+              httpService
+                .get(
+                  `${API_BASE_URL}/api/club/user_gifts/get_gift_qrcode/?gift_id=${selected.id}`
+                )
+                .then(res => {
+                  if (res.status === 200) {
+                    setQr(res.data);
+                  }
+                });
+            }}
+          >
             <img
               src={Received}
               width="26px"
@@ -153,7 +167,7 @@ export default function ReceivedItemDesktop({ selected }) {
                 // padding: '12px 16px'
               }}
             >
-              <img src={QR} width="348px" height="320px" />
+              <img src={qr} width="348px" height="320px" />
             </Box>
           </Box>
         }

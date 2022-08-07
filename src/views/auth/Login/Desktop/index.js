@@ -106,7 +106,7 @@ function LoginDesktop() {
             >
               <div>
                 <InputLabelHeader>ورود</InputLabelHeader>
-                <Box sx={{ mt: 2 }}>
+                <Box sx={{ mt: 2, width: '100%' }}>
                   <InputLabel>
                     جهت ورود یا ثبت‌نام شماره همراه یا ایمیل خود را وارد کنید
                   </InputLabel>

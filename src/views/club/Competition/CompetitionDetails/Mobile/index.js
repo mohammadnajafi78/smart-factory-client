@@ -70,7 +70,7 @@ export default function CompetitionDetailsMobile(props) {
           }}
         >
           <InputLabelHeader>توضیحات</InputLabelHeader>
-          <InputLabel>{awards && awards.match.description}</InputLabel>
+          <InputLabel>{awards && awards.description}</InputLabel>
         </Box>
         <Box
           sx={{
@@ -93,7 +93,7 @@ export default function CompetitionDetailsMobile(props) {
             }}
           >
             {awards &&
-              awards.match.prizes.map((item, key) => {
+              awards.prizes.map((item, key) => {
                 return (
                   <Box
                     sx={{
@@ -127,15 +127,11 @@ export default function CompetitionDetailsMobile(props) {
             width: '100%'
           }}
         >
-          <InputLabel style={{ color: '#4F4C4D' }}>
-            {'-نفر اول هارد دیسک یک ترابایت'}
-          </InputLabel>
-          <InputLabel style={{ color: '#4F4C4D' }}>
-            {'-نفر دوم حافظه SSD 256 گیگابایت'}
-          </InputLabel>
-          <InputLabel style={{ color: '#4F4C4D' }}>
-            {'-نفر سوم فلش USB 64 گیگابایت'}
-          </InputLabel>
+          {awards.prizes.map((item, key) => {
+            return (
+              <InputLabel style={{ color: '#4F4C4D' }}>{item.name}</InputLabel>
+            );
+          })}
         </Box>
       </Box>
       <Box
@@ -162,7 +158,7 @@ export default function CompetitionDetailsMobile(props) {
             width: '100%'
           }}
         >
-          <Participants data={awards} />
+          <Participants data={awards.participants[0]} />
         </Box>
       </Box>
     </Box>

@@ -27,13 +27,13 @@ export default function CompetitionMobile() {
   }, []);
 
   useEffect(() => {
-    httpService.get(`${API_BASE_URL}/api/club/matches/`).then(res => {
+    httpService.get(`${API_BASE_URL}/api/club/matches/?type=new`).then(res => {
       if (res.status === 200) {
         setNewComp(res.data);
       }
     });
 
-    httpService.get(`${API_BASE_URL}/api/club/match_participant/`).then(res => {
+    httpService.get(`${API_BASE_URL}/api/club/matches/`).then(res => {
       if (res.status === 200) {
         setCompetition(res.data);
       }
@@ -106,7 +106,10 @@ export default function CompetitionMobile() {
         >
           <LinkIconButton
             onClick={() => {
-              history.push('/club/newCompetition');
+              history.push({
+                pathname: '/club/newCompetition',
+                state: { data: newComp }
+              });
             }}
           >
             <img

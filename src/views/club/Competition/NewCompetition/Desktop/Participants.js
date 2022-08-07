@@ -26,7 +26,7 @@ export default function Item({ data }) {
       // }
     >
       <img
-        src={Image}
+        src={data.attach}
         style={{
           width: '100%',
           height: '222.03px',
@@ -48,7 +48,7 @@ export default function Item({ data }) {
       >
         {/* <Box> */}
         {/* <img src={Comment} /> */}
-        <Rating value={1} size="small" readOnly />
+        <Rating value={data.overall_rate} size="small" readOnly />
         {/* </Box> */}
         {/* <Box
           sx={{

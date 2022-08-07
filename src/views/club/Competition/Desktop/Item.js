@@ -4,6 +4,7 @@ import { ChevronLeft } from 'react-feather';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import { useHistory } from 'react-router-dom';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
+import MomentFa from 'src/utils/MomentFa';
 
 export default function Item({
   data,
@@ -51,10 +52,10 @@ export default function Item({
         <InputLabelHeader
           style={{ color: '#00346D', fontSize: '16px', fontWeight: 500 }}
         >
-          {data.match && data.match.name}
+          {data && data.name}
         </InputLabelHeader>
         <InputLabel style={{ color: '#7B7979', fontSize: '14px' }}>
-          {data.match && data.match.description}
+          {data && data.description}
         </InputLabel>
       </Box>
       <Box
@@ -73,7 +74,7 @@ export default function Item({
       >
         <InputLabel
           style={{ color: '#808286', fontSize: '12px' }}
-        >{`پایان: ${data.match && data.match.end_date}`}</InputLabel>
+        >{`پایان: ${data && MomentFa(data.end_date)}`}</InputLabel>
         <Box
           sx={{
             display: 'flex',

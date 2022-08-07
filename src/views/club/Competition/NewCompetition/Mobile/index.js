@@ -8,9 +8,10 @@ import LinkIconButton from 'src/components/Mobile/Button/LinkIcon';
 import Present from 'src/assets/img/icons/present.svg';
 import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 
-export default function NewCompetitionMobile() {
+export default function NewCompetitionMobile(props) {
   const [awards, setAwards] = useState(['1', '2', '3', '4']);
-  const [participants, setParticipants] = useState(['1', '2', '3', '4']);
+  const [participants, setParticipants] = useState(props.location.state.data);
+  console.log('location', props.location.state.data);
 
   return (
     <Box
@@ -111,7 +112,7 @@ export default function NewCompetitionMobile() {
                     borderRadius: '8px'
                   }}
                 >
-                  <img src={iphone13} width="44.26px" height="50px" />
+                  <img src={item.image} width="44.26px" height="50px" />
                 </Box>
               );
             })}
@@ -129,15 +130,11 @@ export default function NewCompetitionMobile() {
             width: '100%'
           }}
         >
-          <InputLabel style={{ color: '#4F4C4D' }}>
-            {'-نفر اول هارد دیسک یک ترابایت'}
-          </InputLabel>
-          <InputLabel style={{ color: '#4F4C4D' }}>
-            {'-نفر دوم حافظه SSD 256 گیگابایت'}
-          </InputLabel>
-          <InputLabel style={{ color: '#4F4C4D' }}>
-            {'-نفر سوم فلش USB 64 گیگابایت'}
-          </InputLabel>
+          {awards.prizes.map((item, key) => {
+            return (
+              <InputLabel style={{ color: '#4F4C4D' }}>{item.name}</InputLabel>
+            );
+          })}
         </Box>
       </Box>
       <Box

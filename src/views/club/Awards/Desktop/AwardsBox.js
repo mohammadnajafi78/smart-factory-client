@@ -7,7 +7,6 @@ import LinkButton from 'src/components/Desktop/Button/Link';
 import makeStyles from '@mui/styles/makeStyles';
 import Chest from 'src/assets/img/icons/chest-win-close.svg';
 import ChestWinOpen from 'src/assets/img/icons/chest-win-open.svg';
-import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 import { useHistory } from 'react-router-dom';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
 import httpService from 'src/utils/httpService';
@@ -182,6 +181,16 @@ export default function AwardsBox() {
                     if (res.status === 200) {
                       setOpenFirst(false);
                       setOpenSecond(true);
+                      httpService
+                        .get(`${API_BASE_URL}/api/users/refresh_user`)
+                        .then(result => {
+                          if (result.status === 200) {
+                            localStorage.setItem(
+                              'user',
+                              JSON.stringify(result.data)
+                            );
+                          }
+                        });
                     }
                   });
               }}
@@ -277,7 +286,7 @@ export default function AwardsBox() {
                           history.push('/club/getAwards');
                         }}
                       >
-                        <img src={iphone13} width="44.09px" height="60px" />
+                        <img src={item.image} width="44.09px" height="60px" />
                       </Grid>
                     );
                   })}
@@ -297,7 +306,11 @@ export default function AwardsBox() {
               padding: '12px 16px'
             }}
           >
-            <LinkButton disabled={false} variant="contained">
+            <LinkButton
+              disabled={false}
+              variant="contained"
+              onClick={() => history.push('/club/received')}
+            >
               {'مشاهده جوایز در لیست دریافتی ها'}
             </LinkButton>
           </Box>

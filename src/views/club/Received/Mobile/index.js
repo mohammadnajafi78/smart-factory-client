@@ -1,56 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import FilterButton from 'src/components/Mobile/Button/Filter';
 import ReceivedItem from './Item';
 import { useHistory } from 'react-router-dom';
 import Scan from 'src/assets/img/icons/scan-qr.svg';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
 export default function ReceivedMobile() {
   const history = useHistory();
-  const [received, setReceived] = useState([
-    { name: 'iPhone13', free: true, expireDate: '۲۰ اردیبهشت', score: '۵۰۰۰' },
-    { name: 'iPhone13', free: false, expireDate: '۲۰ اردیبهشت', score: '۵۰۰۰' },
-    { name: 'iPhone13', free: false, expireDate: '۲۰ اردیبهشت', score: '۵۰۰۰' },
-    { name: 'iPhone13', free: true, expireDate: '۲۰ اردیبهشت', score: '۵۰۰۰' },
-    { name: 'iPhone13', free: true, expireDate: '۲۰ اردیبهشت', score: '۵۰۰۰' },
-    { name: 'iPhone13', free: false, expireDate: '۲۰ اردیبهشت', score: '۵۰۰۰' },
-    { name: 'iPhone13', free: true, expireDate: '۲۰ اردیبهشت', score: '۵۰۰۰' },
-    { name: 'iPhone13', free: true, expireDate: '۲۰ اردیبهشت', score: '۵۰۰۰' }
-  ]);
+  const [received, setReceived] = useState(null);
+  useEffect(() => {
+    httpService.get(`${API_BASE_URL}/api/club/user_gifts/`).then(res => {
+      if (res.status === 200) {
+        setReceived(res.data);
+      }
+    });
+  }, []);
 
   return (
     <div>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: '14px 0px 6px',
-          gap: '2px',
-          position: 'sticky',
-          top: '40px',
-          // width: '385px',
-          width: '100%',
-          height: '57px',
-          backgroundColor: '#E5E5E5',
-          zIndex: 100
-        }}
-      >
-        <FilterButton style={{ fontWeight: 300, fontSize: '12px' }}>
-          همه
-        </FilterButton>
-        <FilterButton style={{ fontWeight: 300, fontSize: '12px' }}>
-          جوایز
-        </FilterButton>
-        <FilterButton style={{ fontWeight: 300, fontSize: '12px' }}>
-          قرعه کشی
-        </FilterButton>
-        <FilterButton style={{ fontWeight: 300, fontSize: '12px' }}>
-          هدایا تبلیغاتی
-        </FilterButton>
-      </Box>
       <Box
         sx={{
           display: 'flex',
@@ -62,9 +32,10 @@ export default function ReceivedMobile() {
           overflowY: 'auto'
         }}
       >
-        {received.map((item, index) => {
-          return <ReceivedItem data={item} key={index} />;
-        })}
+        {received &&
+          received.map((item, index) => {
+            return <ReceivedItem data={item} key={index} />;
+          })}
       </Box>
       <Box
         sx={{

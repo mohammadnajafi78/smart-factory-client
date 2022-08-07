@@ -11,6 +11,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -25,6 +26,7 @@ export default function GetAwardDesktop({ selected }) {
   // const data = { name: 'iPhone13', score: '۵۰۰۰', expireDate: '۲۰ اردیبهشت' };
   const [openFirst, setOpenFirst] = useState(false);
   const [openSecond, setOpenSecond] = useState(false);
+  const history = useHistory();
 
   return (
     <>
@@ -99,7 +101,7 @@ export default function GetAwardDesktop({ selected }) {
               }}
             >
               <img src={Presents} alt="awards" width={'61px'} height={'60px'} />
-              <InputLabelHeader>
+              <InputLabelHeader style={{ color: '#00346D', fontWeight: 500 }}>
                 آیا از دریافت این جایزه مطمئن هستید؟
               </InputLabelHeader>
             </Box>
@@ -135,6 +137,16 @@ export default function GetAwardDesktop({ selected }) {
                     if (res.status === 201) {
                       setOpenFirst(false);
                       setOpenSecond(true);
+                      httpService
+                        .get(`${API_BASE_URL}/api/users/refresh_user`)
+                        .then(result => {
+                          if (result.status === 200) {
+                            localStorage.setItem(
+                              'user',
+                              JSON.stringify(result.data)
+                            );
+                          }
+                        });
                     }
                   });
               }}
@@ -172,7 +184,9 @@ export default function GetAwardDesktop({ selected }) {
               }}
             >
               <img src={Presents} alt="awards" width={'61px'} height={'60px'} />
-              <InputLabelHeader>شما جایزه را دریافت کردید</InputLabelHeader>
+              <InputLabelHeader style={{ color: '#00346D', fontWeight: 500 }}>
+                شما جایزه را دریافت کردید
+              </InputLabelHeader>
             </Box>
           </Box>
         }
@@ -188,7 +202,10 @@ export default function GetAwardDesktop({ selected }) {
               padding: '12px 16px'
             }}
           >
-            <LinkButton variant={'contained'}>
+            <LinkButton
+              variant={'contained'}
+              onClick={() => history.push('/club/received')}
+            >
               مشاهده جوایز در لیست دریافتی ها
             </LinkButton>
           </Box>

@@ -6,6 +6,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import axios from 'axios';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import MomentFa from 'src/utils/MomentFa';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -66,7 +67,7 @@ export default function GetCommentDesktop({ selected }) {
             {selected.title}
           </InputLabelHeader>
           <InputLabel style={{ color: '#808286', fontSize: '14px' }}>
-            {`ارسال: ${selected.create_date}`}
+            {`ارسال: ${MomentFa(selected.create_date)}`}
           </InputLabel>
         </Box>
         <Box

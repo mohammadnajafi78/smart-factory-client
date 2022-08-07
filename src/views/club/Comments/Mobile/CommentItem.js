@@ -14,6 +14,7 @@ import Rating from '@mui/material/Rating';
 import { ClassNames } from '@emotion/react';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import MomentFa from 'src/utils/MomentFa';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -205,7 +206,7 @@ export default function CommentItem({ data }) {
                 {data.title}
               </InputLabelHeader>
               <InputLabel style={{ color: '#808286', fontSize: '14px' }}>
-                {`ارسال: ${data.create_date}`}
+                {`ارسال: ${MomentFa(data.create_date)}`}
               </InputLabel>
             </Box>
             <Box

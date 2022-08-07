@@ -9,6 +9,9 @@ import Received from 'src/assets/img/icons/received.svg';
 import makeStyles from '@mui/styles/makeStyles';
 import QR from 'src/assets/img/icons/qr.jpeg';
 import { height } from '@mui/system';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
+import MomentFa from 'src/utils/MomentFa';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -22,6 +25,7 @@ const useStyles = makeStyles(theme => ({
 export default function ReceivedItemMobile(props) {
   const [data, setData] = useState(props.location.state);
   const [open, setOpen] = useState(false);
+  const [qr, setQr] = useState(null);
   const classes = useStyles();
 
   return (
@@ -60,8 +64,8 @@ export default function ReceivedItemMobile(props) {
             }}
           >
             <img
-              src={iphone13}
-              alt={data.name}
+              src={data.gift_data.image}
+              alt={data.gift_data.name}
               style={{ width: '74px', height: '100px' }}
             />
           </Box>
@@ -113,7 +117,7 @@ export default function ReceivedItemMobile(props) {
                 }}
               >
                 <InputLabel style={{ color: '#00AAB5' }}>
-                  {data.score}
+                  {data.gift_data.credit}
                 </InputLabel>
                 <Star style={{ width: '27px', height: '18px' }} />
               </Box>
@@ -147,13 +151,13 @@ export default function ReceivedItemMobile(props) {
                   }}
                 >
                   {'اعتبار تا '}
-                  {data.expireDate}
+                  {MomentFa(data.gift_data.expire_date)}
                 </InputLabel>
               </Box>
               <InputLabel
                 style={{ fontWeight: 400, fontSize: '12px', color: '#828282' }}
               >
-                تاریخ کسب: ۵ اردیبهشت
+                {`تاریخ کسب: ${MomentFa(data.create_date)}`}
               </InputLabel>
             </Box>
           </Box>
@@ -164,7 +168,8 @@ export default function ReceivedItemMobile(props) {
             flexDirection: 'column',
             justifyContent: 'space-between',
             alignItems: 'flex-start',
-            padding: '16px 0px'
+            padding: '16px 0px',
+            width: '100%'
             // gap: '480px'
           }}
         >
@@ -175,16 +180,31 @@ export default function ReceivedItemMobile(props) {
               alignItems: 'flex-start',
               padding: '0px',
               gap: '16px',
-              height: '570px'
+              height: '470px'
             }}
           >
             <InputLabelHeader>توضیحات</InputLabelHeader>
-            <InputLabel>
-              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-              استفاده از طراحان گرافیک است.
-            </InputLabel>
+            <InputLabel>{data.gift_data.description}</InputLabel>
           </Box>
-          <LinkIconButton onClick={() => setOpen(true)}>
+          <LinkIconButton
+            onClick={() => {
+              setOpen(true);
+              httpService
+                .get(
+                  `${API_BASE_URL}/api/club/user_gifts/get_gift_qrcode/?gift_id=${data.id}`
+                )
+                .then(res => {
+                  if (res.status === 200) {
+                    setQr(res.data);
+                  }
+                });
+            }}
+            style={{
+              position: 'absolute',
+              bottom: '90px',
+              width: '90%'
+            }}
+          >
             <img
               src={Received}
               width="26px"
@@ -215,7 +235,7 @@ export default function ReceivedItemMobile(props) {
           }}
         >
           <InputLabelHeader style={{ color: '#00346D' }}>
-            {data.name}
+            {data.gift_data.name}
           </InputLabelHeader>
           <Box
             sx={{
