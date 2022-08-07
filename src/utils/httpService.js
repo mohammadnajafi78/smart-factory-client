@@ -23,7 +23,7 @@ function ValidToken(accessToken) {
   if (result > 0) return true;
   else {
     // history.push('/login');
-    window.history.push('/login');
+    window.history.pushState('/login');
     return false;
   }
 }
