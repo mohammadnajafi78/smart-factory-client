@@ -18,19 +18,21 @@ function ValidToken(accessToken) {
   const decoded = jwtDecode(accessToken);
   const currentTime = Date.now() / 1000;
 
-  let result = decoded.exp > currentTime;
+  return decoded.exp > currentTime;
 
-  if (result > 0) return true;
-  else {
-    window.history.pushState({ urlPath: '/login' }, '', '/login');
-    return false;
-  }
+  // if (result > 0) return true;
+  // else {
+  //   localStorage.removeItem('token');
+  //   window.history.pushState({ urlPath: '/login' }, '', '/login');
+  //   return false;
+  // }
 }
 
 if (token && ValidToken(token)) {
   headers['Authorization'] = `Bearer ${token}`;
 }
 if (token && !ValidToken(token)) {
+  localStorage.removeItem('token');
   window.history.pushState({ urlPath: '/login' }, '', '/login');
 }
 axios.defaults.headers.common = headers;

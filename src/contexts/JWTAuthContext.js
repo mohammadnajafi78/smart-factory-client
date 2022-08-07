@@ -158,8 +158,8 @@ export const AuthProvider = ({ children }) => {
             }
           });
         } else if (accessToken && !isValidToken(accessToken)) {
-          history.push('/login');
           localStorage.removeItem('token');
+          history.push('/login');
           dispatch({
             type: 'INITIALISE',
             payload: {
