@@ -47,7 +47,6 @@ export default function AwardsList({ selected, setSelected }) {
               <FilterButton
                 key={index}
                 onClick={() => {
-                  console.log('item', item.name);
                   if (item.name === 'All') setAwards(all);
                   else if (item.name !== 'Lottery' && item.name !== 'All')
                     setAwards(all.filter(f => f.gift_type === item.id));

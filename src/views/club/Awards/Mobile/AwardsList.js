@@ -50,7 +50,6 @@ export default function AwardsList() {
               <FilterButton
                 key={index}
                 onClick={() => {
-                  console.log('item', item.name);
                   if (item.name === 'All') setAwards(all);
                   else if (item.name !== 'Lottery' && item.name !== 'All')
                     setAwards(all.filter(f => f.gift_type === item.id));
@@ -58,7 +57,7 @@ export default function AwardsList() {
                 }}
                 style={{ fontWeight: 300, fontSize: '12px' }}
               >
-                {item.name}
+                {item.translate}
               </FilterButton>
             );
           })}
