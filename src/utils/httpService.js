@@ -22,8 +22,7 @@ function ValidToken(accessToken) {
 
   if (result > 0) return true;
   else {
-    // history.push('/login');
-    window.history.pushState('/login');
+    window.history.pushState({ urlPath: '/login' }, '', '/login');
     return false;
   }
 }
@@ -32,7 +31,7 @@ if (token && ValidToken(token)) {
   headers['Authorization'] = `Bearer ${token}`;
 }
 if (token && !ValidToken(token)) {
-  history.push('/login');
+  window.history.pushState({ urlPath: '/login' }, '', '/login');
 }
 axios.defaults.headers.common = headers;
 
