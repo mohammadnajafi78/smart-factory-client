@@ -57,7 +57,6 @@ export default function Score() {
       >
         <Icon src={ScoreIcon} style={{ width: '16px', height: '16px' }} />
         <InputLabel style={{ color: 'white', fontSize: '12px' }}>
-          {/* {'۶۴۰ از ۱۲۰۰'} */}
           {UserClub()}
         </InputLabel>
       </Box>

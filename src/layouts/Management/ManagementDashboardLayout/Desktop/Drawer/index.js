@@ -20,6 +20,8 @@ import Vector from 'src/assets/img/icons/Vector.svg';
 import { useHistory } from 'react-router-dom';
 import TopBar from '../TopBar';
 import { styled, useTheme } from '@mui/material/styles';
+import userMng from 'src/assets/img/icons/userMng.svg';
+import clubMng from 'src/assets/img/icons/clubMng.svg';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -53,29 +55,23 @@ const NewDrawer = styled(Drawer)(({ theme }) => ({
 
 export default function DrawerComp(props) {
   const history = useHistory();
-  let data = [
-    { name: 'competition', title: 'مسابقه', path: '/club/competition' },
-    { name: 'awards', title: 'جوایز', path: '/club/awards' },
-    { name: 'comments', title: 'نظرات', path: '/club/comments' },
-    { name: 'received', title: 'دریافتی ها', path: '/club/received' }
+  let menu1 = [
+    { name: 'user', title: 'کاربر', path: '/management/user' },
+    { name: 'club', title: 'کلاب', path: '/management/club' }
   ];
   let path = history.location.pathname.split('/')[2];
   const [selected, setSelected] = useState(
-    ['competition', 'awards', 'comments', 'received'].includes(
-      history.location.pathname.split('/')[2]
-    )
+    ['user', 'club'].includes(history.location.pathname.split('/')[2])
       ? path
-      : 'awards'
+      : 'user'
   );
 
   useEffect(() => {
     path = history.location.pathname.split('/')[2];
     setSelected(
-      ['competition', 'awards', 'comments', 'received'].includes(
-        history.location.pathname.split('/')[2]
-      )
+      ['user', 'club'].includes(history.location.pathname.split('/')[2])
         ? path
-        : 'awards'
+        : 'user'
     );
   }, [props]);
 
@@ -121,13 +117,14 @@ export default function DrawerComp(props) {
           }}
         >
           <List>
-            {data.map((item, index) => (
+            {menu1.map((item, index) => (
               <ListItem
                 key={index}
                 onClick={() => {
                   history.push(item.path);
                   setSelected(item.name);
                 }}
+                style={{ borderBottom: '0.5px solid #FFFFFF' }}
               >
                 <ListItemButton sx={{ flexDirection: 'column' }}>
                   <ListItemIcon>
@@ -135,21 +132,21 @@ export default function DrawerComp(props) {
                       (selected !== item.name ? (
                         <Box
                           sx={{
-                            width: '55.69px',
-                            height: '43.79px',
+                            width: '38.5px',
+                            height: '28px',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center'
                           }}
                         >
-                          <img src={Competition} width="44px" height={'32px'} />
+                          <img src={userMng} width="38.5px" height={'28px'} />
                         </Box>
                       ) : (
                         <Box
                           sx={{
                             background: `url(${Vector})`,
-                            width: '55.69px',
-                            height: '43.79px',
+                            width: '38.5px',
+                            height: '28px',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -157,32 +154,28 @@ export default function DrawerComp(props) {
                             backgroundRepeat: 'no-repeat'
                           }}
                         >
-                          <img
-                            src={CompetitionSelected}
-                            width="44px"
-                            height={'32px'}
-                          />
+                          <img src={userMng} width="38.5px" height={'28px'} />
                         </Box>
                       ))}
                     {index === 1 &&
                       (selected !== item.name ? (
                         <Box
                           sx={{
-                            width: '55.69px',
-                            height: '43.79px',
+                            width: '38.5px',
+                            height: '28px',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center'
                           }}
                         >
-                          <img src={Present} width="44px" height={'32px'} />
+                          <img src={clubMng} width="38.5px" height={'28px'} />
                         </Box>
                       ) : (
                         <Box
                           sx={{
                             background: `url(${Vector})`,
-                            width: '55.69px',
-                            height: '43.79px',
+                            width: '38.5px',
+                            height: '28px',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -190,82 +183,11 @@ export default function DrawerComp(props) {
                             backgroundRepeat: 'no-repeat'
                           }}
                         >
-                          <img
-                            src={PresentsSelected}
-                            width="44px"
-                            height={'32px'}
-                          />
-                        </Box>
-                      ))}
-                    {index === 2 &&
-                      (selected !== item.name ? (
-                        <Box
-                          sx={{
-                            width: '55.69px',
-                            height: '43.79px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                          }}
-                        >
-                          <img src={Comment} width="44px" height={'32px'} />
-                        </Box>
-                      ) : (
-                        <Box
-                          sx={{
-                            background: `url(${Vector})`,
-                            width: '55.69px',
-                            height: '43.79px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            backgroundPosition: 'center',
-                            backgroundRepeat: 'no-repeat'
-                          }}
-                        >
-                          <img
-                            src={CommentSelected}
-                            width="44px"
-                            height={'32px'}
-                          />
-                        </Box>
-                      ))}
-                    {index === 3 &&
-                      (selected !== item.name ? (
-                        <Box
-                          sx={{
-                            width: '55.69px',
-                            height: '43.79px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                          }}
-                        >
-                          <img src={Received} width="44px" height={'32px'} />
-                        </Box>
-                      ) : (
-                        <Box
-                          sx={{
-                            background: `url(${Vector})`,
-                            width: '55.69px',
-                            height: '43.79px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-
-                            backgroundPosition: 'center',
-                            backgroundRepeat: 'no-repeat'
-                          }}
-                        >
-                          <img
-                            src={ReceivedSelected}
-                            width="44px"
-                            height={'32px'}
-                          />
+                          <img src={clubMng} width="38.5px" height={'28px'} />
                         </Box>
                       ))}
                   </ListItemIcon>
-                  <ListItemText primary={item.title} />
+                  {/* <ListItemText primary={item.title} /> */}
                 </ListItemButton>
               </ListItem>
             ))}
@@ -283,7 +205,7 @@ export default function DrawerComp(props) {
           }}
         >
           <List>
-            {data.map((item, index) => (
+            {menu1.map((item, index) => (
               <ListItem
                 key={index}
                 onClick={() => {
@@ -291,27 +213,31 @@ export default function DrawerComp(props) {
                   setSelected(item.name);
                 }}
               >
-                <ListItemButton sx={{ flexDirection: 'column' }}>
+                <ListItemButton sx={{ flexDirection: 'row' }}>
                   <ListItemIcon>
                     {index === 0 &&
                       (selected !== item.name ? (
                         <Box
                           sx={{
-                            width: '55.69px',
-                            height: '43.79px',
+                            width: '38.5px',
+                            height: '28px',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center'
                           }}
                         >
-                          <img src={Competition} width="44px" height={'32px'} />
+                          <img
+                            src={Competition}
+                            width="38.5px"
+                            height={'28px'}
+                          />
                         </Box>
                       ) : (
                         <Box
                           sx={{
                             background: `url(${Vector})`,
-                            width: '55.69px',
-                            height: '43.79px',
+                            width: '38.5px',
+                            height: '28px',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -321,8 +247,8 @@ export default function DrawerComp(props) {
                         >
                           <img
                             src={CompetitionSelected}
-                            width="44px"
-                            height={'32px'}
+                            width="38.5px"
+                            height={'28px'}
                           />
                         </Box>
                       ))}
@@ -330,21 +256,21 @@ export default function DrawerComp(props) {
                       (selected !== item.name ? (
                         <Box
                           sx={{
-                            width: '55.69px',
-                            height: '43.79px',
+                            width: '38.5px',
+                            height: '28px',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center'
                           }}
                         >
-                          <img src={Present} width="44px" height={'32px'} />
+                          <img src={Present} width="38.5px" height={'28px'} />
                         </Box>
                       ) : (
                         <Box
                           sx={{
                             background: `url(${Vector})`,
-                            width: '55.69px',
-                            height: '43.79px',
+                            width: '38.5px',
+                            height: '28px',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -354,8 +280,8 @@ export default function DrawerComp(props) {
                         >
                           <img
                             src={PresentsSelected}
-                            width="44px"
-                            height={'32px'}
+                            width="38.5px"
+                            height={'28px'}
                           />
                         </Box>
                       ))}
@@ -363,21 +289,21 @@ export default function DrawerComp(props) {
                       (selected !== item.name ? (
                         <Box
                           sx={{
-                            width: '55.69px',
-                            height: '43.79px',
+                            width: '38.5px',
+                            height: '28px',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center'
                           }}
                         >
-                          <img src={Comment} width="44px" height={'32px'} />
+                          <img src={Comment} width="38.5px" height={'28px'} />
                         </Box>
                       ) : (
                         <Box
                           sx={{
                             background: `url(${Vector})`,
-                            width: '55.69px',
-                            height: '43.79px',
+                            width: '38.5px',
+                            height: '28px',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -387,8 +313,8 @@ export default function DrawerComp(props) {
                         >
                           <img
                             src={CommentSelected}
-                            width="44px"
-                            height={'32px'}
+                            width="38.5px"
+                            height={'28px'}
                           />
                         </Box>
                       ))}
@@ -396,21 +322,21 @@ export default function DrawerComp(props) {
                       (selected !== item.name ? (
                         <Box
                           sx={{
-                            width: '55.69px',
-                            height: '43.79px',
+                            width: '38.5px',
+                            height: '28px',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center'
                           }}
                         >
-                          <img src={Received} width="44px" height={'32px'} />
+                          <img src={Received} width="38.5px" height={'28px'} />
                         </Box>
                       ) : (
                         <Box
                           sx={{
                             background: `url(${Vector})`,
-                            width: '55.69px',
-                            height: '43.79px',
+                            width: '38.5px',
+                            height: '28px',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -421,8 +347,8 @@ export default function DrawerComp(props) {
                         >
                           <img
                             src={ReceivedSelected}
-                            width="44px"
-                            height={'32px'}
+                            width="38.5px"
+                            height={'28px'}
                           />
                         </Box>
                       ))}

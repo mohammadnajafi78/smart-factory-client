@@ -69,12 +69,8 @@ const Profile = () => {
           ref={ref}
           size="large"
           style={{
-            background: '#FFFFFF',
-            boxShadow: '1px 1px 6px rgba(201, 201, 201, 0.25)',
-            borderRadius: ' 6px',
             width: '49px',
             height: '44px'
-            // margin: '5px'
           }}
         >
           <Icon src={ProfileIcon} alt="home" />

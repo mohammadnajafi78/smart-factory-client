@@ -206,7 +206,7 @@ const routes = [
     routes: [
       {
         exact: true,
-        path: '/management/users',
+        path: '/management/user',
         component: lazy(() => import('src/views/management/Users/NewUsers'))
       },
       {

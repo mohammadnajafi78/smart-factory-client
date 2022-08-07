@@ -7,20 +7,20 @@ import { API_BASE_URL } from 'src/utils/urls';
 
 export default function AwardsList() {
   const [awards, setAwards] = useState(null);
+  const [all, setAll] = useState(null);
   const [filters, setFilters] = useState(null);
 
   useEffect(() => {
-    httpService.get(`${API_BASE_URL}/api/club/lottery/`).then(res => {
+    httpService.get(`${API_BASE_URL}/api/club/gift_type/`).then(res => {
       if (res.status === 200) {
         setFilters(res.data);
-        console.log('filter', res.data);
       }
     });
 
-    httpService.get(`${API_BASE_URL}/api/club/gifts/`).then(res => {
+    httpService.get(`${API_BASE_URL}/api/club/gifts/get_all/`).then(res => {
       if (res.status === 200) {
-        console.log('awards', awards);
         setAwards(res.data);
+        setAll(res.data);
       }
     });
   }, []);
@@ -49,6 +49,13 @@ export default function AwardsList() {
             return (
               <FilterButton
                 key={index}
+                onClick={() => {
+                  console.log('item', item.name);
+                  if (item.name === 'All') setAwards(all);
+                  else if (item.name !== 'Lottery' && item.name !== 'All')
+                    setAwards(all.filter(f => f.gift_type === item.id));
+                  else setAwards(all.filter(f => !f.gift_type));
+                }}
                 style={{ fontWeight: 300, fontSize: '12px' }}
               >
                 {item.name}

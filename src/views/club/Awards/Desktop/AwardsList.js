@@ -8,20 +8,20 @@ import { resolveConfig } from 'prettier';
 
 export default function AwardsList({ selected, setSelected }) {
   const [awards, setAwards] = useState(null);
+  const [all, setAll] = useState(null);
   const [filters, setFilters] = useState(null);
 
   useEffect(() => {
-    httpService.get(`${API_BASE_URL}/api/club/lottery/`).then(res => {
+    httpService.get(`${API_BASE_URL}/api/club/gift_type/`).then(res => {
       if (res.status === 200) {
         setFilters(res.data);
-        console.log('filter', res.data);
       }
     });
 
-    httpService.get(`${API_BASE_URL}/api/club/gifts/`).then(res => {
+    httpService.get(`${API_BASE_URL}/api/club/gifts/get_all/`).then(res => {
       if (res.status === 200) {
-        console.log('awards', awards);
         setAwards(res.data);
+        setAll(res.data);
       }
     });
   }, []);
@@ -38,14 +38,25 @@ export default function AwardsList({ selected, setSelected }) {
           gap: '10px',
           width: '100%',
           height: '57px',
-          // padding: '0px 30px',
-          // backgroundColor: '#E5E5E5',
           zIndex: 100
         }}
       >
         {filters &&
           filters.map((item, index) => {
-            return <FilterButton key={index}>{item.name}</FilterButton>;
+            return (
+              <FilterButton
+                key={index}
+                onClick={() => {
+                  console.log('item', item.name);
+                  if (item.name === 'All') setAwards(all);
+                  else if (item.name !== 'Lottery' && item.name !== 'All')
+                    setAwards(all.filter(f => f.gift_type === item.id));
+                  else setAwards(all.filter(f => !f.gift_type));
+                }}
+              >
+                {item.translate}
+              </FilterButton>
+            );
           })}
       </Box>
       <Box
