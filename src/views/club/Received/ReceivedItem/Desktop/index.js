@@ -41,7 +41,8 @@ export default function ReceivedItemDesktop({ selected }) {
             flexDirection: 'column',
             justifyContent: 'space-between',
             alignItems: 'center',
-            padding: '16px 0px'
+            padding: '16px 0px',
+            width: '100%'
             // gap: '480px'
           }}
         >

@@ -9,9 +9,9 @@ import Present from 'src/assets/img/icons/present.svg';
 import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 
 export default function NewCompetitionMobile(props) {
-  const [awards, setAwards] = useState(['1', '2', '3', '4']);
-  const [participants, setParticipants] = useState(props.location.state.data);
-  console.log('location', props.location.state.data);
+  // const [awards, setAwards] = useState(['1', '2', '3', '4']);
+  const [awards, setAwards] = useState(props.location.state);
+  console.log('location22', props.location.state);
 
   return (
     <Box
@@ -46,9 +46,7 @@ export default function NewCompetitionMobile(props) {
           <InputLabelHeader style={{ color: '#00346D' }}>
             مسابقه جدید
           </InputLabelHeader>
-          <InputLabel style={{ color: '#00346D' }}>
-            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
-          </InputLabel>
+          <InputLabel style={{ color: '#00346D' }}>{awards?.name}</InputLabel>
         </Box>
       </Box>
       <Box
@@ -58,7 +56,8 @@ export default function NewCompetitionMobile(props) {
           alignItems: 'flex-start',
           padding: '16px 0px 0px',
           gap: '30px',
-          borderBottom: '0.5px solid #D3D2D2'
+          borderBottom: '0.5px solid #D3D2D2',
+          width: '100%'
         }}
       >
         <Box
@@ -71,10 +70,7 @@ export default function NewCompetitionMobile(props) {
           }}
         >
           <InputLabelHeader>توضیحات</InputLabelHeader>
-          <InputLabel>
-            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-            استفاده از طراحان گرافیک است.
-          </InputLabel>
+          <InputLabel>{awards?.description}</InputLabel>
         </Box>
         <Box
           sx={{
@@ -96,26 +92,27 @@ export default function NewCompetitionMobile(props) {
               gap: '6px'
             }}
           >
-            {awards.map((item, key) => {
-              return (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: '10px 16px',
-                    gap: '10px',
-                    width: '65px',
-                    height: '84px',
-                    background: '#FFFFFF',
-                    borderRadius: '8px'
-                  }}
-                >
-                  <img src={item.image} width="44.26px" height="50px" />
-                </Box>
-              );
-            })}
+            {awards &&
+              awards.prizes.map((item, key) => {
+                return (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '10px 16px',
+                      gap: '10px',
+                      width: '65px',
+                      height: '84px',
+                      background: '#FFFFFF',
+                      borderRadius: '8px'
+                    }}
+                  >
+                    <img src={item.image} width="44.26px" height="50px" />
+                  </Box>
+                );
+              })}
           </Box>
         </Box>
         <Box
@@ -130,11 +127,14 @@ export default function NewCompetitionMobile(props) {
             width: '100%'
           }}
         >
-          {awards.prizes.map((item, key) => {
-            return (
-              <InputLabel style={{ color: '#4F4C4D' }}>{item.name}</InputLabel>
-            );
-          })}
+          {awards &&
+            awards.prizes.map((item, key) => {
+              return (
+                <InputLabel style={{ color: '#4F4C4D' }}>
+                  {item.name}
+                </InputLabel>
+              );
+            })}
         </Box>
       </Box>
       <Box
@@ -161,9 +161,10 @@ export default function NewCompetitionMobile(props) {
             width: '100%'
           }}
         >
-          {participants.map((item, key) => {
-            return <Participants data={item} key={key} />;
-          })}
+          {awards &&
+            awards.participants.map((item, key) => {
+              return <Participants data={item} key={key} />;
+            })}
           <LinkIconButton
           // onClick={() => {
           // }}

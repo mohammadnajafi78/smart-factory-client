@@ -108,7 +108,7 @@ export default function CompetitionMobile() {
             onClick={() => {
               history.push({
                 pathname: '/club/newCompetition',
-                state: { data: newComp }
+                state: newComp[0]
               });
             }}
           >

@@ -72,7 +72,7 @@ export default function Item({ data }) {
       >
         <InputLabel
           style={{ color: '#808286', fontSize: '12px' }}
-        >{`پایان: ${data && MomentFa(date.end_date)}`}</InputLabel>
+        >{`پایان: ${data && MomentFa(data.end_date)}`}</InputLabel>
         <Box
           sx={{
             display: 'flex',

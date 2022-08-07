@@ -177,8 +177,10 @@ export default function NewCompetitionDesktop({ selected }) {
           >
             <IconButton
               style={{ width: '400px' }}
-              // onClick={() => {
-              // }}
+              onClick={() => {
+                // setNewCompetition(true);
+                // setSelected(newComp && newComp[0]);
+              }}
             >
               <img
                 src={Competition}

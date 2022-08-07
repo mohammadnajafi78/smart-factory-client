@@ -135,7 +135,7 @@ export default function Item({ data }) {
           <InputLabel
             style={{ fontWeight: 400, fontSize: '12px', color: '#808286' }}
           >
-            {`اعتبار تا: ${MomentFa(data.expire_date)}`}
+            {`اعتبار تا: ${MomentFa(data.gift_data.expire_date)}`}
           </InputLabel>
           <Box
             sx={{
