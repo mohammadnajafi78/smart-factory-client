@@ -24,7 +24,6 @@ import './i18n';
 import { createRoot } from 'react-dom/client';
 import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
-import adapter from 'webrtc-adapter';
 
 enableES5();
 
