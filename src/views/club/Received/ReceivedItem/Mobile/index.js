@@ -259,9 +259,11 @@ export default function ReceivedItemMobile(props) {
               // justifyContent: 'space-between',
               gap: 2,
               // borderTop: '0.5px solid #D3D2D2',
-              padding: '12px 16px',
+              // padding: '12px 16px',
               width: '328px',
-              height: '328px'
+              height: '328px',
+              justifyContent: 'center',
+              alignItems: 'center'
             }}
           >
             {/* <img src={qr} width="328px" height="328px" /> */}
