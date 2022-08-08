@@ -6,7 +6,6 @@ import LoginDesktop from './Desktop';
 function Login(props) {
   const theme = useTheme();
   const mobileDevice = useMediaQuery(theme.breakpoints.down('md'));
-  console.log('props', props);
 
   return (
     <>

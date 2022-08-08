@@ -3,7 +3,6 @@ import React from 'react';
 import { ChevronLeft, Star } from 'react-feather';
 import { NavLink, useHistory } from 'react-router-dom';
 import InputLabel from 'src/components/Mobile/InputLabel';
-import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 import MomentFa from 'src/utils/MomentFa';
 
 export default function AwardItem({ data }) {
@@ -40,8 +39,7 @@ export default function AwardItem({ data }) {
         }}
       >
         <img
-          // src={data.image}
-          src={iphone13}
+          src={data.image}
           alt={data.name}
           style={{ width: '44px', height: '60px' }}
         />

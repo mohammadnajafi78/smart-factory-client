@@ -26,7 +26,6 @@ function IdentityInfoMobile(props) {
           return errors;
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
-          console.log('patch', values);
           httpService
             .patch(
               `${API_BASE_URL}/api/users/${

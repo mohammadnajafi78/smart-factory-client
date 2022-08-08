@@ -3,15 +3,8 @@ import { Box } from '@mui/material';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import Participants from './Participants';
-import IconButton from 'src/components/Desktop/Button/Icon';
-import Competition from 'src/assets/img/icons/competition.svg';
-import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 
 export default function CompetitionDetailsDesktop({ selected }) {
-  // const [awards, setAwards] = useState(['1', '2', '3', '4']);
-  // const [participants, setParticipants] = useState(['1', '2', '3', '4']);
-  console.log('selected', selected);
-
   return (
     <Box
       sx={{

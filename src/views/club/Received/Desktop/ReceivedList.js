@@ -9,10 +9,14 @@ import Scan from 'src/assets/img/icons/scan-qr.svg';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import CustomizedDialogs from 'src/components/Desktop/Dialog';
+import { QrReader } from 'react-qr-reader';
 
 export default function ReceivedListDesktop({ selected, setSelected }) {
   const history = useHistory();
   const [received, setReceived] = useState(null);
+  const [openScan, setOpenScan] = useState(null);
+  const [scan, setScan] = useState(null);
 
   useEffect(() => {
     httpService.get(`${API_BASE_URL}/api/club/user_gifts/`).then(res => {
@@ -21,6 +25,13 @@ export default function ReceivedListDesktop({ selected, setSelected }) {
       }
     });
   }, []);
+  function handleScan(data) {
+    setScan(data);
+  }
+
+  function handleError(err) {
+    console.error(err);
+  }
 
   return (
     <>
@@ -86,11 +97,56 @@ export default function ReceivedListDesktop({ selected, setSelected }) {
             backgroundColor: '#00346D',
             width: '70%'
           }}
+          onClick={() => setOpenScan(true)}
         >
           <img src={Scan} style={{ marginLeft: '3px' }} />
           دریافت جایزه
         </ConfirmButton>
       </Box>
+
+      <CustomizedDialogs
+        open={openScan}
+        handleClose={() => setOpenScan(false)}
+        title={'بارکد'}
+        content={
+          <Box sx={{ width: '300px', height: '300px' }}>
+            <QrReader
+              delay={100}
+              //style={previewStyle}
+              onError={handleError}
+              onScan={handleScan}
+              onResult={(result, error) => {
+                if (result) {
+                  if (result) {
+                    if (result.text) {
+                      setScan(result.text);
+                      setOpenScan(false);
+                      httpService
+                        .post(
+                          `${API_BASE_URL}/api/club/user_gifts/transfer_gift/`,
+                          {
+                            qr_code: result.text
+                          }
+                        )
+                        .then(res => {
+                          if (res.status === 200) {
+                            alert('انتقال انجام شد');
+                          }
+                        });
+                    }
+                  }
+                  console.log('result scan', result);
+                }
+
+                if (!!error) {
+                  console.info(error);
+                }
+              }}
+            />
+            <p>{scan}</p>
+          </Box>
+        }
+      />
     </>
   );
 }

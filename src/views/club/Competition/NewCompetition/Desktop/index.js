@@ -5,13 +5,8 @@ import InputLabel from 'src/components/Desktop/InputLabel';
 import Participants from './Participants';
 import IconButton from 'src/components/Desktop/Button/Icon';
 import Competition from 'src/assets/img/icons/competition.svg';
-import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 
 export default function NewCompetitionDesktop({ selected }) {
-  // const [awards, setAwards] = useState(['1', '2', '3', '4']);
-  // const [participants, setParticipants] = useState(['1', '2', '3', '4']);
-  console.log('new competition', selected);
-
   return (
     <Box
       sx={{

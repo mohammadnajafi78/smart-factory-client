@@ -5,11 +5,11 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader
 import IconButton from 'src/components/Desktop/Button/Icon';
 import Received from 'src/assets/img/icons/received.svg';
 import makeStyles from '@mui/styles/makeStyles';
-import QR from 'src/assets/img/icons/qr.jpeg';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import QRCode from 'react-qr-code';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -114,7 +114,7 @@ export default function ReceivedItemDesktop({ selected }) {
                 )
                 .then(res => {
                   if (res.status === 200) {
-                    setQr(res.data);
+                    setQr(res.data.qr_code);
                   }
                 });
             }}
@@ -131,7 +131,10 @@ export default function ReceivedItemDesktop({ selected }) {
       </Box>
       <CustomizedDialogs
         open={open}
-        handleClose={() => setOpen(false)}
+        handleClose={() => {
+          setOpen(false);
+          setQr(null);
+        }}
         title={'انتقال جایزه'}
         content={
           <Box
@@ -164,11 +167,16 @@ export default function ReceivedItemDesktop({ selected }) {
             <Box
               sx={{
                 display: 'flex',
-                gap: 2
-                // padding: '12px 16px'
+                gap: 2,
+                width: '328px',
+                height: '328px',
+                // padding: '0px 0px 0px 30px'
+                justifyContent: 'center',
+                alignItems: 'center'
               }}
             >
-              <img src={qr} width="348px" height="320px" />
+              {/* <img src={qr} width="348px" height="320px" /> */}
+              {qr && <QRCode value={qr} />}
             </Box>
           </Box>
         }

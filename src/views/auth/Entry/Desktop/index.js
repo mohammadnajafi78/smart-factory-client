@@ -84,7 +84,6 @@ function EntryDesktop(props) {
                     username: props.location.state.mobile
                   })
                   .then(res => {
-                    console.log('response', res.data.last_update);
                     if (res.status === 200) {
                       history.push({
                         pathname: '/otp',

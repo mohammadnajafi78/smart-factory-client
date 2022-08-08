@@ -29,20 +29,28 @@ export default function DrawerComp(props) {
   ];
   let path = history.location.pathname.split('/')[2];
   const [selected, setSelected] = useState(
-    ['competition', 'awards', 'comments', 'received'].includes(
-      history.location.pathname.split('/')[2]
-    )
+    ['competition', 'awards', 'comments', 'received'].includes(path)
       ? path
+      : path === 'receivedItem'
+      ? 'received'
+      : path === 'newComment'
+      ? 'comments'
+      : path === 'newCompetition' || path === 'competitionDetails'
+      ? 'competition'
       : 'awards'
   );
 
   useEffect(() => {
     path = history.location.pathname.split('/')[2];
     setSelected(
-      ['competition', 'awards', 'comments', 'received'].includes(
-        history.location.pathname.split('/')[2]
-      )
+      ['competition', 'awards', 'comments', 'received'].includes(path)
         ? path
+        : path === 'receivedItem'
+        ? 'received'
+        : path === 'newComment'
+        ? 'comments'
+        : path === 'newCompetition' || path === 'competitionDetails'
+        ? 'competition'
         : 'awards'
     );
   }, [props]);

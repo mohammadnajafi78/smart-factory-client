@@ -25,7 +25,6 @@ export default function CommentsList({ selected, setSelected }) {
 
     httpService.get(`${API_BASE_URL}/api/club/suggestion_topic/`).then(res => {
       if (res.status === 200) {
-        console.log('topic', res.data);
         setTopics(res.data);
       }
     });

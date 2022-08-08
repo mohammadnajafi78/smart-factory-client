@@ -8,7 +8,6 @@ function Awards(props) {
   const theme = useTheme();
   const { id } = useParams();
   const mobileDevice = useMediaQuery(theme.breakpoints.down('md'));
-  console.log('props', id);
 
   return <>{mobileDevice ? <AwardsMobile /> : <AwardsDesktop />}</>;
 }

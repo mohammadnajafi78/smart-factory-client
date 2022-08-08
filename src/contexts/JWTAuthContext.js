@@ -26,7 +26,6 @@ const setSession = accessToken => {
     localStorage.setItem('token', accessToken);
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
   } else {
-    console.log('remove session');
     localStorage.removeItem('token');
     delete axios.defaults.headers.common.Authorization;
   }
@@ -145,7 +144,6 @@ export const AuthProvider = ({ children }) => {
         const accessToken = window.localStorage.getItem('token');
 
         if (accessToken && isValidToken(accessToken)) {
-          console.log('setSession');
           setSession(accessToken);
 
           // const response = await axios.get('/api/account/me');

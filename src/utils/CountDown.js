@@ -29,7 +29,6 @@ class CountDown extends React.Component {
   }
 
   componentDidMount() {
-    console.log('seconds', this.props.seconds());
     let timeLeftVar = this.secondsToTime(this.props.seconds());
     this.setState({ time: timeLeftVar });
   }

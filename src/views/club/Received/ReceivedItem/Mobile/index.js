@@ -7,11 +7,11 @@ import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader'
 import LinkIconButton from 'src/components/Mobile/Button/LinkIcon';
 import Received from 'src/assets/img/icons/received.svg';
 import makeStyles from '@mui/styles/makeStyles';
-import QR from 'src/assets/img/icons/qr.jpeg';
 import { height } from '@mui/system';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import MomentFa from 'src/utils/MomentFa';
+import QRCode from 'react-qr-code';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -195,7 +195,7 @@ export default function ReceivedItemMobile(props) {
                 )
                 .then(res => {
                   if (res.status === 200) {
-                    setQr(res.data);
+                    setQr(res.data.qr_code);
                   }
                 });
             }}
@@ -218,7 +218,10 @@ export default function ReceivedItemMobile(props) {
       <Drawer
         anchor={'bottom'}
         open={open}
-        onClose={() => setOpen(false)}
+        handleClose={() => {
+          setOpen(false);
+          setQr(null);
+        }}
         classes={{
           paper: classes.paper
         }}
@@ -256,10 +259,13 @@ export default function ReceivedItemMobile(props) {
               // justifyContent: 'space-between',
               gap: 2,
               // borderTop: '0.5px solid #D3D2D2',
-              padding: '12px 16px'
+              padding: '12px 16px',
+              width: '328px',
+              height: '328px'
             }}
           >
-            <img src={QR} width="328px" height="328px" />
+            {/* <img src={qr} width="328px" height="328px" /> */}
+            {qr && <QRCode value={qr} />}
           </Box>
         </Box>
       </Drawer>

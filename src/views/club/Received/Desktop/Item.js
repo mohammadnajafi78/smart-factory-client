@@ -8,7 +8,6 @@ import MomentFa from 'src/utils/MomentFa';
 
 export default function Item({ data, selected, setSelected }) {
   const history = useHistory();
-  console.log('Data', data);
   return (
     <Box
       sx={{

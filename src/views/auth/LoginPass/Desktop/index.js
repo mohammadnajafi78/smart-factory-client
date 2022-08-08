@@ -45,7 +45,6 @@ function LoginPassDesktop(props) {
             return errors;
           }}
           onSubmit={async (values, { setErrors, setSubmitting }) => {
-            console.log('pass');
             httpService
               .post(`${API_BASE_URL}/api/users/login_with_pass/`, {
                 username: props.location.state.mobile,

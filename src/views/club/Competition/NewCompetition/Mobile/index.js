@@ -11,7 +11,6 @@ import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 export default function NewCompetitionMobile(props) {
   // const [awards, setAwards] = useState(['1', '2', '3', '4']);
   const [awards, setAwards] = useState(props.location.state);
-  console.log('location22', props.location.state);
 
   return (
     <Box

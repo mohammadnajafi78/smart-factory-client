@@ -204,7 +204,6 @@ function LoginOTPMobile(props) {
                   }
                 }}
                 onKeyDown={e => {
-                  console.log('event', e.keyCode);
                   if (e.keyCode === 8) {
                     document.getElementById('input1').focus();
                   }

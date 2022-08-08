@@ -70,7 +70,6 @@ function LocationDesktop() {
             // return errors;
           }}
           onSubmit={async (values, { setErrors, setSubmitting }) => {
-            console.log('inside');
             httpService
               .post(`${API_BASE_URL}/api/utils/locations/`, {
                 country_id: 25,

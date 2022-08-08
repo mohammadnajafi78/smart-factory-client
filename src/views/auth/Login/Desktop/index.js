@@ -44,7 +44,6 @@ function LoginDesktop() {
           }}
           onSubmit={async (values, { setErrors, setSubmitting }) => {
             try {
-              console.log('values ', values);
               httpService
                 .get(
                   `${API_BASE_URL}/api/users/login_or_register?mobile=${values.input}`

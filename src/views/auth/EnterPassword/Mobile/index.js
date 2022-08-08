@@ -36,7 +36,6 @@ function EnterPasswordMobile(props) {
           return errors;
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
-          console.log('password');
           httpService
             .post(`${API_BASE_URL}/api/users/`, {
               mobile: props.location.state.mobile,

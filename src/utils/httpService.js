@@ -20,7 +20,6 @@ function ValidToken(accessToken) {
 }
 
 if (token && ValidToken(token)) {
-  console.log('inja');
   headers['Authorization'] = `Bearer ${token}`;
   axios.defaults.headers.common = headers;
 }

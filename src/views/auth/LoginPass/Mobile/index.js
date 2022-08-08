@@ -44,7 +44,6 @@ function LoginPassMobile(props) {
           //     });
           //     setSubmitting(false);
           //   }
-          console.log('pass');
           httpService
             .post(`${API_BASE_URL}/api/users/login_with_pass/`, {
               username: props.location.state.mobile,

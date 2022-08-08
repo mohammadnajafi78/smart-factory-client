@@ -19,8 +19,6 @@ function LoginOTPDesktop(props) {
   const [reSend, setReSend] = useState(false);
   const { registry } = useAuth();
 
-  console.log('last_update', props.location.state.lastUpdate);
-
   function remainingTime(finish) {
     let today = moment();
     let temp = '00:02:00';
