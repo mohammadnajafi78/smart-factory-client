@@ -64,7 +64,7 @@ export default function CommentItem({ data }) {
             gap: '38px',
 
             width: '100%',
-            height: '90px'
+            height: '80px'
           }}
         >
           <Box

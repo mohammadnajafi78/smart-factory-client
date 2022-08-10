@@ -56,7 +56,7 @@ export default function Item({ data, selected, setSelected }) {
           gap: '22px',
 
           width: '100%',
-          height: '90px'
+          height: '80px'
         }}
       >
         <Box

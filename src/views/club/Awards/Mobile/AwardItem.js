@@ -39,7 +39,7 @@ export default function AwardItem({ data }) {
         }}
       >
         <img
-          src={data.image}
+          src={data.image ? data.image : data.gift_detail.image}
           alt={data.name}
           style={{ width: '44px', height: '60px' }}
         />
@@ -53,7 +53,7 @@ export default function AwardItem({ data }) {
           gap: '38px',
 
           width: '100%',
-          height: '90px'
+          height: '70px'
         }}
       >
         <Box
@@ -70,7 +70,12 @@ export default function AwardItem({ data }) {
           }}
         >
           <InputLabel
-            style={{ fontWeight: 500, fontSize: '16px', color: '#00346D' }}
+            style={{
+              fontWeight: 500,
+              fontSize: '16px',
+              color: '#00346D',
+              lineHeight: '17px'
+            }}
           >
             {data.name}
           </InputLabel>
@@ -90,7 +95,7 @@ export default function AwardItem({ data }) {
             }}
           >
             <InputLabel style={{ color: '#00AAB5' }}>
-              {data.gift_grade}
+              {data.gift_grade ? data.gift_grade : data.gift_detail.gift_grade}
             </InputLabel>
             <Star style={{ width: '27px', height: '18px' }} />
           </Box>

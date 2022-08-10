@@ -35,7 +35,7 @@ export default function ReceivedItemMobile(props) {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          padding: '12px 20px 0px'
+          padding: '12px 12px 0px'
         }}
       >
         <Box
@@ -58,7 +58,7 @@ export default function ReceivedItemMobile(props) {
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
-              padding: '10px 15px',
+              // padding: '10px 15px',
               gap: '10px',
               borderRadius: '8px'
             }}
@@ -78,7 +78,7 @@ export default function ReceivedItemMobile(props) {
               gap: '22px',
 
               width: '100%',
-              height: '90px'
+              height: '70px'
             }}
           >
             <Box
@@ -97,9 +97,14 @@ export default function ReceivedItemMobile(props) {
               }}
             >
               <InputLabel
-                style={{ fontWeight: 500, fontSize: '16px', color: '#00346D' }}
+                style={{
+                  fontWeight: 500,
+                  fontSize: '16px',
+                  color: '#00346D',
+                  lineHeight: '17px'
+                }}
               >
-                {data.name}
+                {data.gift_data.name}
               </InputLabel>
               <Box
                 sx={{
@@ -140,7 +145,7 @@ export default function ReceivedItemMobile(props) {
                   gap: '8px',
 
                   width: '100%',
-                  height: '25px'
+                  height: '20px'
                 }}
               >
                 <InputLabel
@@ -151,11 +156,11 @@ export default function ReceivedItemMobile(props) {
                   }}
                 >
                   {'اعتبار تا '}
-                  {MomentFa(data.gift_data.expire_date)}
+                  {MomentFa(data.expire_date)}
                 </InputLabel>
               </Box>
               <InputLabel
-                style={{ fontWeight: 400, fontSize: '12px', color: '#828282' }}
+                style={{ fontWeight: 400, fontSize: '10px', color: '#828282' }}
               >
                 {`تاریخ کسب: ${MomentFa(data.create_date)}`}
               </InputLabel>
@@ -202,7 +207,7 @@ export default function ReceivedItemMobile(props) {
             style={{
               position: 'absolute',
               bottom: '90px',
-              width: '90%'
+              width: '93%'
             }}
           >
             <img

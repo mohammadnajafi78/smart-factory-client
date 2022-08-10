@@ -61,7 +61,7 @@ export default function Item({ data }) {
           gap: '22px',
 
           width: '100%',
-          height: '90px'
+          height: '70px'
         }}
       >
         <Box
@@ -78,7 +78,13 @@ export default function Item({ data }) {
           }}
         >
           <InputLabel
-            style={{ fontWeight: 500, fontSize: '16px', color: '#00346D' }}
+            style={{
+              fontWeight: 500,
+              fontSize: '16px',
+              color: '#00346D',
+              lineHeight: '17px',
+              width: '46%'
+            }}
           >
             {data.gift_data.name}
           </InputLabel>
@@ -135,7 +141,7 @@ export default function Item({ data }) {
           <InputLabel
             style={{ fontWeight: 400, fontSize: '12px', color: '#808286' }}
           >
-            {`اعتبار تا: ${MomentFa(data.gift_data.expire_date)}`}
+            {`اعتبار تا: ${MomentFa(data.expire_date)}`}
           </InputLabel>
           <Box
             sx={{
@@ -151,7 +157,12 @@ export default function Item({ data }) {
             }}
           >
             <InputLabel
-              style={{ fontWeight: 400, fontSize: '12px', color: '#828282' }}
+              style={{
+                fontWeight: 400,
+                fontSize: '10px',
+                color: '#828282',
+                lineHeight: '12px'
+              }}
             >
               {`تاریخ کسب: ${MomentFa(data.create_date)}`}
             </InputLabel>
@@ -163,7 +174,8 @@ export default function Item({ data }) {
                 textDecoration: 'none',
                 fontSize: '12px',
                 fontWeight: 400,
-                cursor: 'pointer'
+                cursor: 'pointer',
+                marginBottom: '30px'
               }}
             >
               {/* <NavLink

@@ -5,6 +5,7 @@ import InputLabel from 'src/components/Desktop/InputLabel';
 import MomentFa from 'src/utils/MomentFa';
 
 export default function AwardItem({ data, selected, setSelected }) {
+  console.log('inja', data);
   return (
     <Box
       sx={{
@@ -41,7 +42,7 @@ export default function AwardItem({ data, selected, setSelected }) {
         }}
       >
         <img
-          src={data.image}
+          src={data.image ? data.image : data.gift_detail.image}
           alt={data.name}
           style={{ width: '44px', height: '60px' }}
         />
@@ -55,7 +56,7 @@ export default function AwardItem({ data, selected, setSelected }) {
           gap: '38px',
 
           width: '100%',
-          height: '90px'
+          height: '70px'
         }}
       >
         <Box
@@ -91,7 +92,9 @@ export default function AwardItem({ data, selected, setSelected }) {
               color: '#00AAB5'
             }}
           >
-            <InputLabel style={{ color: '#00AAB5' }}>{data.score}</InputLabel>
+            <InputLabel style={{ color: '#00AAB5' }}>
+              {data.gift_grade ? data.gift_grade : data.gift_detail.gift_grade}
+            </InputLabel>
             <Star style={{ width: '27px', height: '18px' }} />
           </Box>
         </Box>

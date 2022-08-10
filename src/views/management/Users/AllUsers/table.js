@@ -28,6 +28,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import DownloadIcon from '@mui/icons-material/FileUpload';
 import ViewColumnIcon from '@mui/icons-material/ViewColumn';
 import FilterIcon from '@mui/icons-material/FilterAlt';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
 const muiCache = createCache({
   key: 'mui-datatables',
@@ -44,10 +46,10 @@ let theme = createTheme({
         },
         paper: {
           boxShadow: 'none'
-        },
-        caption: {
-          left: '0px'
         }
+        // caption: {
+        //   left: '0px'
+        // }
       }
     },
     MuiToolbar: {
@@ -56,6 +58,14 @@ let theme = createTheme({
           //backgroundColor: '#f00',
           fontFamily: 'IRANSans',
           textAlign: 'center'
+        }
+      }
+    },
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          // color: 'rgba(0, 0, 0, 0.6) !important'
+          color: '#00AAB5 !important'
         }
       }
     },
@@ -136,6 +146,22 @@ let theme = createTheme({
           fontFamily: 'IRANSans',
           fontSize: 12,
           fontWeight: 8
+        },
+        resetLink: {
+          color: '#00AAB5',
+          fontSize: '16px',
+          fontWeight: 700
+        },
+        title: {
+          fontSize: '16px',
+          fontWeight: 700
+        },
+        reset: {
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexDirection: 'row',
+          alignItems: 'center',
+          width: '700px'
         }
       }
     },
@@ -167,7 +193,8 @@ let theme = createTheme({
         root: {
           direction: 'rtl',
           fontFamily: 'IRANSans',
-          fontSize: 12
+          fontSize: 12,
+          padding: '16px 0px 16px 44px'
         },
         label: {
           direction: 'rtl',
@@ -231,14 +258,55 @@ let theme = createTheme({
           textAlign: 'left'
         },
         filterCloseIcon: {
-          position: 'absolute',
-          left: 0,
-          top: 0,
-          width: '1200px',
+          // position: 'absolute',
+          // left: 0,
+          // top: 0,
+          // width: '1200px',
 
-          '&:hover': {
-            backgroundColor: 'white'
-          }
+          // '&:hover': {
+          //   backgroundColor: 'white'
+          // }
+          display: 'none'
+        },
+        left: {
+          display: 'flex',
+          justifyContent: 'flex-start'
+        },
+        titleText: {
+          color: '#00346D',
+          fontWeight: 700,
+          fontSize: '20px',
+          fontFamily: 'IRANSans'
+        }
+      }
+    },
+    MUIDataTableToolbarSelect: {
+      styleOverrides: {
+        title: {
+          paddingRight: '10px',
+          fontSize: '18px',
+          fontWeight: 500,
+          fontFamily: 'IRANSans',
+          color: '#00346D'
+        }
+      }
+    },
+    MUIDataTableSelectCell: {
+      styleOverrides: {
+        // checked: { color: '#00AAB5 !important' },
+        // color: '#00AAB5 !important',
+        headerCell: {
+          // fill: '#00AAB5 !important'
+        },
+        checkboxRoot: {
+          color: '#00AAB5 !important'
+        }
+      }
+    },
+    MUIDataTableFilterList: {
+      styleOverrides: {
+        root: {
+          justifyContent: 'flex-start'
         }
       }
     }
@@ -247,159 +315,152 @@ let theme = createTheme({
 
 theme = responsiveFontSizes(theme);
 
-const TaskListGrid = props => {
+const AllUsersTable = props => {
   const { className, rest, returnFunction, gridData } = props;
-
+  const [page, setPage] = useState(0);
+  const [count, setCount] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(15);
+  const [data, setData] = useState([]);
   const tableRef = React.createRef();
-  const [user, setUser] = useState();
   const [openModal, setOpenModal] = useState(false);
   const [newColumns, setNewColumns] = useState([]);
   const [columns, setColumns] = useState([
     {
-      name: 'taskState',
-      label: ' ',
-      options: {
-        customBodyRender: data => (
-          <>
-            {data !== null && data !== undefined ? (
-              data.toLowerCase() === 'assigned' ? (
-                <AssignmentOutlinedIcon style={{ color: '#57c5f7' }} />
-              ) : data.toLowerCase() === 'completed' ? (
-                <AssignmentTurnedInOutlinedIcon
-                  style={{ color: '#7fd41b' }}
-                  color={'action'}
-                />
-              ) : data.toLowerCase() === 'expired' ? (
-                <AssignmentLateOutlinedIcon style={{ color: '#ed453e' }} />
-              ) : data.toLowerCase() === 'alerted' ? (
-                <AssignmentLateOutlinedIcon
-                  style={{ color: '#ed453e', fontSize: 15 }}
-                />
-              ) : (
-                <LockOpenRoundedIcon style={{ color: 'green' }} />
-              )
-            ) : (
-              ''
-            )}
-          </>
-        ),
-        filter: false,
-        viewColumns: false
-      }
+      name: 'user.first_name',
+      label: 'نام'
     },
     {
-      name: 'taskTitle',
-      label: 'عنوان وظیفه',
-      options: {
-        customBodyRender: (value, tableMeta, updateValue) => {
-          console.log('tableMeta =>', tableMeta);
-          return (
-            <Link
-              underline={'hover'}
-              color="textPrimary"
-              onClick={() => getRowData(value)}
-              component={RouterLink}
-              to={{
-                pathname: `/app/processviewer`,
-                state: {
-                  data: {
-                    taskState: tableMeta.rowData?.[0],
-                    type: 'continue'
-                    //taskId: rowData.taskId,
-                    //name: rowData.flowId,
-                    //selectedFilter: this.state.selectedTaskFilter,
-                    // dn: rowData.partialUrl + "/" + rowData.flowId + "/" + rowData.taskId,
-                    //processInstanceId: rowData.processInstanceId,
-                    //requestId: rowData.requestId,
-                    //tableName: rowData.tableName,
-                    //compositeDn: rowData.compositeDn,
-                    //processName: rowData.processName
-                  }
-                }
-              }}
-              variant="h6"
-            >
-              <h6 style={{ color: '#3f51b5', fontSize: '10px' }}>{value}</h6>
-            </Link>
-          );
-        }
-      },
-      filterType: 'custom',
-      filterOptions: {
-        // logic: (location, filters, row) => {
-        //   if (filters.length) return !filters.includes(location);
-        //   return false;
-        // },
-        display: (filterList, onChange, index, column) => {
-          const optionValues = ['Minneapolis', 'New York', 'Seattle'];
-          return (
-            <FormControl>
-              <InputLabel htmlFor="select-multiple-chip">Location</InputLabel>
-              <TextField
-                id="password"
-                aria-describedby="my-helper-text"
-                fullWidth
-                placeholder="رمز عبور"
-                sx={{
-                  background: '#F2F2F2',
-                  borderRadius: '4px',
-                  margin: '6px 3px'
-                }}
-                //   value={values.password}
-                //   onChange={handleChange}
-              />
-            </FormControl>
-          );
-        }
-      }
+      name: 'user.last_name',
+      label: 'نام خانوادگی'
     },
-    { name: 'requestCode', label: 'کد درخواست' },
-    { name: 'requestDes', label: 'عنوان درخواست' },
     {
-      name: 'assignedDate',
-      label: 'تاریخ انتصاب',
-      options: {
-        sort: true,
-        customBodyRender: (data, dataIndex, rowIndex) => (
-          <div>
-            {data !== null ? (
-              <h3>
-                {moment(data, 'YYYY/MM/DD HH:mm:ss', 'fa')
-                  .format('YYYY/MM/DD')
-                  .toLocaleLowerCase('fa')}
-              </h3>
-            ) : (
-              '-'
-            )}
-          </div>
-        )
-      }
+      name: 'user.mobile',
+      label: 'شماره موبایل'
     },
-    { name: 'creatorName', label: 'ایجاد کننده' },
-    { name: 'flowId', label: 'شماره درخواست' },
     {
-      name: 'details',
-      label: ' ',
-      options: {
-        customBodyRender: rowData => (
-          <div>
-            <IconButton
-              onClick={() => modalAction(rowData.PERSONAL_CODE)}
-              size="large"
-            >
-              <Tooltip label={'اطلاعات بیشتر'}>
-                <ErrorOutlineRoundedIcon
-                  color="disabled"
-                  style={{ cursor: 'pointer' }}
-                />
-              </Tooltip>
-            </IconButton>
-          </div>
-        ),
-        filter: false,
-        viewColumns: false
-      }
+      name: 'location.province_name',
+      label: 'استان'
+    },
+    {
+      name: 'location.city_name',
+      label: 'شهر'
     }
+    // {
+    //   name: 'user.first_name',
+    //   label: 'کد پستی'
+    // }
+    // {
+    //   name: 'taskTitle',
+    //   label: 'شماره موبایل',
+    //   filterType: 'custom',
+    //   filterOptions: {
+    //     display: (filterList, onChange, index, column) => {
+    //       const optionValues = ['Minneapolis', 'New York', 'Seattle'];
+    //       return (
+    //         <FormControl>
+    //           <InputLabel htmlFor="select-multiple-chip">Location</InputLabel>
+    //           <TextField
+    //             id="password"
+    //             aria-describedby="my-helper-text"
+    //             fullWidth
+    //             placeholder="رمز عبور"
+    //             sx={{
+    //               background: '#F2F2F2',
+    //               borderRadius: '4px',
+    //               margin: '6px 3px'
+    //             }}
+    //             //   value={values.password}
+    //             //   onChange={handleChange}
+    //           />
+    //         </FormControl>
+    //       );
+    //     }
+    //   }
+    // },
+    // { name: 'requestCode', label: 'کد پستی' },
+    // { name: 'requestDes', label: 'آدرس' }
+    // {
+    //   name: 'assignedDate',
+    //   label: 'تاریخ انتصاب',
+    //   filterOptions: {
+    //     display: (filterList, onChange, index, column) => {
+    //       const optionValues = ['Minneapolis', 'New York', 'Seattle'];
+    //       return (
+    //         <FormControl>
+    //           <InputLabel htmlFor="select-multiple-chip">Location</InputLabel>
+    //           <TextField
+    //             id="password"
+    //             aria-describedby="my-helper-text"
+    //             fullWidth
+    //             placeholder="رمز عبور"
+    //             sx={{
+    //               background: '#F2F2F2',
+    //               borderRadius: '4px',
+    //               margin: '6px 3px'
+    //             }}
+    //             //   value={values.password}
+    //             //   onChange={handleChange}
+    //           />
+    //         </FormControl>
+    //       );
+    //     }
+    //   }
+    // },
+    // {
+    //   name: 'creatorName',
+    //   label: 'ایجاد کننده',
+    //   filterOptions: {
+    //     display: (filterList, onChange, index, column) => {
+    //       const optionValues = ['Minneapolis', 'New York', 'Seattle'];
+    //       return (
+    //         <FormControl>
+    //           <InputLabel htmlFor="select-multiple-chip">Location</InputLabel>
+    //           <TextField
+    //             id="password"
+    //             aria-describedby="my-helper-text"
+    //             fullWidth
+    //             placeholder="رمز عبور"
+    //             sx={{
+    //               background: '#F2F2F2',
+    //               borderRadius: '4px',
+    //               margin: '6px 3px'
+    //             }}
+    //             //   value={values.password}
+    //             //   onChange={handleChange}
+    //           />
+    //         </FormControl>
+    //       );
+    //     }
+    //   }
+    // },
+    // { name: 'flowId', label: 'شماره درخواست' },
+    // {
+    //   name: 'details',
+    //   label: ' ',
+    //   filterOptions: {
+    //     display: (filterList, onChange, index, column) => {
+    //       const optionValues = ['Minneapolis', 'New York', 'Seattle'];
+    //       return (
+    //         <FormControl>
+    //           <InputLabel htmlFor="select-multiple-chip">Location</InputLabel>
+    //           <TextField
+    //             id="password"
+    //             aria-describedby="my-helper-text"
+    //             fullWidth
+    //             placeholder="رمز عبور"
+    //             sx={{
+    //               background: '#F2F2F2',
+    //               borderRadius: '4px',
+    //               margin: '6px 3px'
+    //             }}
+    //             //   value={values.password}
+    //             //   onChange={handleChange}
+    //           />
+    //         </FormControl>
+    //       );
+    //     }
+    //   }
+    // }
   ]);
 
   const CustomSearchIcon = props => {
@@ -424,20 +485,65 @@ const TaskListGrid = props => {
     }
   };
 
-  const [data] = useState(props.gridData);
+  function getData(page, rowsPerPage) {
+    // this.setState({ isLoading: true });
+    httpService
+      .get(
+        `${API_BASE_URL}/api/management/user/?limit=${page * rowsPerPage +
+          rowsPerPage}&offset=${page}`
+      )
+      .then(res => {
+        if (res.status === 200) {
+          // var array = Object.keys(res.data.results).map(function(key) {
+          //   return res.data.results[key];
+          // });
+          // console.log('arr', array);
+          setData(res.data.results);
+          setCount(res.data.count);
+        }
+      });
+  }
+
+  useEffect(() => {
+    getData(page, rowsPerPage);
+  }, []);
+
+  useEffect(() => {
+    console.log('data', data);
+  }, [data]);
+
+  function changePage(page, rowsPerPage, sortOrder) {
+    // this.setState({
+    //   isLoading: true,
+    // });
+    httpService
+      .get(
+        `${API_BASE_URL}/api/management/user/?limit=${page * rowsPerPage +
+          rowsPerPage}&offset=${page}`
+      )
+      .then(res => {
+        if (res.status === 200) {
+          setData(res.data.results);
+          setCount(res.data.count);
+        }
+      });
+  }
 
   const tableOptions = {
     filter: true,
-    selectableRows: false,
+    selectableRows: true,
     filterType: 'textField',
-    rowsPerPage: '15',
+    rowsPerPage: rowsPerPage,
+    count: count,
+    serverSide: true,
+    enableNestedDataAccess: '.',
     //rowsPerPageOptions: rowsPerPageOptions,
     print: false,
     //search: true,
     responsive: 'vertical',
     //download: true,
     downloadOptions: {
-      filename: 'لیست وظایف',
+      // filename: 'لیست وظایف',
       filterOptions: {
         useDisplayedColumnsOnly: true,
         useDisplayedRowsOnly: true
@@ -457,12 +563,9 @@ const TaskListGrid = props => {
     //pagination: true,
     //sortThirdClickReset: true,
     //serverside:true,
-    setRowProps: (row, dataIndex, rowIndex) => {
-      console.log('row', row);
-      console.log('dataIndex', dataIndex);
-      console.log('rowIndex', rowIndex);
-      return <div></div>;
-    },
+    // setRowProps: (row, dataIndex, rowIndex) => {
+    //   return <div></div>;
+    // },
     //columnOrder:[],
     resizableColumns: false,
     textLabels: {
@@ -470,13 +573,12 @@ const TaskListGrid = props => {
         noMatch: 'رکوردی برای نمایش نیست',
         toolTip: (
           <Typography variant="body2" color="inherit">
-            مرتب سازی{' '}
+            مرتب سازی
           </Typography>
         ),
         columnHeaderTooltip: column => (
           <Typography variant="body2" color="inherit">
-            {' '}
-            مرتب سازی براساس {column.label}{' '}
+            مرتب سازی براساس {column.label}
           </Typography>
         )
       },
@@ -497,22 +599,43 @@ const TaskListGrid = props => {
       filter: {
         all: 'همه',
         title: 'فیلترها',
-        reset: 'حذف فیلتر'
+        reset: 'پاک کردن'
       },
       viewColumns: {
         title: 'نمایش ستونها',
         titleAria: 'نمایش/عدم نمایش ستونها'
       },
       selectedRows: {
-        text: 'سطر(های) انتخاب شده',
+        text: `ردیف انتخاب شده`,
         delete: 'حذف',
         deleteAria: 'حذف سطر(های) انتخاب شده'
+      }
+    },
+    onTableChange: (action, tableState) => {
+      console.log(action, tableState);
+
+      // a developer could react to change on an action basis or
+      // examine the state as a whole and do whatever they want
+
+      switch (action) {
+        case 'changePage':
+          changePage(
+            tableState.page,
+            tableState.rowsPerPage
+            // tableState.sortOrder
+          );
+          break;
+        // case 'sort':
+        //   this.sort(tableState.page, tableState.sortOrder);
+        //   break;
+        default:
+          console.log('action not handled.');
       }
     }
   };
 
   function onHandleColumnReorder(result) {
-    setNewColumns(result);
+    // setNewColumns(result);
     console.log('result', result);
     console.log('columnOrder', newColumns);
   }
@@ -534,14 +657,16 @@ const TaskListGrid = props => {
       <ThemeProvider theme={theme}>
         <Card>
           <PerfectScrollbar>
-            <Box>
+            <Box sx={{ height: '87vh' }}>
+              {/* {data && ( */}
               <MUIDataTable
-                //title={"لیست وظایف"}
-                data={gridData}
-                columns={newColumns.length > 0 ? newColumns : columns}
+                title={'لیست'}
+                data={data}
+                columns={columns}
                 options={tableOptions}
                 components={components}
               />
+              {/* )} */}
             </Box>
           </PerfectScrollbar>
         </Card>
@@ -550,8 +675,8 @@ const TaskListGrid = props => {
   );
 };
 
-TaskListGrid.propTypes = {
+AllUsersTable.propTypes = {
   className: PropTypes.string
 };
 
-export default TaskListGrid;
+export default AllUsersTable;

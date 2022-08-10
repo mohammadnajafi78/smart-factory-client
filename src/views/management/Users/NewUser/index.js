@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import NewUsersDesktop from './Desktop';
 import NewUsersMobile from './Mobile';
 
-function Awards(props) {
+function NewUser(props) {
   const theme = useTheme();
   const mobileDevice = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -12,4 +12,4 @@ function Awards(props) {
   return <NewUsersDesktop />;
 }
 
-export default Awards;
+export default NewUser;

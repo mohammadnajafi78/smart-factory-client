@@ -206,8 +206,23 @@ const routes = [
     routes: [
       {
         exact: true,
-        path: '/management/user',
-        component: lazy(() => import('src/views/management/Users/NewUsers'))
+        path: '/management/user/home',
+        component: lazy(() => import('src/views/management/Users/Home'))
+      },
+      {
+        exact: true,
+        path: '/management/user/newUser',
+        component: lazy(() => import('src/views/management/Users/NewUser'))
+      },
+      {
+        exact: true,
+        path: '/management/user/allUsers',
+        component: lazy(() => import('src/views/management/Users/AllUsers'))
+      },
+      {
+        exact: true,
+        path: '/management/club/competition',
+        component: lazy(() => import('src/views/management/Users/NewUser'))
       },
       {
         component: () => <Redirect to="/404" />

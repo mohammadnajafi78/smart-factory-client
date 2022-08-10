@@ -104,7 +104,7 @@ export default function GetAwardMobile(props) {
                   // gap: '3px',
 
                   width: '100%',
-                  height: '25px',
+                  height: '40px',
                   borderBottom: '0.5px solid #D7D7D7'
                 }}
               >
@@ -112,7 +112,8 @@ export default function GetAwardMobile(props) {
                   style={{
                     fontWeight: 500,
                     fontSize: '16px',
-                    color: '#00346D'
+                    color: '#00346D',
+                    lineHeight: '17px'
                   }}
                 >
                   {data.name}

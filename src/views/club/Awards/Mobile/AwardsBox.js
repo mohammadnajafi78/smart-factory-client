@@ -141,7 +141,13 @@ export default function AwardsBox() {
               </InputLabelHeader>
             </Box>
 
-            <InputLabelHeader style={{ color: '#00346D', fontWeight: '500' }}>
+            <InputLabelHeader
+              style={{
+                color: '#00346D',
+                fontWeight: '500',
+                textAlign: 'center'
+              }}
+            >
               آیا از دریافت این صندوق مطمئن هستید؟
             </InputLabelHeader>
           </Box>

@@ -63,7 +63,7 @@ export default function CommentItem({ data, selected, setSelected }) {
             gap: '38px',
 
             width: '100%',
-            height: '90px'
+            height: '80px'
           }}
         >
           <Box

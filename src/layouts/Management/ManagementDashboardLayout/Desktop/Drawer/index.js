@@ -22,14 +22,23 @@ import TopBar from '../TopBar';
 import { styled, useTheme } from '@mui/material/styles';
 import userMng from 'src/assets/img/icons/userMng.svg';
 import clubMng from 'src/assets/img/icons/clubMng.svg';
+import homeMng from 'src/assets/img/icons/homeMng.svg';
+import newUserMng from 'src/assets/img/icons/newUserMng.svg';
+import allUserMng from 'src/assets/img/icons/allUserMng.svg';
+import competitionMng from 'src/assets/img/icons/competitionMng.svg';
+import lotteryMng from 'src/assets/img/icons/lotteryMng.svg';
+import awardsMng from 'src/assets/img/icons/awardsMng.svg';
+import commentMng from 'src/assets/img/icons/commentMng.svg';
+import settingMng from 'src/assets/img/icons/settingMng.svg';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
   padding: theme.spacing(0, 1),
+  minHeight: '60px !important'
   // necessary for content to be below app bar
-  ...theme.mixins.toolbar
+  // ...theme.mixins.toolbar
 }));
 
 const NewDrawer = styled(Drawer)(({ theme }) => ({
@@ -42,7 +51,7 @@ const NewDrawer = styled(Drawer)(({ theme }) => ({
     justifyContent: 'flex-start',
     alignItems: 'center',
     background: '#FFFFFF',
-    padding: '20px 20px 30px',
+    padding: '0px 20px 30px',
     marginLeft: '95px',
     ...theme.mixins.toolbar,
     marginTop: '60px'
@@ -54,26 +63,82 @@ const NewDrawer = styled(Drawer)(({ theme }) => ({
 }));
 
 export default function DrawerComp(props) {
+  const [selected, setSelected] = useState(0);
   const history = useHistory();
-  let menu1 = [
-    { name: 'user', title: 'کاربر', path: '/management/user' },
-    { name: 'club', title: 'کلاب', path: '/management/club' }
+  let menu = [
+    {
+      id: 0,
+      name: 'user',
+      title: 'کاربر',
+      path: '/management/user/home',
+      image: userMng,
+      children: [
+        {
+          name: 'home',
+          title: 'خانه',
+          path: '/management/user/home',
+          image: homeMng
+        },
+        {
+          name: 'newUser',
+          title: 'کاربران جدید',
+          path: '/management/user/newUser',
+          image: newUserMng
+        },
+        {
+          name: 'allUsers',
+          title: 'همه کاربران',
+          path: '/management/user/allUsers',
+          image: allUserMng
+        }
+      ]
+    },
+    {
+      id: 1,
+      name: 'club',
+      title: 'کلاب',
+      path: '/management/club/competition',
+      image: clubMng,
+      children: [
+        {
+          name: 'competition',
+          title: 'مسابقات',
+          path: '/management/club/competition',
+          image: competitionMng
+        },
+        {
+          name: 'lottery',
+          title: 'قرعه کشی',
+          path: '/management/club/lottery',
+          image: lotteryMng
+        },
+        {
+          name: 'awards',
+          title: 'جوایز',
+          path: '/management/club/awards',
+          image: awardsMng
+        },
+        {
+          name: 'comments',
+          title: 'نظرات',
+          path: '/management/club/comments',
+          image: commentMng
+        },
+        {
+          name: 'settings',
+          title: 'تنظیمات',
+          path: '/management/club/settings',
+          image: settingMng
+        }
+      ]
+    }
   ];
-  let path = history.location.pathname.split('/')[2];
-  const [selected, setSelected] = useState(
-    ['user', 'club'].includes(history.location.pathname.split('/')[2])
-      ? path
-      : 'user'
-  );
 
   useEffect(() => {
-    path = history.location.pathname.split('/')[2];
-    setSelected(
-      ['user', 'club'].includes(history.location.pathname.split('/')[2])
-        ? path
-        : 'user'
-    );
-  }, [props]);
+    let path = history.location.pathname.split('/')[2];
+    if (path === 'user') setSelected(0);
+    else setSelected(1);
+  });
 
   return (
     <Box>
@@ -116,78 +181,35 @@ export default function DrawerComp(props) {
             gap: '60px'
           }}
         >
-          <List>
-            {menu1.map((item, index) => (
+          <List sx={{ padding: 0 }}>
+            {menu.map((item, index) => (
               <ListItem
                 key={index}
                 onClick={() => {
                   history.push(item.path);
-                  setSelected(item.name);
+                  setSelected(item.id);
                 }}
-                style={{ borderBottom: '0.5px solid #FFFFFF' }}
+                sx={{
+                  borderBottom: '0.5px solid #FFFFFF',
+                  borderLeft:
+                    index === selected ? '10px solid #335D8A' : 'none',
+                  paddingLeft: index === selected ? 0 : '10px'
+                }}
               >
                 <ListItemButton sx={{ flexDirection: 'column' }}>
                   <ListItemIcon>
-                    {index === 0 &&
-                      (selected !== item.name ? (
-                        <Box
-                          sx={{
-                            width: '38.5px',
-                            height: '28px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                          }}
-                        >
-                          <img src={userMng} width="38.5px" height={'28px'} />
-                        </Box>
-                      ) : (
-                        <Box
-                          sx={{
-                            background: `url(${Vector})`,
-                            width: '38.5px',
-                            height: '28px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            backgroundPosition: 'center',
-                            backgroundRepeat: 'no-repeat'
-                          }}
-                        >
-                          <img src={userMng} width="38.5px" height={'28px'} />
-                        </Box>
-                      ))}
-                    {index === 1 &&
-                      (selected !== item.name ? (
-                        <Box
-                          sx={{
-                            width: '38.5px',
-                            height: '28px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                          }}
-                        >
-                          <img src={clubMng} width="38.5px" height={'28px'} />
-                        </Box>
-                      ) : (
-                        <Box
-                          sx={{
-                            background: `url(${Vector})`,
-                            width: '38.5px',
-                            height: '28px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            backgroundPosition: 'center',
-                            backgroundRepeat: 'no-repeat'
-                          }}
-                        >
-                          <img src={clubMng} width="38.5px" height={'28px'} />
-                        </Box>
-                      ))}
+                    <Box
+                      sx={{
+                        width: '38.5px',
+                        height: '28px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                      }}
+                    >
+                      <img src={item.image} width="38.5px" height={'28px'} />
+                    </Box>
                   </ListItemIcon>
-                  {/* <ListItemText primary={item.title} /> */}
                 </ListItemButton>
               </ListItem>
             ))}
@@ -204,154 +226,35 @@ export default function DrawerComp(props) {
             gap: '60px'
           }}
         >
-          <List>
-            {menu1.map((item, index) => (
+          <List sx={{ padding: '0xp' }}>
+            {menu[selected].children.map((item, index) => (
               <ListItem
                 key={index}
                 onClick={() => {
                   history.push(item.path);
-                  setSelected(item.name);
+                  // setSelected(item.name);
+                }}
+                sx={{
+                  margin: '0px',
+                  padding: '0px',
+                  width: '180px'
                 }}
               >
-                <ListItemButton sx={{ flexDirection: 'row' }}>
+                <ListItemButton
+                  sx={{ flexDirection: 'row', padding: '12px 8px' }}
+                >
                   <ListItemIcon>
-                    {index === 0 &&
-                      (selected !== item.name ? (
-                        <Box
-                          sx={{
-                            width: '38.5px',
-                            height: '28px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                          }}
-                        >
-                          <img
-                            src={Competition}
-                            width="38.5px"
-                            height={'28px'}
-                          />
-                        </Box>
-                      ) : (
-                        <Box
-                          sx={{
-                            background: `url(${Vector})`,
-                            width: '38.5px',
-                            height: '28px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            backgroundPosition: 'center',
-                            backgroundRepeat: 'no-repeat'
-                          }}
-                        >
-                          <img
-                            src={CompetitionSelected}
-                            width="38.5px"
-                            height={'28px'}
-                          />
-                        </Box>
-                      ))}
-                    {index === 1 &&
-                      (selected !== item.name ? (
-                        <Box
-                          sx={{
-                            width: '38.5px',
-                            height: '28px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                          }}
-                        >
-                          <img src={Present} width="38.5px" height={'28px'} />
-                        </Box>
-                      ) : (
-                        <Box
-                          sx={{
-                            background: `url(${Vector})`,
-                            width: '38.5px',
-                            height: '28px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            backgroundPosition: 'center',
-                            backgroundRepeat: 'no-repeat'
-                          }}
-                        >
-                          <img
-                            src={PresentsSelected}
-                            width="38.5px"
-                            height={'28px'}
-                          />
-                        </Box>
-                      ))}
-                    {index === 2 &&
-                      (selected !== item.name ? (
-                        <Box
-                          sx={{
-                            width: '38.5px',
-                            height: '28px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                          }}
-                        >
-                          <img src={Comment} width="38.5px" height={'28px'} />
-                        </Box>
-                      ) : (
-                        <Box
-                          sx={{
-                            background: `url(${Vector})`,
-                            width: '38.5px',
-                            height: '28px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            backgroundPosition: 'center',
-                            backgroundRepeat: 'no-repeat'
-                          }}
-                        >
-                          <img
-                            src={CommentSelected}
-                            width="38.5px"
-                            height={'28px'}
-                          />
-                        </Box>
-                      ))}
-                    {index === 3 &&
-                      (selected !== item.name ? (
-                        <Box
-                          sx={{
-                            width: '38.5px',
-                            height: '28px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                          }}
-                        >
-                          <img src={Received} width="38.5px" height={'28px'} />
-                        </Box>
-                      ) : (
-                        <Box
-                          sx={{
-                            background: `url(${Vector})`,
-                            width: '38.5px',
-                            height: '28px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-
-                            backgroundPosition: 'center',
-                            backgroundRepeat: 'no-repeat'
-                          }}
-                        >
-                          <img
-                            src={ReceivedSelected}
-                            width="38.5px"
-                            height={'28px'}
-                          />
-                        </Box>
-                      ))}
+                    <Box
+                      sx={{
+                        width: '25px',
+                        height: '25px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                      }}
+                    >
+                      <img src={item.image} width="25px" height={'25px'} />
+                    </Box>
                   </ListItemIcon>
                   <ListItemText primary={item.title} />
                 </ListItemButton>
