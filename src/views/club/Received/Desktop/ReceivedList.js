@@ -142,6 +142,9 @@ export default function ReceivedListDesktop({ selected, setSelected }) {
                   console.info(error);
                 }
               }}
+              constraints={{
+                facingMode: 'environment'
+              }}
             />
             <p>{scan}</p>
           </Box>

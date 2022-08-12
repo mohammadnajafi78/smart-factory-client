@@ -122,6 +122,9 @@ export default function ReceivedMobile() {
               console.info(error);
             }
           }}
+          constraints={{
+            facingMode: 'environment'
+          }}
         />
         <p>{scan}</p>
       </Drawer>
