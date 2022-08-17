@@ -77,7 +77,7 @@ export default function Item({ data, selected, setSelected }) {
           >
             {data.gift_data.name}
           </InputLabel>
-          {data.status === 'valid' ? (
+          {data.status.toLowerCase() === 'valid' ? (
             <Box
               sx={{
                 display: 'flex',
@@ -114,7 +114,9 @@ export default function Item({ data, selected, setSelected }) {
               }}
             >
               <InputLabel style={{ color: '#F4777C', paddingLeft: 0 }}>
-                {data.status === 'used' ? 'استفاده شده' : 'منقضی شده'}
+                {data.status.toLowerCase() === 'used'
+                  ? 'استفاده شده'
+                  : 'منقضی شده'}
               </InputLabel>
             </Box>
           )}

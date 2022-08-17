@@ -52,10 +52,10 @@ export default function Item({
         <InputLabelHeader
           style={{ color: '#00346D', fontSize: '16px', fontWeight: 500 }}
         >
-          {data && data.name}
+          {data && data?.name}
         </InputLabelHeader>
         <InputLabel style={{ color: '#7B7979', fontSize: '14px' }}>
-          {data && data.description}
+          {data && data?.description}
         </InputLabel>
       </Box>
       <Box

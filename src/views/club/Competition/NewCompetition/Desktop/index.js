@@ -38,10 +38,10 @@ export default function NewCompetitionDesktop({ selected }) {
           }}
         >
           <InputLabelHeader style={{ color: '#00346D' }}>
-            {selected.name}
+            {selected?.name}
           </InputLabelHeader>
           <InputLabel style={{ color: '#00346D' }}>
-            {selected.description}
+            {selected?.description}
           </InputLabel>
         </Box>
       </Box>
@@ -104,7 +104,7 @@ export default function NewCompetitionDesktop({ selected }) {
                     borderRadius: '8px'
                   }}
                 >
-                  <img src={item.image} width="44.26px" height="50px" />
+                  <img src={item?.image} width="44.26px" height="50px" />
                 </Box>
               );
             })}
@@ -124,7 +124,7 @@ export default function NewCompetitionDesktop({ selected }) {
         >
           {selected.prizes.map((item, key) => {
             return (
-              <InputLabel style={{ color: '#4F4C4D' }}>{item.name}</InputLabel>
+              <InputLabel style={{ color: '#4F4C4D' }}>{item?.name}</InputLabel>
             );
           })}
         </Box>

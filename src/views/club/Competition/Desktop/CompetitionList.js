@@ -84,7 +84,7 @@ export default function CompetitionListDesktop({
             مسابقه جدید
           </InputLabelHeader>
           <InputLabel style={{ color: '#00346D' }}>
-            {newComp && newComp[0].description}
+            {newComp && newComp[0]?.description}
           </InputLabel>
         </Box>
         <LinkIconButton

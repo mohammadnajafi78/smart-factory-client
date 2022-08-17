@@ -109,7 +109,7 @@ export default function CompetitionDetailsMobile(props) {
                       borderRadius: '8px'
                     }}
                   >
-                    <img src={item.image} width="44.26px" height="50px" />
+                    <img src={item?.image} width="44.26px" height="50px" />
                   </Box>
                 );
               })}
@@ -129,7 +129,7 @@ export default function CompetitionDetailsMobile(props) {
         >
           {awards.prizes.map((item, key) => {
             return (
-              <InputLabel style={{ color: '#4F4C4D' }}>{item.name}</InputLabel>
+              <InputLabel style={{ color: '#4F4C4D' }}>{item?.name}</InputLabel>
             );
           })}
         </Box>

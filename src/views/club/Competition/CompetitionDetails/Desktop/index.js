@@ -64,7 +64,7 @@ export default function CompetitionDetailsDesktop({ selected }) {
           }}
         >
           <InputLabelHeader>توضیحات</InputLabelHeader>
-          <InputLabel>{selected.description}</InputLabel>
+          <InputLabel>{selected?.description}</InputLabel>
         </Box>
         <Box
           sx={{
@@ -150,7 +150,7 @@ export default function CompetitionDetailsDesktop({ selected }) {
             gridTemplateColumns: 'repeat(2, 1fr)'
           }}
         >
-          <Participants data={selected.participants[0]} />
+          <Participants data={selected?.participants[0]} />
         </Box>
       </Box>
     </Box>

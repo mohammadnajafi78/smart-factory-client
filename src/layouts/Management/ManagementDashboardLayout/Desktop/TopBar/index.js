@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     background: '#FFFFFF',
     borderBottom: '0.5px solid #CCD6E2',
     height: '60px',
-    width: '295px',
+    width: '294px',
     left: 0
   },
   toolbar: {

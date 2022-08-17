@@ -27,7 +27,7 @@ export default function Item({ data }) {
       // }
     >
       <img
-        src={data.attach}
+        src={data?.attach}
         style={{
           width: '100%',
           height: '222.03px',
@@ -49,9 +49,9 @@ export default function Item({ data }) {
       >
         {/* <Box> */}
         <InputLabel>{`وضعیت شما: ${
-          data.is_winner ? 'برنده' : 'بازنده'
+          data?.is_winner ? 'برنده' : 'بازنده'
         }`}</InputLabel>
-        <Rating value={data.overall_rate} size="small" readOnly />
+        <Rating value={data?.overall_rate} size="small" readOnly />
         {/* </Box> */}
         {/* <Box
           sx={{
