@@ -89,8 +89,10 @@ export default function CompetitionListDesktop({
         </Box>
         <LinkIconButton
           onClick={() => {
-            setNewCompetition(true);
-            setSelected(newComp && newComp[0]);
+            if (newComp && newComp[0]) {
+              setNewCompetition(true);
+              setSelected(newComp && newComp[0]);
+            }
           }}
         >
           <img

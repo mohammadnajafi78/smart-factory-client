@@ -21,7 +21,11 @@ function ValidToken(accessToken) {
 
 if (token && ValidToken(token)) {
   headers['Authorization'] = `Bearer ${token}`;
+
   axios.defaults.headers.common = headers;
+  // axios.rejectUnauthorized = false;
+  // axios.requestCert = false;
+  // axios.agent = false;
 }
 if (token && !ValidToken(token)) {
   localStorage.removeItem('token');

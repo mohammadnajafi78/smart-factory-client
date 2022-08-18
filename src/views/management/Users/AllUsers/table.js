@@ -492,6 +492,7 @@ const AllUsersTable = props => {
         `${API_BASE_URL}/api/management/user/?limit=${page * rowsPerPage +
           rowsPerPage}&offset=${page}`
       )
+
       .then(res => {
         if (res.status === 200) {
           // var array = Object.keys(res.data.results).map(function(key) {

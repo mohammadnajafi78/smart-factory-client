@@ -106,10 +106,12 @@ export default function CompetitionMobile() {
         >
           <LinkIconButton
             onClick={() => {
-              history.push({
-                pathname: '/club/newCompetition',
-                state: newComp[0]
-              });
+              if (newComp && newComp[0]) {
+                history.push({
+                  pathname: '/club/newCompetition',
+                  state: newComp[0]
+                });
+              }
             }}
           >
             <img
