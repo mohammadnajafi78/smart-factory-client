@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import BottomBar from './BottomBar';
+// import BottomBar from './BottomBar';
 import TopBar from './TopBar';
 import makeStyles from '@mui/styles/makeStyles';
 import NavBar from './NavBar';
