@@ -21,18 +21,12 @@ export default function Score() {
         background: '#FFFFFF',
         boxShadow: '1px 1px 6px rgba(201, 201, 201, 0.25)',
         borderRadius: '6px',
-
-        /* Inside auto layout */
-
         flex: 'none',
-        // order: 2,
         flexGrow: 1
       }}
     >
       <Box
         sx={{
-          /* Auto layout */
-
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'flex-start',
@@ -42,15 +36,9 @@ export default function Score() {
 
           width: '123px',
           height: '41px',
-
-          /* Teal-Navi */
-
           background:
             'linear-gradient(90.02deg, #00AAB5 99.98%, #00346D 99.99%)!important',
           borderRadius: '5px 0px 0px 5px',
-
-          /* Inside auto layout */
-
           flex: 'none',
           order: 0,
           flexGrow: 0
@@ -58,7 +46,6 @@ export default function Score() {
       >
         <Icon src={ScoreIcon} style={{ width: '16px', height: '16px' }} />
         <InputLabel style={{ color: 'white', fontSize: '12px' }}>
-          {/* {'۶۴۰ از ۱۲۰۰'} */}
           {UserClub()}
         </InputLabel>
       </Box>
@@ -76,9 +63,6 @@ export default function Score() {
 
           background: '#ECECEC',
           borderRadius: '5px 0px 0px 5px',
-
-          /* Inside auto layout */
-
           flex: 'none',
           order: 1,
           alignSelf: 'stretch',

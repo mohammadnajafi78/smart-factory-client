@@ -12,7 +12,6 @@ import {
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { Menu as MenuIcon } from 'react-feather';
-import Logo from 'src/components/Logo';
 import { THEMES } from 'src/constants';
 import Club from './Club';
 

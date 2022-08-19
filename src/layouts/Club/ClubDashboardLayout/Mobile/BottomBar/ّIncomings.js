@@ -8,8 +8,6 @@ export default function Incomings() {
   return (
     <Tooltip title="Home">
       <IconButton
-        // onClick={handleClick}
-        // ref={ref}
         size="large"
         sx={{
           width: '48px',

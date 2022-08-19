@@ -97,7 +97,7 @@ function LoginOTPDesktop(props) {
                     axios.defaults.headers.common.Authorization = `Bearer ${res.headers['x-auth-token']}`;
                     registry(res.headers['x-auth-token']);
                     localStorage.setItem('user', JSON.stringify(res.data));
-                    history.push('/club/awards');
+                    history.push('/home');
                   }
                 })
                 .catch(err => {

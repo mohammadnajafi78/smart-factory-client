@@ -18,8 +18,8 @@ import {
 import makeStyles from '@mui/styles/makeStyles';
 // import { Home as HomeIcon } from 'react-feather';
 import { useDispatch, useSelector } from 'src/store';
-import { getContacts } from 'src/slices/chat';
-import OnlineIndicator from 'src/components/OnlineIndicator';
+// import { getContacts } from 'src/slices/chat';
+// import OnlineIndicator from 'src/components/OnlineIndicator';
 import ProfileIcon from 'src/assets/img/icons/profile.svg';
 import Icon from 'src/components/Mobile/Icon';
 
@@ -43,13 +43,12 @@ const Profile = () => {
   const classes = useStyles();
   const ref = useRef(null);
   const dispatch = useDispatch();
-  const { contacts } = useSelector(state => state.chat);
   const [isOpen, setOpen] = useState(false);
-  const { History } = useHistory();
+  const history = useHistory();
 
   const handleClick = () => {
     // setOpen(true);
-    History.push('/app/home');
+    history.push('/profile');
   };
 
   //   const handleClose = () => {

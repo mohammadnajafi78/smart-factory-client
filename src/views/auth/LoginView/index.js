@@ -9,11 +9,10 @@ import {
   Divider,
   Link,
   Tooltip,
-  Typography,
+  Typography
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import Page from 'src/components/Page';
-import Logo from 'src/components/Logo';
 import useAuth from 'src/hooks/useAuth';
 import Auth0Login from './Auth0Login';
 import FirebaseAuthLogin from './FirebaseAuthLogin';
@@ -71,7 +70,7 @@ const LoginView = () => {
   const { method } = useAuth();
 
   return (
-    <Page  title="Login">
+    <Page title="Login">
       {/* <div className={classes.banner}>
         <Container maxWidth="md">
           <Box alignItems="center" display="flex" justifyContent="center">

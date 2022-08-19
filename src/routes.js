@@ -1,17 +1,14 @@
 import React, { Fragment, lazy, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-// import DashboardLayout from 'src/layouts/ClubDashboardLayout';
-import DocsLayout from 'src/layouts/DocsLayout';
-import MainLayout from 'src/layouts/MainLayout';
-import HomeView from 'src/views/home/HomeView/index2';
 import LoadingScreen from 'src/components/LoadingScreen';
 import AuthGuard from 'src/components/AuthGuard';
 import GuestGuard from 'src/components/GuestGuard';
 import ClubDashboardLayout from 'src/layouts/Club/ClubDashboardLayout';
 import ClubDashboardLayoutBack from 'src/layouts/Club/ClubDashboardLayoutBack';
 import ClubDashboardLayoutBackNoBottom from 'src/layouts/Club/ClubDashboardLayoutBackNoBottom';
-import { useMediaQuery, useTheme } from '@mui/material';
-import ManagementDashboardLayout from './layouts/Management/ManagementDashboardLayout';
+import ManagementDashboardLayout from 'src/layouts/Management/ManagementDashboardLayout';
+import HomeDashboardLayout from 'src/layouts/Home';
+import FormsDashboardLayout from './layouts/Forms';
 
 export const renderRoutes = (routes = []) => (
   <Suspense fallback={<LoadingScreen />}>
@@ -83,53 +80,88 @@ const routes = [
     exact: true,
     guard: GuestGuard,
     path: '/login',
-    // component: lazy(() => import('src/views/auth/LoginView'))
     component: lazy(() => import('src/views/auth/Login'))
   },
   {
     exact: true,
     guard: AuthGuard,
     path: '/identity',
-    // component: lazy(() => import('src/views/auth/LoginView'))
     component: lazy(() => import('src/views/auth/IdentityInfo'))
   },
   {
     exact: true,
     guard: AuthGuard,
     path: '/location',
-    // component: lazy(() => import('src/views/auth/LoginView'))
     component: lazy(() => import('src/views/auth/Location'))
   },
   {
     exact: true,
     guard: AuthGuard,
     path: '/work',
-    // component: lazy(() => import('src/views/auth/LoginView'))
     component: lazy(() => import('src/views/auth/Work'))
   },
   {
     exact: true,
     guard: GuestGuard,
     path: '/registerPass',
-    // component: lazy(() => import('src/views/auth/LoginView'))
     component: lazy(() => import('src/views/auth/EnterPassword'))
   },
-  // {
-  //   exact: true,
-  //   path: '/login-unprotected',
-  //   component: lazy(() => import('src/views/auth/LoginView'))
-  // },
-  // {
-  //   exact: true,
-  //   guard: GuestGuard,
-  //   path: '/register',
-  //   component: lazy(() => import('src/views/auth/RegisterView'))
-  // },
-  // {
-  //   exact: true,
-  //   path: '/register-unprotected',
-  //   component: lazy(() => import('src/views/auth/RegisterView'))
-  // },
+  {
+    exact: true,
+    guard: AuthGuard,
+    path: '/home',
+    layout: HomeDashboardLayout,
+    component: lazy(() => import('src/views/home'))
+  },
+  {
+    exact: true,
+    guard: AuthGuard,
+    path: '/profile',
+    layout: FormsDashboardLayout,
+    component: lazy(() => import('src/views/profile'))
+  },
+  {
+    exact: true,
+    guard: AuthGuard,
+    path: '/profile/detail',
+    layout: FormsDashboardLayout,
+    component: lazy(() => import('src/views/profile/Mobile/ProfileDetail'))
+  },
+  {
+    exact: true,
+    guard: AuthGuard,
+    path: '/profile/identity',
+    layout: FormsDashboardLayout,
+    component: lazy(() => import('src/views/profile/Mobile/Identity'))
+  },
+  {
+    exact: true,
+    guard: AuthGuard,
+    path: '/profile/location',
+    layout: FormsDashboardLayout,
+    component: lazy(() => import('src/views/profile/Mobile/Location'))
+  },
+  {
+    exact: true,
+    guard: AuthGuard,
+    path: '/profile/work',
+    layout: FormsDashboardLayout,
+    component: lazy(() => import('src/views/profile/Mobile/Work'))
+  },
+  {
+    exact: true,
+    guard: AuthGuard,
+    path: '/profile/edit',
+    layout: FormsDashboardLayout,
+    component: lazy(() => import('src/views/profile/Desktop/ProfileEdit'))
+  },
+  {
+    exact: true,
+    guard: AuthGuard,
+    path: '/message',
+    layout: FormsDashboardLayout,
+    component: lazy(() => import('src/views/message'))
+  },
   {
     exact: true,
     guard: AuthGuard,
@@ -194,7 +226,7 @@ const routes = [
         )
       },
       {
-        component: () => <Redirect to="/404" />
+        component: () => <Redirect to="/club/awards" />
       }
     ]
   },
@@ -229,104 +261,6 @@ const routes = [
       }
     ]
   }
-  // {
-  //   path: '/docs',
-  //   layout: DocsLayout,
-  //   routes: [
-  //     {
-  //       exact: true,
-  //       path: '/docs',
-  //       component: () => <Redirect to="/docs/welcome" />
-  //     },
-  //     {
-  //       exact: true,
-  //       path: '/docs/welcome',
-  //       component: lazy(() => import('src/views/docs/WelcomeView'))
-  //     },
-  //     {
-  //       exact: true,
-  //       path: '/docs/getting-started',
-  //       component: lazy(() => import('src/views/docs/GettingStartedView'))
-  //     },
-  //     {
-  //       exact: true,
-  //       path: '/docs/environment-variables',
-  //       component: lazy(() => import('src/views/docs/EnvironmentVariablesView'))
-  //     },
-  //     {
-  //       exact: true,
-  //       path: '/docs/deployment',
-  //       component: lazy(() => import('src/views/docs/DeploymentView'))
-  //     },
-  //     {
-  //       exact: true,
-  //       path: '/docs/api-calls',
-  //       component: lazy(() => import('src/views/docs/APICallsView'))
-  //     },
-  //     {
-  //       exact: true,
-  //       path: '/docs/analytics',
-  //       component: lazy(() => import('src/views/docs/AnalyticsView'))
-  //     },
-  //     {
-  //       exact: true,
-  //       path: '/docs/authentication',
-  //       component: lazy(() => import('src/views/docs/AuthenticationView'))
-  //     },
-  //     {
-  //       exact: true,
-  //       path: '/docs/routing',
-  //       component: lazy(() => import('src/views/docs/RoutingView'))
-  //     },
-  //     {
-  //       exact: true,
-  //       path: '/docs/settings',
-  //       component: lazy(() => import('src/views/docs/SettingsView'))
-  //     },
-  //     {
-  //       exact: true,
-  //       path: '/docs/state-management',
-  //       component: lazy(() => import('src/views/docs/StateManagementView'))
-  //     },
-  //     {
-  //       exact: true,
-  //       path: '/docs/theming',
-  //       component: lazy(() => import('src/views/docs/ThemingView'))
-  //     },
-  //     {
-  //       exact: true,
-  //       path: '/docs/support',
-  //       component: lazy(() => import('src/views/docs/SupportView'))
-  //     },
-  //     {
-  //       exact: true,
-  //       path: '/docs/changelog',
-  //       component: lazy(() => import('src/views/docs/ChangelogView'))
-  //     },
-  //     {
-  //       component: () => <Redirect to="/404" />
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '*',
-  //   layout: MainLayout,
-  //   routes: [
-  //     {
-  //       exact: true,
-  //       path: '/',
-  //       component: HomeView
-  //     },
-  //     {
-  //       exact: true,
-  //       path: '/pricing',
-  //       component: lazy(() => import('src/views/pricing/PricingView'))
-  //     },
-  //     {
-  //       component: () => <Redirect to="/404" />
-  //     }
-  //   ]
-  // }
 ];
 
 export default routes;

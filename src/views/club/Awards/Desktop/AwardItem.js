@@ -5,7 +5,6 @@ import InputLabel from 'src/components/Desktop/InputLabel';
 import MomentFa from 'src/utils/MomentFa';
 
 export default function AwardItem({ data, selected, setSelected }) {
-  console.log('inja', data);
   return (
     <Box
       sx={{

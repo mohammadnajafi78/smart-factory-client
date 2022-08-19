@@ -1,6 +1,11 @@
 /* eslint-disable no-use-before-define */
 import React, { useEffect } from 'react';
-import { Link as RouterLink, matchPath, useLocation } from 'react-router-dom';
+import {
+  Link as RouterLink,
+  matchPath,
+  useHistory,
+  useLocation
+} from 'react-router-dom';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
 import {
@@ -28,8 +33,6 @@ import {
   Users as UsersIcon,
   Home as HomeIcon
 } from 'react-feather';
-import Logo from 'src/components/Logo';
-import LogoMobile from 'src/components/LogoMobile';
 import useAuth from 'src/hooks/useAuth';
 import NavItem from './NavItem';
 import { useTranslation } from 'react-i18next';
@@ -496,6 +499,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
   const { user } = useAuth();
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const history = useHistory();
 
   useEffect(() => {
     if (openMobile && onMobileClose) {
@@ -721,13 +725,13 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           <Avatar /> My account
         </MenuItem>
         <Divider /> */}
-        <MenuItem color="#00346D">
+        <MenuItem color="#00346D" onClick={() => history.push('/profile')}>
           <ListItemIcon>
             <PersonAdd fontSize="small" />
           </ListItemIcon>
           حساب کاربری
         </MenuItem>
-        <MenuItem color="#00346D">
+        <MenuItem color="#00346D" onClick={() => history.push('/profile')}>
           <ListItemIcon>
             <Settings fontSize="small" />
           </ListItemIcon>

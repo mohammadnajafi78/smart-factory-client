@@ -18,7 +18,7 @@ import {
 import makeStyles from '@mui/styles/makeStyles';
 import { Users as UsersIcon } from 'react-feather';
 import { useDispatch, useSelector } from 'src/store';
-import { getContacts } from 'src/slices/chat';
+// import { getContacts } from 'src/slices/chat';
 import OnlineIndicator from 'src/components/OnlineIndicator';
 
 const useStyles = makeStyles(theme => ({
@@ -41,7 +41,7 @@ const Contacts = () => {
   const classes = useStyles();
   const ref = useRef(null);
   const dispatch = useDispatch();
-  const { contacts } = useSelector(state => state.chat);
+
   const [isOpen, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -52,9 +52,9 @@ const Contacts = () => {
     setOpen(false);
   };
 
-  useEffect(() => {
-    dispatch(getContacts());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getContacts());
+  // }, [dispatch]);
 
   return (
     <>

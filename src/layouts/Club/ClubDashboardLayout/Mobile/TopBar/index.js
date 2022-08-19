@@ -1,18 +1,7 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import {
-  AppBar,
-  Box,
-  Hidden,
-  IconButton,
-  Toolbar,
-  SvgIcon
-} from '@mui/material';
+import { AppBar, SvgIcon, Toolbar, IconButton } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { Menu as MenuIcon } from 'react-feather';
-import Logo from 'src/components/Logo';
 import { THEMES } from 'src/constants';
 import Home from './Home';
 import Score from './Score';
@@ -23,8 +12,6 @@ const useStyles = makeStyles(theme => ({
     zIndex: theme.zIndex.drawer + 100,
     margin: 0,
     padding: 0,
-    // alignItems: 'center',
-    // gap: 12,
     ...(theme.name === THEMES.LIGHT
       ? {
           boxShadow: 'none',
@@ -41,7 +28,6 @@ const useStyles = makeStyles(theme => ({
     minHeight: 49,
     margin: 0,
     gap: 12
-    // padding: 0
   }
 }));
 
@@ -111,14 +97,5 @@ const TopBar = ({
     </AppBar>
   );
 };
-
-// TopBar.propTypes = {
-//   className: PropTypes.string,
-//   onMobileNavOpen: PropTypes.func
-// };
-
-// TopBar.defaultProps = {
-//   onMobileNavOpen: () => {}
-// };
 
 export default TopBar;

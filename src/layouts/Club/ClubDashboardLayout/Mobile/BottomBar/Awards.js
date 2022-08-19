@@ -8,9 +8,6 @@ export default function Awards() {
   return (
     <Tooltip title="Home">
       <IconButton
-        // onClick={handleClick}
-        // ref={ref}
-        // size="large"
         sx={{
           width: '48px',
           height: '44px',

@@ -7,7 +7,7 @@ const GuestGuard = ({ children }) => {
   const { isAuthenticated } = useAuth();
 
   if (isAuthenticated) {
-    return <Redirect to="/club/awards" />;
+    return <Redirect to="/home" />;
   }
 
   return <>{children}</>;

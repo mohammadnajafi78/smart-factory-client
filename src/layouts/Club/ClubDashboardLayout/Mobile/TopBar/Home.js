@@ -1,25 +1,8 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
-import moment from 'moment';
-import {
-  Avatar,
-  Box,
-  IconButton,
-  Link,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Popover,
-  SvgIcon,
-  Tooltip,
-  Typography
-} from '@mui/material';
+import { IconButton, Tooltip } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
-// import { Home as HomeIcon } from 'react-feather';
-import { useDispatch, useSelector } from 'src/store';
-import { getContacts } from 'src/slices/chat';
-import OnlineIndicator from 'src/components/OnlineIndicator';
+import { useDispatch } from 'src/store';
 import HomeIcon from 'src/assets/img/icons/home.svg';
 import Icon from 'src/components/Mobile/Icon';
 
@@ -42,29 +25,17 @@ const useStyles = makeStyles(theme => ({
 const Home = () => {
   const classes = useStyles();
   const ref = useRef(null);
-  const dispatch = useDispatch();
-  const { contacts } = useSelector(state => state.chat);
   const [isOpen, setOpen] = useState(false);
-  const { History } = useHistory();
+  const history = useHistory();
 
   const handleClick = () => {
-    // setOpen(true);
-    History.push('/app/home');
+    history.push('/home');
   };
-
-  //   const handleClose = () => {
-  //     setOpen(false);
-  //   };
-
-  //   useEffect(() => {
-  //     dispatch(getContacts());
-  //   }, [dispatch]);
 
   return (
     <>
       <Tooltip title="Home">
         <IconButton
-          //   color="inherit"
           onClick={handleClick}
           ref={ref}
           size="large"
@@ -74,7 +45,6 @@ const Home = () => {
             borderRadius: ' 6px',
             width: '49px',
             height: '44px'
-            // margin: '5px'
           }}
         >
           <Icon src={HomeIcon} alt="home" />

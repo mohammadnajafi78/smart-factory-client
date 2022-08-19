@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { AppBar, Toolbar, SvgIcon, Box } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { THEMES } from 'src/constants';
-// import Awards from './Awards';
-// import Comments from './Comments';
-// import Competition from './Competition';
-// import Incomings from './ّIncomings';
 import Competition from 'src/assets/img/icons/competition.svg';
 import CompetitionSelected from 'src/assets/img/icons/competition-selected.svg';
 import Present from 'src/assets/img/icons/present.svg';
@@ -27,7 +22,6 @@ import { useHistory } from 'react-router-dom';
 const useStyles = makeStyles(theme => ({
   root: {
     zIndex: theme.zIndex.drawer + 100,
-    // padding: '10px 30px',
     ...(theme.name === THEMES.LIGHT
       ? {
           boxShadow: 'none',
@@ -41,7 +35,6 @@ const useStyles = makeStyles(theme => ({
       : {})
   },
   toolbar: {
-    // minHeight: 64,
     justifyContent: 'center'
   }
 }));

@@ -93,7 +93,7 @@ function WorkDesktop() {
               })
               .then(res => {
                 if (res.status === 200) {
-                  history.push('/club/awards');
+                  history.push('/home');
                 }
               });
           }}

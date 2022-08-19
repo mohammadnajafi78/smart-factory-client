@@ -28,8 +28,6 @@ import {
   Users as UsersIcon,
   Home as HomeIcon
 } from 'react-feather';
-import Logo from 'src/components/Logo';
-import LogoMobile from 'src/components/LogoMobile';
 import useAuth from 'src/hooks/useAuth';
 import NavItem from './NavItem';
 import { useTranslation } from 'react-i18next';
