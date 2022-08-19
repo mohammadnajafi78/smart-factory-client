@@ -257,7 +257,7 @@ const routes = [
         component: lazy(() => import('src/views/management/Users/NewUser'))
       },
       {
-        component: () => <Redirect to="/404" />
+        component: () => <Redirect to="/management/user/allUsers" />
       }
     ]
   }
