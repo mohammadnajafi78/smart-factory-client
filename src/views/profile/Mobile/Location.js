@@ -9,12 +9,13 @@ import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 
-function LocationMobile() {
-  const [provinces, setProvinces] = useState(null);
+function LocationMobile(props) {
+  const [provinces, setProvinces] = useState([]);
   const [provinceId, setProvinceId] = useState(null);
   const [cities, setCities] = useState([]);
   const [cityId, setCityId] = useState(null);
   const history = useHistory();
+  const data = props.location.state.data;
 
   useEffect(() => {
     httpService
@@ -41,10 +42,10 @@ function LocationMobile() {
   return (
     <Formik
       initialValues={{
-        province: '',
-        city: '',
-        code: '',
-        address: ''
+        province_name: data?.user_location?.province_name,
+        city_name: data?.user_location?.city_name,
+        code: data?.postal_code,
+        address: data?.user_location?.address
       }}
       validate={values => {
         // const errors = {};
@@ -102,10 +103,10 @@ function LocationMobile() {
                 disablePortal
                 fullWidth
                 id="province"
+                name="province"
+                value={values.province_name}
                 options={provinces}
-                renderInput={params => (
-                  <TextField {...params} placeholder="استان" fullWidth />
-                )}
+                renderInput={params => <TextField {...params} fullWidth />}
                 onChange={(event, newValue) => {
                   setProvinceId(newValue.id);
                 }}
@@ -120,10 +121,10 @@ function LocationMobile() {
                 disablePortal
                 fullWidth
                 id="city"
+                name="city"
                 options={cities}
-                renderInput={params => (
-                  <TextField {...params} placeholder="شهر" fullWidth />
-                )}
+                value={values.city_name}
+                renderInput={params => <TextField {...params} fullWidth />}
                 onChange={(event, newValue) => {
                   if (newValue) setCityId(newValue.id);
                 }}
@@ -176,9 +177,14 @@ function LocationMobile() {
             <ConfirmButton
               disabled={false}
               variant="outlined"
-              onClick={() => {
-                history.push('/profile/detail');
-              }}
+              onClick={() =>
+                history.push({
+                  pathname: '/profile/detail',
+                  state: {
+                    data: data
+                  }
+                })
+              }
               type={'button'}
             >
               {'لغو'}

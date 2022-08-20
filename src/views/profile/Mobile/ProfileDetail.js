@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, Divider } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import Score from './Score';
 import { ArrowBack, KeyboardArrowLeft, Logout } from '@mui/icons-material';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import useAuth from 'src/hooks/useAuth';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
-export default function ProfileDetailMobile() {
+export default function ProfileDetailMobile(props) {
+  const data = props.location.state.data;
   const history = useHistory();
   const { logout } = useAuth();
+
+  // useEffect(() => {
+  //   httpService.get(`${API_BASE_URL}/api/users/get_user_profile/`).then(res => {
+  //     if (res.status === 200) {
+  //       setData(res.data);
+  //     }
+  //   });
+  // }, []);
 
   return (
     <Box
@@ -43,7 +54,14 @@ export default function ProfileDetailMobile() {
           margin: 0,
           fontFamily: 'IRANSans'
         }}
-        onClick={() => history.push('/profile/identity')}
+        onClick={() =>
+          history.push({
+            pathname: '/profile/identity',
+            state: {
+              data: data
+            }
+          })
+        }
       >
         اطلاعات هویتی
         <KeyboardArrowLeft color="#00346D" height="13px" width="13px" />
@@ -68,7 +86,14 @@ export default function ProfileDetailMobile() {
           margin: 0,
           fontFamily: 'IRANSans'
         }}
-        onClick={() => history.push('/profile/location')}
+        onClick={() =>
+          history.push({
+            pathname: '/profile/location',
+            state: {
+              data: data
+            }
+          })
+        }
       >
         اطلاعات آدرس
         <KeyboardArrowLeft color="#00346D" height="13px" width="13px" />
@@ -93,7 +118,14 @@ export default function ProfileDetailMobile() {
           margin: 0,
           fontFamily: 'IRANSans'
         }}
-        onClick={() => history.push('/profile/work')}
+        onClick={() =>
+          history.push({
+            pathname: '/profile/work',
+            state: {
+              data: data
+            }
+          })
+        }
       >
         اطلاعات شغلی
         <KeyboardArrowLeft color="#00346D" height="13px" width="13px" />

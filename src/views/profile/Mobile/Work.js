@@ -11,26 +11,18 @@ import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader'
 import InputLabel from 'src/components/Mobile/InputLabel';
 import { Formik } from 'formik';
 import { useHistory } from 'react-router-dom';
-// import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import axios from 'src/utils/axios';
 import httpService from 'src/utils/httpService';
 import Autocomplete from '@mui/material/Autocomplete';
 
-// const arr = [
-//   'فروشگاه',
-//   'مهندس / مجری تاسیسات',
-//   'مهندس طراح / ناظر',
-//   'پیمانکار',
-//   'کارفرما',
-//   'پرسنل شرکت'
-// ];
-function WorkMobile() {
+function WorkMobile(props) {
   const history = useHistory();
   const [works, setWorks] = useState([]);
   const [selected, setSelected] = useState([]);
   const [provinces, setProvinces] = useState(null);
   const [provinceId, setProvinceId] = useState(null);
+  const data = props.location.state.data;
 
   useEffect(() => {
     if (provinceId !== null) {
@@ -57,9 +49,9 @@ function WorkMobile() {
   return (
     <Formik
       initialValues={{
-        input: '',
-        company: '',
-        address: ''
+        field: data?.user_type_list,
+        company: data?.company?.name,
+        address: data?.company?.location_info?.address
       }}
       validate={values => {
         const errors = {};
@@ -87,7 +79,8 @@ function WorkMobile() {
         handleSubmit,
         isSubmitting,
         touched,
-        values
+        values,
+        setFieldValue
       }) => (
         <form
           noValidate
@@ -111,18 +104,20 @@ function WorkMobile() {
             <Box sx={{ mt: 2 }}>
               <InputLabel>زمینه فعالیت</InputLabel>
               <Autocomplete
-                disablePortal
+                multiple
                 fullWidth
-                id="province"
-                options={provinces}
-                renderInput={params => (
-                  <TextField {...params} placeholder="زمینه فعالیت" fullWidth />
-                )}
-                onChange={(event, newValue) => {
-                  setProvinceId(newValue.id);
+                disablePortal
+                id="field"
+                limitTags={1}
+                options={works}
+                getOptionLabel={option => option.translate}
+                defaultValue={values.field}
+                renderInput={params => <TextField {...params} />}
+                onChange={(event, values) => {
+                  setFieldValue('field', values);
                 }}
                 isOptionEqualToValue={(option, value) =>
-                  option.label === value.label
+                  option.translate === value.translate
                 }
               />
             </Box>
@@ -170,7 +165,14 @@ function WorkMobile() {
             <ConfirmButton
               disabled={false}
               variant="outlined"
-              onClick={() => history.push('/profile/detail')}
+              onClick={() =>
+                history.push({
+                  pathname: '/profile/detail',
+                  state: {
+                    data: data
+                  }
+                })
+              }
             >
               {'لغو'}
             </ConfirmButton>

@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, Divider } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import Score from './Score';
 import { ArrowBack, KeyboardArrowLeft } from '@mui/icons-material';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import useAuth from 'src/hooks/useAuth';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
 export default function ProfileMobile() {
+  const [data, setData] = useState();
   const history = useHistory();
   const { logout } = useAuth();
+
+  useEffect(() => {
+    httpService.get(`${API_BASE_URL}/api/users/get_user_profile/`).then(res => {
+      if (res.status === 200) {
+        setData(res.data);
+      }
+    });
+  }, []);
 
   return (
     <Box
@@ -60,7 +71,9 @@ export default function ProfileMobile() {
         }}
       >
         <InputLabel style={{ color: '#6685A7' }}>سطح شما</InputLabel>
-        <InputLabel style={{ color: '#00346D' }}>نقره ای</InputLabel>
+        <InputLabel style={{ color: '#00346D' }}>
+          {data?.user_club?.grade_info?.name}
+        </InputLabel>
       </Box>
       <Divider variant="middle" sx={{ margin: '3px 0px', width: '98%' }} />
       <Box
@@ -72,7 +85,14 @@ export default function ProfileMobile() {
           padding: '0px',
           width: '98%'
         }}
-        onClick={() => history.push('/profile/detail')}
+        onClick={() =>
+          history.push({
+            pathname: '/profile/detail',
+            state: {
+              data: data
+            }
+          })
+        }
       >
         <InputLabel style={{ color: '#00346D' }}>اطلاعات کاربری</InputLabel>
         <KeyboardArrowLeft style={{ color: '#00346D' }} />

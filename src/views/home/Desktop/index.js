@@ -15,7 +15,6 @@ export default function HomeDesktop() {
   useEffect(() => {
     httpService.get(`${API_BASE_URL}/api/utils/menu_items/`).then(res => {
       if (res.status === 200) {
-        console.log('menu', res.data);
         setPrograms(res.data.filter(f => f.level === 1));
       }
     });

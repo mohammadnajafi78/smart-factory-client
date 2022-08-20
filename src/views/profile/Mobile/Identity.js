@@ -10,14 +10,15 @@ import { API_BASE_URL } from 'src/utils/urls';
 
 function IdentityInfoMobile(props) {
   const history = useHistory();
+  const data = props.location.state.data;
 
   return (
     <>
       <Formik
         initialValues={{
-          name: '',
-          family: '',
-          mobile: ''
+          name: data?.first_name,
+          family: data?.last_name,
+          mobile: data?.mobile
         }}
         validate={values => {
           const errors = {};
@@ -59,7 +60,7 @@ function IdentityInfoMobile(props) {
               flexDirection: 'column',
               justifyContent: 'space-between',
               padding: '0px',
-              gap: '159px',
+              gap: '140px',
               position: 'absolute',
               width: '90%',
               height: '90%',
@@ -129,9 +130,14 @@ function IdentityInfoMobile(props) {
               <ConfirmButton
                 disabled={false}
                 variant="outlined"
-                onClick={() => {
-                  history.push('/profile/detail');
-                }}
+                onClick={() =>
+                  history.push({
+                    pathname: '/profile/detail',
+                    state: {
+                      data: data
+                    }
+                  })
+                }
               >
                 {'لغو'}
               </ConfirmButton>

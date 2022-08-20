@@ -9,11 +9,9 @@ function InputLabelHeader({ children, ...rest }) {
         fontStyle: 'normal',
         fontWeight: 500,
         fontSize: '20px',
-        // height: '26px',
         textAlign: 'start',
         color: '#000000',
         whiteSpace: 'break-spaces'
-        // marginBottom: '26px'
       }}
       {...rest}
     >

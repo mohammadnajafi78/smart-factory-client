@@ -80,7 +80,7 @@ export default function ProfileDesktop() {
         >
           <Star style={{ width: '27px', height: '18px', color: '#A7A5A6' }} />
           <InputLabel style={{ color: '#4F4C4D', fontSize: '' }}>
-            نقره ای
+            {data?.user_club?.grade_info?.name}
           </InputLabel>
         </Box>
       </Box>
@@ -197,13 +197,18 @@ export default function ProfileDesktop() {
           <Box
             sx={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              width: '100%'
+              gridTemplateColumns: 'repeat(1, 1fr)',
+              width: '100%',
+              gap: '20px'
             }}
           >
             <div style={{ display: 'inline-flex' }}>
               <InputLabel style={{ color: '#00AAB5' }}>فعالیت:</InputLabel>
-              <InputLabel style={{ color: '#335D8A' }}>پرسنل</InputLabel>
+              <InputLabel style={{ color: '#335D8A' }}>
+                {data?.user_type_list
+                  .map(option => option.translate)
+                  .toString()}
+              </InputLabel>
             </div>
             <div style={{ display: 'inline-flex' }}>
               <InputLabel style={{ color: '#00AAB5' }}>شرکت:</InputLabel>

@@ -21,12 +21,12 @@ export default function ProfileDesktop(props) {
   const history = useHistory();
   const { logout } = useAuth();
   const data = props.location.state.data;
-  console.log('data', data);
 
   const [provinces, setProvinces] = useState([]);
   const [provinceId, setProvinceId] = useState(null);
   const [cities, setCities] = useState([]);
   const [cityId, setCityId] = useState(null);
+  const [works, setWorks] = useState([]);
 
   useEffect(() => {
     httpService
@@ -49,6 +49,16 @@ export default function ProfileDesktop(props) {
         });
     }
   }, [provinceId]);
+
+  useEffect(() => {
+    httpService
+      .get(`${API_BASE_URL}/api/users/user_type/activity_list`)
+      .then(res => {
+        if (res.status === 200) {
+          setWorks(res.data);
+        }
+      });
+  }, []);
 
   return (
     <Box
@@ -115,9 +125,9 @@ export default function ProfileDesktop(props) {
               mobile: data?.mobile,
               province_name: data?.user_location?.province_name,
               city_name: data?.user_location?.city_name,
-              postal_code: '',
+              postal_code: data?.postal_code,
               address: data?.user_location?.address,
-              field: '',
+              field: data?.user_type_list,
               company_name: data?.company?.name,
               company_address: data?.company?.location_info?.address
             }}
@@ -151,7 +161,8 @@ export default function ProfileDesktop(props) {
               handleSubmit,
               isSubmitting,
               touched,
-              values
+              values,
+              setFieldValue
             }) => (
               <form
                 noValidate
@@ -367,18 +378,21 @@ export default function ProfileDesktop(props) {
                     <Box sx={{ mt: 2 }}>
                       <InputLabel>زمینه فعالیت</InputLabel>
                       <Autocomplete
+                        multiple
                         disablePortal
                         id="field"
-                        options={[]}
-                        renderInput={params => (
-                          <TextField {...params} placeholder="استان" />
-                        )}
-                        // onChange={(event, newValue) => {
-                        //   setProvinceId(newValue.id);
-                        // }}
-                        // isOptionEqualToValue={(option, value) =>
-                        //   option.label === value.label
-                        // }
+                        limitTags={1}
+                        options={works}
+                        getOptionLabel={option => option.translate}
+                        defaultValue={values.field}
+                        renderInput={params => <TextField {...params} />}
+                        onChange={(event, values) => {
+                          console.log('newVal', values);
+                          setFieldValue('field', values);
+                        }}
+                        isOptionEqualToValue={(option, value) =>
+                          option.translate === value.translate
+                        }
                         sx={{
                           width: '94%'
                         }}

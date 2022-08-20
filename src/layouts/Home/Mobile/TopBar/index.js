@@ -7,6 +7,7 @@ import Message from './Message';
 import Profile from './Profile';
 import { Close } from '@mui/icons-material';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -42,6 +43,7 @@ const TopBar = ({
   ...rest
 }) => {
   const classes = useStyles();
+  const history = useHistory();
 
   return (
     <AppBar
@@ -54,7 +56,14 @@ const TopBar = ({
     >
       <Toolbar className={classes.toolbar}>
         <Profile />
-        <InputLabelHeader style={{ color: '#00346D' }}>BTS</InputLabelHeader>
+        <InputLabelHeader
+          style={{ color: '#00346D' }}
+          onClick={() => {
+            history.push('/home');
+          }}
+        >
+          BTS
+        </InputLabelHeader>
         <Message />
       </Toolbar>
     </AppBar>
