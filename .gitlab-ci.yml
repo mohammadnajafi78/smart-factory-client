@@ -11,7 +11,7 @@ Build:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - echo -e "$DEV_ENV" > .env
   script:
-    - docker syatem  prune -a -f
+    - docker system  prune -a -f
     - docker build --pull -t git.bts-co.com:5050/root/bts-front-app:dev .
     - docker push git.bts-co.com:5050/root/bts-front-app:dev
     # - yarn install --network-timeout 1000000
