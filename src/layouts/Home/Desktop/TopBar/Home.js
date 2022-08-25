@@ -44,11 +44,11 @@ const Home = () => {
   const ref = useRef(null);
   const dispatch = useDispatch();
   const [isOpen, setOpen] = useState(false);
-  const { History } = useHistory();
+  const history = useHistory();
 
   const handleClick = () => {
     // setOpen(true);
-    History.push('/app/home');
+    history.push('/home');
   };
 
   //   const handleClose = () => {

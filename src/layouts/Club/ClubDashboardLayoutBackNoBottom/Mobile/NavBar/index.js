@@ -285,7 +285,7 @@ const sections = [
       {
         title: 'common.Home',
         icon: HomeIcon,
-        href: '/app/home'
+        href: '/home'
       }
     ]
   },

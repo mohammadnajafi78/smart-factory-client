@@ -49,7 +49,7 @@ function LoginPassDesktop(props) {
             httpService
               .post(`${API_BASE_URL}/api/users/login_with_pass/`, {
                 username: props.location.state.mobile,
-                password: bcrypt.hashSync(
+                password: await bcrypt.hashSync(
                   values.password,
                   '$2a$10$p.DMYfbaIgtkCH7rseuMnu'
                 )
