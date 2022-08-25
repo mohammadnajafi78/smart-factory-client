@@ -51,6 +51,7 @@
     "axios-mock-adapter": "^1.18.2",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.3",
+    "bcryptjs": "^2.4.3",
     "change-case": "^4.1.1",
     "chart.js": "^2.9.3",
     "clsx": "^1.1.1",

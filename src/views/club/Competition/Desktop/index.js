@@ -6,10 +6,14 @@ import CompetitionListDesktop from './CompetitionList';
 import NewCompetitionDesktop from '../NewCompetition/Desktop';
 import CompetitionDetailsDesktop from '../CompetitionDetails/Desktop';
 // import ReceivedItemDesktop from '../ReceivedItem/Desktop';
+import ParticipateNewCompetition from '../NewCompetition/Desktop/ParticipateNewComp';
 
 export default function CompetitionDesktop() {
   const [selected, setSelected] = useState(null);
   const [newCompetition, setNewCompetition] = useState(false);
+  const [participateNewCompetition, setParticipateNewCompetition] = useState(
+    false
+  );
 
   return (
     <div
@@ -35,6 +39,7 @@ export default function CompetitionDesktop() {
             selected={selected}
             setSelected={setSelected}
             setNewCompetition={setNewCompetition}
+            setParticipateNewCompetition={setParticipateNewCompetition}
           />
         </Box>
       </Box>
@@ -48,7 +53,15 @@ export default function CompetitionDesktop() {
         }}
       >
         {newCompetition ? (
-          <NewCompetitionDesktop selected={selected} />
+          <NewCompetitionDesktop
+            selected={selected}
+            setSelected={setSelected}
+            setNewCompetition={setNewCompetition}
+            participateNewCompetition={participateNewCompetition}
+            setParticipateNewCompetition={setParticipateNewCompetition}
+          />
+        ) : participateNewCompetition ? (
+          <ParticipateNewCompetition selected={selected} />
         ) : selected ? (
           <CompetitionDetailsDesktop selected={selected} />
         ) : (

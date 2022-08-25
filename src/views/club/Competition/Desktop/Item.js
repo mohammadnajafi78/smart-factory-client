@@ -10,7 +10,8 @@ export default function Item({
   data,
   selected,
   setSelected,
-  setNewCompetition
+  setNewCompetition,
+  setParticipateNewCompetition
 }) {
   const history = useHistory();
   return (
@@ -32,6 +33,7 @@ export default function Item({
       onClick={() => {
         setSelected(data);
         setNewCompetition(false);
+        setParticipateNewCompetition(false);
       }}
     >
       <Box

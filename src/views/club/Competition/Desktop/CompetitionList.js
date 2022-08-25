@@ -12,7 +12,8 @@ import { API_BASE_URL } from 'src/utils/urls';
 export default function CompetitionListDesktop({
   selected,
   setSelected,
-  setNewCompetition
+  setNewCompetition,
+  setParticipateNewCompetition
 }) {
   const history = useHistory();
   const [competition, setCompetition] = useState(null);
@@ -146,6 +147,7 @@ export default function CompetitionListDesktop({
                 selected={selected}
                 setSelected={setSelected}
                 setNewCompetition={setNewCompetition}
+                setParticipateNewCompetition={setParticipateNewCompetition}
               />
             ))}
         </Box>

@@ -16,8 +16,8 @@ export default function Item({ data }) {
         gap: '12px',
         background: '#FFFFFF',
         boxShadow: '1px 1px 8px rgba(214, 212, 212, 0.25)',
-        borderRadius: '8px',
-        width: '100%'
+        borderRadius: '8px'
+        // width: '100%'
       }}
       // onClick={() =>
       //   history.push({

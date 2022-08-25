@@ -41,6 +41,11 @@ axios.interceptors.response.use(null, error => {
   if (!expectedError) {
     console.log(error);
   }
+  // if (error.response.status === 403) {
+  //   localStorage.removeItem('token');
+  //   delete axios.defaults.headers.common.Authorization;
+  //   window.history.pushState({ urlPath: '/login' });
+  // }
   return Promise.reject(error);
 });
 

@@ -11,6 +11,7 @@ import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 export default function NewCompetitionMobile(props) {
   // const [awards, setAwards] = useState(['1', '2', '3', '4']);
   const [awards, setAwards] = useState(props.location.state);
+  const history = useHistory();
 
   return (
     <Box
@@ -165,8 +166,12 @@ export default function NewCompetitionMobile(props) {
               return <Participants data={item} key={key} />;
             })}
           <LinkIconButton
-          // onClick={() => {
-          // }}
+            onClick={() => {
+              history.push({
+                pathname: '/club/participantComp',
+                state: { data: awards }
+              });
+            }}
           >
             <img
               src={Present}

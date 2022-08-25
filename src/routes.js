@@ -219,6 +219,16 @@ const routes = [
       },
       {
         exact: true,
+        path: '/club/participantComp',
+        layout: ClubDashboardLayoutBack,
+        component: lazy(() =>
+          import(
+            'src/views/club/Competition/NewCompetition/Mobile/ParticipateNewComp'
+          )
+        )
+      },
+      {
+        exact: true,
         path: '/club/competitionDetails',
         layout: ClubDashboardLayoutBack,
         component: lazy(() =>

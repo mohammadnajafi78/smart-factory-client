@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 import axios from 'axios';
 import useAuth from 'src/hooks/useAuth';
+import bcrypt from 'bcryptjs';
 
 const TEST_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
 function LoginPassMobile(props) {
@@ -44,10 +45,15 @@ function LoginPassMobile(props) {
           //     });
           //     setSubmitting(false);
           //   }
+
+          const salt = bcrypt.genSaltSync(10);
           httpService
             .post(`${API_BASE_URL}/api/users/login_with_pass/`, {
               username: props.location.state.mobile,
-              password: values.input
+              password: bcrypt.hashSync(
+                values.input,
+                '$2a$10$p.DMYfbaIgtkCH7rseuMnu'
+              )
             })
             .then(res => {
               if (res.status === 200) {

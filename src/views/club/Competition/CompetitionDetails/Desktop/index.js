@@ -71,60 +71,59 @@ export default function CompetitionDetailsDesktop({ selected }) {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'flex-start',
-            padding: '0px',
-            gap: '16px'
-          }}
-        >
-          <InputLabelHeader>جوایز مسابقه</InputLabelHeader>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              padding: '0px',
-              gap: '12px'
-            }}
-          >
-            {selected.prizes.map((item, key) => {
-              return (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: '10px 16px',
-                    gap: '10px',
-                    width: '73px',
-                    height: '84px',
-                    background: '#FFFFFF',
-                    borderRadius: '8px'
-                  }}
-                >
-                  <img src={item.image} width="44.26px" height="50px" />
-                </Box>
-              );
-            })}
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            padding: '10px 6px',
+            padding: '10px',
             gap: '10px',
             background: '#CCEEF0',
             borderRadius: '8px',
             width: '100%'
           }}
         >
-          {selected.prizes.map((item, key) => {
-            return (
-              <InputLabel style={{ color: '#4F4C4D' }}>{item.name}</InputLabel>
-            );
-          })}
+          <InputLabelHeader>جوایز مسابقه</InputLabelHeader>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              width: '100%'
+            }}
+          >
+            <div>
+              {selected.prizes.map((item, key) => {
+                return (
+                  <InputLabel style={{ color: '#4F4C4D' }}>
+                    {item?.name}
+                  </InputLabel>
+                );
+              })}
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-end'
+              }}
+            >
+              {selected.prizes.map((item, key) => {
+                return (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '10px 16px',
+                      gap: '10px',
+                      width: '73px',
+                      height: '84px',
+                      background: '#FFFFFF',
+                      borderRadius: '8px'
+                    }}
+                  >
+                    <img src={item?.image} width="44.26px" height="50px" />
+                  </Box>
+                );
+              })}
+            </div>
+          </Box>
         </Box>
       </Box>
       <Box
@@ -143,11 +142,13 @@ export default function CompetitionDetailsDesktop({ selected }) {
         </InputLabelHeader>
         <Box
           sx={{
-            display: 'grid',
+            display: 'flex',
             padding: '0px',
             gap: '16px',
             width: '100%',
-            gridTemplateColumns: 'repeat(2, 1fr)'
+            // gridTemplateColumns: 'repeat(2, 1fr)'
+            flexDirection: 'row',
+            justifyContent: 'center'
           }}
         >
           <Participants data={selected?.participants[0]} />

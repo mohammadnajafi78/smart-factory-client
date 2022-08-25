@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes, { string } from 'prop-types';
 
-import { Box, Card, Typography, Link, TextField } from '@mui/material';
+import {
+  Box,
+  Card,
+  Typography,
+  Link,
+  TextField,
+  FormControl,
+  InputLabel
+} from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import MaterialTable, { Column, MTableFilterRow } from 'material-table';
@@ -126,7 +134,9 @@ let theme = createTheme({
         root: {
           fontFamily: 'IRANSans',
           fontSize: 12,
-          fontWeight: 8
+          fontWeight: 8,
+          display: 'flex',
+          flexDirection: 'column'
         }
       }
     },
@@ -327,11 +337,72 @@ const AllUsersTable = props => {
   const [columns, setColumns] = useState([
     {
       name: 'user.first_name',
-      label: 'نام'
+      label: 'نام',
+      options: {
+        filter: true,
+        filterType: 'custom',
+        filterOptions: {
+          display: (filterList, onChange, index, column) => {
+            return (
+              <FormControl>
+                <InputLabel sx={{ transform: 'none', position: 'initial' }}>
+                  نام
+                </InputLabel>
+                <TextField
+                  id="name"
+                  aria-describedby="my-helper-text"
+                  fullWidth
+                  placeholder="نام"
+                  sx={{
+                    background: '#F2F2F2',
+                    borderRadius: '4px'
+                    // margin: '6px 3px'
+                  }}
+                  value={filterList[index]}
+                  onChange={event => {
+                    filterList[index] = event.target.value;
+                    onChange(filterList[index], index, column);
+                  }}
+                />
+              </FormControl>
+            );
+          }
+        }
+      }
     },
     {
       name: 'user.last_name',
-      label: 'نام خانوادگی'
+      label: 'نام خانوادگی',
+      options: {
+        filter: true,
+        filterType: 'custom',
+        filterOptions: {
+          display: (filterList, onChange, index, column) => {
+            return (
+              <FormControl>
+                <InputLabel sx={{ transform: 'none', position: 'initial' }}>
+                  نام خانوادگی
+                </InputLabel>
+                <TextField
+                  id="name"
+                  aria-describedby="my-helper-text"
+                  fullWidth
+                  sx={{
+                    background: '#F2F2F2',
+                    borderRadius: '4px',
+                    margin: '6px 3px'
+                  }}
+                  value={filterList[index][0] || ''}
+                  onChange={event => {
+                    filterList[index][0] = event.target.value;
+                    onChange(filterList[index], index, column);
+                  }}
+                />
+              </FormControl>
+            );
+          }
+        }
+      }
     },
     {
       name: 'user.mobile',
@@ -344,6 +415,33 @@ const AllUsersTable = props => {
     {
       name: 'location.city_name',
       label: 'شهر'
+    },
+    {
+      name: 'user.user_type_list',
+      label: 'فعالیت',
+      options: {
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return value.map(option => option.translate).toString();
+        }
+      }
+    },
+    {
+      name: 'user.profile_is_completed',
+      label: 'تکمیل شده',
+      options: {
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return value === true ? 'بله' : 'خیر';
+        }
+      }
+    },
+    {
+      name: 'user.is_verified',
+      label: 'تایید شده',
+      options: {
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return value === true ? 'بله' : 'خیر';
+        }
+      }
     }
     // {
     //   name: 'user.first_name',

@@ -6,7 +6,13 @@ import Participants from './Participants';
 import IconButton from 'src/components/Desktop/Button/Icon';
 import Competition from 'src/assets/img/icons/competition.svg';
 
-export default function NewCompetitionDesktop({ selected }) {
+export default function NewCompetitionDesktop({
+  selected,
+  setSelected,
+  setNewCompetition,
+  setParticipateNewCompetition,
+  participateNewCompetition
+}) {
   return (
     <Box
       sx={{
@@ -52,7 +58,7 @@ export default function NewCompetitionDesktop({ selected }) {
           alignItems: 'flex-start',
           padding: '16px 16px 0px',
           gap: '30px',
-          borderBottom: '0.5px solid #D3D2D2',
+          // borderBottom: '0.5px solid #D3D2D2',
           width: '100%'
         }}
       >
@@ -68,65 +74,65 @@ export default function NewCompetitionDesktop({ selected }) {
           <InputLabelHeader>توضیحات</InputLabelHeader>
           <InputLabel>{selected.details}</InputLabel>
         </Box>
+
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'flex-start',
-            padding: '0px',
-            gap: '16px'
-          }}
-        >
-          <InputLabelHeader>جوایز مسابقه</InputLabelHeader>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              padding: '0px',
-              gap: '12px'
-            }}
-          >
-            {selected.prizes.map((item, key) => {
-              return (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: '10px 16px',
-                    gap: '10px',
-                    width: '73px',
-                    height: '84px',
-                    background: '#FFFFFF',
-                    borderRadius: '8px'
-                  }}
-                >
-                  <img src={item?.image} width="44.26px" height="50px" />
-                </Box>
-              );
-            })}
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            padding: '10px 6px',
+            padding: '10px',
             gap: '10px',
             background: '#CCEEF0',
             borderRadius: '8px',
             width: '100%'
           }}
         >
-          {selected.prizes.map((item, key) => {
-            return (
-              <InputLabel style={{ color: '#4F4C4D' }}>{item?.name}</InputLabel>
-            );
-          })}
+          <InputLabelHeader>جوایز مسابقه</InputLabelHeader>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              width: '100%'
+            }}
+          >
+            <div>
+              {selected.prizes.map((item, key) => {
+                return (
+                  <InputLabel style={{ color: '#4F4C4D' }}>
+                    {item?.name}
+                  </InputLabel>
+                );
+              })}
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-end'
+              }}
+            >
+              {selected.prizes.map((item, key) => {
+                return (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '10px 16px',
+                      gap: '10px',
+                      width: '73px',
+                      height: '84px',
+                      background: '#FFFFFF',
+                      borderRadius: '8px'
+                    }}
+                  >
+                    <img src={item?.image} width="44.26px" height="50px" />
+                  </Box>
+                );
+              })}
+            </div>
+          </Box>
         </Box>
       </Box>
       <Box
@@ -173,8 +179,9 @@ export default function NewCompetitionDesktop({ selected }) {
             <IconButton
               style={{ width: '400px' }}
               onClick={() => {
-                // setNewCompetition(true);
-                // setSelected(newComp && newComp[0]);
+                setNewCompetition(false);
+                setParticipateNewCompetition(true);
+                setSelected(selected);
               }}
             >
               <img
