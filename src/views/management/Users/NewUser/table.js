@@ -991,6 +991,15 @@ const AllUsersTable = props => {
         default:
           console.log('action not handled.', action, tableState);
       }
+    },
+    onRowClick: (rowData, rowState) => {
+      history.push({
+        pathname: '/management/user/newUser/details',
+        state: {
+          rowData,
+          rowState
+        }
+      });
     }
   };
 

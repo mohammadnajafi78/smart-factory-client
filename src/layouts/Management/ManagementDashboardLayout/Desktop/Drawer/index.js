@@ -22,14 +22,14 @@ import TopBar from '../TopBar';
 import { styled, useTheme } from '@mui/material/styles';
 import userMng from 'src/assets/img/icons/userMng.svg';
 import clubMng from 'src/assets/img/icons/clubMng.svg';
-import homeMng from 'src/assets/img/icons/homeMng.svg';
-import newUserMng from 'src/assets/img/icons/newUserMng.svg';
-import allUserMng from 'src/assets/img/icons/allUserMng.svg';
-import competitionMng from 'src/assets/img/icons/competitionMng.svg';
-import lotteryMng from 'src/assets/img/icons/lotteryMng.svg';
-import awardsMng from 'src/assets/img/icons/awardsMng.svg';
-import commentMng from 'src/assets/img/icons/commentMng.svg';
-import settingMng from 'src/assets/img/icons/settingMng.svg';
+import HomeMng from 'src/assets/img/icons/homeMng.js';
+import NewUserMng from 'src/assets/img/icons/newUserMng.js';
+import AllUserMng from 'src/assets/img/icons/allUserMng.js';
+import CompetitionMng from 'src/assets/img/icons/competitionMng.js';
+import LotteryMng from 'src/assets/img/icons/lotteryMng.js';
+import AwardsMng from 'src/assets/img/icons/awardsMng.js';
+import CommentMng from 'src/assets/img/icons/commentMng.js';
+import SettingMng from 'src/assets/img/icons/settingMng.js';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -77,19 +77,22 @@ export default function DrawerComp(props) {
           name: 'home',
           title: 'خانه',
           path: '/management/user/home',
-          image: homeMng
+          image1: <HomeMng fill="#335D8A" />,
+          image2: <HomeMng fill="#00AAB5" />
         },
         {
           name: 'newUser',
           title: 'کاربران جدید',
           path: '/management/user/newUser',
-          image: newUserMng
+          image1: <NewUserMng fill="#335D8A" />,
+          image2: <NewUserMng fill="#00AAB5" />
         },
         {
           name: 'allUsers',
           title: 'همه کاربران',
           path: '/management/user/allUsers',
-          image: allUserMng
+          image1: <AllUserMng fill="#335D8A" />,
+          image2: <AllUserMng fill="#00AAB5" />
         }
       ]
     },
@@ -104,31 +107,36 @@ export default function DrawerComp(props) {
           name: 'competition',
           title: 'مسابقات',
           path: '/management/club/competition',
-          image: competitionMng
+          image1: <CompetitionMng fill="#335D8A" />,
+          image2: <CompetitionMng fill="#00AAB5" />
         },
         {
           name: 'lottery',
           title: 'قرعه کشی',
           path: '/management/club/lottery',
-          image: lotteryMng
+          image1: <LotteryMng fill="#335D8A" />,
+          image2: <LotteryMng fill="#00AAB5" />
         },
         {
           name: 'awards',
           title: 'جوایز',
-          path: '/management/club/awards',
-          image: awardsMng
+          path: '/management/club/gifts',
+          image1: <AwardsMng fill="#335D8A" />,
+          image2: <AwardsMng fill="#00AAB5" />
         },
         {
           name: 'comments',
           title: 'نظرات',
-          path: '/management/club/comments',
-          image: commentMng
+          path: '/management/club/comment',
+          image1: <CommentMng fill="#335D8A" />,
+          image2: <CommentMng fill="#00AAB5" />
         },
         {
           name: 'settings',
           title: 'تنظیمات',
-          path: '/management/club/settings',
-          image: settingMng
+          path: '/management/club/setting',
+          image1: <SettingMng fill="#335D8A" />,
+          image2: <SettingMng fill="#00AAB5" />
         }
       ]
     }
@@ -232,7 +240,7 @@ export default function DrawerComp(props) {
                 key={index}
                 onClick={() => {
                   history.push(item.path);
-                  // setSelected(item.name);
+                  props.setSelected(item);
                 }}
                 sx={{
                   margin: '0px',
@@ -253,10 +261,20 @@ export default function DrawerComp(props) {
                         alignItems: 'center'
                       }}
                     >
-                      <img src={item.image} width="25px" height={'25px'} />
+                      {item.name === props.selected.name
+                        ? item.image2
+                        : item.image1}
                     </Box>
                   </ListItemIcon>
-                  <ListItemText primary={item.title} />
+                  <ListItemText
+                    primary={item.title}
+                    style={{
+                      color:
+                        props.selected.name === item.name
+                          ? '#00AAB5'
+                          : '#335D8A'
+                    }}
+                  />
                 </ListItemButton>
               </ListItem>
             ))}

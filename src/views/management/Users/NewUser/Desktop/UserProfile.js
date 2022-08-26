@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import { Star } from 'react-feather';
-import Score from './Score';
+// import Score from './Score';
 import { ArrowBack } from '@mui/icons-material';
 import profileImg from 'src/assets/img/icons/profile.png';
 import edit from 'src/assets/img/icons/edit.svg';
@@ -13,10 +13,18 @@ import useAuth from 'src/hooks/useAuth';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 
-export default function ProfileDesktop(props) {
-  const [data, setData] = useState(props.data);
+export default function UserProfile() {
+  const [data, setData] = useState(null);
   const history = useHistory();
   const { logout } = useAuth();
+
+  useEffect(() => {
+    httpService.get(`${API_BASE_URL}/api/users/get_user_profile/`).then(res => {
+      if (res.status === 200) {
+        setData(res.data);
+      }
+    });
+  }, []);
 
   return (
     <Box
@@ -29,7 +37,7 @@ export default function ProfileDesktop(props) {
         // alignItems: 'flex-start',
         justifyContent: 'flex-start',
         width: '100%',
-        margin: '100px 40px 40px 170px',
+        // margin: '100px 40px 40px 170px',
         backgroundColor: 'white'
       }}
     >
@@ -52,10 +60,8 @@ export default function ProfileDesktop(props) {
             height: 160
           }}
         />
-        <InputLabelHeader style={{ color: '#00346D' }}>
-          {data?.first_name + ' ' + data?.last_name}
-        </InputLabelHeader>
-        <InputLabel style={{ color: '#00346D' }}>{data?.mobile}</InputLabel>
+
+        {/* <InputLabel style={{ color: '#00346D' }}>{data?.mobile}</InputLabel>
         <Box
           sx={{
             display: 'flex',
@@ -73,7 +79,7 @@ export default function ProfileDesktop(props) {
           <InputLabel style={{ color: '#4F4C4D', fontSize: '' }}>
             {data?.user_club?.grade_info?.name}
           </InputLabel>
-        </Box>
+        </Box> */}
       </Box>
       <Divider
         // variant="middle"
@@ -91,42 +97,39 @@ export default function ProfileDesktop(props) {
           width: '75%'
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            // padding: '0px 30px 0px 20px',
-            gap: '250px',
-            width: '100%'
-          }}
-        >
-          <Score />
-          <Button
-            color="primary"
-            fullWidth
-            type="submit"
-            variant={'outlined'}
+        <Box>
+          <InputLabelHeader style={{ color: '#00346D' }}>
+            {data?.first_name + ' ' + data?.last_name}
+          </InputLabelHeader>
+          <Box
             sx={{
-              color: '#00346D',
-              backgroundColor: '#ECF1F8',
-              height: '44px',
-              borderRadius: '8px',
-              border: '0.733333px solid #00346D',
-              fontSize: '12px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              padding: '12px 11px',
-              fontWeight: 400,
-              width: '20%',
-              margin: 0,
-              fontFamily: 'IRANSans'
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              width: '100%',
+              marginTop: '12px'
             }}
           >
-            انتقال امتیاز
-            <ArrowBack color="#00346D" style={{ fontSize: '16px' }} />
-          </Button>
+            <div style={{ display: 'inline-flex' }}>
+              <InputLabel style={{ color: '#00AAB5' }}>کدملی:</InputLabel>
+              <InputLabel style={{ color: '#335D8A' }}>
+                {data?.national_id}
+              </InputLabel>
+            </div>
+            <div style={{ display: 'inline-flex' }}>
+              <InputLabel style={{ color: '#00AAB5' }}>موبایل :</InputLabel>
+              <InputLabel style={{ color: '#335D8A' }}>
+                {data?.mobile}
+              </InputLabel>
+            </div>
+            <div style={{ display: 'inline-flex' }}>
+              <InputLabel style={{ color: '#00AAB5' }}>
+                شماره پرسنلی :
+              </InputLabel>
+              <InputLabel style={{ color: '#335D8A' }}>
+                {data?.username}
+              </InputLabel>
+            </div>
+          </Box>
         </Box>
         <Divider
           variant="middle"
@@ -214,45 +217,6 @@ export default function ProfileDesktop(props) {
               {data?.company?.location_info?.address}
             </InputLabel>
           </div>
-        </Box>
-        <Divider
-          variant="middle"
-          light={true}
-          sx={{ margin: '3px 0px', width: '100%' }}
-        />
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
-            width: '100%',
-            height: '80px'
-          }}
-        >
-          <Box
-            sx={{ display: 'inline-flex', cursor: 'pointer' }}
-            onClick={() => {
-              history.push({
-                pathname: '/profile/edit',
-                state: {
-                  data: data
-                }
-              });
-            }}
-          >
-            <img src={edit} width="20px" height="20px" />
-            <InputLabel style={{ color: '#00AAB5' }}>ویرایش اطلاعات</InputLabel>
-          </Box>
-          <Box
-            sx={{ display: 'inline-flex', cursor: 'pointer' }}
-            onClick={() => logout()}
-          >
-            <img src={exit} width="20px" height="20px" />
-            <InputLabel style={{ color: '#ED1C24' }}>
-              خروج از حساب کاربری
-            </InputLabel>
-          </Box>
         </Box>
       </Box>
     </Box>

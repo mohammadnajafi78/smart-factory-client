@@ -258,13 +258,40 @@ const routes = [
       },
       {
         exact: true,
+        path: '/management/user/newUser/details',
+        component: lazy(() =>
+          import('src/views/management/Users/NewUser/Desktop/UserDetails')
+        )
+      },
+      {
+        exact: true,
         path: '/management/user/allUsers',
         component: lazy(() => import('src/views/management/Users/AllUsers'))
       },
       {
         exact: true,
         path: '/management/club/competition',
-        component: lazy(() => import('src/views/management/Users/NewUser'))
+        component: lazy(() => import('src/views/management/Club/Competition'))
+      },
+      {
+        exact: true,
+        path: '/management/club/comment',
+        component: lazy(() => import('src/views/management/Club/Comment'))
+      },
+      {
+        exact: true,
+        path: '/management/club/gifts',
+        component: lazy(() => import('src/views/management/Club/Gifts'))
+      },
+      {
+        exact: true,
+        path: '/management/club/lottery',
+        component: lazy(() => import('src/views/management/Club/Lottery'))
+      },
+      {
+        exact: true,
+        path: '/management/club/setting',
+        component: lazy(() => import('src/views/management/Club/Setting'))
       },
       {
         component: () => <Redirect to="/management/user/allUsers" />

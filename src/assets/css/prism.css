@@ -186,3 +186,21 @@ pre[class*="language-"] {
   -webkit-transform: rotate(90deg);
   -webkit-transform-origin:230px 230px;
 } 
+
+
+
+.mui-datatables-wnkla-MuiGrid-root>.MuiGrid-item {
+    padding-top: 10px;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px #F2F2F2 inset;
+}
