@@ -851,8 +851,7 @@ const AllUsersTable = props => {
     // this.setState({ isLoading: true });
     httpService
       .get(
-        `${API_BASE_URL}/api/management/club/matches/?limit=${page *
-          rowsPerPage +
+        `${API_BASE_URL}/api/management/user/?limit=${page * rowsPerPage +
           rowsPerPage}&offset=${page}`
       )
 

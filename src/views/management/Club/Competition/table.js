@@ -851,18 +851,18 @@ const AllUsersTable = props => {
     // this.setState({ isLoading: true });
     httpService
       .get(
-        `${API_BASE_URL}/api/management/club/matches/?limit=${page *
-          rowsPerPage +
+        `${API_BASE_URL}/api/management/user/?limit=${page * rowsPerPage +
           rowsPerPage}&offset=${page}`
       )
 
       .then(res => {
         if (res.status === 200) {
-          // var array = Object.keys(res.data.results).map(function(key) {
-          //   return res.data.results[key];
-          // });
-          // console.log('arr', array);
-          setData(res.data.results);
+          var array = Object.keys(res.data.results).map(function(key) {
+            return res.data.results[key];
+          });
+          console.log('arr', array);
+          // setData(res.data.results);
+          setData(array);
           setCount(res.data.count);
         }
       });
@@ -884,7 +884,12 @@ const AllUsersTable = props => {
       )
       .then(res => {
         if (res.status === 200) {
-          setData(res.data.results);
+          var array = Object.keys(res.data.results).map(function(key) {
+            return res.data.results[key];
+          });
+          console.log('arr', array);
+          // setData(res.data.results);
+          setData(array);
           setCount(res.data.count);
         }
       });

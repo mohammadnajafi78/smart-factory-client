@@ -63,7 +63,7 @@ const NewDrawer = styled(Drawer)(({ theme }) => ({
 }));
 
 export default function DrawerComp(props) {
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(-1);
   const history = useHistory();
   let menu = [
     {
@@ -148,6 +148,21 @@ export default function DrawerComp(props) {
     else setSelected(1);
   });
 
+  useEffect(() => {
+    let path2 = history.location.pathname.split('/')[3];
+    if (selected !== -1) {
+      if (selected === 0) {
+        props.setSelected(
+          menu[0].children.filter(f => f.path.includes(path2))[0]
+        );
+      } else {
+        props.setSelected(
+          menu[1].children.filter(f => f.path.includes(path2))[0]
+        );
+      }
+    }
+  }, [selected]);
+
   return (
     <Box>
       <Drawer
@@ -196,6 +211,7 @@ export default function DrawerComp(props) {
                 onClick={() => {
                   history.push(item.path);
                   setSelected(item.id);
+                  props.setSelected(menu[item.id].children[0]);
                 }}
                 sx={{
                   borderBottom: '0.5px solid #FFFFFF',
@@ -235,7 +251,7 @@ export default function DrawerComp(props) {
           }}
         >
           <List sx={{ padding: '0xp' }}>
-            {menu[selected].children.map((item, index) => (
+            {menu[selected]?.children.map((item, index) => (
               <ListItem
                 key={index}
                 onClick={() => {
