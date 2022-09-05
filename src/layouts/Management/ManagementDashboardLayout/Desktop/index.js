@@ -69,7 +69,7 @@ export default function ManagementDashboardLayoutDesktop(props) {
               {selected?.title}
             </InputLabelHeader>
           </Box>
-          <Box sx={{ p: '20px' }}>{props.children}</Box>
+          <Box sx={{ p: '20px', overflow: 'auto' }}>{props.children}</Box>
         </Box>
       </div>
     </div>

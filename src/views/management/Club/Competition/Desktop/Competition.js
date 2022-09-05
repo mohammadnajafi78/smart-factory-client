@@ -9,6 +9,8 @@ import { useTheme } from '@mui/material/styles';
 // import UserProfile from './UserProfile';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import Details from './Details';
+import Users from './Users';
 // import Club from './Club';
 
 function TabPanel(props) {
@@ -100,10 +102,10 @@ export default function UserDetails() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          {/* <UserProfile data={userData} /> */}
+          <Details />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          {/* <Club /> */}
+          <Users />
         </TabPanel>
       </SwipeableViews>
     </Box>

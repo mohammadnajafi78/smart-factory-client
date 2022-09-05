@@ -284,9 +284,7 @@ const routes = [
         exact: true,
         path: '/management/club/competition/details',
         component: lazy(() =>
-          import(
-            'src/views/management/Club/Competition/Desktop/DetailsCompetition'
-          )
+          import('src/views/management/Club/Competition/Desktop/Competition')
         )
       },
       {
