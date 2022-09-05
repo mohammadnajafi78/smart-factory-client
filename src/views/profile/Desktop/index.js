@@ -14,9 +14,17 @@ import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 
 export default function ProfileDesktop(props) {
-  const [data, setData] = useState(props.data);
+  const [data, setData] = useState();
   const history = useHistory();
   const { logout } = useAuth();
+
+  useEffect(() => {
+    httpService.get(`${API_BASE_URL}/api/users/get_user_profile/`).then(res => {
+      if (res.status === 200) {
+        setData(res.data);
+      }
+    });
+  }, []);
 
   return (
     <Box

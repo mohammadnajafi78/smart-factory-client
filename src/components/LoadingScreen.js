@@ -20,14 +20,6 @@ const useStyles = makeStyles(theme => ({
 const LoadingScreen = () => {
   const classes = useStyles();
 
-  // useEffect(() => {
-  //   NProgress.start();
-
-  //   return () => {
-  //     NProgress.done();
-  //   };
-  // }, []);
-
   return (
     <div className={classes.root}>
       <Box width={400}>

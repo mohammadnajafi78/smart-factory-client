@@ -6,10 +6,10 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import SwipeableViews from 'react-swipeable-views';
 import { useTheme } from '@mui/material/styles';
-import UserProfile from './UserProfile';
+// import UserProfile from './UserProfile';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import Club from './Club';
+// import Club from './Club';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -66,14 +66,14 @@ export default function UserDetails() {
 
   return (
     <Box sx={{ width: '100%' }}>
-      {/* <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
         >
           <Tab
-            label="مشخصات"
+            label="جزئیات مسابقه"
             {...a11yProps(0)}
             sx={{
               fontFamily: 'IRANSans',
@@ -83,7 +83,7 @@ export default function UserDetails() {
             }}
           />
           <Tab
-            label="کلاب"
+            label="شرکت کنندگان"
             {...a11yProps(1)}
             sx={{
               fontFamily: 'IRANSans',
@@ -93,19 +93,19 @@ export default function UserDetails() {
             }}
           />
         </Tabs>
-      </Box> */}
-      {/* <SwipeableViews
+      </Box>
+      <SwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={value}
         onChangeIndex={handleChangeIndex}
       >
-        <TabPanel value={value} index={0} dir={theme.direction}> */}
-      <UserProfile data={userData} />
-      {/* </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
-          <Club />
+        <TabPanel value={value} index={0} dir={theme.direction}>
+          {/* <UserProfile data={userData} /> */}
         </TabPanel>
-      </SwipeableViews> */}
+        <TabPanel value={value} index={1} dir={theme.direction}>
+          {/* <Club /> */}
+        </TabPanel>
+      </SwipeableViews>
     </Box>
   );
 }

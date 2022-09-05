@@ -275,6 +275,22 @@ const routes = [
       },
       {
         exact: true,
+        path: '/management/club/competition/new',
+        component: lazy(() =>
+          import('src/views/management/Club/Competition/Desktop/NewCompetition')
+        )
+      },
+      {
+        exact: true,
+        path: '/management/club/competition/details',
+        component: lazy(() =>
+          import(
+            'src/views/management/Club/Competition/Desktop/DetailsCompetition'
+          )
+        )
+      },
+      {
+        exact: true,
         path: '/management/club/comment',
         component: lazy(() => import('src/views/management/Club/Comment'))
       },
@@ -294,7 +310,7 @@ const routes = [
         component: lazy(() => import('src/views/management/Club/Setting'))
       },
       {
-        component: () => <Redirect to="/management/user/allUsers" />
+        component: () => <Redirect to="/management/user/home" />
       }
     ]
   }

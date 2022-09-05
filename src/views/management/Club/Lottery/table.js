@@ -164,7 +164,7 @@ let theme = createTheme({
           fontFamily: 'IRANSans',
           fontSize: 12,
           fontWeight: 8,
-          display: 'flex',
+          display: 'inline',
           flexDirection: 'column'
         }
       }
