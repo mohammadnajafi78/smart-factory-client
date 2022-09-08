@@ -22,7 +22,7 @@ import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import LockRoundedIcon from '@mui/icons-material/LockRounded';
 import LockOpenRoundedIcon from '@mui/icons-material/LockOpenRounded';
-import IconButton from '@mui/material/IconButton';
+import IconButton from 'src/components/Desktop/Button/Icon';
 import Dialog from '@mui/material/Dialog/Dialog';
 import Button from '@mui/material/Button';
 import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
@@ -43,6 +43,18 @@ import FilterIcon from '@mui/icons-material/FilterAlt';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import { consoleSandbox } from '@sentry/utils';
+import FaTOEn from 'src/utils/FaTOEn';
+import MomentFa from 'src/utils/MomentFa';
+import Datepicker from 'src/components/Desktop/Datepicker';
+import AdapterJalali from '@date-io/date-fns-jalali';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import moment from 'jalali-moment';
+import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
+import { Plus } from 'react-feather';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
+
+const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
 const muiCache = createCache({
   key: 'mui-datatables',
@@ -83,10 +95,10 @@ let theme = createTheme({
         },
         paper: {
           boxShadow: 'none'
+        },
+        caption: {
+          display: 'none'
         }
-        // caption: {
-        //   left: '0px'
-        // }
       }
     },
     MuiToolbar: {
@@ -380,7 +392,8 @@ let theme = createTheme({
 
 theme = responsiveFontSizes(theme);
 
-const AllUsersTable = props => {
+let item = {};
+const GiftTable = props => {
   const { className, rest, returnFunction, gridData } = props;
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
@@ -397,45 +410,27 @@ const AllUsersTable = props => {
   const [columns, setColumns] = useState([]);
   const [completed, setCompleted] = useState(null);
   const [confirmed, setConfirmed] = useState(null);
+  const [filterObj, setFilterObj] = useState([]);
+  const [filter, setFilter] = useState('');
+  const [sort, setSort] = useState('');
+  // let itemSort = {};
+  const [value, setValue] = React.useState(new Date());
 
   const history = useHistory();
 
   useEffect(() => {
-    httpService
-      .get(`${API_BASE_URL}/api/utils/provinces/?country_id=25`)
-      .then(res => {
-        if (res.status === 200) {
-          setProvinces(res.data);
-        }
-      });
-  }, []);
+    getData(page, rowsPerPage);
+  }, [filter, sort]);
 
   useEffect(() => {
-    if (provinceId !== null) {
-      httpService
-        .get(`${API_BASE_URL}/api/utils/cities/?province__id=${provinceId}`)
-        .then(res => {
-          if (res.status === 200) {
-            setCities(res.data);
-          }
-        });
-    }
-  }, [provinceId]);
-
-  useEffect(() => {
-    httpService
-      .get(`${API_BASE_URL}/api/users/user_type/activity_list`)
-      .then(res => {
-        if (res.status === 200) {
-          setWorks(res.data);
-        }
-      });
+    document.getElementById('pagination-next').style.rotate = '180deg';
+    document.getElementById('pagination-back').style.rotate = '180deg';
   }, []);
 
   useEffect(() => {
     setColumns([
       {
-        name: 'user.first_name',
+        name: 'name',
         label: 'نام',
         options: {
           filter: true,
@@ -443,9 +438,7 @@ const AllUsersTable = props => {
           filterOptions: {
             display: (filterList, onChange, index, column) => {
               return (
-                <FormControl
-                // sx={{ margin: 0, paddingTop: 0, paddingBottom: 0 }}
-                >
+                <FormControl>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
                     نام
                   </InputLabel>
@@ -454,10 +447,6 @@ const AllUsersTable = props => {
                     aria-describedby="my-helper-text"
                     fullWidth
                     placeholder="نام"
-                    // sx={{
-                    //   background: '#F2F2F2',
-                    //   borderRadius: '4px'
-                    // }}
                     value={filterList[index]}
                     onChange={event => {
                       if (event.target.value) {
@@ -476,50 +465,13 @@ const AllUsersTable = props => {
         }
       },
       {
-        name: 'user.last_name',
-        label: 'نام خانوادگی',
+        name: 'start_date',
+        label: 'تاریخ شروع',
         options: {
-          filter: true,
-          filterType: 'custom',
-          filterOptions: {
-            display: (filterList, onChange, index, column) => {
-              return (
-                <FormControl
-                // sx={{ margin: 0, paddingTop: 0, paddingBottom: 0 }}
-                >
-                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    نام خانوادگی
-                  </InputLabel>
-                  <TextField
-                    id="name"
-                    aria-describedby="my-helper-text"
-                    fullWidth
-                    // sx={{
-                    //   background: '#F2F2F2',
-                    //   borderRadius: '4px',
-                    //   margin: '6px 3px'
-                    // }}
-                    value={filterList[index]}
-                    onChange={event => {
-                      if (event.target.value) {
-                        filterList[index][0] = event.target.value;
-                        onChange(filterList[index], index, column);
-                      } else {
-                        filterList[index] = [];
-                        onChange(filterList[index], index, column);
-                      }
-                    }}
-                  />
-                </FormControl>
-              );
-            }
-          }
-        }
-      },
-      {
-        name: 'user.mobile',
-        label: 'شماره موبایل',
-        options: {
+          customBodyRender: (value, tableMeta, updateValue) => {
+            console.log('inja');
+            return MomentFa(value);
+          },
           filter: true,
           filterType: 'custom',
           filterOptions: {
@@ -527,28 +479,46 @@ const AllUsersTable = props => {
               return (
                 <FormControl>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    شماره موبایل
+                    تاریخ شروع
                   </InputLabel>
-                  <TextField
-                    id="name"
-                    aria-describedby="my-helper-text"
-                    fullWidth
-                    // sx={{
-                    //   background: '#F2F2F2',
-                    //   borderRadius: '4px',
-                    //   margin: '6px 3px'
-                    // }}
-                    value={filterList[index]}
-                    onChange={event => {
-                      if (event.target.value) {
-                        filterList[index][0] = event.target.value;
-                        onChange(filterList[index], index, column);
-                      } else {
-                        filterList[index] = [];
-                        onChange(filterList[index], index, column);
+
+                  <LocalizationProvider dateAdapter={AdapterJalali}>
+                    <DatePicker
+                      mask="____/__/__"
+                      value={
+                        filterList[index].length > 0
+                          ? moment
+                              .from(
+                                p2e(
+                                  moment(filterList[index][0]).format(
+                                    'YYYY/MM/DD'
+                                  )
+                                ),
+                                'fa',
+                                'YYYY/MM/DD'
+                              )
+                              .locale('en')
+                          : new Date()
                       }
-                    }}
-                  />
+                      onChange={newValue => {
+                        if (newValue) {
+                          filterList[index][0] = MomentFa(newValue);
+                          onChange(filterList[index], index, column);
+                        } else {
+                          filterList[index] = [];
+                          onChange(filterList[index], index, column);
+                        }
+                      }}
+                      renderInput={params => (
+                        <TextField
+                          {...params}
+                          sx={{
+                            background: '#F2F2F2'
+                          }}
+                        />
+                      )}
+                    />
+                  </LocalizationProvider>
                 </FormControl>
               );
             }
@@ -556,266 +526,98 @@ const AllUsersTable = props => {
         }
       },
       {
-        name: 'location.province_name',
-        label: 'استان',
+        name: 'end_date',
+        label: 'تاریخ پایان',
+        options: {
+          customBodyRender: (value, tableMeta, updateValue) => {
+            return MomentFa(value);
+          },
+          filter: true,
+          filterType: 'custom',
+          filterOptions: {
+            display: (filterList, onChange, index, column) => {
+              return (
+                <FormControl>
+                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
+                    تاریخ پایان
+                  </InputLabel>
+                  <LocalizationProvider dateAdapter={AdapterJalali}>
+                    <DatePicker
+                      mask="____/__/__"
+                      value={
+                        filterList[index].length > 0
+                          ? moment
+                              .from(
+                                p2e(
+                                  moment(filterList[index][0]).format(
+                                    'YYYY/MM/DD'
+                                  )
+                                ),
+                                'fa',
+                                'YYYY/MM/DD'
+                              )
+                              .locale('en')
+                          : new Date()
+                      }
+                      onChange={newValue => {
+                        if (newValue) {
+                          filterList[index][0] = MomentFa(newValue);
+                          onChange(filterList[index], index, column);
+                        } else {
+                          filterList[index] = [];
+                          onChange(filterList[index], index, column);
+                        }
+                      }}
+                      renderInput={params => (
+                        <TextField
+                          {...params}
+                          sx={{
+                            background: '#F2F2F2'
+                          }}
+                        />
+                      )}
+                    />
+                  </LocalizationProvider>
+                </FormControl>
+              );
+            }
+          }
+        }
+      },
+      {
+        name: 'winner_count',
+        label: 'تعداد شرکت کننده',
         options: {
           filter: true,
           filterType: 'custom',
           filterOptions: {
-            logic: (orderStatus, filters) => {
-              // console.log('filters', filters);
-              // if (filters.length) return !filters.includes(orderStatus.status);
-              // return false;
+            customBodyRender: (value, tableMeta, updateValue) => {
+              console.log('value', value);
+              return value.length;
             },
             display: (filterList, onChange, index, column) => {
               return (
                 <FormControl>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    استان
+                    تعداد شرکت کنندگان
                   </InputLabel>
-                  <Autocomplete
-                    disablePortal
+                  <TextField
+                    id="name"
+                    aria-describedby="my-helper-text"
                     fullWidth
-                    id="province"
-                    options={provinces}
-                    renderInput={params => (
-                      <TextField {...params} placeholder="استان" fullWidth />
-                    )}
-                    isOptionEqualToValue={(option, value) =>
-                      option.label === value.label
-                    }
+                    placeholder="تعداد شرکت کنندگان"
                     value={filterList[index]}
-                    // getOptionLabel={option => option.label}
-                    disableClearable
-                    onChange={(event, values, reason, details) => {
-                      console.log('event', event);
-                      console.log('values', values);
-                      console.log('reason', reason);
-                      console.log('details', details);
-                      setProvinceId(values.id);
-                      filterList[index][0] = values.label;
-                      onChange(filterList[index], index, column);
-                    }}
-                    sx={{
-                      background: '#F2F2F2',
-                      borderRadius: '4px'
-                    }}
-                  />
-                </FormControl>
-              );
-            }
-          }
-        }
-      },
-      {
-        name: 'location.city_name',
-        label: 'شهر',
-        options: {
-          filter: true,
-          filterType: 'custom',
-          filterOptions: {
-            display: (filterList, onChange, index, column) => {
-              return (
-                <FormControl>
-                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    شهر
-                  </InputLabel>
-                  <Autocomplete
-                    disablePortal
-                    id="city"
-                    options={cities}
-                    renderInput={params => (
-                      <TextField {...params} placeholder="شهر" />
-                    )}
-                    // getOptionLabel={option => option.label}
-                    disableClearable
-                    value={filterList[index]}
-                    onChange={(event, values) => {
-                      setCityId(values.id);
-                      filterList[index][0] = values.label;
-                      onChange(filterList[index], index, column);
-                    }}
-                    isOptionEqualToValue={(option, value) =>
-                      option.label === value.label
-                    }
-                    sx={{
-                      background: '#F2F2F2',
-                      borderRadius: '4px'
-                    }}
-                  />
-                </FormControl>
-              );
-            }
-          }
-        }
-      },
-      {
-        name: 'user.user_type_list',
-        label: 'فعالیت',
-        options: {
-          customBodyRender: (value, tableMeta, updateValue) => {
-            return value.map(option => option.translate).toString();
-          },
-          filter: true,
-          filterType: 'custom',
-          // customFilterListOptions: {
-          //   update: (filterList, filterPos, index) => {
-          //     console.log('update');
-          //     filterList[index].splice(filterPos, 1);
-          //     return filterList;
-          //   }
-          // },
-          filterOptions: {
-            display: (filterList, onChange, index, column) => {
-              return (
-                <FormControl>
-                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    فعالیت
-                  </InputLabel>
-                  <Autocomplete
-                    multiple
-                    disablePortal
-                    id="field"
-                    limitTags={1}
-                    options={works}
-                    getOptionLabel={option => option.translate}
-                    renderInput={params => <TextField {...params} />}
-                    // value={filterList[index]}
-                    renderValue={selected => selected.join(', ')}
-                    disableClearable
-                    onChange={(event, values) => {
-                      if (values.length > 0) {
-                        filterList[index][values?.length - 1] =
-                          values[values?.length - 1].translate;
+                    type={'number'}
+                    onChange={event => {
+                      if (event.target.value) {
+                        filterList[index][0] = event.target.value;
                         onChange(filterList[index], index, column);
                       } else {
                         filterList[index] = [];
                         onChange(filterList[index], index, column);
                       }
                     }}
-                    isOptionEqualToValue={(option, value) =>
-                      option.translate === value.translate
-                    }
-                    sx={{
-                      background: '#F2F2F2',
-                      borderRadius: '4px'
-                    }}
                   />
-                </FormControl>
-              );
-            }
-          }
-        }
-      },
-      {
-        name: 'user.profile_is_completed',
-        label: 'تکمیل شده',
-        options: {
-          customBodyRender: (value, tableMeta, updateValue) => {
-            return value === true ? 'بله' : 'خیر';
-          },
-          filter: true,
-          filterType: 'custom',
-          filterOptions: {
-            display: (filterList, onChange, index, column) => {
-              return (
-                <FormControl sx={{ marginTop: '10px' }}>
-                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    وضعیت اطلاعات کاربر
-                  </InputLabel>
-                  <ToggleButtonGroup
-                    color="primary"
-                    value={completed}
-                    exclusive
-                    onChange={event => {
-                      setCompleted(event.target.value);
-                      filterList[index][0] =
-                        event.target.value == 'true'
-                          ? 'تکمیل شده'
-                          : 'تکمیل نشده';
-                      onChange(filterList[index], index, column);
-                    }}
-                    sx={{
-                      marginTop: '5px',
-                      width: '60.5%',
-                      borderLeft: '1px solid rgba(0,0,0, 0.12)'
-                    }}
-                  >
-                    <ToggleButton
-                      value="true"
-                      sx={{
-                        fontFamily: 'IRANSans'
-                      }}
-                    >
-                      تکمیل شده
-                    </ToggleButton>
-                    <ToggleButton
-                      value="false"
-                      sx={{
-                        fontFamily: 'IRANSans',
-                        borderLeft: '1px solid rgba(0,0,0, 0.12)'
-                      }}
-                    >
-                      تکمیل نشده
-                    </ToggleButton>
-                  </ToggleButtonGroup>
-                </FormControl>
-              );
-            }
-          }
-        }
-      },
-      {
-        name: 'user.is_verified',
-        label: 'تایید شده',
-        options: {
-          customBodyRender: (value, tableMeta, updateValue) => {
-            return value === true ? 'بله' : 'خیر';
-          },
-          filter: true,
-          filterType: 'custom',
-          filterOptions: {
-            display: (filterList, onChange, index, column) => {
-              return (
-                <FormControl sx={{ marginTop: '10px' }}>
-                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    وضعیت تایید کاربر
-                  </InputLabel>
-                  <ToggleButtonGroup
-                    color="primary"
-                    value={confirmed}
-                    exclusive
-                    onChange={event => {
-                      setConfirmed(event.target.value);
-                      filterList[index][0] =
-                        event.target.value == 'true'
-                          ? 'تایید شده'
-                          : 'تایید نشده';
-                      onChange(filterList[index], index, column);
-                    }}
-                    sx={{
-                      marginTop: '5px',
-                      width: '56%',
-                      borderLeft: '1px solid rgba(0,0,0, 0.12)'
-                    }}
-                  >
-                    <ToggleButton
-                      value="true"
-                      sx={{
-                        fontFamily: 'IRANSans'
-                      }}
-                    >
-                      تایید شده
-                    </ToggleButton>
-                    <ToggleButton
-                      value="false"
-                      sx={{
-                        fontFamily: 'IRANSans'
-                      }}
-                    >
-                      تایید نشده
-                    </ToggleButton>
-                  </ToggleButtonGroup>
                 </FormControl>
               );
             }
@@ -823,7 +625,7 @@ const AllUsersTable = props => {
         }
       }
     ]);
-  }, [provinces, cities, works, completed, confirmed]);
+  }, []);
 
   const CustomSearchIcon = props => {
     return <SearchIcon {...props} style={{ color: '#00AAB5' }} />;
@@ -848,19 +650,17 @@ const AllUsersTable = props => {
   };
 
   function getData(page, rowsPerPage) {
-    // this.setState({ isLoading: true });
     httpService
       .get(
-        `${API_BASE_URL}/api/management/user/?limit=${page * rowsPerPage +
-          rowsPerPage}&offset=${page}`
+        `${API_BASE_URL}/api/management/club/matches/?limit=${page *
+          rowsPerPage +
+          rowsPerPage}&offset=${page}${filter !== '' ? `&${filter}` : ''}${
+          sort !== '' ? `&${sort}` : ''
+        }`
       )
 
       .then(res => {
         if (res.status === 200) {
-          // var array = Object.keys(res.data.results).map(function(key) {
-          //   return res.data.results[key];
-          // });
-          // console.log('arr', array);
           setData(res.data.results);
           setCount(res.data.count);
         }
@@ -872,21 +672,8 @@ const AllUsersTable = props => {
   }, []);
 
   function changePage(page, rowsPerPage, sortOrder) {
-    // this.setState({
-    //   isLoading: true,
-    // });
     setRowsPerPage(rowsPerPage);
-    httpService
-      .get(
-        `${API_BASE_URL}/api/management/user/?limit=${page * rowsPerPage +
-          rowsPerPage}&offset=${page}`
-      )
-      .then(res => {
-        if (res.status === 200) {
-          setData(res.data.results);
-          setCount(res.data.count);
-        }
-      });
+    getData(page, rowsPerPage);
   }
 
   const tableOptions = {
@@ -972,71 +759,196 @@ const AllUsersTable = props => {
       }
     },
     onTableChange: (action, tableState) => {
-      // a developer could react to change on an action basis or
-      // examine the state as a whole and do whatever they want
-
       switch (action) {
         case 'changeRowsPerPage':
-          changePage(
-            tableState.page,
-            tableState.rowsPerPage
-            // tableState.sortOrder
-          );
+          changePage(tableState.page, tableState.rowsPerPage);
           break;
-        // case 'sort':
-        //   this.sort(tableState.page, tableState.sortOrder);
-        //   break;
-
-        // case 'filterChange'
         default:
-          console.log('action not handled.', action, tableState);
+        // console.log('action not handled.', action, tableState);
       }
+    },
+    onFilterChange: (column, filterList, type) => {
+      let filterType = '';
+      switch (column) {
+        case 'user.first_name':
+          if (filterList[0][0]) {
+            item['first_name'] = filterList[0][0];
+            filterType = '__contains';
+          } else {
+            delete item['first_name'];
+          }
+          break;
+        case 'user.last_name':
+          if (filterList[1][0]) {
+            item['last_name'] = filterList[1][0];
+            filterType = '__contains';
+          } else {
+            delete item['last_name'];
+          }
+          break;
+        case 'user.mobile':
+          if (filterList[2][0]) {
+            item['mobile'] = FaTOEn(filterList[2][0]);
+            filterType = '__contains';
+          } else {
+            delete item['mobile'];
+          }
+          break;
+        case 'location.province_name':
+          if (filterList[3][0]) {
+            item['province_name'] = filterList[3][0];
+            filterType = '';
+          } else {
+            delete item['province_name'];
+          }
+          break;
+        case 'location.city_name':
+          if (filterList[4][0]) {
+            item['city_name'] = filterList[4][0];
+            filterType = '';
+          } else {
+            delete item['city_name'];
+          }
+          break;
+        case 'user.user_type_list':
+          if (filterList[5][0]) {
+            item['user_type'] = filterList[5][0];
+            filterType = '';
+          } else {
+            delete item['user_type'];
+          }
+          break;
+        case 'user.profile_is_completed':
+          if (filterList[6][0]) {
+            item['profile_is_complete'] =
+              filterList[6][0] == 'تکمیل شده' ? 'True' : 'False';
+            filterType = '';
+          } else {
+            delete item['profile_is_complete'];
+            setCompleted(null);
+          }
+          break;
+        case 'user.is_verified':
+          if (filterList[7][0]) {
+            item['is_verified'] =
+              filterList[7][0] == 'تایید شده'
+                ? 'Verified'
+                : filterList[7][0] == 'تایید نشده'
+                ? 'Rejected'
+                : 'NA';
+            filterType = '';
+          } else {
+            delete item['is_verified'];
+            setConfirmed(false);
+          }
+          break;
+        default:
+          item = item;
+      }
+
+      let temp = item;
+      let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
+      console.log('filterItems', filterItems);
+
+      let str = '';
+      if (filterItems?.length > 0) {
+        filterItems.map((itm, index) => {
+          str =
+            str + itm[0] + filterType + '=' + decodeURIComponent(itm[1]) + '&';
+        });
+      }
+      str.replace('&&', '&');
+      setFilter(str);
+    },
+    onColumnSortChange: (changedColumn, direction) => {
+      let itemSort = {};
+      switch (changedColumn) {
+        case 'user.first_name':
+          itemSort['first_name'] = direction;
+          break;
+        case 'user.last_name':
+          itemSort['last_name'] = direction;
+          break;
+        case 'user.mobile':
+          itemSort['mobile'] = direction;
+          break;
+        case 'location.province_name':
+          itemSort['mobile'] = direction;
+          break;
+        case 'location.city_name':
+          itemSort['mobile'] = direction;
+          break;
+        case 'user.user_type_list':
+          itemSort['mobile'] = direction;
+          break;
+        default:
+          itemSort = itemSort;
+      }
+
+      let temp = itemSort;
+      let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
+
+      let str = '';
+      if (filterItems?.length > 0) {
+        filterItems.map((itm, index) => {
+          str = itm[1] === 'asc' ? itm[0] : `-${itm[0]}`;
+        });
+      }
+      setSort('order=' + str);
+    },
+    onRowClick: (rowData, rowState) => {
+      history.push({
+        pathname: '/management/club/gift/details',
+        state: {
+          rowData,
+          rowState
+        }
+      });
     }
   };
-
-  function onHandleColumnReorder(result) {
-    // setNewColumns(result);
-    // console.log('result', result);
-    // console.log('columnOrder', newColumns);
-  }
-
-  function modalAction(rowUser) {
-    setUser(rowUser);
-    setOpenModal(!openModal);
-  }
-
-  function getRowData(row) {
-    if (props.handleClose !== undefined) {
-      props.handleClose();
-    }
-    return returnFunction(row);
-  }
 
   return (
     <CacheProvider value={muiCache}>
       <ThemeProvider theme={theme}>
         <Card>
-          {/* <PerfectScrollbar> */}
           <Box sx={{ height: '87vh' }}>
-            {/* {data && ( */}
             <MUIDataTable
-              title={'لیست'}
+              title={
+                <>
+                  <InputLabelHeader
+                    style={{
+                      color: '#00346D',
+                      display: 'flex',
+                      alignItems: 'center'
+                    }}
+                  >
+                    لیست
+                  </InputLabelHeader>
+                  <ConfirmButton
+                    style={{ width: '180px', marginRight: '20px' }}
+                    onClick={() => {
+                      history.push('/management/club/gift/new');
+                    }}
+                  >
+                    <Plus />
+                    <di>جایزه جدید</di>
+                  </ConfirmButton>
+                </>
+              }
               data={data}
               columns={columns}
               options={tableOptions}
               components={components}
             />
-            {/* )} */}
           </Box>
-          {/* </PerfectScrollbar> */}
         </Card>
       </ThemeProvider>
     </CacheProvider>
   );
 };
 
-AllUsersTable.propTypes = {
+GiftTable.propTypes = {
   className: PropTypes.string
 };
 
-export default AllUsersTable;
+export default GiftTable;

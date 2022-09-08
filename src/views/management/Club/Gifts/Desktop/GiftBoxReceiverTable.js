@@ -393,7 +393,7 @@ let theme = createTheme({
 theme = responsiveFontSizes(theme);
 
 let item = {};
-const CompetitionTable = props => {
+const AllUsersTable = props => {
   const { className, rest, returnFunction, gridData } = props;
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
@@ -898,7 +898,7 @@ const CompetitionTable = props => {
     },
     onRowClick: (rowData, rowState) => {
       history.push({
-        pathname: '/management/club/competition/details',
+        pathname: '/management/club/gift/details',
         state: {
           rowData,
           rowState
@@ -913,28 +913,7 @@ const CompetitionTable = props => {
         <Card>
           <Box sx={{ height: '87vh' }}>
             <MUIDataTable
-              title={
-                <>
-                  <InputLabelHeader
-                    style={{
-                      color: '#00346D',
-                      display: 'flex',
-                      alignItems: 'center'
-                    }}
-                  >
-                    لیست
-                  </InputLabelHeader>
-                  <ConfirmButton
-                    style={{ width: '180px', marginRight: '20px' }}
-                    onClick={() => {
-                      history.push('/management/club/competition/new');
-                    }}
-                  >
-                    <Plus />
-                    <di>مسابقه جدید</di>
-                  </ConfirmButton>
-                </>
-              }
+              title={'دریافت کنندگان'}
               data={data}
               columns={columns}
               options={tableOptions}
@@ -947,8 +926,8 @@ const CompetitionTable = props => {
   );
 };
 
-CompetitionTable.propTypes = {
+AllUsersTable.propTypes = {
   className: PropTypes.string
 };
 
-export default CompetitionTable;
+export default AllUsersTable;

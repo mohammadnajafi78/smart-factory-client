@@ -40,11 +40,34 @@ export default function Item({ data }) {
           width: '100%'
         }}
       >
-        <InputLabel>{`وضعیت شما: ${
-          data?.is_winner ? 'برنده' : 'بازنده'
-        }`}</InputLabel>
+        <InputLabel>
+          {data?.is_winner ? (
+            <Box
+              sx={{
+                color: '#00AAB5',
+                backgroundColor: '#DDF5F6',
+                padding: '2px 6px',
+                borderRadius: '4px'
+              }}
+            >
+              برنده
+            </Box>
+          ) : (
+            <Box
+              sx={{
+                backgroundColor: '#FDE8E8',
+                color: '#F4777C',
+                padding: '2px 6px',
+                borderRadius: '4px'
+              }}
+            >
+              بازنده
+            </Box>
+          )}
+        </InputLabel>
         <Rating value={data?.overall_rate} size="small" readOnly />
       </Box>
+      <InputLabel style={{ color: '#00346D' }}>نام و نام خانوادگی</InputLabel>
     </Box>
   );
 }

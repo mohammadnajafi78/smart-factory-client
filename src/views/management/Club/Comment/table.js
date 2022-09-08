@@ -43,6 +43,7 @@ import FilterIcon from '@mui/icons-material/FilterAlt';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import { consoleSandbox } from '@sentry/utils';
+import FaTOEn from 'src/utils/FaTOEn';
 
 const muiCache = createCache({
   key: 'mui-datatables',
@@ -83,10 +84,10 @@ let theme = createTheme({
         },
         paper: {
           boxShadow: 'none'
+        },
+        caption: {
+          display: 'none'
         }
-        // caption: {
-        //   left: '0px'
-        // }
       }
     },
     MuiToolbar: {
@@ -380,7 +381,8 @@ let theme = createTheme({
 
 theme = responsiveFontSizes(theme);
 
-const AllUsersTable = props => {
+let item = {};
+const CommentTable = props => {
   const { className, rest, returnFunction, gridData } = props;
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
@@ -397,6 +399,10 @@ const AllUsersTable = props => {
   const [columns, setColumns] = useState([]);
   const [completed, setCompleted] = useState(null);
   const [confirmed, setConfirmed] = useState(null);
+  const [filterObj, setFilterObj] = useState([]);
+  const [filter, setFilter] = useState('');
+  const [sort, setSort] = useState('');
+  // let itemSort = {};
 
   const history = useHistory();
 
@@ -431,6 +437,15 @@ const AllUsersTable = props => {
         }
       });
   }, []);
+
+  useEffect(() => {
+    document.getElementById('pagination-next').style.rotate = '180deg';
+    document.getElementById('pagination-back').style.rotate = '180deg';
+  }, []);
+
+  useEffect(() => {
+    getData(page, rowsPerPage);
+  }, [filter, sort]);
 
   useEffect(() => {
     setColumns([
@@ -658,13 +673,6 @@ const AllUsersTable = props => {
           },
           filter: true,
           filterType: 'custom',
-          // customFilterListOptions: {
-          //   update: (filterList, filterPos, index) => {
-          //     console.log('update');
-          //     filterList[index].splice(filterPos, 1);
-          //     return filterList;
-          //   }
-          // },
           filterOptions: {
             display: (filterList, onChange, index, column) => {
               return (
@@ -770,7 +778,11 @@ const AllUsersTable = props => {
         label: 'تایید شده',
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return value === true ? 'بله' : 'خیر';
+            return value.toLowerCase() === 'verified'
+              ? 'بله'
+              : value.toLowerCase() === 'rejected'
+              ? 'خیر'
+              : 'نامشخص';
           },
           filter: true,
           filterType: 'custom',
@@ -788,19 +800,21 @@ const AllUsersTable = props => {
                     onChange={event => {
                       setConfirmed(event.target.value);
                       filterList[index][0] =
-                        event.target.value == 'true'
+                        event.target.value.toLowerCase() === 'verified'
                           ? 'تایید شده'
-                          : 'تایید نشده';
+                          : event.target.value.toLowerCase() === 'rejected'
+                          ? 'تایید نشده'
+                          : 'نامشخص';
                       onChange(filterList[index], index, column);
                     }}
                     sx={{
                       marginTop: '5px',
-                      width: '56%',
+                      width: '82%',
                       borderLeft: '1px solid rgba(0,0,0, 0.12)'
                     }}
                   >
                     <ToggleButton
-                      value="true"
+                      value="Verified"
                       sx={{
                         fontFamily: 'IRANSans'
                       }}
@@ -808,12 +822,20 @@ const AllUsersTable = props => {
                       تایید شده
                     </ToggleButton>
                     <ToggleButton
-                      value="false"
+                      value="Rejected"
                       sx={{
                         fontFamily: 'IRANSans'
                       }}
                     >
                       تایید نشده
+                    </ToggleButton>
+                    <ToggleButton
+                      value="NA"
+                      sx={{
+                        fontFamily: 'IRANSans'
+                      }}
+                    >
+                      نامشخص
                     </ToggleButton>
                   </ToggleButtonGroup>
                 </FormControl>
@@ -848,19 +870,16 @@ const AllUsersTable = props => {
   };
 
   function getData(page, rowsPerPage) {
-    // this.setState({ isLoading: true });
     httpService
       .get(
         `${API_BASE_URL}/api/management/user/?limit=${page * rowsPerPage +
-          rowsPerPage}&offset=${page}`
+          rowsPerPage}&offset=${page}${filter !== '' ? `&${filter}` : ''}${
+          sort !== '' ? `&${sort}` : ''
+        }`
       )
 
       .then(res => {
         if (res.status === 200) {
-          // var array = Object.keys(res.data.results).map(function(key) {
-          //   return res.data.results[key];
-          // });
-          // console.log('arr', array);
           setData(res.data.results);
           setCount(res.data.count);
         }
@@ -872,21 +891,8 @@ const AllUsersTable = props => {
   }, []);
 
   function changePage(page, rowsPerPage, sortOrder) {
-    // this.setState({
-    //   isLoading: true,
-    // });
     setRowsPerPage(rowsPerPage);
-    httpService
-      .get(
-        `${API_BASE_URL}/api/management/user/?limit=${page * rowsPerPage +
-          rowsPerPage}&offset=${page}`
-      )
-      .then(res => {
-        if (res.status === 200) {
-          setData(res.data.results);
-          setCount(res.data.count);
-        }
-      });
+    getData(page, rowsPerPage);
   }
 
   const tableOptions = {
@@ -972,53 +978,159 @@ const AllUsersTable = props => {
       }
     },
     onTableChange: (action, tableState) => {
-      // a developer could react to change on an action basis or
-      // examine the state as a whole and do whatever they want
-
       switch (action) {
         case 'changeRowsPerPage':
-          changePage(
-            tableState.page,
-            tableState.rowsPerPage
-            // tableState.sortOrder
-          );
+          changePage(tableState.page, tableState.rowsPerPage);
           break;
-        // case 'sort':
-        //   this.sort(tableState.page, tableState.sortOrder);
-        //   break;
-
-        // case 'filterChange'
         default:
-          console.log('action not handled.', action, tableState);
+        // console.log('action not handled.', action, tableState);
       }
+    },
+    onFilterChange: (column, filterList, type) => {
+      let filterType = '';
+      switch (column) {
+        case 'user.first_name':
+          if (filterList[0][0]) {
+            item['first_name'] = filterList[0][0];
+            filterType = '__contains';
+          } else {
+            delete item['first_name'];
+          }
+          break;
+        case 'user.last_name':
+          if (filterList[1][0]) {
+            item['last_name'] = filterList[1][0];
+            filterType = '__contains';
+          } else {
+            delete item['last_name'];
+          }
+          break;
+        case 'user.mobile':
+          if (filterList[2][0]) {
+            item['mobile'] = FaTOEn(filterList[2][0]);
+            filterType = '__contains';
+          } else {
+            delete item['mobile'];
+          }
+          break;
+        case 'location.province_name':
+          if (filterList[3][0]) {
+            item['province_name'] = filterList[3][0];
+            filterType = '';
+          } else {
+            delete item['province_name'];
+          }
+          break;
+        case 'location.city_name':
+          if (filterList[4][0]) {
+            item['city_name'] = filterList[4][0];
+            filterType = '';
+          } else {
+            delete item['city_name'];
+          }
+          break;
+        case 'user.user_type_list':
+          if (filterList[5][0]) {
+            item['user_type'] = filterList[5][0];
+            filterType = '';
+          } else {
+            delete item['user_type'];
+          }
+          break;
+        case 'user.profile_is_completed':
+          if (filterList[6][0]) {
+            item['profile_is_complete'] =
+              filterList[6][0] == 'تکمیل شده' ? 'True' : 'False';
+            filterType = '';
+          } else {
+            delete item['profile_is_complete'];
+            setCompleted(null);
+          }
+          break;
+        case 'user.is_verified':
+          if (filterList[7][0]) {
+            item['is_verified'] =
+              filterList[7][0] == 'تایید شده'
+                ? 'Verified'
+                : filterList[7][0] == 'تایید نشده'
+                ? 'Rejected'
+                : 'NA';
+            filterType = '';
+          } else {
+            delete item['is_verified'];
+            setConfirmed(false);
+          }
+          break;
+        default:
+          item = item;
+      }
+
+      let temp = item;
+      let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
+      console.log('filterItems', filterItems);
+
+      let str = '';
+      if (filterItems?.length > 0) {
+        filterItems.map((itm, index) => {
+          str =
+            str + itm[0] + filterType + '=' + decodeURIComponent(itm[1]) + '&';
+        });
+      }
+      str.replace('&&', '&');
+      setFilter(str);
+    },
+    onColumnSortChange: (changedColumn, direction) => {
+      let itemSort = {};
+      switch (changedColumn) {
+        case 'user.first_name':
+          itemSort['first_name'] = direction;
+          break;
+        case 'user.last_name':
+          itemSort['last_name'] = direction;
+          break;
+        case 'user.mobile':
+          itemSort['mobile'] = direction;
+          break;
+        case 'location.province_name':
+          itemSort['mobile'] = direction;
+          break;
+        case 'location.city_name':
+          itemSort['mobile'] = direction;
+          break;
+        case 'user.user_type_list':
+          itemSort['mobile'] = direction;
+          break;
+        default:
+          itemSort = itemSort;
+      }
+
+      let temp = itemSort;
+      let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
+
+      let str = '';
+      if (filterItems?.length > 0) {
+        filterItems.map((itm, index) => {
+          str = itm[1] === 'asc' ? itm[0] : `-${itm[0]}`;
+        });
+      }
+      setSort('order=' + str);
+    },
+    onRowClick: (rowData, rowState) => {
+      history.push({
+        pathname: '/management/club/comment/details',
+        state: {
+          rowData,
+          rowState
+        }
+      });
     }
   };
-
-  function onHandleColumnReorder(result) {
-    // setNewColumns(result);
-    // console.log('result', result);
-    // console.log('columnOrder', newColumns);
-  }
-
-  function modalAction(rowUser) {
-    setUser(rowUser);
-    setOpenModal(!openModal);
-  }
-
-  function getRowData(row) {
-    if (props.handleClose !== undefined) {
-      props.handleClose();
-    }
-    return returnFunction(row);
-  }
 
   return (
     <CacheProvider value={muiCache}>
       <ThemeProvider theme={theme}>
         <Card>
-          {/* <PerfectScrollbar> */}
           <Box sx={{ height: '87vh' }}>
-            {/* {data && ( */}
             <MUIDataTable
               title={'لیست'}
               data={data}
@@ -1026,17 +1138,15 @@ const AllUsersTable = props => {
               options={tableOptions}
               components={components}
             />
-            {/* )} */}
           </Box>
-          {/* </PerfectScrollbar> */}
         </Card>
       </ThemeProvider>
     </CacheProvider>
   );
 };
 
-AllUsersTable.propTypes = {
+CommentTable.propTypes = {
   className: PropTypes.string
 };
 
-export default AllUsersTable;
+export default CommentTable;

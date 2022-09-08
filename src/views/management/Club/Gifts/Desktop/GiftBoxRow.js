@@ -9,8 +9,9 @@ import { useTheme } from '@mui/material/styles';
 // import UserProfile from './UserProfile';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import GiftTable from '../GiftTable';
-import GiftBoxTable from '../GiftBoxTable';
+import GiftBoxDetails from './GiftBoxDetails';
+import GiftBoxUsers from './GiftBoxUsers';
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -65,7 +66,7 @@ export default function CompetitionDesktop() {
           aria-label="basic tabs example"
         >
           <Tab
-            label="جوایز"
+            label="جزئیات صندوق"
             {...a11yProps(0)}
             sx={{
               fontFamily: 'IRANSans',
@@ -75,7 +76,7 @@ export default function CompetitionDesktop() {
             }}
           />
           <Tab
-            label="صندوق جوایز"
+            label="دریافت کنندگان"
             {...a11yProps(1)}
             sx={{
               fontFamily: 'IRANSans',
@@ -92,10 +93,10 @@ export default function CompetitionDesktop() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <GiftTable />
+          <GiftBoxDetails />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <GiftBoxTable />
+          <GiftBoxUsers />
         </TabPanel>
       </SwipeableViews>
     </Box>

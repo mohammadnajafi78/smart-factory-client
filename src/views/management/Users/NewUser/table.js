@@ -411,6 +411,11 @@ const AllUsersTable = props => {
   }, []);
 
   useEffect(() => {
+    document.getElementById('pagination-next').style.rotate = '180deg';
+    document.getElementById('pagination-back').style.rotate = '180deg';
+  }, []);
+
+  useEffect(() => {
     if (provinceId !== null) {
       httpService
         .get(`${API_BASE_URL}/api/utils/cities/?province__id=${provinceId}`)

@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Autocomplete, Box, Divider, Grid, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Divider,
+  Grid,
+  TextField
+} from '@mui/material';
 import InputLabelHeader from 'src/components/Desktop/InputLabel';
 import { Formik } from 'formik';
 import InputLabel from 'src/components/Desktop/InputLabel';
@@ -8,6 +15,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import AdapterJalali from '@date-io/date-fns-jalali';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import Upload from 'src/assets/img/icons/upload.svg';
 
 export default function NewCompetition() {
   const [works, setWorks] = useState([]);
@@ -86,7 +94,7 @@ export default function NewCompetition() {
             >
               <Box>
                 <InputLabelHeader style={{ color: '#00AAB5', fontWeight: 700 }}>
-                  مسابقه جدید
+                  قرعه جدید
                 </InputLabelHeader>
                 <Divider
                   variant="middle"
@@ -96,7 +104,7 @@ export default function NewCompetition() {
                   مشخصات
                 </InputLabelHeader>
                 <Box sx={{ mt: 3 }}>
-                  <InputLabel>عنوان مسابقه</InputLabel>
+                  <InputLabel>عنوان قرعه کشی</InputLabel>
                   <TextField
                     id="company"
                     aria-describedby="my-helper-text"
@@ -114,7 +122,7 @@ export default function NewCompetition() {
                 <Grid container spacing={2}>
                   <Grid item xs={6}>
                     <Box sx={{ mt: 3 }}>
-                      <InputLabel>زمان شروع</InputLabel>
+                      <InputLabel>اعتبار تا</InputLabel>
                       <LocalizationProvider dateAdapter={AdapterJalali}>
                         <DatePicker
                           //   value={}
@@ -134,51 +142,7 @@ export default function NewCompetition() {
                   </Grid>
                   <Grid item xs={6}>
                     <Box sx={{ mt: 3 }}>
-                      <InputLabel>زمان پایان</InputLabel>
-                      <LocalizationProvider dateAdapter={AdapterJalali}>
-                        <DatePicker
-                          //   value={}
-                          //   onChange={newValue => {}}
-                          renderInput={params => (
-                            <TextField
-                              {...params}
-                              sx={{
-                                background: '#F2F2F2'
-                              }}
-                              fullWidth
-                            />
-                          )}
-                        />
-                      </LocalizationProvider>
-                    </Box>
-                  </Grid>
-                </Grid>
-                <Grid container spacing={2}>
-                  <Grid item xs={6}>
-                    <Box sx={{ mt: 3 }}>
-                      <InputLabel>کاربران هدف</InputLabel>
-                      <Autocomplete
-                        multiple
-                        fullWidth
-                        disablePortal
-                        id="field"
-                        limitTags={1}
-                        options={works}
-                        getOptionLabel={option => option.translate}
-                        defaultValue={values.field}
-                        renderInput={params => <TextField {...params} />}
-                        // onChange={(event, values) => {
-                        //   setFieldValue('field', values);
-                        // }}
-                        isOptionEqualToValue={(option, value) =>
-                          option.translate === value.translate
-                        }
-                      />
-                    </Box>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Box sx={{ mt: 3 }}>
-                      <InputLabel>شرکت کنندگان</InputLabel>
+                      <InputLabel>امتیاز</InputLabel>
                       <TextField
                         id="company"
                         aria-describedby="my-helper-text"
@@ -196,21 +160,25 @@ export default function NewCompetition() {
                   </Grid>
                 </Grid>
                 <Grid container spacing={2}>
-                  <Grid item xs={12}>
+                  <Grid item xs={6}>
                     <Box sx={{ mt: 3 }}>
-                      <InputLabel>معرفی مسابقه</InputLabel>
-                      <TextField
-                        id="company"
-                        aria-describedby="my-helper-text"
+                      <InputLabel>سطح کاربری</InputLabel>
+                      <Autocomplete
+                        multiple
                         fullWidth
-                        // placeholder="رمز عبور"
-                        sx={{
-                          background: '#F2F2F2',
-                          borderRadius: '4px',
-                          margin: '6px 3px'
-                        }}
-                        // value={values.company}
-                        // onChange={handleChange}
+                        disablePortal
+                        id="field"
+                        limitTags={1}
+                        options={works}
+                        getOptionLabel={option => option.translate}
+                        defaultValue={values.field}
+                        renderInput={params => <TextField {...params} />}
+                        // onChange={(event, values) => {
+                        //   setFieldValue('field', values);
+                        // }}
+                        isOptionEqualToValue={(option, value) =>
+                          option.translate === value.translate
+                        }
                       />
                     </Box>
                   </Grid>
@@ -244,68 +212,12 @@ export default function NewCompetition() {
                 />
               </Box>
               <InputLabelHeader style={{ fontWeight: 700, color: '#231F20' }}>
-                جوایز
+                جایزه قرعه کشی
               </InputLabelHeader>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <Box sx={{ mt: 3 }}>
                     <InputLabel>جایزه ۱</InputLabel>
-                    <TextField
-                      id="company"
-                      aria-describedby="my-helper-text"
-                      fullWidth
-                      // placeholder="رمز عبور"
-                      sx={{
-                        background: '#F2F2F2',
-                        borderRadius: '4px',
-                        margin: '6px 3px'
-                      }}
-                      // value={values.company}
-                      // onChange={handleChange}
-                    />
-                  </Box>
-                </Grid>
-                <Grid item xs={6}>
-                  <Box sx={{ mt: 3 }}>
-                    <InputLabel>جایزه ۲</InputLabel>
-                    <TextField
-                      id="company"
-                      aria-describedby="my-helper-text"
-                      fullWidth
-                      // placeholder="رمز عبور"
-                      sx={{
-                        background: '#F2F2F2',
-                        borderRadius: '4px',
-                        margin: '6px 3px'
-                      }}
-                      // value={values.company}
-                      // onChange={handleChange}
-                    />
-                  </Box>
-                </Grid>
-              </Grid>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <Box sx={{ mt: 3 }}>
-                    <InputLabel>جایزه ۳</InputLabel>
-                    <TextField
-                      id="company"
-                      aria-describedby="my-helper-text"
-                      fullWidth
-                      // placeholder="رمز عبور"
-                      sx={{
-                        background: '#F2F2F2',
-                        borderRadius: '4px',
-                        margin: '6px 3px'
-                      }}
-                      // value={values.company}
-                      // onChange={handleChange}
-                    />
-                  </Box>
-                </Grid>
-                <Grid item xs={6}>
-                  <Box sx={{ mt: 3 }}>
-                    <InputLabel>جایزه ۴</InputLabel>
                     <TextField
                       id="company"
                       aria-describedby="my-helper-text"
@@ -343,7 +255,7 @@ export default function NewCompetition() {
                   //   }
                   style={{ width: '25%' }}
                 >
-                  {'ثبت مسابقه'}
+                  {'ثبت قرعه کشی'}
                 </ConfirmButton>
               </Box>
             </form>

@@ -439,6 +439,11 @@ const AllUsersTable = props => {
   }, []);
 
   useEffect(() => {
+    document.getElementById('pagination-next').style.rotate = '180deg';
+    document.getElementById('pagination-back').style.rotate = '180deg';
+  }, []);
+
+  useEffect(() => {
     getData(page, rowsPerPage);
   }, [filter, sort]);
 
@@ -1109,6 +1114,15 @@ const AllUsersTable = props => {
         });
       }
       setSort('order=' + str);
+    },
+    onRowClick: (rowData, rowState) => {
+      history.push({
+        pathname: '/management/user/newUser/details',
+        state: {
+          rowData,
+          rowState
+        }
+      });
     }
   };
 

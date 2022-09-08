@@ -393,7 +393,7 @@ let theme = createTheme({
 theme = responsiveFontSizes(theme);
 
 let item = {};
-const CompetitionTable = props => {
+const GiftBoxTable = props => {
   const { className, rest, returnFunction, gridData } = props;
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
@@ -898,7 +898,7 @@ const CompetitionTable = props => {
     },
     onRowClick: (rowData, rowState) => {
       history.push({
-        pathname: '/management/club/competition/details',
+        pathname: '/management/club/giftBox/details',
         state: {
           rowData,
           rowState
@@ -927,11 +927,11 @@ const CompetitionTable = props => {
                   <ConfirmButton
                     style={{ width: '180px', marginRight: '20px' }}
                     onClick={() => {
-                      history.push('/management/club/competition/new');
+                      history.push('/management/club/giftBox/new');
                     }}
                   >
                     <Plus />
-                    <di>مسابقه جدید</di>
+                    <di>صندوق جدید</di>
                   </ConfirmButton>
                 </>
               }
@@ -947,8 +947,8 @@ const CompetitionTable = props => {
   );
 };
 
-CompetitionTable.propTypes = {
+GiftBoxTable.propTypes = {
   className: PropTypes.string
 };
 
-export default CompetitionTable;
+export default GiftBoxTable;

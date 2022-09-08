@@ -294,14 +294,64 @@ const routes = [
       },
       {
         exact: true,
+        path: '/management/club/comment/details',
+        component: lazy(() =>
+          import('src/views/management/Club/Comment/Desktop/Details')
+        )
+      },
+      {
+        exact: true,
         path: '/management/club/gifts',
         component: lazy(() => import('src/views/management/Club/Gifts'))
+      },
+      {
+        exact: true,
+        path: '/management/club/gift/new',
+        component: lazy(() =>
+          import('src/views/management/Club/Gifts/Desktop/NewGift')
+        )
+      },
+      {
+        exact: true,
+        path: '/management/club/gift/details',
+        component: lazy(() =>
+          import('src/views/management/Club/Gifts/Desktop/GiftDetails')
+        )
+      },
+      {
+        exact: true,
+        path: '/management/club/giftBox/new',
+        component: lazy(() =>
+          import('src/views/management/Club/Gifts/Desktop/NewGiftBox')
+        )
+      },
+      {
+        exact: true,
+        path: '/management/club/giftBox/details',
+        component: lazy(() =>
+          import('src/views/management/Club/Gifts/Desktop/GiftBoxRow')
+        )
       },
       {
         exact: true,
         path: '/management/club/lottery',
         component: lazy(() => import('src/views/management/Club/Lottery'))
       },
+      {
+        exact: true,
+        path: '/management/club/lottery/new',
+        component: lazy(() =>
+          import('src/views/management/Club/Lottery/Desktop/NewLottery')
+        )
+      },
+      {
+        exact: true,
+        path: '/management/club/lottery/details',
+        component: lazy(() =>
+          import('src/views/management/Club/Lottery/Desktop/LotteryRow')
+        )
+      },
+
       {
         exact: true,
         path: '/management/club/setting',
