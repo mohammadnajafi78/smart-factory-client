@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
       : {})
   },
   toolbar: {
-    minHeight: 49,
+    // minHeight: 49,
     margin: 0,
     gap: 12
     // padding: 0
@@ -51,9 +51,9 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
   return (
     <AppBar
       sx={{
-        backgroundColor: '#E5E5E5',
+        backgroundColor: '#33BBC4',
+        padding: '5px',
         margin: 0,
-        padding: 0,
         boxShadow: 'none'
       }}
     >

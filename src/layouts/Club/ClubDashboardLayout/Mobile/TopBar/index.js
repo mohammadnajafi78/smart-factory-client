@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     ...(theme.name === THEMES.LIGHT
       ? {
           boxShadow: 'none',
-          backgroundColor: '#E5E5E5'
+          backgroundColor: '##33BBC4'
         }
       : {}),
     ...(theme.name === THEMES.ONE_DARK
@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
       : {})
   },
   toolbar: {
-    minHeight: 49,
+    // minHeight: 49,
     margin: 0,
     gap: 12
   }
@@ -43,9 +43,9 @@ const TopBar = ({
   return (
     <AppBar
       sx={{
-        backgroundColor: '#E5E5E5',
+        backgroundColor: '#33BBC4',
+        padding: '5px',
         margin: 0,
-        padding: 0,
         boxShadow: 'none'
       }}
     >

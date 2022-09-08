@@ -4,9 +4,9 @@ import AwardsList from './AwardsList';
 
 export default function AwardsMobile() {
   return (
-    <div>
+    <>
       <Awards />
       <AwardsList />
-    </div>
+    </>
   );
 }

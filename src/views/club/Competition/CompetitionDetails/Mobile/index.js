@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Box } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
@@ -82,19 +82,23 @@ export default function CompetitionDetailsMobile(props) {
           }}
         >
           <InputLabelHeader>جوایز مسابقه</InputLabelHeader>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              // padding: '3px',
-              gap: '6px'
-            }}
-          >
-            {awards &&
-              awards.prizes.map((item, key) => {
-                return (
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            padding: '10px',
+            gap: '10px',
+            background: '#CCEEF0',
+            borderRadius: '8px',
+            width: '100%'
+          }}
+        >
+          {awards &&
+            awards.prizes.map((item, key) => {
+              return (
+                <>
                   <Box
                     sx={{
                       display: 'flex',
@@ -111,27 +115,18 @@ export default function CompetitionDetailsMobile(props) {
                   >
                     <img src={item?.image} width="44.26px" height="50px" />
                   </Box>
-                );
-              })}
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            padding: '10px 6px',
-            gap: '10px',
-            background: '#CCEEF0',
-            borderRadius: '8px',
-            width: '100%'
-          }}
-        >
-          {awards.prizes.map((item, key) => {
-            return (
-              <InputLabel style={{ color: '#4F4C4D' }}>{item?.name}</InputLabel>
-            );
-          })}
+                  <Divider
+                    sx={{ m: 1 }}
+                    color="#66CCD3"
+                    style={{ width: '90%' }}
+                  />
+
+                  <InputLabel style={{ color: '#4F4C4D' }}>
+                    {item?.name}
+                  </InputLabel>
+                </>
+              );
+            })}
         </Box>
       </Box>
       <Box

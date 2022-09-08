@@ -24,12 +24,19 @@ export default function ReceivedMobile() {
   const [received, setReceived] = useState(null);
   const [openScan, setOpenScan] = useState(null);
   const [scan, setScan] = useState(null);
+  const [filters, setFilters] = useState(null);
   const classes = useStyles();
 
   useEffect(() => {
     httpService.get(`${API_BASE_URL}/api/club/user_gifts/`).then(res => {
       if (res.status === 200) {
         setReceived(res.data);
+      }
+    });
+
+    httpService.get(`${API_BASE_URL}/api/club/gift_type/`).then(res => {
+      if (res.status === 200) {
+        setFilters(res.data);
       }
     });
   }, []);
@@ -44,6 +51,44 @@ export default function ReceivedMobile() {
 
   return (
     <div>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          padding: '14px 15px 6px',
+          gap: '2px',
+          position: 'sticky',
+          top: '45px',
+          // width: '385px',
+          width: '100%',
+          height: '57px',
+          backgroundColor: '#E5E5E5',
+          zIndex: 100
+        }}
+      >
+        {filters &&
+          filters.map((item, index) => {
+            return (
+              <FilterButton
+                key={index}
+                onClick={() => {
+                  // if (awards && awards.length > 0) {
+                  //   if (item.name === 'All') setAwards(all);
+                  //   else if (item.name !== 'Lottery' && item.name !== 'All')
+                  //     setAwards(all.filter(f => f.gift_type === item.id));
+                  //   else setAwards(all.filter(f => !f.gift_type));
+                  // }
+                }}
+                style={{ fontWeight: 300, fontSize: '12px' }}
+              >
+                {item.translate}
+              </FilterButton>
+            );
+          })}
+      </Box>
+
       <Box
         sx={{
           display: 'flex',

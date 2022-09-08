@@ -6,10 +6,12 @@ import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import LinkButton from 'src/components/Mobile/Button/Link';
 import makeStyles from '@mui/styles/makeStyles';
 import Chest from 'src/assets/img/icons/chest-win-close.svg';
+import GiftBox from 'src/assets/img/icons/giftBox.svg';
 import ChestWinOpen from 'src/assets/img/icons/chest-win-open.svg';
 import { useHistory } from 'react-router-dom';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { Star } from 'react-feather';
 // import ChestIcon from 'src/assets/img/icons/chest.svg';
 
 const useStyles = makeStyles(theme => ({
@@ -54,12 +56,13 @@ export default function AwardsBox() {
           flexDirection: 'column',
           justifyContent: 'space-between',
           alignItems: 'flex-start',
-          padding: '10px 0px',
+          padding: '6px 16px 15px',
           gap: '10px',
 
           width: '100%',
-          height: '122px',
-          marginTop: '6px'
+          height: '140px',
+          // marginTop: '6px',
+          backgroundColor: '#33BBC4'
         }}
       >
         <InputLabel
@@ -91,10 +94,27 @@ export default function AwardsBox() {
                   }}
                   style={{ display: 'flex', flexDirection: 'column' }}
                 >
-                  <img src={Chest} width="74" height="68" />
-                  <InputLabel
-                    style={{ color: '#00346D' }}
-                  >{`امتیاز: ${item.require_credit}`}</InputLabel>
+                  <img src={GiftBox} width="74" height="68" />
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '0px 6px !important',
+                      height: '22px',
+                      background: '#CCEEF0',
+                      borderRadius: '4px',
+                      color: '#00AAB5',
+                      position: 'relative',
+                      top: '-15px'
+                    }}
+                  >
+                    <InputLabel style={{ color: '#00AAB5' }}>
+                      {item?.require_credit}
+                    </InputLabel>
+                    <Star style={{ width: '11px', height: '15px' }} />
+                  </Box>
                 </IconButton>
               );
             })}

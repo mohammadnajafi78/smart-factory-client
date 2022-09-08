@@ -11,7 +11,8 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#E5E5E5'
   },
   contentContainer: {
-    flex: '1 1 auto'
+    flex: '1 1 auto',
+    marginTop: '16px'
   },
   content: {
     flex: '1 1 auto',

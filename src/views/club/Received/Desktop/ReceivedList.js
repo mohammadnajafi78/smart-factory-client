@@ -16,12 +16,20 @@ export default function ReceivedListDesktop({ selected, setSelected }) {
   const history = useHistory();
   const [received, setReceived] = useState(null);
   const [openScan, setOpenScan] = useState(null);
+  const [filters, setFilters] = useState(null);
+  const [filterSelected, setFilterSelected] = useState('All');
   const [scan, setScan] = useState(null);
 
   useEffect(() => {
     httpService.get(`${API_BASE_URL}/api/club/user_gifts/`).then(res => {
       if (res.status === 200) {
         setReceived(res.data);
+      }
+    });
+
+    httpService.get(`${API_BASE_URL}/api/club/gift_type/`).then(res => {
+      if (res.status === 200) {
+        setFilters(res.data);
       }
     });
   }, []);
@@ -50,6 +58,44 @@ export default function ReceivedListDesktop({ selected, setSelected }) {
         <InputLabelHeader style={{ color: '#00346D' }}>
           جوایز دریافتی
         </InputLabelHeader>
+
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            padding: '14px 15px 6px',
+            gap: '10px',
+            width: '100%',
+            height: '57px',
+            zIndex: 100
+          }}
+        >
+          {filters &&
+            filters.map((item, index) => {
+              return (
+                <FilterButton
+                  key={index}
+                  onClick={() => {
+                    // if (awards && awards.length > 0) {
+                    //   setFilterSelected(item.name);
+                    //   if (item.name === 'All') setAwards(all);
+                    //   else if (item.name !== 'Lottery' && item.name !== 'All')
+                    //     setAwards(all.filter(f => f.gift_type === item.id));
+                    //   else setAwards(all.filter(f => !f.gift_type));
+                    // }
+                  }}
+                  style={{
+                    backgroundColor:
+                      filterSelected === item.name && 'rgba(0, 170, 181, 0.04)'
+                  }}
+                >
+                  {item.translate}
+                </FilterButton>
+              );
+            })}
+        </Box>
 
         <Box
           sx={{

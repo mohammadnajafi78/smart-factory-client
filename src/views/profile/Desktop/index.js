@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Avatar, Button, Divider } from '@mui/material';
+import { Box, Avatar, Button, Divider, Drawer } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
@@ -15,6 +15,7 @@ import { API_BASE_URL } from 'src/utils/urls';
 
 export default function ProfileDesktop(props) {
   const [data, setData] = useState();
+  const [openTransfer, setOpenTransfer] = useState(false);
   const history = useHistory();
   const { logout } = useAuth();
 
@@ -130,6 +131,9 @@ export default function ProfileDesktop(props) {
               width: '20%',
               margin: 0,
               fontFamily: 'IRANSans'
+            }}
+            onClick={() => {
+              setOpenTransfer(true);
             }}
           >
             انتقال امتیاز
