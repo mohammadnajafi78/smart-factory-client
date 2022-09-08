@@ -2,18 +2,18 @@ import React from 'react';
 import { Box, Divider, Grid } from '@mui/material';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
-import ChatUser from 'src/assets/img/icons/chatUser.svg';
+import Call from 'src/assets/img/icons/call.svg';
 import PDF from 'src/assets/img/icons/pdf.svg';
 import FileDownload from 'src/assets/img/icons/fileDownload.svg';
 
-export default function UserChat({ file }) {
+export default function Admin({ file }) {
   return (
     <Box
       sx={{
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'flex-start',
-        padding: '0px 20px 0px 30px',
+        // padding: '0px 10px 0px 10px',
         gap: '10px',
         width: '100%',
         justifyContent: 'flex-end'
@@ -39,7 +39,8 @@ export default function UserChat({ file }) {
 
             background: '#FFFFFF',
             boxShadow: '0px 0px 8px rgba(146, 146, 146, 0.25)',
-            borderRadius: '20px 0px 20px 20px'
+            borderRadius: '20px 0px 20px 20px',
+            width: '100%'
           }}
         >
           {!file ? (
@@ -69,7 +70,8 @@ export default function UserChat({ file }) {
                 <img src={PDF} width={'31px'} height={'36px'} />
                 <InputLabel
                   style={{
-                    color: '#4F4C4D'
+                    color: '#4F4C4D',
+                    width: '130px'
                   }}
                 >
                   سایت_و_اپلیکیشن_های_گروه_صنایع_BTS_v1_7.pdf
@@ -113,12 +115,13 @@ export default function UserChat({ file }) {
                   display: 'flex',
                   flexDirection: 'row',
                   alignItems: 'center',
+                  justifyContent: 'space-between',
                   padding: '0px',
                   gap: '10px'
                 }}
               >
-                <InputLabel>43 صفحه</InputLabel>
-                <InputLabel>280kb</InputLabel>
+                <InputLabel style={{ color: '#4F4C4D' }}>43 صفحه</InputLabel>
+                <InputLabel style={{ color: '#4F4C4D' }}>280kb</InputLabel>
               </Box>
             </Box>
           )}
@@ -139,13 +142,13 @@ export default function UserChat({ file }) {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
-          //   padding: '10px 9.5px',
+          padding: '10px 9.5px',
           gap: '10px',
           background: '#CCD6E2',
           borderRadius: '20px'
         }}
       >
-        <img src={ChatUser} />
+        <img src={Call} />
       </Box>
     </Box>
   );

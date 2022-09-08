@@ -108,6 +108,18 @@ const routes = [
   },
   {
     exact: true,
+    guard: GuestGuard,
+    path: '/forgotPass',
+    component: lazy(() => import('src/views/auth/ForgotPassword'))
+  },
+  {
+    exact: true,
+    guard: GuestGuard,
+    path: '/newPassword',
+    component: lazy(() => import('src/views/auth/EnterNewPassword'))
+  },
+  {
+    exact: true,
     guard: AuthGuard,
     path: '/home',
     layout: HomeDashboardLayout,

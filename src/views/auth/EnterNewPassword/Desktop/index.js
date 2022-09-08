@@ -1,25 +1,34 @@
-import React, { useRef } from 'react';
-import { Box, TextField } from '@mui/material';
-import ConfirmButton from 'src/components/Desktop/Button/Confirm';
-import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
-import InputLabel from 'src/components/Desktop/InputLabel';
-import { Formik } from 'formik';
-import ReCAPTCHA from 'react-google-recaptcha';
+import React, { useRef, useState } from 'react';
 import LoginFrame from 'src/components/Desktop/LoginFrame';
-import httpService from 'src/utils/httpService';
+import { Box, IconButton, InputAdornment, TextField } from '@mui/material';
+import Logo from 'src/assets/img/LogoBTS.svg';
+import InputLabel from 'src/components/Desktop/InputLabel';
+import LinkButton from 'src/components/Desktop/Button/Link';
 import { useHistory } from 'react-router-dom';
+import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import axios from 'axios';
 import useAuth from 'src/hooks/useAuth';
-import bcrypt from 'bcryptjs';
+import { Formik } from 'formik';
+import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-function ForgotPasswodDesktop(props) {
+function EnterNewPasswordDesktop(props) {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
   const recaptchaRef = useRef();
   const history = useHistory();
   const { registry } = useAuth();
 
   function onChange(value) {
     console.log('Captcha value:', value);
+  }
+
+  function handleClickShowPassword() {
+    setShowPassword(!showPassword);
+  }
+  function handleClickShowPassword2() {
+    setShowPassword2(!showPassword2);
   }
 
   return (
@@ -97,7 +106,9 @@ function ForgotPasswodDesktop(props) {
               <Box sx={{ width: '100%' }}>
                 <InputLabelHeader>ورود با رمز عبور</InputLabelHeader>
                 <Box sx={{ mt: 2 }}>
-                  <InputLabel>جهت ورود، اطلاعات زیر را وارد کنید:</InputLabel>
+                  <InputLabel>
+                    جهت ثبت رمز عبور جدید، اطلاعات زیر را وارد کنید:
+                  </InputLabel>
                 </Box>
                 <Box>
                   <Box sx={{ mt: 2 }}>
@@ -113,7 +124,25 @@ function ForgotPasswodDesktop(props) {
                       }}
                       value={values.password}
                       onChange={handleChange}
-                      type="password"
+                      type={showPassword === false ? 'password' : 'text'}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              // onMouseDown={handleMouseDownPassword}
+                              edge="end"
+                            >
+                              {showPassword ? (
+                                <VisibilityOff sx={{ color: '#00AAB5' }} />
+                              ) : (
+                                <Visibility sx={{ color: '#00AAB5' }} />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }}
                     />
                   </Box>
                   <Box>
@@ -129,7 +158,25 @@ function ForgotPasswodDesktop(props) {
                       }}
                       value={values.password2}
                       onChange={handleChange}
-                      type="password"
+                      type={showPassword2 === false ? 'password' : 'text'}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword2}
+                              // onMouseDown={handleMouseDownPassword}
+                              edge="end"
+                            >
+                              {showPassword2 ? (
+                                <VisibilityOff sx={{ color: '#00AAB5' }} />
+                              ) : (
+                                <Visibility sx={{ color: '#00AAB5' }} />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }}
                     />
                   </Box>
                   {/* <Box sx={{ mt: 1 }}>
@@ -167,5 +214,4 @@ function ForgotPasswodDesktop(props) {
     </LoginFrame>
   );
 }
-
-export default ForgotPasswodDesktop;
+export default EnterNewPasswordDesktop;

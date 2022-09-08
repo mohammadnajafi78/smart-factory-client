@@ -7,6 +7,9 @@ import axios from 'axios';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import MomentFa from 'src/utils/MomentFa';
+import AdminChat from './AdminChat';
+import UserChat from './UserChat';
+import SendMessage from './SendMessage';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -27,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 }));
 export default function GetCommentDesktop({ selected }) {
   const classes = useStyles();
-  const [rating, setRating] = useState(selected.rate);
+  // const [rating, setRating] = useState(selected.rate);
 
   return (
     <Box
@@ -38,11 +41,11 @@ export default function GetCommentDesktop({ selected }) {
         alignItems: 'center',
         padding: '24px 30px 0px !important',
         gap: '20px',
-        background: '#FFFFFF',
+        // background: '#FFFFFF',
         width: '100%'
       }}
     >
-      <Box
+      {/* <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
@@ -177,20 +180,14 @@ export default function GetCommentDesktop({ selected }) {
             classes={{ root: classes.rating }}
           />
         </Box>
-      </Box>
-      {/* <Box
-        sx={{
-          display: 'inline-flex',
-          justifyContent: 'space-between',
-          gap: 2,
-          width: '100%',
-          height: '76px',
-          borderTop: '0.5px solid #D3D2D2',
-          padding: '12px 16px'
-        }}
-      >
-        <ConfirmButton onClick={() => setOpen(false)}>بستن</ConfirmButton>
       </Box> */}
+
+      <AdminChat />
+      <UserChat />
+      <AdminChat file={true} />
+      <UserChat file={true} />
+
+      <SendMessage />
     </Box>
   );
 }

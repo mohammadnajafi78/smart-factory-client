@@ -1,5 +1,11 @@
-import React from 'react';
-import { Box, Button, TextField } from '@mui/material';
+import React, { useState } from 'react';
+import {
+  Box,
+  Button,
+  IconButton,
+  InputAdornment,
+  TextField
+} from '@mui/material';
 import { Formik } from 'formik';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Desktop/InputLabel';
@@ -11,10 +17,16 @@ import { API_BASE_URL } from 'src/utils/urls';
 import axios from 'axios';
 import useAuth from 'src/hooks/useAuth';
 import bcrypt from 'bcryptjs';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 function LoginPassDesktop(props) {
+  const [showPassword, setShowPassword] = useState(false);
   const history = useHistory();
   const { registry } = useAuth();
+
+  function handleClickShowPassword() {
+    setShowPassword(!showPassword);
+  }
 
   return (
     <LoginFrame>
@@ -110,7 +122,25 @@ function LoginPassDesktop(props) {
                     }}
                     value={values.input}
                     onChange={handleChange}
-                    type="password"
+                    type={showPassword === false ? 'password' : 'text'}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            // onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {showPassword ? (
+                              <VisibilityOff sx={{ color: '#00AAB5' }} />
+                            ) : (
+                              <Visibility sx={{ color: '#00AAB5' }} />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
                   />
                   {/* <ReCAPTCHA
                   style={{
@@ -128,6 +158,14 @@ function LoginPassDesktop(props) {
                   hl="fa"
                 /> */}
                 </Box>
+                <InputLabel
+                  style={{ color: '#049099' }}
+                  onClick={() => {
+                    history.push('/forgotPass');
+                  }}
+                >
+                  رمز عبور خود را فراموش کرده اید؟
+                </InputLabel>
               </Box>
               <Box>
                 <ConfirmButton type="submit" disabled={isSubmitting}>

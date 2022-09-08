@@ -13,7 +13,7 @@ import axios from 'axios';
 import useAuth from 'src/hooks/useAuth';
 import bcrypt from 'bcryptjs';
 
-function ForgotPasswodDesktop(props) {
+function ForgotPasswordDesktop(props) {
   const recaptchaRef = useRef();
   const history = useHistory();
   const { registry } = useAuth();
@@ -42,8 +42,7 @@ function ForgotPasswodDesktop(props) {
       >
         <Formik
           initialValues={{
-            password: '',
-            password2: ''
+            mobile: ''
           }}
           validate={values => {
             const errors = {};
@@ -53,23 +52,13 @@ function ForgotPasswodDesktop(props) {
             return errors;
           }}
           onSubmit={async (values, { setErrors, setSubmitting }) => {
-            httpService
-              .post(`${API_BASE_URL}/api/users/`, {
-                mobile: props.location.state.mobile,
-                password: bcrypt.hashSync(
-                  values.password,
-                  '$2a$10$p.DMYfbaIgtkCH7rseuMnu'
-                )
-              })
-              .then(res => {
-                if (res.status === 200) {
-                  localStorage.setItem('token', res.headers['x-auth-token']);
-                  axios.defaults.headers.common.Authorization = `Bearer ${res.headers['x-auth-token']}`;
-                  registry(res.headers['x-auth-token']);
-                  localStorage.setItem('user', JSON.stringify(res.data));
-                  history.push('/identity');
-                }
-              });
+            history.push({
+              pathname: '/otp',
+              state: {
+                mobile: values.mobile,
+                status: 'forgot'
+              }
+            });
             setSubmitting(false);
           }}
         >
@@ -95,41 +84,25 @@ function ForgotPasswodDesktop(props) {
               }}
             >
               <Box sx={{ width: '100%' }}>
-                <InputLabelHeader>ورود با رمز عبور</InputLabelHeader>
+                <InputLabelHeader>بازیابی رمز عبور</InputLabelHeader>
                 <Box sx={{ mt: 2 }}>
-                  <InputLabel>جهت ورود، اطلاعات زیر را وارد کنید:</InputLabel>
+                  جهت بازیابی رمز عبور شماره همراه خود را وارد کنید::
                 </Box>
                 <Box>
                   <Box sx={{ mt: 2 }}>
                     <TextField
-                      id="password"
+                      id="mobile"
                       aria-describedby="my-helper-text"
                       fullWidth
-                      placeholder="رمز عبور"
+                      placeholder="ورود شماره همراه"
                       sx={{
                         background: '#F2F2F2',
                         borderRadius: '4px',
                         margin: '6px 3px'
                       }}
-                      value={values.password}
+                      value={values.mobile}
                       onChange={handleChange}
-                      type="password"
-                    />
-                  </Box>
-                  <Box>
-                    <TextField
-                      id="password2"
-                      aria-describedby="my-helper-text"
-                      fullWidth
-                      placeholder="تکرار رمز عبور"
-                      sx={{
-                        background: '#F2F2F2',
-                        borderRadius: '4px',
-                        margin: '6px 3px'
-                      }}
-                      value={values.password2}
-                      onChange={handleChange}
-                      type="password"
+                      type="mobile"
                     />
                   </Box>
                   {/* <Box sx={{ mt: 1 }}>
@@ -168,4 +141,4 @@ function ForgotPasswodDesktop(props) {
   );
 }
 
-export default ForgotPasswodDesktop;
+export default ForgotPasswordDesktop;

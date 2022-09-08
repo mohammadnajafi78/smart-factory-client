@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { Box, TextField } from '@mui/material';
+import React, { useRef, useState } from 'react';
+import { Box, IconButton, InputAdornment, TextField } from '@mui/material';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
@@ -11,15 +11,20 @@ import { API_BASE_URL } from 'src/utils/urls';
 import axios from 'axios';
 import useAuth from 'src/hooks/useAuth';
 import bcrypt from 'bcryptjs';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const TEST_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
 function LoginPassMobile(props) {
+  const [showPassword, setShowPassword] = useState(false);
   const history = useHistory();
   const recaptchaRef = useRef();
   const { registry } = useAuth();
 
   function onChange(value) {
     console.log('Captcha value:', value);
+  }
+  function handleClickShowPassword() {
+    setShowPassword(!showPassword);
   }
 
   return (
@@ -96,17 +101,7 @@ function LoginPassMobile(props) {
             <Box>
               <InputLabelHeader>ورود با رمز عبور</InputLabelHeader>
               <InputLabel>جهت ورود، اطلاعات زیر را وارد کنید:</InputLabel>
-              <Box
-              // sx={{
-              //   display: 'flex',
-              //   flexDirection: 'row',
-              //   justifyContent: 'center',
-              //   alignItems: 'center',
-              //   padding: '0px',
-              //   marginTop: '6px',
-              //   height: '50px'
-              // }}
-              >
+              <Box>
                 <TextField
                   id="input"
                   aria-describedby="my-helper-text"
@@ -119,7 +114,25 @@ function LoginPassMobile(props) {
                   }}
                   value={values.input}
                   onChange={handleChange}
-                  type="password"
+                  type={showPassword === false ? 'password' : 'text'}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          // onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? (
+                            <VisibilityOff sx={{ color: '#00AAB5' }} />
+                          ) : (
+                            <Visibility sx={{ color: '#00AAB5' }} />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }}
                 />
                 {/* <ReCAPTCHA
                   style={{
@@ -137,6 +150,14 @@ function LoginPassMobile(props) {
                   hl="fa"
                 /> */}
               </Box>
+              <InputLabel
+                style={{ color: '#049099' }}
+                onClick={() => {
+                  history.push('/forgotPass');
+                }}
+              >
+                رمز عبور خود را فراموش کرده اید؟
+              </InputLabel>
             </Box>
             <Box>
               <ConfirmButton type="submit" disabled={isSubmitting}>

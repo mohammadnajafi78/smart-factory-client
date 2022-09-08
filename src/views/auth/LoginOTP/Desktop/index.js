@@ -104,6 +104,13 @@ function LoginOTPDesktop(props) {
                   console.log('err');
                   alert('کد اشتباه وارد شده است');
                 });
+            } else if (props.location.state.status === 'forgot') {
+              history.push({
+                pathname: '/newPassword',
+                state: {
+                  mobile: props.location.state.mobile
+                }
+              });
             } else {
               httpService
                 .post(`${API_BASE_URL}/api/users/mobile_verification/`, {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import Comment from 'src/assets/img/icons/comment.svg';
 import CommentsList from './CommentsList';
 import GetCommentDesktop from './GetComment';
@@ -19,7 +19,7 @@ export default function CommentDesktop() {
         sx={{
           display: 'flex',
           flex: '1 1 auto',
-          width: '40%',
+          width: '42%',
           paddingLeft: '130px',
           justifyContent: 'center',
           height: '100vh',
@@ -30,11 +30,12 @@ export default function CommentDesktop() {
           <CommentsList selected={selected} setSelected={setSelected} />
         </Box>
       </Box>
+      {selected && <Divider orientation="vertical" />}
       <Box
         sx={{
           flex: '1 1 auto',
           width: '50%',
-          backgroundColor: 'white',
+          backgroundColor: selected ? '#f4f4f4' : 'white',
           paddingTop: '50px'
         }}
       >
