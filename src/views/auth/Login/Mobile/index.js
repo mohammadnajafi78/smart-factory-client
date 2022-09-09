@@ -20,12 +20,12 @@ function LoginMobile() {
           alignItems: 'center',
           // justifyContent: 'center',
           padding: 0,
-          gap: '159px',
+          // gap: '100px',
           position: 'absolute',
           width: '80%',
           height: '70%',
           left: '40px',
-          top: '178px'
+          top: '115px'
         }}
       >
         <Box
@@ -34,10 +34,10 @@ function LoginMobile() {
             flexDirection: 'column',
             alignItems: 'center',
             padding: '0px',
-            gap: '90px',
+            gap: '40px'
 
             // width: '320px',
-            height: '272px'
+            // height: '202px'
           }}
         >
           <img
@@ -113,7 +113,7 @@ function LoginMobile() {
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  gap: '159px',
+                  gap: '220px',
                   width: '100%'
                 }}
               >
@@ -135,8 +135,8 @@ function LoginMobile() {
                   sx={{
                     padding: '0px',
                     margin: 0,
-                    position: 'absolute',
-                    bottom: 0,
+                    // position: 'absolute',
+                    // bottom: 0,
                     width: '100%'
                   }}
                 >
