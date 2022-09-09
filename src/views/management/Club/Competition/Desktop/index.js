@@ -3,6 +3,6 @@ import React, { useState } from 'react';
 import InputLabelHeader from 'src/components/Desktop/InputLabel';
 import CompetitionTable from '../table';
 
-export default function CompetitionDesktop() {
-  return <CompetitionTable />;
+export default function CompetitionDesktop(props) {
+  return <CompetitionTable {...props} />;
 }

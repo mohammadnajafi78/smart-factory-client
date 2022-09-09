@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Avatar, Button, Divider, Drawer } from '@mui/material';
+import { Box, Avatar, Button, Divider, Drawer, TextField } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
-import { Star } from 'react-feather';
+import { Minus, Plus, Star } from 'react-feather';
 import Score from './Score';
 import { ArrowBack } from '@mui/icons-material';
 import profileImg from 'src/assets/img/icons/profile.png';
@@ -12,10 +12,19 @@ import exit from 'src/assets/img/icons/exit.svg';
 import useAuth from 'src/hooks/useAuth';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import CustomizedDialogs from 'src/components/Desktop/Dialog';
+import { styled } from '@mui/material/styles';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 
+const CssTextField = styled(TextField)({
+  '& .MuiOutlinedInput-input': {
+    textAlign: 'center'
+  }
+});
 export default function ProfileDesktop(props) {
   const [data, setData] = useState();
   const [openTransfer, setOpenTransfer] = useState(false);
+  const [count, setCount] = useState(0);
   const history = useHistory();
   const { logout } = useAuth();
 
@@ -267,6 +276,115 @@ export default function ProfileDesktop(props) {
           </Box>
         </Box>
       </Box>
+      <CustomizedDialogs
+        // anchor={'bottom'}
+        open={openTransfer}
+        handleClose={() => setOpenTransfer(false)}
+        // classes={{
+        //   paper: classes.paper
+        // }}
+        title={'انتقال امتیاز'}
+        content={
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-start',
+              alignItems: 'flex-start',
+              padding: '15px 10px 0px',
+              gap: '20px',
+              background: '#FFFFFF'
+              // mb: 1
+            }}
+          >
+            <InputLabel>
+              جهت انتقال امتیاز، اطلاعات زیر را وارد کنید:
+            </InputLabel>
+            <Box sx={{ mt: 2, width: '100%' }}>
+              <InputLabel style={{ color: '#7B7979' }}>
+                کد کاربر دریافت کننده
+              </InputLabel>
+              <TextField
+                id="address"
+                aria-describedby="my-helper-text"
+                fullWidth
+                sx={{
+                  background: '#F2F2F2',
+                  borderRadius: '4px',
+                  margin: '6px 3px'
+                }}
+                // value={values.address}
+                // onChange={handleChange}
+              />
+            </Box>
+
+            <Box sx={{ mt: 2, width: '100%' }}>
+              <InputLabel style={{ color: '#7B7979' }}>امتیاز</InputLabel>
+              <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
+                <ConfirmButton variant="outlined">50 امتیاز</ConfirmButton>
+                <ConfirmButton variant="outlined">100 امتیاز</ConfirmButton>
+                <ConfirmButton variant="outlined">200 امتیاز</ConfirmButton>
+              </Box>
+              <Divider sx={{ m: 2 }} />
+              <Box sx={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
+                <ConfirmButton
+                  variant="outlined"
+                  sx={{ width: '50px' }}
+                  onClick={() => {
+                    setCount(count + 1);
+                  }}
+                >
+                  <Plus />
+                </ConfirmButton>
+                <CssTextField
+                  value={count}
+                  onChange={event => setCount(event.target.value)}
+                  sx={{ textAlign: 'center' }}
+                />
+                <ConfirmButton
+                  variant="outlined"
+                  sx={{ width: '50px' }}
+                  onClick={() => {
+                    setCount(count - 1);
+                  }}
+                >
+                  <Minus />
+                </ConfirmButton>
+              </Box>
+            </Box>
+          </Box>
+        }
+        actions={
+          <Box
+            sx={{
+              // position: 'absolute',
+              // bottom: '0%',
+              // width: '55%',
+              backgroundColor: 'white',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '60px',
+              gap: '12px',
+              width: '100%'
+              // borderTop: '1px solid #D3D2D2',
+              // paddingTop: '5px'
+            }}
+          >
+            <ConfirmButton
+              disabled={false}
+              variant="outlined"
+              style={{ width: '150px' }}
+              onClick={() => setOpenTransfer(false)}
+            >
+              {'لغو'}
+            </ConfirmButton>
+            <ConfirmButton disabled={false} style={{ width: '150px' }}>
+              {'ثبت'}
+            </ConfirmButton>
+          </Box>
+        }
+      />
     </Box>
   );
 }

@@ -4,7 +4,9 @@ import InputLabel from 'src/components/Desktop/InputLabel';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import Participants from './Participants';
 
-export default function Details() {
+export default function Details(props) {
+  console.log('competition props', props.location.state.rowData);
+
   return (
     <Box>
       <Box

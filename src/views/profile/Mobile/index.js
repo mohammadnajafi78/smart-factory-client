@@ -18,7 +18,7 @@ import { API_BASE_URL } from 'src/utils/urls';
 import makeStyles from '@mui/styles/makeStyles';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import { Minus, Plus } from 'react-feather';
-import { alpha, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -237,7 +237,7 @@ export default function ProfileMobile() {
             disabled={false}
             variant="outlined"
             style={{ width: '150px' }}
-            //   onClick={() => setOpen(false)}
+            onClick={() => setOpenTransfer(false)}
           >
             {'لغو'}
           </ConfirmButton>

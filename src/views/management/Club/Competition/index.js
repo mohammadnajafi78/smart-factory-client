@@ -9,7 +9,7 @@ function Competition(props) {
   const mobileDevice = useMediaQuery(theme.breakpoints.down('md'));
 
   // return <>{mobileDevice ? <CompetitionMobile /> : <CompetitionDesktop />}</>;
-  return <CompetitionDesktop />;
+  return <CompetitionDesktop {...props} />;
 }
 
 export default Competition;

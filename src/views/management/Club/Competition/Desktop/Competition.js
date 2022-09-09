@@ -46,7 +46,7 @@ function a11yProps(index) {
   };
 }
 
-export default function UserDetails() {
+export default function UserDetails(props) {
   const [value, setValue] = React.useState(0);
   const [userData, setUserData] = React.useState(null);
   const theme = useTheme();
@@ -102,10 +102,10 @@ export default function UserDetails() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <Details />
+          <Details {...props} />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <Users />
+          <Users {...props} />
         </TabPanel>
       </SwipeableViews>
     </Box>

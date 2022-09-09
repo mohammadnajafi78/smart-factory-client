@@ -469,7 +469,6 @@ const AllUsersTable = props => {
         label: 'تاریخ شروع',
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            console.log('inja');
             return MomentFa(value);
           },
           filter: true,
