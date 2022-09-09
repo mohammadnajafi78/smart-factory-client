@@ -134,7 +134,7 @@ function EnterNewPasswordDesktop(props) {
                               // onMouseDown={handleMouseDownPassword}
                               edge="end"
                             >
-                              {showPassword ? (
+                              {!showPassword ? (
                                 <VisibilityOff sx={{ color: '#00AAB5' }} />
                               ) : (
                                 <Visibility sx={{ color: '#00AAB5' }} />
@@ -168,7 +168,7 @@ function EnterNewPasswordDesktop(props) {
                               // onMouseDown={handleMouseDownPassword}
                               edge="end"
                             >
-                              {showPassword2 ? (
+                              {!showPassword2 ? (
                                 <VisibilityOff sx={{ color: '#00AAB5' }} />
                               ) : (
                                 <Visibility sx={{ color: '#00AAB5' }} />

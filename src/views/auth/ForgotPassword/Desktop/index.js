@@ -52,14 +52,22 @@ function ForgotPasswordDesktop(props) {
             return errors;
           }}
           onSubmit={async (values, { setErrors, setSubmitting }) => {
-            history.push({
-              pathname: '/otp',
-              state: {
-                mobile: values.mobile,
-                status: 'forgot'
-              }
-            });
-            setSubmitting(false);
+            httpService
+              .post(`${API_BASE_URL}/api/users/request_otp/`, {
+                username: values.mobile
+              })
+              .then(res => {
+                if (res.status === 200) {
+                  history.push({
+                    pathname: '/otp',
+                    state: {
+                      mobile: values.mobile,
+                      status: 'forgot'
+                    }
+                  });
+                  setSubmitting(false);
+                }
+              });
           }}
         >
           {({

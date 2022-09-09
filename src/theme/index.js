@@ -22,7 +22,8 @@ const baseOptions = {
     },
     MuiOutlinedInput: {
       root: {
-        backgroundColor: '#F2F2F2'
+        backgroundColor: '#F2F2F2',
+        fontSize: '16px'
       }
     },
     MuiToolbar: {
