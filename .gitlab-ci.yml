@@ -49,7 +49,7 @@ Build-prod:
     - echo -e "$PROD_ENV" > .env
   script:
     - docker system  prune -a -f
-    - docker tag git.bts-co.com:5050/root/bts-front-app:dev git.bts-co.com:5050/root/bts-front-app:prod
+    - docker build --pull -t git.bts-co.com:5050/root/bts-front-app:prod .
     - docker push git.bts-co.com:5050/root/bts-front-app:prod
   only:
     - tags
