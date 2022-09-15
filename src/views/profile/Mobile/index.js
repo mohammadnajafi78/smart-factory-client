@@ -19,6 +19,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import { Minus, Plus } from 'react-feather';
 import { styled } from '@mui/material/styles';
+import useScore from 'src/hooks/useScore';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -38,9 +39,11 @@ export default function ProfileMobile() {
   const [data, setData] = useState();
   const [openTransfer, setOpenTransfer] = useState(false);
   const [count, setCount] = useState(0);
+  const [userId, setUserId] = useState();
   const history = useHistory();
   const { logout } = useAuth();
   const classes = useStyles();
+  const { setScore } = useScore();
 
   useEffect(() => {
     httpService.get(`${API_BASE_URL}/api/users/get_user_profile/`).then(res => {
@@ -176,17 +179,23 @@ export default function ProfileMobile() {
                 borderRadius: '4px',
                 margin: '6px 3px'
               }}
-              // value={values.address}
-              // onChange={handleChange}
+              value={userId}
+              onChange={event => setUserId(event.target.value)}
             />
           </Box>
 
           <Box sx={{ mt: 2, width: '100%' }}>
             <InputLabel style={{ color: '#7B7979' }}>امتیاز</InputLabel>
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
-              <ConfirmButton variant="outlined">50 امتیاز</ConfirmButton>
-              <ConfirmButton variant="outlined">100 امتیاز</ConfirmButton>
-              <ConfirmButton variant="outlined">200 امتیاز</ConfirmButton>
+              <ConfirmButton variant="outlined" onClick={() => setCount(50)}>
+                50 امتیاز
+              </ConfirmButton>
+              <ConfirmButton variant="outlined" onClick={() => setCount(100)}>
+                100 امتیاز
+              </ConfirmButton>
+              <ConfirmButton variant="outlined" onClick={() => setCount(200)}>
+                200 امتیاز
+              </ConfirmButton>
             </Box>
             <Divider sx={{ m: 2 }} />
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
@@ -241,7 +250,23 @@ export default function ProfileMobile() {
           >
             {'لغو'}
           </ConfirmButton>
-          <ConfirmButton disabled={false} style={{ width: '150px' }}>
+          <ConfirmButton
+            disabled={false}
+            style={{ width: '150px' }}
+            onClick={() => {
+              httpService
+                .post(`${API_BASE_URL}/api/club/user_club/transfer_credit/`, {
+                  user_id: userId,
+                  credit: count
+                })
+                .then(res => {
+                  if (res.status === 200) {
+                    setOpenTransfer(false);
+                    setScore();
+                  }
+                });
+            }}
+          >
             {'ثبت'}
           </ConfirmButton>
         </Box>

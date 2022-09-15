@@ -15,6 +15,7 @@ import { API_BASE_URL } from 'src/utils/urls';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
 import { styled } from '@mui/material/styles';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
+import useScore from 'src/hooks/useScore';
 
 const CssTextField = styled(TextField)({
   '& .MuiOutlinedInput-input': {
@@ -25,8 +26,10 @@ export default function ProfileDesktop(props) {
   const [data, setData] = useState();
   const [openTransfer, setOpenTransfer] = useState(false);
   const [count, setCount] = useState(0);
+  const [userId, setUserId] = useState();
   const history = useHistory();
   const { logout } = useAuth();
+  const { setScore } = useScore();
 
   useEffect(() => {
     httpService.get(`${API_BASE_URL}/api/users/get_user_profile/`).then(res => {
@@ -313,17 +316,23 @@ export default function ProfileDesktop(props) {
                   borderRadius: '4px',
                   margin: '6px 3px'
                 }}
-                // value={values.address}
-                // onChange={handleChange}
+                value={userId}
+                onChange={event => setUserId(event.target.value)}
               />
             </Box>
 
             <Box sx={{ mt: 2, width: '100%' }}>
               <InputLabel style={{ color: '#7B7979' }}>امتیاز</InputLabel>
               <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
-                <ConfirmButton variant="outlined">50 امتیاز</ConfirmButton>
-                <ConfirmButton variant="outlined">100 امتیاز</ConfirmButton>
-                <ConfirmButton variant="outlined">200 امتیاز</ConfirmButton>
+                <ConfirmButton variant="outlined" onClick={() => setCount(50)}>
+                  50 امتیاز
+                </ConfirmButton>
+                <ConfirmButton variant="outlined" onClick={() => setCount(100)}>
+                  100 امتیاز
+                </ConfirmButton>
+                <ConfirmButton variant="outlined" onClick={() => setCount(200)}>
+                  200 امتیاز
+                </ConfirmButton>
               </Box>
               <Divider sx={{ m: 2 }} />
               <Box sx={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
@@ -379,7 +388,23 @@ export default function ProfileDesktop(props) {
             >
               {'لغو'}
             </ConfirmButton>
-            <ConfirmButton disabled={false} style={{ width: '150px' }}>
+            <ConfirmButton
+              disabled={false}
+              style={{ width: '150px' }}
+              onClick={() => {
+                httpService
+                  .post(`${API_BASE_URL}/api/club/user_club/transfer_credit/`, {
+                    user_id: userId,
+                    credit: count
+                  })
+                  .then(res => {
+                    if (res.status === 200) {
+                      setOpenTransfer(false);
+                      setScore();
+                    }
+                  });
+              }}
+            >
               {'ثبت'}
             </ConfirmButton>
           </Box>
