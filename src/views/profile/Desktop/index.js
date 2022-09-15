@@ -16,6 +16,7 @@ import CustomizedDialogs from 'src/components/Desktop/Dialog';
 import { styled } from '@mui/material/styles';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import useScore from 'src/hooks/useScore';
+import MomentFa from 'src/utils/MomentFa';
 
 const CssTextField = styled(TextField)({
   '& .MuiOutlinedInput-input': {
@@ -51,7 +52,8 @@ export default function ProfileDesktop(props) {
         justifyContent: 'flex-start',
         width: '100%',
         margin: '100px 40px 40px 170px',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        overflow: 'auto'
       }}
     >
       <Box
@@ -76,7 +78,7 @@ export default function ProfileDesktop(props) {
         <InputLabelHeader style={{ color: '#00346D' }}>
           {data?.first_name + ' ' + data?.last_name}
         </InputLabelHeader>
-        <InputLabel style={{ color: '#00346D' }}>{data?.mobile}</InputLabel>
+        <InputLabel style={{ color: '#00346D' }}>{data?.user_id}</InputLabel>
         <Box
           sx={{
             display: 'flex',
@@ -151,6 +153,50 @@ export default function ProfileDesktop(props) {
             انتقال امتیاز
             <ArrowBack color="#00346D" style={{ fontSize: '16px' }} />
           </Button>
+        </Box>
+        <Divider
+          variant="middle"
+          light={true}
+          sx={{ margin: '3px 0px', width: '100%' }}
+        />
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px',
+            width: '100%'
+          }}
+        >
+          <InputLabelHeader style={{ color: '#00346D' }}>
+            اطلاعات هویتی
+          </InputLabelHeader>
+
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              width: '100%'
+            }}
+          >
+            <div style={{ display: 'inline-flex' }}>
+              <InputLabel style={{ color: '#00AAB5' }}>کدملی:</InputLabel>
+              <InputLabel style={{ color: '#335D8A' }}>
+                {data?.national_id}
+              </InputLabel>
+            </div>{' '}
+            <div style={{ display: 'inline-flex' }}>
+              <InputLabel style={{ color: '#00AAB5' }}>تاریخ تولد:</InputLabel>
+              <InputLabel style={{ color: '#335D8A' }}>
+                {MomentFa(data?.birth_date || new Date())}
+              </InputLabel>
+            </div>
+            <div style={{ display: 'inline-flex' }}>
+              <InputLabel style={{ color: '#00AAB5' }}>شماره تلفن:</InputLabel>
+              <InputLabel style={{ color: '#335D8A' }}>
+                {data?.mobile}
+              </InputLabel>
+            </div>
+          </Box>
         </Box>
         <Divider
           variant="middle"
@@ -251,7 +297,8 @@ export default function ProfileDesktop(props) {
             justifyContent: 'space-between',
             alignItems: 'flex-end',
             width: '100%',
-            height: '80px'
+            height: '80px',
+            padding: '30px 0px'
           }}
         >
           <Box
