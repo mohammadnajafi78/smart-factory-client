@@ -184,7 +184,8 @@ export default function ParticipateNewComp({ selected, setSelected }) {
 
               httpService
                 .post(
-                  `${API_BASE_URL}/api/club/match_participant/participate_to_match/`
+                  `${API_BASE_URL}/api/club/match_participant/participate_to_match/`,
+                  formData
                 )
                 .then(res => {
                   if (res.status === 200) {
