@@ -111,6 +111,7 @@ function LoginOTPDesktop(props) {
                 state: {
                   mobile: props.location.state.mobile,
                   verification_code:
+                    values.input1 +
                     values.input2 +
                     values.input3 +
                     values.input4 +
