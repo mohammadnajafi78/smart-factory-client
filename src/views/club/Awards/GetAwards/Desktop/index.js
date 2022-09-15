@@ -12,6 +12,7 @@ import CustomizedDialogs from 'src/components/Desktop/Dialog';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import { useHistory } from 'react-router-dom';
+import useScore from 'src/hooks/useScore';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -26,6 +27,7 @@ export default function GetAwardDesktop({ selected }) {
   // const data = { name: 'iPhone13', score: '۵۰۰۰', expireDate: '۲۰ اردیبهشت' };
   const [openFirst, setOpenFirst] = useState(false);
   const [openSecond, setOpenSecond] = useState(false);
+  const { setScore } = useScore();
   const history = useHistory();
 
   return (
@@ -70,7 +72,9 @@ export default function GetAwardDesktop({ selected }) {
               height="20px"
               style={{ color: 'white' }}
             />
-            <div>دریافت جایزه</div>
+            {selected.gift_type && selected.gift_type != 4
+              ? 'دریافت جایزه'
+              : 'شرکت در قرعه کشی'}{' '}
           </IconButton>
         </Box>
       </Box>
@@ -102,7 +106,9 @@ export default function GetAwardDesktop({ selected }) {
             >
               <img src={Presents} alt="awards" width={'61px'} height={'60px'} />
               <InputLabelHeader style={{ color: '#00346D', fontWeight: 500 }}>
-                آیا از دریافت این جایزه مطمئن هستید؟
+                {selected.gift_type && selected.gift_type != 4
+                  ? ' آیا از دریافت این جایزه مطمئن هستید؟'
+                  : ' آیا از شرکت در قرعه کشی مطمئن هستید؟'}{' '}
               </InputLabelHeader>
             </Box>
           </Box>
@@ -129,26 +135,31 @@ export default function GetAwardDesktop({ selected }) {
             <ConfirmButton
               disabled={false}
               onClick={() => {
-                httpService
-                  .post(`${API_BASE_URL}/api/club/user_gifts/`, {
-                    gift: selected.id
-                  })
-                  .then(res => {
-                    if (res.status === 201) {
-                      setOpenFirst(false);
-                      setOpenSecond(true);
-                      httpService
-                        .get(`${API_BASE_URL}/api/users/refresh_user`)
-                        .then(result => {
-                          if (result.status === 200) {
-                            localStorage.setItem(
-                              'user',
-                              JSON.stringify(result.data)
-                            );
-                          }
-                        });
-                    }
-                  });
+                if (selected.gift_type && selected.gift_type != 4) {
+                  httpService
+                    .post(`${API_BASE_URL}/api/club/user_gifts/`, {
+                      gift: selected.id
+                    })
+                    .then(res => {
+                      if (res.status === 201) {
+                        setOpenFirst(false);
+                        setOpenSecond(true);
+                        setScore();
+                      }
+                    });
+                } else {
+                  httpService
+                    .post(`${API_BASE_URL}/api/club/lottery_participant/`, {
+                      lot_id: data.id
+                    })
+                    .then(res => {
+                      if (res.status === 201) {
+                        setOpenFirst(false);
+                        setOpenSecond(true);
+                        setScore();
+                      }
+                    });
+                }
               }}
             >
               {'بله'}

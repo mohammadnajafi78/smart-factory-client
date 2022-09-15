@@ -26,7 +26,7 @@ import { API_BASE_URL } from 'src/utils/urls';
 import { consoleSandbox } from '@sentry/utils';
 import FaTOEn from 'src/utils/FaTOEn';
 import MomentFa from 'src/utils/MomentFa';
-import Datepicker from 'src/components/Desktop/Datepicker';
+// import Datepicker from 'src/components/Desktop/Datepicker';
 import AdapterJalali from '@date-io/date-fns-jalali';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -35,6 +35,7 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader
 import { Plus } from 'react-feather';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import Table from 'src/components/Desktop/Table';
+import { ArrowBack, ArrowRight } from '@mui/icons-material';
 
 const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
@@ -149,6 +150,8 @@ const CompetitionTable = props => {
                           }}
                         />
                       )}
+                      // leftArrowIcon={<ArrowBack />}
+                      // rightArrowIcon={<ArrowRight />}
                     />
                   </LocalizationProvider>
                 </FormControl>

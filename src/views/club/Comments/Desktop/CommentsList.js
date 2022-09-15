@@ -15,19 +15,27 @@ export default function CommentsList({ selected, setSelected }) {
   const [open, setOpen] = useState(false);
   const [topics, setTopics] = useState([]);
   const [topicId, setTopicId] = useState(null);
+  const [title, setTitle] = useState();
 
-  useEffect(() => {
+  function getSuggestions() {
     httpService.get(`${API_BASE_URL}/api/club/suggestions/`).then(res => {
       if (res.status === 200) {
         setComments(res.data);
       }
     });
+  }
 
+  function getTopics() {
     httpService.get(`${API_BASE_URL}/api/club/suggestion_topic/`).then(res => {
       if (res.status === 200) {
         setTopics(res.data);
       }
     });
+  }
+
+  useEffect(() => {
+    getSuggestions();
+    getTopics();
   }, []);
 
   return (
@@ -73,12 +81,14 @@ export default function CommentsList({ selected, setSelected }) {
         {comments &&
           comments.map((item, index) => {
             return (
+              // <div onClick={() => setSelected(item)} style={{ width: '100%' }}>
               <CommentItem
                 data={item}
                 key={index}
                 selected={selected}
                 setSelected={setSelected}
               />
+              // </div>
             );
           })}
       </Box>
@@ -98,6 +108,15 @@ export default function CommentsList({ selected, setSelected }) {
               // height: '750px'
             }}
           >
+            <Box sx={{ mt: 2, width: '100%' }}>
+              <InputLabel>عنوان</InputLabel>
+              <TextField
+                fullWidth
+                id="topic"
+                value={title}
+                onChange={event => setTitle(event.target.value)}
+              />
+            </Box>
             <Box sx={{ width: '100%' }}>
               <InputLabel>موضوع</InputLabel>
               <Autocomplete
@@ -115,19 +134,13 @@ export default function CommentsList({ selected, setSelected }) {
                 isOptionEqualToValue={(option, value) =>
                   option.label === value.label
                 }
-                getOptionLabel={option => option.name}
+                getOptionLabel={option =>
+                  option.suggestion_type + ' ' + option.name
+                }
               />
             </Box>
-            <Box sx={{ width: '100%' }}>
-              <InputLabel>متن نظر</InputLabel>
-              <TextField
-                fullWidth
-                multiline
-                rows={5}
-                placeholder={'بنویسید ...'}
-              />
-            </Box>
-            <ConfirmButton
+
+            {/* <ConfirmButton
               disabled={false}
               variant="outlined"
               component="label"
@@ -135,7 +148,7 @@ export default function CommentsList({ selected, setSelected }) {
               <AttachFile />
               {'آپلود فایل'}
               <input type="file" hidden multiple />
-            </ConfirmButton>
+            </ConfirmButton> */}
           </Box>
         }
         actions={
@@ -156,7 +169,25 @@ export default function CommentsList({ selected, setSelected }) {
             >
               {'لغو'}
             </ConfirmButton>
-            <ConfirmButton disabled={false}>{'ثبت نظر'}</ConfirmButton>
+            <ConfirmButton
+              disabled={false}
+              onClick={() => {
+                httpService
+                  .post(`${API_BASE_URL}/api/club/suggestions/`, {
+                    subject: title,
+                    topic: topicId
+                  })
+                  .then(res => {
+                    if (res.status === 201) {
+                      setOpen(false);
+                      getSuggestions();
+                      setSelected(res.data);
+                    }
+                  });
+              }}
+            >
+              {'ثبت نظر'}
+            </ConfirmButton>
           </Box>
         }
       />

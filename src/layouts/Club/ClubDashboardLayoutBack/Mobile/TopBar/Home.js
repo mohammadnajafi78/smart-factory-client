@@ -62,7 +62,7 @@ const Home = () => {
 
   return (
     <>
-      <Tooltip title="Home">
+      <Tooltip title="خانه">
         <IconButton
           //   color="inherit"
           onClick={handleClick}

@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-dom';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import useScore from 'src/hooks/useScore';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -37,6 +38,7 @@ export default function AwardsBox() {
   const [openSecond, setOpenSecond] = useState(false);
   const classes = useStyles();
   const history = useHistory();
+  const { setScore } = useScore();
 
   useEffect(() => {
     httpService.get(`${API_BASE_URL}/api/club/gift_box/`).then(res => {
@@ -181,16 +183,7 @@ export default function AwardsBox() {
                     if (res.status === 200) {
                       setOpenFirst(false);
                       setOpenSecond(true);
-                      httpService
-                        .get(`${API_BASE_URL}/api/users/refresh_user`)
-                        .then(result => {
-                          if (result.status === 200) {
-                            localStorage.setItem(
-                              'user',
-                              JSON.stringify(result.data)
-                            );
-                          }
-                        });
+                      setScore();
                     }
                   });
               }}

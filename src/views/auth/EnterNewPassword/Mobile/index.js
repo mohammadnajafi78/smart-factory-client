@@ -11,6 +11,7 @@ import { Formik } from 'formik';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import bcrypt from 'bcryptjs';
 
 function EnterNewPasswordMobile(props) {
   const [showPassword, setShowPassword] = useState(false);
@@ -45,9 +46,11 @@ function EnterNewPasswordMobile(props) {
           return errors;
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
+          console.log('inja', props.location.state.verification_code);
           httpService
-            .post(`${API_BASE_URL}/api/users/`, {
+            .post(`${API_BASE_URL}/api/users/reset_password/`, {
               mobile: props.location.state.mobile,
+              verification_code: props.location.state.verification_code,
               password: bcrypt.hashSync(
                 values.password,
                 '$2a$10$p.DMYfbaIgtkCH7rseuMnu'
@@ -55,11 +58,7 @@ function EnterNewPasswordMobile(props) {
             })
             .then(res => {
               if (res.status === 200) {
-                localStorage.setItem('token', res.headers['x-auth-token']);
-                axios.defaults.headers.common.Authorization = `Bearer ${res.headers['x-auth-token']}`;
-                registry(res.headers['x-auth-token']);
-                localStorage.setItem('user', JSON.stringify(res.data));
-                history.push('/identity');
+                history.push('/login');
               }
             });
           setSubmitting(false);
@@ -92,7 +91,7 @@ function EnterNewPasswordMobile(props) {
             }}
           >
             <Box>
-              <InputLabelHeader>ورود با رمز عبور</InputLabelHeader>
+              <InputLabelHeader>رمز عبور جدید</InputLabelHeader>
               <InputLabel>
                 جهت ثبت رمز عبور جدید، اطلاعات زیر را وارد کنید:
               </InputLabel>{' '}

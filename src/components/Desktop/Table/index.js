@@ -138,6 +138,9 @@ let theme = createTheme({
         selectLabel: {
           fontFamily: 'IRANSans',
           fontSize: 10
+        },
+        actions: {
+          direction: 'ltr'
         }
       }
     },

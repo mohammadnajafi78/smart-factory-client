@@ -34,7 +34,7 @@ const Home = () => {
 
   return (
     <>
-      <Tooltip title="Home">
+      <Tooltip title="خانه">
         <IconButton
           onClick={handleClick}
           ref={ref}

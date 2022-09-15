@@ -6,7 +6,7 @@ import ChatUser from 'src/assets/img/icons/chatUser.svg';
 import PDF from 'src/assets/img/icons/pdf.svg';
 import FileDownload from 'src/assets/img/icons/fileDownload.svg';
 
-export default function UserChat({ file }) {
+export default function UserChat({ message }) {
   return (
     <Box
       sx={{
@@ -28,7 +28,10 @@ export default function UserChat({ file }) {
           borderRadius: '20px'
         }}
       >
-        <img src={ChatUser} />
+        <img
+          src={message?.user_info?.user_profile_image}
+          style={{ width: '40px', height: '40px', borderRadius: '30px' }}
+        />
       </Box>
       <Box
         sx={{
@@ -64,7 +67,7 @@ export default function UserChat({ file }) {
               color: '#FFFFFF'
             }}
           >
-            {!file ? (
+            {message?.message.length > 0 && (
               <InputLabel
                 style={{
                   fontWeight: 400,
@@ -73,9 +76,10 @@ export default function UserChat({ file }) {
                   color: 'white'
                 }}
               >
-                سلام چطور می‌تونم به شما کمک کنم؟
+                {message?.message}{' '}
               </InputLabel>
-            ) : (
+            )}
+            {message?.files_list.length > 0 && (
               <Box>
                 <Box
                   sx={{
@@ -94,7 +98,7 @@ export default function UserChat({ file }) {
                       width: '130px'
                     }}
                   >
-                    سایت_و_اپلیکیشن_های_گروه_صنایع_BTS_v1_7.pdf
+                    {message?.files_list[0]?.file_name}
                   </InputLabel>
                   <Box
                     sx={{
@@ -140,8 +144,12 @@ export default function UserChat({ file }) {
                     gap: '10px'
                   }}
                 >
-                  <InputLabel style={{ color: 'white' }}>43 صفحه</InputLabel>
-                  <InputLabel style={{ color: 'white' }}>280kb</InputLabel>
+                  {/* <InputLabel style={{ color: 'white' }}>43 صفحه</InputLabel> */}
+                  <InputLabel style={{ color: 'white' }}>
+                    {`${Math.round(
+                      message?.files_list[0]?.file_size / 1024
+                    )} KB`}
+                  </InputLabel>
                 </Box>
               </Box>
             )}

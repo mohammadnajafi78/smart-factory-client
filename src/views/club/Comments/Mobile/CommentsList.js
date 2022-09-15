@@ -8,6 +8,8 @@ import CommentItem from './CommentItem';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import makeStyles from '@mui/styles/makeStyles';
+import { SettingsOutlined } from '@mui/icons-material';
+import { set } from 'lodash';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -22,15 +24,32 @@ const useStyles = makeStyles(theme => ({
 export default function CommentsList() {
   const [comments, setComments] = useState(null);
   const [openNewComment, setOpenNewComment] = useState(false);
+  const [topics, setTopics] = useState([]);
+  const [topicId, setTopicId] = useState(null);
+  const [title, setTitle] = useState();
+
   const history = useHistory();
   const classes = useStyles();
 
-  useEffect(() => {
+  function getSuggestions() {
     httpService.get(`${API_BASE_URL}/api/club/suggestions/`).then(res => {
       if (res.status === 200) {
         setComments(res.data);
       }
     });
+  }
+
+  function getTopics() {
+    httpService.get(`${API_BASE_URL}/api/club/suggestion_topic/`).then(res => {
+      if (res.status === 200) {
+        setTopics(res.data);
+      }
+    });
+  }
+
+  useEffect(() => {
+    getSuggestions();
+    getTopics();
   }, []);
 
   return (
@@ -55,7 +74,6 @@ export default function CommentsList() {
         <ConfirmButton
           style={{ width: '150px' }}
           onClick={() => {
-            // history.push('/club/newComment');
             setOpenNewComment(true);
           }}
         >
@@ -99,7 +117,12 @@ export default function CommentsList() {
           <InputLabel>جهت ایجاد نظر، موارد زیر را تعیین کنید:</InputLabel>
           <Box sx={{ mt: 2, width: '100%' }}>
             <InputLabel>عنوان</InputLabel>
-            <TextField fullWidth id="topic" />
+            <TextField
+              fullWidth
+              id="topic"
+              value={title}
+              onChange={event => setTitle(event.target.value)}
+            />
           </Box>
           <Box sx={{ mt: 2, width: '100%' }}>
             <InputLabel>موضوع</InputLabel>
@@ -107,17 +130,19 @@ export default function CommentsList() {
               disablePortal
               fullWidth
               id="topic"
-              options={[]}
+              options={topics}
               renderInput={params => (
                 <TextField {...params} placeholder="موضوع" fullWidth />
               )}
-              // onChange={(event, newValue) => {
-              //   if (newValue) setTopicId(newValue.id);
-              // }}
+              onChange={(event, newValue) => {
+                if (newValue) setTopicId(newValue.id);
+              }}
               isOptionEqualToValue={(option, value) =>
                 option.label === value.label
               }
-              getOptionLabel={option => option.name}
+              getOptionLabel={option =>
+                option.suggestion_type + ' ' + option.name
+              }
             />
           </Box>
         </Box>
@@ -143,7 +168,31 @@ export default function CommentsList() {
           >
             {'لغو'}
           </ConfirmButton>
-          <ConfirmButton disabled={false}>{'ثبت'}</ConfirmButton>
+          <ConfirmButton
+            disabled={false}
+            onClick={() => {
+              httpService
+                .post(`${API_BASE_URL}/api/club/suggestions/`, {
+                  subject: title,
+                  topic: topicId
+                })
+                .then(res => {
+                  if (res.status === 201) {
+                    setOpenNewComment(false);
+                    // getSuggestions();
+                    // console.log('res', res.data);
+                    history.push({
+                      pathname: '/club/newComment',
+                      state: {
+                        data: res.data
+                      }
+                    });
+                  }
+                });
+            }}
+          >
+            {'ثبت'}
+          </ConfirmButton>
         </Box>
       </Drawer>
     </div>

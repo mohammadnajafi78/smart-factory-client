@@ -6,7 +6,7 @@ import Call from 'src/assets/img/icons/call.svg';
 import PDF from 'src/assets/img/icons/pdf.svg';
 import FileDownload from 'src/assets/img/icons/fileDownload.svg';
 
-export default function Admin({ file }) {
+export default function Admin({ message }) {
   return (
     <Box
       sx={{
@@ -43,7 +43,7 @@ export default function Admin({ file }) {
             width: '100%'
           }}
         >
-          {!file ? (
+          {message?.message.length > 0 && (
             <InputLabel
               style={{
                 fontWeight: 400,
@@ -52,10 +52,10 @@ export default function Admin({ file }) {
                 color: '#4F4C4D'
               }}
             >
-              من مشکلی با بخش جوایز دارم. بعد از خرید هدیه غیر تبلیغاتی با
-              امتیاز، دو روز طول می‌کشه تا به بخش دریافتی‌هام اضافه بشه
+              {message?.message}
             </InputLabel>
-          ) : (
+          )}
+          {message?.files_list.length > 0 && (
             <Box>
               <Box
                 sx={{
@@ -74,7 +74,7 @@ export default function Admin({ file }) {
                     width: '130px'
                   }}
                 >
-                  سایت_و_اپلیکیشن_های_گروه_صنایع_BTS_v1_7.pdf
+                  {message?.files_list[0]?.file_name}
                 </InputLabel>
                 <Box
                   sx={{
@@ -120,8 +120,10 @@ export default function Admin({ file }) {
                   gap: '10px'
                 }}
               >
-                <InputLabel style={{ color: '#4F4C4D' }}>43 صفحه</InputLabel>
-                <InputLabel style={{ color: '#4F4C4D' }}>280kb</InputLabel>
+                {/* <InputLabel style={{ color: '#4F4C4D' }}>43 صفحه</InputLabel> */}
+                <InputLabel style={{ color: '#4F4C4D' }}>
+                  {`${Math.round(message?.files_list[0]?.file_size / 1024)} KB`}
+                </InputLabel>
               </Box>
             </Box>
           )}

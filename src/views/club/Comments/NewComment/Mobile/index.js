@@ -1,11 +1,32 @@
+import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
-import React from 'react';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import UserChat from './UserChat';
 import AdminChat from './AdminChat';
 import SendMessage from './SendMessage';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
-export default function NewCommentMobile() {
+export default function NewCommentMobile(props) {
+  const [chat, setChat] = useState();
+  const userId = JSON.parse(localStorage.getItem('user')).user_id;
+  const [selected, setSelected] = useState(null);
+  const messageId = props.location.state.data.id;
+
+  function getData() {
+    httpService
+      .get(`${API_BASE_URL}/api/club/suggestions/${messageId}`)
+      .then(res => {
+        if (res.status === 200) {
+          setChat(res.data);
+        }
+      });
+  }
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   return (
     <Box
       sx={{
@@ -24,17 +45,18 @@ export default function NewCommentMobile() {
           // height: '79vh'
         }}
       >
-        <InputLabelHeader>مشکل در بخش دریافتی ها</InputLabelHeader>
-        <Box sx={{ height: '500px', overflow: 'auto', pb: 14 }}>
-          <AdminChat />
-          <UserChat />
-          <AdminChat file={true} />
-          <UserChat file={true} />
-          <AdminChat />
-          <UserChat />
-        </Box>
+        <InputLabelHeader> {chat?.subject}</InputLabelHeader>
+        {chat?.message_list?.length &&
+          chat?.message_list.map((item, index) => {
+            // setSelected(item);
+            return item?.user_info?.user_id === userId ? (
+              <UserChat message={item} />
+            ) : (
+              <AdminChat message={item} />
+            );
+          })}
       </Box>
-      <SendMessage />
+      <SendMessage message={props.location.state.data} getData={getData} />
     </Box>
   );
 }

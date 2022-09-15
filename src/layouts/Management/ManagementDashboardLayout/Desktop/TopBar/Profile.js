@@ -62,7 +62,7 @@ const Profile = () => {
 
   return (
     <>
-      <Tooltip title="Home">
+      <Tooltip title="پروفایل">
         <IconButton
           //   color="inherit"
           onClick={handleClick}

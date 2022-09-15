@@ -14,6 +14,8 @@ import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import { useHistory } from 'react-router-dom';
 import MomentFa from 'src/utils/MomentFa';
+import UserClub from 'src/utils/userClub';
+import useScore from 'src/hooks/useScore';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -30,6 +32,7 @@ export default function GetAwardMobile(props) {
   const [openSecond, setOpenSecond] = useState(false);
   const history = useHistory();
   const classes = useStyles();
+  const { setScore } = useScore();
 
   return (
     <>
@@ -189,7 +192,11 @@ export default function GetAwardMobile(props) {
               height="20px"
               style={{ color: 'white' }}
             />
-            <div>دریافت جایزه</div>
+            <div>
+              {data.gift_type && data.gift_type != 4
+                ? 'دریافت جایزه'
+                : 'شرکت در قرعه کشی'}
+            </div>
           </LinkIconButton>
         </Box>
       </Box>
@@ -226,7 +233,9 @@ export default function GetAwardMobile(props) {
             <InputLabelHeader
               style={{ textAlign: 'center', color: '#00346D', fontWeight: 500 }}
             >
-              آیا از دریافت این جایزه مطمئن هستید؟
+              {data.gift_type && data.gift_type != 4
+                ? ' آیا از دریافت این جایزه مطمئن هستید؟'
+                : ' آیا از شرکت در قرعه کشی مطمئن هستید؟'}
             </InputLabelHeader>
           </Box>
           <Box
@@ -250,26 +259,34 @@ export default function GetAwardMobile(props) {
             <ConfirmButton
               disabled={false}
               onClick={() => {
-                httpService
-                  .post(`${API_BASE_URL}/api/club/user_gifts/`, {
-                    gift: data.id
-                  })
-                  .then(res => {
-                    if (res.status === 201) {
-                      setOpenFirst(false);
-                      setOpenSecond(true);
-                      httpService
-                        .get(`${API_BASE_URL}/api/users/refresh_user`)
-                        .then(result => {
-                          if (result.status === 200) {
-                            localStorage.setItem(
-                              'user',
-                              JSON.stringify(result.data)
-                            );
-                          }
-                        });
-                    }
-                  });
+                if (data.gift_type && data.gift_type != 4) {
+                  httpService
+                    .post(`${API_BASE_URL}/api/club/user_gifts/`, {
+                      gift: data.id
+                    })
+                    .then(res => {
+                      if (res.status === 201) {
+                        setOpenFirst(false);
+                        setOpenSecond(true);
+                        // UserClub();
+                        setScore();
+                      }
+                    });
+                } else {
+                  httpService
+                    .post(`${API_BASE_URL}/api/club/lottery_participant/`, {
+                      lot_id: data.id
+                    })
+                    .then(res => {
+                      if (res.status === 201) {
+                        setOpenFirst(false);
+                        setOpenSecond(true);
+                        setScore();
+
+                        // UserClub();
+                      }
+                    });
+                }
               }}
             >
               {'بله'}

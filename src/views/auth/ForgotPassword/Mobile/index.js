@@ -46,6 +46,7 @@ function ForgotPasswordMobile(props) {
                   pathname: '/otp',
                   state: {
                     mobile: values.mobile,
+                    lastUpdate: res.data.last_update,
                     status: 'forgot'
                   }
                 });

@@ -74,7 +74,8 @@ function LocationDesktop() {
               .post(`${API_BASE_URL}/api/utils/locations/`, {
                 country_id: 25,
                 province_id: provinceId,
-                city_id: cityId
+                city_id: cityId,
+                is_user: true
               })
               .then(res => {
                 if (res.status === 200) {

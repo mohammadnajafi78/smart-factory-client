@@ -12,6 +12,7 @@ import { Formik } from 'formik';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import bcrypt from 'bcryptjs';
 
 function EnterNewPasswordDesktop(props) {
   const [showPassword, setShowPassword] = useState(false);
@@ -63,8 +64,9 @@ function EnterNewPasswordDesktop(props) {
           }}
           onSubmit={async (values, { setErrors, setSubmitting }) => {
             httpService
-              .post(`${API_BASE_URL}/api/users/`, {
+              .post(`${API_BASE_URL}/api/users/reset_password/`, {
                 mobile: props.location.state.mobile,
+                verification_code: props.location.state.verification_code,
                 password: bcrypt.hashSync(
                   values.password,
                   '$2a$10$p.DMYfbaIgtkCH7rseuMnu'
@@ -72,11 +74,7 @@ function EnterNewPasswordDesktop(props) {
               })
               .then(res => {
                 if (res.status === 200) {
-                  localStorage.setItem('token', res.headers['x-auth-token']);
-                  axios.defaults.headers.common.Authorization = `Bearer ${res.headers['x-auth-token']}`;
-                  registry(res.headers['x-auth-token']);
-                  localStorage.setItem('user', JSON.stringify(res.data));
-                  history.push('/identity');
+                  history.push('/login');
                 }
               });
             setSubmitting(false);
@@ -104,7 +102,7 @@ function EnterNewPasswordDesktop(props) {
               }}
             >
               <Box sx={{ width: '100%' }}>
-                <InputLabelHeader>ورود با رمز عبور</InputLabelHeader>
+                <InputLabelHeader>رمز عبور جدید</InputLabelHeader>
                 <Box sx={{ mt: 2 }}>
                   <InputLabel>
                     جهت ثبت رمز عبور جدید، اطلاعات زیر را وارد کنید:
@@ -205,7 +203,9 @@ function EnterNewPasswordDesktop(props) {
                   width: '100%'
                 }}
               >
-                <ConfirmButton disabled={isSubmitting}>{'ثبت'}</ConfirmButton>
+                <ConfirmButton disabled={isSubmitting} type="submit">
+                  {'ثبت'}
+                </ConfirmButton>
               </Box>
             </form>
           )}

@@ -27,6 +27,7 @@ import CssBaseline from '@mui/material/CssBaseline/CssBaseline';
 import rtlPlugin from 'stylis-plugin-rtl';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
+import { ScoreProvider } from './contexts/ScoreContext';
 
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 const history = createBrowserHistory();
@@ -58,12 +59,14 @@ const App = () => {
             <SnackbarProvider dense maxSnack={3}>
               <BrowserRouter history={history}>
                 <AuthProvider>
-                  <GlobalStyles />
-                  <ScrollReset />
-                  {/* <GoogleAnalytics /> */}
-                  {/* <CookiesNotification /> */}
-                  {/* <SettingsNotification /> */}
-                  {renderRoutes(routes)}
+                  <ScoreProvider>
+                    <GlobalStyles />
+                    <ScrollReset />
+                    {/* <GoogleAnalytics /> */}
+                    {/* <CookiesNotification /> */}
+                    {/* <SettingsNotification /> */}
+                    {renderRoutes(routes)}
+                  </ScoreProvider>
                 </AuthProvider>
               </BrowserRouter>
             </SnackbarProvider>

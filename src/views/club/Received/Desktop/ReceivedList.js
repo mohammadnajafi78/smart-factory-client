@@ -16,14 +16,16 @@ export default function ReceivedListDesktop({ selected, setSelected }) {
   const history = useHistory();
   const [received, setReceived] = useState(null);
   const [openScan, setOpenScan] = useState(null);
+  const [all, setAll] = useState(null);
   const [filters, setFilters] = useState(null);
-  const [filterSelected, setFilterSelected] = useState('All');
+  const [filterSelected, setFilterSelected] = useState(1);
   const [scan, setScan] = useState(null);
 
   useEffect(() => {
     httpService.get(`${API_BASE_URL}/api/club/user_gifts/`).then(res => {
       if (res.status === 200) {
         setReceived(res.data);
+        setAll(res.data);
       }
     });
 
@@ -78,17 +80,17 @@ export default function ReceivedListDesktop({ selected, setSelected }) {
                 <FilterButton
                   key={index}
                   onClick={() => {
-                    // if (awards && awards.length > 0) {
-                    //   setFilterSelected(item.name);
-                    //   if (item.name === 'All') setAwards(all);
-                    //   else if (item.name !== 'Lottery' && item.name !== 'All')
-                    //     setAwards(all.filter(f => f.gift_type === item.id));
-                    //   else setAwards(all.filter(f => !f.gift_type));
-                    // }
+                    setFilterSelected(item.id);
+                    if (item.id == 1) setReceived(all);
+                    else if (item.id != 4 && item.id != 1)
+                      setReceived(
+                        all.filter(f => f?.gift_data?.gift_type == item.id)
+                      );
+                    else setReceived(all.filter(f => !f?.gift_data?.gift_type));
                   }}
                   style={{
                     backgroundColor:
-                      filterSelected === item.name && 'rgba(0, 170, 181, 0.04)'
+                      filterSelected === item.id && 'rgba(0, 170, 181, 0.04)'
                   }}
                 >
                   {item.translate}

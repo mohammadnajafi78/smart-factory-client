@@ -24,13 +24,16 @@ export default function ReceivedMobile() {
   const [received, setReceived] = useState(null);
   const [openScan, setOpenScan] = useState(null);
   const [scan, setScan] = useState(null);
+  const [all, setAll] = useState(null);
   const [filters, setFilters] = useState(null);
+  const [filterSelected, setFilterSelected] = useState(1);
   const classes = useStyles();
 
   useEffect(() => {
     httpService.get(`${API_BASE_URL}/api/club/user_gifts/`).then(res => {
       if (res.status === 200) {
         setReceived(res.data);
+        setAll(res.data);
       }
     });
 
@@ -74,12 +77,13 @@ export default function ReceivedMobile() {
               <FilterButton
                 key={index}
                 onClick={() => {
-                  // if (awards && awards.length > 0) {
-                  //   if (item.name === 'All') setAwards(all);
-                  //   else if (item.name !== 'Lottery' && item.name !== 'All')
-                  //     setAwards(all.filter(f => f.gift_type === item.id));
-                  //   else setAwards(all.filter(f => !f.gift_type));
-                  // }
+                  setFilterSelected(item.id);
+                  if (item.id == 1) setReceived(all);
+                  else if (item.id != 4 && item.id != 1)
+                    setReceived(
+                      all.filter(f => f?.gift_data?.gift_type == item.id)
+                    );
+                  else setReceived(all.filter(f => !f?.gift_data?.gift_type));
                 }}
                 style={{ fontWeight: 300, fontSize: '12px' }}
               >

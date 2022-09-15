@@ -72,7 +72,8 @@ function LoginPassDesktop(props) {
                   axios.defaults.headers.common.Authorization = `Bearer ${res.headers['x-auth-token']}`;
                   registry(res.headers['x-auth-token']);
                   localStorage.setItem('user', JSON.stringify(res.data));
-                  history.push('/home');
+                  // history.push('/home');
+                  history.push('/' + res.data.profile_state.toLowerCase());
                 }
               });
             setSubmitting(false);
@@ -161,7 +162,23 @@ function LoginPassDesktop(props) {
                 <InputLabel
                   style={{ color: '#049099' }}
                   onClick={() => {
-                    history.push('/forgotPass');
+                    // history.push('/forgotPass');
+                    httpService
+                      .post(`${API_BASE_URL}/api/users/request_otp/`, {
+                        username: props.location.state.mobile
+                      })
+                      .then(res => {
+                        if (res.status === 200) {
+                          history.push({
+                            pathname: '/otp',
+                            state: {
+                              mobile: props.location.state.mobile,
+                              lastUpdate: res.data.last_update,
+                              status: 'forgot'
+                            }
+                          });
+                        }
+                      });
                   }}
                 >
                   رمز عبور خود را فراموش کرده اید؟

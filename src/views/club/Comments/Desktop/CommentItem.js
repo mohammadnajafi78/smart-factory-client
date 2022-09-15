@@ -82,9 +82,9 @@ export default function CommentItem({ data, selected, setSelected }) {
             <InputLabel
               style={{ fontWeight: 500, fontSize: '16px', color: '#00346D' }}
             >
-              {data.title}
+              {data.subject}
             </InputLabel>
-            {data.response !== null ? (
+            {data.status.toLowerCase() === 'answered' ? (
               <Box
                 sx={{
                   display: 'flex',
@@ -99,7 +99,25 @@ export default function CommentItem({ data, selected, setSelected }) {
                 }}
               >
                 <InputLabel style={{ color: '#00AAB5', fontSize: '12px' }}>
-                  مشاهده شده
+                  پاسخ داده شده
+                </InputLabel>
+              </Box>
+            ) : data.status.toLowerCase() === 'closed' ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  padding: '2px 6px !important',
+                  height: '22px',
+                  background: '#FDE8E8;',
+                  borderRadius: '4px',
+                  color: '#A7A5A6'
+                }}
+              >
+                <InputLabel style={{ color: '#F4777C', fontSize: '12px' }}>
+                  بسته شده
                 </InputLabel>
               </Box>
             ) : (
@@ -117,7 +135,7 @@ export default function CommentItem({ data, selected, setSelected }) {
                 }}
               >
                 <InputLabel style={{ color: '#A7A5A6', fontSize: '12px' }}>
-                  بدون پاسخ
+                  در انتظار پاسخ
                 </InputLabel>
               </Box>
             )}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Rating } from '@mui/material';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Desktop/InputLabel';
@@ -30,7 +30,21 @@ const useStyles = makeStyles(theme => ({
 }));
 export default function GetCommentDesktop({ selected }) {
   const classes = useStyles();
-  // const [rating, setRating] = useState(selected.rate);
+  const [chat, setChat] = useState();
+  const userId = JSON.parse(localStorage.getItem('user')).user_id;
+
+  function getData() {
+    httpService
+      .get(`${API_BASE_URL}/api/club/suggestions/${selected.id}`)
+      .then(res => {
+        if (res.status === 200) {
+          setChat(res.data);
+        }
+      });
+  }
+  useEffect(() => {
+    getData();
+  }, [selected]);
 
   return (
     <Box
@@ -38,156 +52,34 @@ export default function GetCommentDesktop({ selected }) {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         padding: '24px 30px 0px !important',
         gap: '20px',
         // background: '#FFFFFF',
-        width: '100%'
+        width: '100%',
+        overflow: 'auto'
       }}
     >
-      {/* <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          // alignItems: 'center',
-          padding: '0px',
-          gap: '12px',
-          width: '100%'
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '0px 16px',
-            gap: '8px',
-            width: '100%'
-          }}
-        >
-          <InputLabelHeader style={{ color: '#00346D', marginBottom: 0 }}>
-            {selected.title}
-          </InputLabelHeader>
-          <InputLabel style={{ color: '#808286', fontSize: '14px' }}>
-            {`ارسال: ${MomentFa(selected.create_date)}`}
-          </InputLabel>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-            padding: '10px 16px'
-          }}
-        >
-          <InputLabel style={{ color: '#7B7979', fontSize: '14px' }}>
-            {selected.description}
-          </InputLabel>
-        </Box>
-      </Box>
+      <InputLabelHeader>{chat?.subject}</InputLabelHeader>
+
       <Box
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          padding: '16px',
-          gap: '15px',
-          //   width: '320px',
-          height: '260px',
-          background: '#FAFAFA',
-          border: '0.5px solid #D3D2D2',
-          borderRadius: '8px',
-          width: '100%'
+          height: '400px',
+          width: '100%',
+          overflow: 'auto',
+          paddingRight: '30px'
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            padding: '0px',
-            gap: '12px',
-            paddingBottom: '15px',
-            borderBottom: '0.5px solid #D3D2D2',
-            width: '100%'
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: '0px 16px',
-              gap: '8px',
-              width: '100%'
-            }}
-          >
-            <InputLabelHeader
-              style={{
-                color: '#ED1C24',
-                marginBottom: 0,
-                fontSize: '16px'
-              }}
-            >
-              پاسخ کارشناس
-            </InputLabelHeader>
-            <InputLabel style={{ color: '#808286', fontSize: '14px' }}>
-              ارسال : ۲/۲۰
-            </InputLabel>
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'flex-start',
-              padding: '10px 16px'
-            }}
-          >
-            <InputLabel style={{ color: '#4F4C4D', fontSize: '14px' }}>
-              {selected.response}
-            </InputLabel>
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: 0,
-            width: '100%',
-            gap: 1
-          }}
-        >
-          <InputLabel>به پاسخ کارشناس امتیاز دهید:</InputLabel>
-          <Rating
-            name="simple-controlled"
-            value={rating}
-            onChange={(event, newValue) => {
-              setRating(newValue);
-              httpService
-                .patch(`${API_BASE_URL}/api/club/suggestions/${selected.id}/`, {
-                  rate: newValue
-                })
-                .then(res => {
-                  if (res.status === 200) {
-                    alert('success');
-                  }
-                });
-            }}
-            classes={{ root: classes.rating }}
-          />
-        </Box>
-      </Box> */}
-
-      <AdminChat />
-      <UserChat />
-      <AdminChat file={true} />
-      <UserChat file={true} />
-
-      <SendMessage />
+        {chat?.message_list?.length > 0 &&
+          chat.message_list.map((item, index) => {
+            return item?.user_info?.user_id === userId ? (
+              <UserChat message={item} />
+            ) : (
+              <AdminChat message={item} />
+            );
+          })}
+      </Box>
+      <SendMessage message={selected} getData={getData} />
     </Box>
   );
 }

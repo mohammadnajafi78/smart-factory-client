@@ -80,7 +80,8 @@ function LoginOTPMobile(props) {
                 axios.defaults.headers.common.Authorization = `Bearer ${res.headers['x-auth-token']}`;
                 localStorage.setItem('user', JSON.stringify(res.data));
                 registry(res.headers['x-auth-token']);
-                history.push('/home');
+                // history.push('/home');
+                history.push('/' + res.data.profile_state.toLowerCase());
               }
             })
             .catch(err => {
@@ -91,7 +92,14 @@ function LoginOTPMobile(props) {
           history.push({
             pathname: '/newPassword',
             state: {
-              mobile: props.location.state.mobile
+              mobile: props.location.state.mobile,
+              verification_code:
+                values.input1 +
+                values.input2 +
+                values.input3 +
+                values.input4 +
+                values.input5 +
+                values.input6
             }
           });
         } else {
