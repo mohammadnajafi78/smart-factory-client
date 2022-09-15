@@ -5,6 +5,7 @@ import InputLabel from 'src/components/Desktop/InputLabel';
 import Participants from './Participants';
 
 export default function CompetitionDetailsDesktop({ selected }) {
+  const userId = JSON.parse(localStorage.getItem('user')).user_id;
   return (
     <Box
       sx={{
@@ -151,7 +152,9 @@ export default function CompetitionDetailsDesktop({ selected }) {
             justifyContent: 'center'
           }}
         >
-          <Participants data={selected?.participants[0]} />
+          <Participants
+            data={selected?.participants.filter(f => f.user_id === userId)[0]}
+          />
         </Box>
       </Box>
     </Box>

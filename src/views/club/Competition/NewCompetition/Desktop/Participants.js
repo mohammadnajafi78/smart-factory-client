@@ -5,6 +5,8 @@ import Image from 'src/assets/img/06.jpg';
 
 export default function Item({ data }) {
   const history = useHistory();
+
+  console.log('data', data);
   return (
     <Box
       sx={{
@@ -26,7 +28,7 @@ export default function Item({ data }) {
       // }
     >
       <img
-        src={data?.attach}
+        src={data?.files[0].file}
         style={{
           width: '100%',
           height: '222.03px',

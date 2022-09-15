@@ -153,7 +153,9 @@ export default function CompetitionDetailsMobile(props) {
             width: '100%'
           }}
         >
-          <Participants data={awards.participants[0]} />
+          <Participants
+            data={awards?.participants.filter(f => f.user_id === userId)[0]}
+          />
         </Box>
       </Box>
     </Box>

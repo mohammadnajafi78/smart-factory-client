@@ -11,9 +11,11 @@ import { API_BASE_URL } from 'src/utils/urls';
 import Participants from './Participants';
 
 export default function ParticipateNewComp(props) {
-  const selected = props.location.state.data;
+  const [selected, setSelected] = useState(props.location.state.data);
   const [file, setFile] = useState(null);
   const userId = JSON.parse(localStorage.getItem('user')).user_id;
+
+  console.log('selected', selected);
 
   return (
     <>
@@ -42,8 +44,8 @@ export default function ParticipateNewComp(props) {
                 justifyContent: 'center',
                 width: '100%',
                 marginBottom: '10px',
-                backgroundColor: 'white',
-                height: '260px'
+                backgroundColor: 'white'
+                // height: '260px'
               }}
             >
               {!file ? (
@@ -82,7 +84,7 @@ export default function ParticipateNewComp(props) {
                     justifyContent: 'flex-start',
                     alignItems: 'center',
                     padding: '20px 0px 5px',
-                    gap: '20px',
+                    gap: '10px',
                     width: '480px',
                     // height: '320px',
                     border: '2px dashed #99DDE1',
@@ -152,7 +154,9 @@ export default function ParticipateNewComp(props) {
           >
             <Box sx={{ width: '100%' }}>
               <Participants
-                data={selected?.participants.filter(f => f.user_id === userId)}
+                data={
+                  selected?.participants.filter(f => f.user_id === userId)[0]
+                }
               />
             </Box>
           </Box>
@@ -187,7 +191,7 @@ export default function ParticipateNewComp(props) {
             onClick={() => {
               const formData = new FormData();
               formData.append('files', file);
-              formData.append('match_id', selected.match_id);
+              formData.append('match_num', selected.match_num);
 
               httpService
                 .post(

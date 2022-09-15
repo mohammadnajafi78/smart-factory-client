@@ -32,7 +32,7 @@ export default function Item({ data }) {
       // }
     >
       <img
-        src={data?.attach}
+        src={data?.files[0].file}
         style={{
           width: '100%',
           height: '222.03px',

@@ -146,7 +146,7 @@ export default function ParticipateNewComp({ selected, setSelected }) {
         >
           <Box sx={{ width: '50%' }}>
             <Participants
-              data={selected?.participants.filter(f => f.user_id === userId)}
+              data={selected?.participants.filter(f => f.user_id === userId)[0]}
             />
           </Box>
         </Box>
@@ -180,7 +180,7 @@ export default function ParticipateNewComp({ selected, setSelected }) {
             onClick={() => {
               const formData = new FormData();
               formData.append('files', file);
-              formData.append('match_id', selected.match_id);
+              formData.append('match_num', selected.match_num);
 
               httpService
                 .post(
