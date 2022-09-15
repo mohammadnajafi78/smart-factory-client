@@ -8,6 +8,7 @@ import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import { SelectAllRounded } from '@mui/icons-material';
+import { func } from 'prop-types';
 
 const CssTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
@@ -25,7 +26,7 @@ const CssTextField = styled(TextField)({
   }
 });
 export default function SendMessage({ message, getData }) {
-  const [messageText, setMessageText] = useState();
+  const [messageText, setMessageText] = useState('');
   const [files, setFiles] = useState(null);
 
   useEffect(() => {
@@ -41,6 +42,20 @@ export default function SendMessage({ message, getData }) {
         });
     }
   }, [files]);
+
+  function addResponse() {
+    httpService
+      .post(`${API_BASE_URL}/api/club/suggestions/add_response/`, {
+        suggestion_id: message.id,
+        message: messageText
+      })
+      .then(res => {
+        if (res.status === 201) {
+          getData();
+          setMessageText('');
+        }
+      });
+  }
 
   return (
     <Box
@@ -77,6 +92,11 @@ export default function SendMessage({ message, getData }) {
         }}
         value={messageText}
         onChange={event => setMessageText(event.target.value)}
+        onKeyDown={e => {
+          if (e.key === 'Enter') {
+            addResponse();
+          }
+        }}
       />
 
       {messageText ? (
@@ -97,14 +117,7 @@ export default function SendMessage({ message, getData }) {
             borderRadius: '22px'
           }}
           onClick={() => {
-            httpService
-              .post(`${API_BASE_URL}/api/club/suggestions/add_response/`, {
-                suggestion_id: message.id,
-                message: messageText
-              })
-              .then(res => {
-                if (res.status === 201) getData();
-              });
+            addResponse();
           }}
         >
           <img src={SendMessageImage} width="20px" height="18px" />

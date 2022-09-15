@@ -24,6 +24,7 @@ export default function ReceivedItemDesktop({ selected }) {
   const [open, setOpen] = useState(false);
   const [qr, setQr] = useState(null);
   const classes = useStyles();
+  console.log('selected', selected);
 
   return (
     <>
@@ -118,6 +119,7 @@ export default function ReceivedItemDesktop({ selected }) {
                   }
                 });
             }}
+            disabled={selected.status.toLowerCase() !== 'valid'}
           >
             <img
               src={Received}

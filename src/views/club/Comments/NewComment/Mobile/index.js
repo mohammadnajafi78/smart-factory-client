@@ -41,8 +41,9 @@ export default function NewCommentMobile(props) {
           alignItems: 'flex-start',
           padding: '15px',
           gap: '22px',
-          width: '100%'
-          // height: '79vh'
+          width: '100%',
+          height: '79vh',
+          overflow: 'auto'
         }}
       >
         <InputLabelHeader> {chat?.subject}</InputLabelHeader>

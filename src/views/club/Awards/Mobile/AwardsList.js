@@ -36,7 +36,7 @@ export default function AwardsList() {
           padding: '14px 15px 6px',
           gap: '2px',
           position: 'sticky',
-          top: '45px',
+          top: '58px',
           // width: '385px',
           width: '100%',
           height: '57px',

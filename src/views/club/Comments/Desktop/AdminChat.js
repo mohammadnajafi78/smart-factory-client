@@ -5,6 +5,7 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader
 import Call from 'src/assets/img/icons/call.svg';
 import PDF from 'src/assets/img/icons/pdf.svg';
 import FileDownload from 'src/assets/img/icons/fileDownload.svg';
+import MomentTimeFa from 'src/utils/MomentTimeFa';
 
 export default function Admin({ message }) {
   return (
@@ -90,23 +91,29 @@ export default function Admin({ message }) {
                     borderRadius: '8px'
                   }}
                 >
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: '4px',
-                      gap: '10px',
-                      width: '24px',
-                      height: '24px',
-                      background: '#E3E3E3',
-                      border: '0.5px solid #A7A5A6',
-                      borderRadius: '12px'
-                    }}
+                  <a
+                    href={message?.files_list[0]?.file}
+                    download
+                    target={'_self'}
                   >
-                    <img src={FileDownload} />
-                  </Box>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        padding: '4px',
+                        gap: '10px',
+                        width: '24px',
+                        height: '24px',
+                        background: '#E3E3E3',
+                        border: '0.5px solid #A7A5A6',
+                        borderRadius: '12px'
+                      }}
+                    >
+                      <img src={FileDownload} />
+                    </Box>
+                  </a>
                 </Box>
               </Box>
               <Divider sx={{ my: 2, color: '#D3D2D2' }} />
@@ -133,10 +140,11 @@ export default function Admin({ message }) {
             fontWeight: 400,
             fontSize: '10px',
             textAlign: 'right',
-            color: '#A7A5A6'
+            color: '#A7A5A6',
+            direction: 'ltr'
           }}
         >
-          5 دقیقه پیش
+          {MomentTimeFa(message?.create_date)}
         </InputLabel>
       </Box>
       <Box

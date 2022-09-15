@@ -61,7 +61,10 @@ export default function CompetitionDesktop() {
             setParticipateNewCompetition={setParticipateNewCompetition}
           />
         ) : participateNewCompetition ? (
-          <ParticipateNewCompetition selected={selected} />
+          <ParticipateNewCompetition
+            selected={selected}
+            setSelected={setSelected}
+          />
         ) : selected ? (
           <CompetitionDetailsDesktop selected={selected} />
         ) : (
