@@ -94,7 +94,7 @@ export default function Admin({ message }) {
                   <a
                     href={message?.files_list[0]?.file}
                     download
-                    target={'_self'}
+                    // target={'_self'}
                   >
                     <Box
                       sx={{
