@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { Formik } from 'formik';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Desktop/InputLabel';
@@ -13,6 +13,7 @@ import moment from 'moment';
 import { API_BASE_URL } from 'src/utils/urls';
 import axios from 'axios';
 import useAuth from 'src/hooks/useAuth';
+import { TextCenterTextField } from 'src/components/Desktop/TextField/TextCenterTextField';
 
 function LoginOTPDesktop(props) {
   const history = useHistory();
@@ -189,7 +190,7 @@ function LoginOTPDesktop(props) {
                     direction: 'rtl'
                   }}
                 >
-                  <TextField
+                  <TextCenterTextField
                     id="input1"
                     aria-describedby="my-helper-text"
                     // placeholder="ورود شماره همراه یا ایمیل"
@@ -213,8 +214,9 @@ function LoginOTPDesktop(props) {
                         document.getElementById('input1').focus();
                       }
                     }}
+                    autoFocus={true}
                   />
-                  <TextField
+                  <TextCenterTextField
                     id="input2"
                     aria-describedby="my-helper-text"
                     // placeholder="ورود شماره همراه یا ایمیل"
@@ -241,7 +243,7 @@ function LoginOTPDesktop(props) {
                     }}
                     type="tel"
                   />
-                  <TextField
+                  <TextCenterTextField
                     id="input3"
                     aria-describedby="my-helper-text"
                     // placeholder="ورود شماره همراه یا ایمیل"
@@ -266,7 +268,7 @@ function LoginOTPDesktop(props) {
                       }
                     }}
                   />
-                  <TextField
+                  <TextCenterTextField
                     id="input4"
                     aria-describedby="my-helper-text"
                     // placeholder="ورود شماره همراه یا ایمیل"
@@ -291,7 +293,7 @@ function LoginOTPDesktop(props) {
                       }
                     }}
                   />
-                  <TextField
+                  <TextCenterTextField
                     id="input5"
                     aria-describedby="my-helper-text"
                     // placeholder="ورود شماره همراه یا ایمیل"
@@ -316,7 +318,7 @@ function LoginOTPDesktop(props) {
                       }
                     }}
                   />
-                  <TextField
+                  <TextCenterTextField
                     id="input6"
                     aria-describedby="my-helper-text"
                     // placeholder="ورود شماره همراه یا ایمیل"

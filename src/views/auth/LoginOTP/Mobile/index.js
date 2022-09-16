@@ -12,6 +12,7 @@ import moment from 'moment';
 import { API_BASE_URL } from 'src/utils/urls';
 import axios from 'axios';
 import useAuth from 'src/hooks/useAuth';
+import { TextCenterTextField } from 'src/components/Mobile/TextField/TextCenterTextField';
 
 function LoginOTPMobile(props) {
   const history = useHistory();
@@ -172,7 +173,7 @@ function LoginOTPMobile(props) {
                 direction: 'rtl'
               }}
             >
-              <TextField
+              <TextCenterTextField
                 id="input1"
                 type="tel"
                 aria-describedby="my-helper-text"
@@ -197,8 +198,9 @@ function LoginOTPMobile(props) {
                     document.getElementById('input1').focus();
                   }
                 }}
+                autoFocus={true}
               />
-              <TextField
+              <TextCenterTextField
                 id="input2"
                 type="tel"
                 aria-describedby="my-helper-text"
@@ -224,7 +226,7 @@ function LoginOTPMobile(props) {
                   }
                 }}
               />
-              <TextField
+              <TextCenterTextField
                 id="input3"
                 type="tel"
                 aria-describedby="my-helper-text"
@@ -250,7 +252,7 @@ function LoginOTPMobile(props) {
                   }
                 }}
               />
-              <TextField
+              <TextCenterTextField
                 id="input4"
                 type="tel"
                 aria-describedby="my-helper-text"
@@ -276,7 +278,7 @@ function LoginOTPMobile(props) {
                   }
                 }}
               />
-              <TextField
+              <TextCenterTextField
                 id="input5"
                 type="tel"
                 aria-describedby="my-helper-text"
@@ -302,7 +304,7 @@ function LoginOTPMobile(props) {
                   }
                 }}
               />
-              <TextField
+              <TextCenterTextField
                 id="input6"
                 type="tel"
                 aria-describedby="my-helper-text"

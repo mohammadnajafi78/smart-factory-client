@@ -8,6 +8,7 @@ import InputLabelFooter from 'src/components/Mobile/InputLabel/InputLabelFooter'
 import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
+import { isSubmitting } from 'redux-form';
 
 function LoginMobile() {
   const history = useHistory();
@@ -59,6 +60,7 @@ function LoginMobile() {
             }}
             onSubmit={async (values, { setErrors, setSubmitting }) => {
               try {
+                // setSubmitting(true);
                 httpService
                   .get(
                     `${API_BASE_URL}/api/users/login_or_register?mobile=${values.input}`
@@ -140,7 +142,9 @@ function LoginMobile() {
                     width: '100%'
                   }}
                 >
-                  <Button disabled={isSubmitting}>{'ثبت'}</Button>
+                  <Button disabled={isSubmitting} loading={false}>
+                    {'ثبت'}
+                  </Button>
                   <Divider variant="middle" sx={{ margin: '15px 0px' }} />
                   <InputLabelFooter>
                     با ثبت‌نام در BTS، با قوانین و مقررات BTS موافقت می‌کنم.
