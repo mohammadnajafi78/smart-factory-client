@@ -16,6 +16,7 @@ import { useHistory } from 'react-router-dom';
 import FaTOEn from 'src/utils/FaTOEn';
 
 let item = {};
+let itemSort = {};
 const NewUserTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
@@ -31,6 +32,7 @@ const NewUserTable = props => {
   const [confirmed, setConfirmed] = useState(null);
   const [sort, setSort] = useState('');
   const [filter, setFilter] = useState('');
+  // const [search, setSearch] = useState(null);
 
   const history = useHistory();
 
@@ -381,85 +383,89 @@ const NewUserTable = props => {
             }
           }
         }
-      },
-      {
-        name: 'user.is_verified',
-        label: 'تایید شده',
-        options: {
-          customBodyRender: (value, tableMeta, updateValue) => {
-            return value === true ? 'بله' : 'خیر';
-          },
-          filter: true,
-          filterType: 'custom',
-          filterOptions: {
-            display: (filterList, onChange, index, column) => {
-              return (
-                <FormControl sx={{ marginTop: '10px' }}>
-                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    وضعیت تایید کاربر
-                  </InputLabel>
-                  <ToggleButtonGroup
-                    color="primary"
-                    value={confirmed}
-                    exclusive
-                    onChange={(event, newValue) => {
-                      setConfirmed(newValue);
-                      if (newValue?.toLowerCase() === 'verified')
-                        filterList[index][0] = 'تایید شده';
-                      else if (newValue?.toLowerCase() === 'rejected')
-                        filterList[index][0] = 'تایید نشده';
-                      else if (newValue?.toLowerCase() === 'na')
-                        filterList[index][0] = 'نامشخص';
-                      else filterList[index] = [];
-                      onChange(filterList[index], index, column);
-                    }}
-                    sx={{
-                      marginTop: '5px'
-                      // width: '82%',
-                      // borderLeft: '1px solid rgba(0,0,0, 0.12)'
-                    }}
-                  >
-                    <ToggleButton
-                      value="Verified"
-                      sx={{
-                        fontFamily: 'IRANSans'
-                      }}
-                    >
-                      تایید شده
-                    </ToggleButton>
-                    <ToggleButton
-                      value="Rejected"
-                      sx={{
-                        fontFamily: 'IRANSans'
-                      }}
-                    >
-                      تایید نشده
-                    </ToggleButton>
-                    <ToggleButton
-                      value="NA"
-                      sx={{
-                        fontFamily: 'IRANSans',
-                        borderLeft: '1px solid rgba(0,0,0, 0.12) !important'
-                      }}
-                    >
-                      نامشخص
-                    </ToggleButton>
-                  </ToggleButtonGroup>
-                </FormControl>
-              );
-            }
-          }
-        }
       }
+      // {
+      //   name: 'user.is_verified',
+      //   label: 'تایید شده',
+      //   options: {
+      //     customBodyRender: (value, tableMeta, updateValue) => {
+      //       return value === true ? 'بله' : 'خیر';
+      //     },
+      //     filter: true,
+      //     filterType: 'custom',
+      //     filterOptions: {
+      //       display: (filterList, onChange, index, column) => {
+      //         return (
+      //           <FormControl sx={{ marginTop: '10px' }}>
+      //             <InputLabel sx={{ transform: 'none', position: 'initial' }}>
+      //               وضعیت تایید کاربر
+      //             </InputLabel>
+      //             <ToggleButtonGroup
+      //               color="primary"
+      //               value={confirmed}
+      //               exclusive
+      //               onChange={(event, newValue) => {
+      //                 setConfirmed(newValue);
+      //                 if (newValue?.toLowerCase() === 'verified')
+      //                   filterList[index][0] = 'تایید شده';
+      //                 else if (newValue?.toLowerCase() === 'rejected')
+      //                   filterList[index][0] = 'تایید نشده';
+      //                 else if (newValue?.toLowerCase() === 'na')
+      //                   filterList[index][0] = 'نامشخص';
+      //                 else filterList[index] = [];
+      //                 onChange(filterList[index], index, column);
+      //               }}
+      //               sx={{
+      //                 marginTop: '5px'
+      //                 // width: '82%',
+      //                 // borderLeft: '1px solid rgba(0,0,0, 0.12)'
+      //               }}
+      //             >
+      //               <ToggleButton
+      //                 value="Verified"
+      //                 sx={{
+      //                   fontFamily: 'IRANSans'
+      //                 }}
+      //               >
+      //                 تایید شده
+      //               </ToggleButton>
+      //               <ToggleButton
+      //                 value="Rejected"
+      //                 sx={{
+      //                   fontFamily: 'IRANSans'
+      //                 }}
+      //               >
+      //                 تایید نشده
+      //               </ToggleButton>
+      //               <ToggleButton
+      //                 value="NA"
+      //                 sx={{
+      //                   fontFamily: 'IRANSans',
+      //                   borderLeft: '1px solid rgba(0,0,0, 0.12) !important'
+      //                 }}
+      //               >
+      //                 نامشخص
+      //               </ToggleButton>
+      //             </ToggleButtonGroup>
+      //           </FormControl>
+      //         );
+      //       }
+      //     }
+      //   }
+      // }
     ]);
   }, [provinces, cities, works, completed, confirmed]);
 
-  function getData(page, rowsPerPage) {
+  function getData(page, rowsPerPage, search) {
     httpService
-      .get(
-        `${API_BASE_URL}/api/management/user/?limit=${rowsPerPage}&offset=${page}${
+      .post(
+        `${API_BASE_URL}/api/management/user/user_list/?limit=${rowsPerPage}&offset=${page}&is_verified=NA${
           filter !== '' ? `&${filter}` : ''
-        }${sort !== '' ? `&${sort}` : ''}`
+        }`,
+        {
+          order: sort,
+          search: search
+        }
       )
 
       .then(res => {
@@ -532,27 +538,26 @@ const NewUserTable = props => {
           setCompleted(null);
         }
         break;
-      case 'user.is_verified':
-        if (filterList[8][0]) {
-          item['is_verified'] =
-            filterList[8][0] == 'تایید شده'
-              ? 'Verified'
-              : filterList[8][0] == 'تایید نشده'
-              ? 'Rejected'
-              : 'NA';
-          filterType = '';
-        } else {
-          delete item['is_verified'];
-          setConfirmed(false);
-        }
-        break;
+      // case 'user.is_verified':
+      //   if (filterList[8][0]) {
+      //     item['is_verified'] =
+      //       filterList[8][0] == 'تایید شده'
+      //         ? 'Verified'
+      //         : filterList[8][0] == 'تایید نشده'
+      //         ? 'Rejected'
+      //         : 'NA';
+      //     filterType = '';
+      //   } else {
+      //     delete item['is_verified'];
+      //     setConfirmed(false);
+      //   }
+      //   break;
       default:
         item = item;
     }
 
     let temp = item;
     let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
-    console.log('filterItems', filterItems);
 
     let str = '';
     if (filterItems?.length > 0) {
@@ -566,7 +571,6 @@ const NewUserTable = props => {
   }
 
   function onColumnSortChange(changedColumn, direction) {
-    let itemSort = {};
     switch (changedColumn) {
       case 'user.user_id':
         itemSort['user_id'] = direction;
@@ -581,13 +585,13 @@ const NewUserTable = props => {
         itemSort['mobile'] = direction;
         break;
       case 'location.province_name':
-        itemSort['mobile'] = direction;
+        itemSort['province_name'] = direction;
         break;
       case 'location.city_name':
-        itemSort['mobile'] = direction;
+        itemSort['city_name'] = direction;
         break;
       case 'user.user_type_list':
-        itemSort['mobile'] = direction;
+        itemSort['user_type_list'] = direction;
         break;
       default:
         itemSort = itemSort;
@@ -596,13 +600,13 @@ const NewUserTable = props => {
     let temp = itemSort;
     let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
 
-    let str = '';
+    let str = [];
     if (filterItems?.length > 0) {
       filterItems.map((itm, index) => {
-        str = itm[1] === 'asc' ? itm[0] : `-${itm[0]}`;
+        str.push(itm[1] === 'asc' ? itm[0] : `-${itm[0]}`);
       });
     }
-    setSort('order=' + str);
+    setSort(str);
   }
 
   function onRowClick(rowData, rowState) {
@@ -615,6 +619,10 @@ const NewUserTable = props => {
     });
   }
 
+  // function onSearchChange(text) {
+  //   setSearch(text);
+  // }
+
   return (
     <Table
       title={'لیست'}
@@ -626,8 +634,11 @@ const NewUserTable = props => {
       page={page}
       filter={filter}
       sort={sort}
-      getData={(page, rowsPerPage) => getData(page, rowsPerPage)}
+      getData={(page, rowsPerPage, search) =>
+        getData(page, rowsPerPage, search)
+      }
       onRowClick={(rowData, rowState) => onRowClick(rowData, rowState)}
+      // onSearchChange={text => onSearchChange(text)}
       onFilterChange={(column, filterList, type) =>
         onFilterChange(column, filterList, type)
       }

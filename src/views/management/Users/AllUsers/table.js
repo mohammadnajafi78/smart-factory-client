@@ -16,6 +16,7 @@ import { useHistory } from 'react-router-dom';
 import FaTOEn from 'src/utils/FaTOEn';
 
 let item = {};
+let itemSort = {};
 const AllUsersTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
@@ -454,14 +455,17 @@ const AllUsersTable = props => {
     ]);
   }, [provinces, cities, works, completed, confirmed]);
 
-  function getData(page, rowsPerPage) {
+  function getData(page, rowsPerPage, search) {
     httpService
-      .get(
-        `${API_BASE_URL}/api/management/user/?limit=${rowsPerPage}&offset=${page}${
+      .post(
+        `${API_BASE_URL}/api/management/user/user_list/?limit=${rowsPerPage}&offset=${page}${
           filter !== '' ? `&${filter}` : ''
-        }${sort !== '' ? `&${sort}` : ''}`
+        }`,
+        {
+          order: sort,
+          search: search
+        }
       )
-
       .then(res => {
         if (res.status === 200) {
           setData(res.data.results);
@@ -566,7 +570,6 @@ const AllUsersTable = props => {
   }
 
   function onColumnSortChange(changedColumn, direction) {
-    let itemSort = {};
     switch (changedColumn) {
       case 'user.user_id':
         itemSort['user_id'] = direction;
@@ -581,13 +584,13 @@ const AllUsersTable = props => {
         itemSort['mobile'] = direction;
         break;
       case 'location.province_name':
-        itemSort['mobile'] = direction;
+        itemSort['province_name'] = direction;
         break;
       case 'location.city_name':
-        itemSort['mobile'] = direction;
+        itemSort['city_name'] = direction;
         break;
       case 'user.user_type_list':
-        itemSort['mobile'] = direction;
+        itemSort['user_type_list'] = direction;
         break;
       default:
         itemSort = itemSort;
@@ -596,13 +599,13 @@ const AllUsersTable = props => {
     let temp = itemSort;
     let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
 
-    let str = '';
+    let str = [];
     if (filterItems?.length > 0) {
       filterItems.map((itm, index) => {
-        str = itm[1] === 'asc' ? itm[0] : `-${itm[0]}`;
+        str.push(itm[1] === 'asc' ? itm[0] : `-${itm[0]}`);
       });
     }
-    setSort('order=' + str);
+    setSort(str);
   }
 
   function onRowClick(rowData, rowState) {
@@ -626,7 +629,9 @@ const AllUsersTable = props => {
       page={page}
       filter={filter}
       sort={sort}
-      getData={(page, rowsPerPage) => getData(page, rowsPerPage)}
+      getData={(page, rowsPerPage, search) =>
+        getData(page, rowsPerPage, search)
+      }
       onRowClick={(rowData, rowState) => onRowClick(rowData, rowState)}
       onFilterChange={(column, filterList, type) =>
         onFilterChange(column, filterList, type)

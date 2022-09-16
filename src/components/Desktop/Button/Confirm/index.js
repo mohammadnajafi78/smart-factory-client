@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button } from '@mui/material';
+import { LoadingButton as Button } from '@mui/lab';
+import Loading from '../../Loading';
 
 export default function Confirm({ children, ...rest }) {
   return (
@@ -27,6 +28,8 @@ export default function Confirm({ children, ...rest }) {
         lineHeight: '24px',
         fontFamily: 'IRANSans'
       }}
+      loadingIndicator={<Loading />}
+      loadingPosition="end"
       {...rest}
     >
       {children}

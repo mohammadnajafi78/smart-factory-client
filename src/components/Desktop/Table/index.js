@@ -367,6 +367,8 @@ let theme = createTheme({
 theme = responsiveFontSizes(theme);
 
 const Table = props => {
+  const [search, setSearch] = useState('');
+
   const CustomSearchIcon = props => {
     return <SearchIcon {...props} style={{ color: '#00AAB5' }} />;
   };
@@ -390,20 +392,16 @@ const Table = props => {
   };
 
   useEffect(() => {
-    props.getData(props.page, props.rowsPerPage);
-
-    // document.getElementById('pagination-next').style.rotate = '180deg';
-    // document.getElementById('pagination-back').style.rotate = '180deg';
+    props.getData(props.page, props.rowsPerPage, search);
   }, []);
 
   useEffect(() => {
-    console.log('filter', props.filter);
-    props.getData(props.page, props.rowsPerPage);
+    props.getData(props.page, props.rowsPerPage, search);
   }, [props.sort, props.filter]);
 
   function changePage(page, rowsPerPage) {
     props.setRowsPerPage(rowsPerPage);
-    props.getData(page, rowsPerPage);
+    props.getData(page, rowsPerPage, search);
   }
 
   const tableOptions = {
@@ -513,7 +511,31 @@ const Table = props => {
     },
     onRowClick: (rowData, rowState) => {
       props.onRowClick(rowData, rowState);
+    },
+    onSearchChange: text => {
+      setSearch(text);
+    },
+    searchText: search,
+    // searchProps: {
+    //   onkeydown: e => {
+    //     console.log('inja');
+    //     if (e.key === 'Enter') {
+    //       props.getData(props.page, props.rowsPerPage, search);
+    //     }
+    //   }
+    // }
+    searchProps: {
+      onKeyDown: e => {
+        if (e.key === 'Enter') {
+          console.log('onKeyUp!');
+          props.getData(props.page, props.rowsPerPage, search);
+        }
+      }
     }
+    // onSearchClose: () => {
+    //   setSearch()
+    //   props.getData(props.page, props.rowsPerPage, '');
+    // }
   };
 
   return (

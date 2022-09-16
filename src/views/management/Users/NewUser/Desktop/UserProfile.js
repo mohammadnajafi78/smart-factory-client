@@ -13,18 +13,18 @@ import useAuth from 'src/hooks/useAuth';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 
-export default function UserProfile() {
-  const [data, setData] = useState(null);
+export default function UserProfile(props) {
+  const [data, setData] = useState(props.data);
   const history = useHistory();
   const { logout } = useAuth();
 
-  useEffect(() => {
-    httpService.get(`${API_BASE_URL}/api/users/get_user_profile/`).then(res => {
-      if (res.status === 200) {
-        setData(res.data);
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   httpService.get(`${API_BASE_URL}/api/users/get_user_profile/`).then(res => {
+  //     if (res.status === 200) {
+  //       setData(res.data);
+  //     }
+  //   });
+  // }, []);
 
   return (
     <Box
@@ -53,8 +53,8 @@ export default function UserProfile() {
         }}
       >
         <Avatar
-          alt={data?.first_name}
-          src={data?.user_profile_image}
+          alt={data?.user?.first_name}
+          src={data?.user?.user_profile_image}
           sx={{
             width: 160,
             height: 160
@@ -99,7 +99,7 @@ export default function UserProfile() {
       >
         <Box>
           <InputLabelHeader style={{ color: '#00346D' }}>
-            {data?.first_name + ' ' + data?.last_name}
+            {data?.user?.first_name + ' ' + data?.user?.last_name}
           </InputLabelHeader>
           <Box
             sx={{
@@ -112,13 +112,13 @@ export default function UserProfile() {
             <div style={{ display: 'inline-flex' }}>
               <InputLabel style={{ color: '#00AAB5' }}>کدملی:</InputLabel>
               <InputLabel style={{ color: '#335D8A' }}>
-                {data?.national_id}
+                {data?.user?.national_id}
               </InputLabel>
             </div>
             <div style={{ display: 'inline-flex' }}>
               <InputLabel style={{ color: '#00AAB5' }}>موبایل :</InputLabel>
               <InputLabel style={{ color: '#335D8A' }}>
-                {data?.mobile}
+                {data?.user?.mobile}
               </InputLabel>
             </div>
             <div style={{ display: 'inline-flex' }}>
@@ -126,7 +126,7 @@ export default function UserProfile() {
                 شماره پرسنلی :
               </InputLabel>
               <InputLabel style={{ color: '#335D8A' }}>
-                {data?.username}
+                {data?.user?.username}
               </InputLabel>
             </div>
           </Box>
@@ -156,18 +156,20 @@ export default function UserProfile() {
             <div style={{ display: 'inline-flex' }}>
               <InputLabel style={{ color: '#00AAB5' }}>شهر:</InputLabel>
               <InputLabel style={{ color: '#335D8A' }}>
-                {data?.user_location?.city_name}
+                {data?.location?.city_name}
               </InputLabel>
             </div>
             <div style={{ display: 'inline-flex' }}>
               <InputLabel style={{ color: '#00AAB5' }}>کد پستی:</InputLabel>
-              <InputLabel style={{ color: '#335D8A' }}>۱۲۳۴۵۶۷۸۹</InputLabel>
+              <InputLabel style={{ color: '#335D8A' }}>
+                {data?.location?.postal_code}
+              </InputLabel>
             </div>
           </Box>
           <div style={{ display: 'inline-flex' }}>
             <InputLabel style={{ color: '#00AAB5' }}>آدرس:</InputLabel>
             <InputLabel style={{ color: '#335D8A' }}>
-              {data?.user_location?.address}
+              {data?.location?.address}
             </InputLabel>
           </div>
         </Box>
@@ -199,7 +201,7 @@ export default function UserProfile() {
             <div style={{ display: 'inline-flex' }}>
               <InputLabel style={{ color: '#00AAB5' }}>فعالیت:</InputLabel>
               <InputLabel style={{ color: '#335D8A' }}>
-                {data?.user_type_list
+                {data?.user?.user_type_list
                   .map(option => option.translate)
                   .toString()}
               </InputLabel>

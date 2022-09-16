@@ -42,44 +42,39 @@ function LoginDesktop() {
             }
             return errors;
           }}
-          onSubmit={async (values, { setErrors, setSubmitting }) => {
-            try {
-              httpService
-                .get(
-                  `${API_BASE_URL}/api/users/login_or_register?mobile=${values.input}`
-                )
-                .then(res => {
-                  if (res.status === 204) {
-                    httpService
-                      .post(`${API_BASE_URL}/api/users/register/`, {
-                        mobile: values.input
-                      })
-                      .then(result => {
-                        if (result.status === 200) {
-                          history.push({
-                            pathname: `/otp`,
-                            state: {
-                              mobile: values.input,
-                              lastUpdate: result.data.last_update
-                            }
-                          });
-                        } else console.log('error');
-                      });
-                  } else if (res.status === 200)
-                    history.push({
-                      pathname: '/entry',
-                      state: {
-                        mobile: values.input
-                      }
+          onSubmit={(values, { setErrors, setSubmitting }) => {
+            setSubmitting(true);
+            httpService
+              .get(
+                `${API_BASE_URL}/api/users/login_or_register?mobile=${values.input}`
+              )
+              .then(res => {
+                if (res.status === 204) {
+                  setSubmitting(false);
+                  httpService
+                    .post(`${API_BASE_URL}/api/users/register/`, {
+                      mobile: values.input
+                    })
+                    .then(result => {
+                      if (result.status === 200) {
+                        setSubmitting(false);
+                        history.push({
+                          pathname: `/otp`,
+                          state: {
+                            mobile: values.input,
+                            lastUpdate: result.data.last_update
+                          }
+                        });
+                      } else console.log('error');
                     });
+                } else if (res.status === 200) setSubmitting(false);
+                history.push({
+                  pathname: '/entry',
+                  state: {
+                    mobile: values.input
+                  }
                 });
-              setSubmitting(false);
-            } catch (err) {
-              // setErrors({
-              //   submit: t('login.validation')
-              // });
-              setSubmitting(false);
-            }
+              });
           }}
         >
           {({
@@ -131,7 +126,9 @@ function LoginDesktop() {
                   width: '100%'
                 }}
               >
-                <Button disabled={isSubmitting}>{'ثبت'}</Button>
+                <Button disabled={isSubmitting} loading={isSubmitting}>
+                  {'ثبت'}
+                </Button>
                 <Divider variant="middle" sx={{ margin: '15px 0px' }} />
                 <InputLabelFooter>
                   با ثبت‌نام در BTS، با قوانین و مقررات BTS موافقت می‌کنم.

@@ -1,7 +1,6 @@
 import React from 'react';
-// import { Button } from '@mui/material';
 import { LoadingButton as Button } from '@mui/lab';
-import { DotLoader } from 'react-spinners';
+import Loading from '../../Loading';
 
 export default function Confirm({ children, ...rest }) {
   return (
@@ -29,17 +28,10 @@ export default function Confirm({ children, ...rest }) {
         lineHeight: '24px',
         fontFamily: 'IRANSans'
       }}
-      {...rest}
-      loadingIndicator={
-        <DotLoader
-          // color={color}
-          loading={rest.loading}
-          // cssOverride={override}
-          size={20}
-        />
-      }
-      loadingPosition="start"
+      loadingIndicator={<Loading />}
+      loadingPosition="end"
       // startIcon={<SaveIcon />}
+      {...rest}
     >
       {children}
     </Button>

@@ -44,9 +44,10 @@ function a11yProps(index) {
   };
 }
 
-export default function UserDetails() {
+export default function UserDetails(props) {
   const [value, setValue] = React.useState(0);
   const [userData, setUserData] = React.useState(null);
+  const userId = props.location.state.rowData[0];
   const theme = useTheme();
 
   const handleChange = (event, newValue) => {
@@ -57,11 +58,13 @@ export default function UserDetails() {
   };
 
   React.useEffect(() => {
-    httpService.get(`${API_BASE_URL}/api/users/get_user_profile/`).then(res => {
-      if (res.status === 200) {
-        setUserData(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}/api/management/user/get/?user_id=${userId}`)
+      .then(res => {
+        if (res.status === 200) {
+          setUserData(res.data);
+        }
+      });
   }, []);
 
   return (
@@ -100,7 +103,7 @@ export default function UserDetails() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}> */}
-      <UserProfile data={userData} />
+      {userData && <UserProfile data={userData} />}
       {/* </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
           <Club />

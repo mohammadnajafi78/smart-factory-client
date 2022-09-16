@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, TextField, Divider } from '@mui/material';
 import Logo from 'src/assets/img/LogoBTS.svg';
 import { Formik } from 'formik';
@@ -12,6 +12,7 @@ import { isSubmitting } from 'redux-form';
 
 function LoginMobile() {
   const history = useHistory();
+  const [loading, setLoading] = useState(false);
   return (
     <>
       <Box
@@ -58,45 +59,44 @@ function LoginMobile() {
               }
               return errors;
             }}
-            onSubmit={async (values, { setErrors, setSubmitting }) => {
-              try {
-                // setSubmitting(true);
-                httpService
-                  .get(
-                    `${API_BASE_URL}/api/users/login_or_register?mobile=${values.input}`
-                  )
-                  .then(res => {
-                    if (res.status === 204) {
-                      httpService
-                        .post(`${API_BASE_URL}/api/users/register/`, {
-                          mobile: values.input
-                        })
-                        .then(result => {
-                          if (result.status === 200) {
-                            history.push({
-                              pathname: `/otp`,
-                              state: {
-                                mobile: values.input,
-                                lastUpdate: result.data.last_update
-                              }
-                            });
-                          } else console.log('error');
-                        });
-                    } else if (res.status === 200)
-                      history.push({
-                        pathname: '/entry',
-                        state: {
-                          mobile: values.input
-                        }
+            onSubmit={(values, { setErrors, setSubmitting }) => {
+              setSubmitting(true);
+              httpService
+                .get(
+                  `${API_BASE_URL}/api/users/login_or_register?mobile=${values.input}`
+                )
+                .then(res => {
+                  if (res.status === 204) {
+                    httpService
+                      .post(`${API_BASE_URL}/api/users/register/`, {
+                        mobile: values.input
+                      })
+                      .then(result => {
+                        if (result.status === 200) {
+                          setLoading(false);
+                          setSubmitting(false);
+
+                          history.push({
+                            pathname: `/otp`,
+                            state: {
+                              mobile: values.input,
+                              lastUpdate: result.data.last_update
+                            }
+                          });
+                        } else console.log('error');
                       });
-                  });
-                setSubmitting(false);
-              } catch (err) {
-                // setErrors({
-                //   submit: t('login.validation')
-                // });
-                setSubmitting(false);
-              }
+                  } else if (res.status === 200) {
+                    setLoading(false);
+                    setSubmitting(false);
+                    history.push({
+                      pathname: '/entry',
+                      state: {
+                        mobile: values.input
+                      }
+                    });
+                  }
+                });
+              // setSubmitting(false);
             }}
           >
             {({
@@ -142,7 +142,7 @@ function LoginMobile() {
                     width: '100%'
                   }}
                 >
-                  <Button disabled={isSubmitting} loading={false}>
+                  <Button disabled={isSubmitting} loading={isSubmitting}>
                     {'ثبت'}
                   </Button>
                   <Divider variant="middle" sx={{ margin: '15px 0px' }} />
