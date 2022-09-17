@@ -76,7 +76,9 @@ const baseOptions = {
     MuiFormHelperText: {
       root: {
         fontFamily: 'IRANSans',
-        fontSize: '0.8rem'
+        fontSize: '0.8rem',
+        margin: 0,
+        backgroundColor: 'white'
       }
     },
     MuiSvgIcon: {

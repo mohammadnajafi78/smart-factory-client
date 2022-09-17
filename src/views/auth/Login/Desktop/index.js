@@ -127,7 +127,7 @@ function LoginDesktop() {
                 }}
               >
                 <Button disabled={isSubmitting} loading={isSubmitting}>
-                  {'ثبت'}
+                  {isSubmitting ? 'در حال ثبت' : 'ثبت'}
                 </Button>
                 <Divider variant="middle" sx={{ margin: '15px 0px' }} />
                 <InputLabelFooter>

@@ -13,6 +13,7 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import bcrypt from 'bcryptjs';
+import * as Yup from 'yup';
 
 function EnterNewPasswordDesktop(props) {
   const [showPassword, setShowPassword] = useState(false);
@@ -55,14 +56,36 @@ function EnterNewPasswordDesktop(props) {
             password: '',
             password2: ''
           }}
-          validate={values => {
-            const errors = {};
-            // if (!values.input) {
-            //   errors.username = 'نام کاربری اجباری می باشد';
-            // }
-            return errors;
-          }}
-          onSubmit={async (values, { setErrors, setSubmitting }) => {
+          validationSchema={Yup.object().shape({
+            password: Yup.string()
+              .min(8, 'پسورد باید حداقل ۸ کاراکتر داشته باشد')
+              .max(255)
+              .required('رمز عبور اجباری می باشد')
+              .matches(
+                '(?=.*[A-Z]).',
+                'رمز عبور باید شامل حداقل یکی از حروف بزرگ باشد'
+              )
+              .matches(
+                '(?=.*[a-z]).',
+                'رمز عبور باید شامل حداقل یکی از حروف کوچک باشد'
+              )
+              .matches(
+                '(?=.*[0-9])',
+                'رمز عبور باید شامل حداقل یک عدد ۰ تا ۹ باشد'
+              )
+              .matches(
+                '([^A-Za-z0-9])',
+                'رمز عبور باید شامل حداقل یک کاراکتر خاص باشد باشد'
+              ),
+            password2: Yup.string()
+              .oneOf(
+                [Yup.ref('password'), null],
+                'رمز عبور و تکرار رمز عبور باید یکسان باشند'
+              )
+              .required('تکرار رمز عبور اجباری می باشد')
+          })}
+          onSubmit={(values, { setErrors, setSubmitting }) => {
+            setSubmitting(true);
             httpService
               .post(`${API_BASE_URL}/api/users/reset_password/`, {
                 mobile: props.location.state.mobile,
@@ -74,10 +97,10 @@ function EnterNewPasswordDesktop(props) {
               })
               .then(res => {
                 if (res.status === 200) {
+                  setSubmitting(false);
                   history.push('/login');
                 }
               });
-            setSubmitting(false);
           }}
         >
           {({
@@ -121,16 +144,20 @@ function EnterNewPasswordDesktop(props) {
                         margin: '6px 3px'
                       }}
                       value={values.password}
+                      error={Boolean(touched.password && errors.password)}
+                      helperText={touched.password && errors.password}
                       onChange={handleChange}
+                      onBlur={handleBlur}
                       type={showPassword === false ? 'password' : 'text'}
                       InputProps={{
                         endAdornment: (
-                          <InputAdornment position="end">
+                          <InputAdornment position="end" tabIndex={-1}>
                             <IconButton
                               aria-label="toggle password visibility"
                               onClick={handleClickShowPassword}
                               // onMouseDown={handleMouseDownPassword}
                               edge="end"
+                              tabIndex={-1}
                             >
                               {!showPassword ? (
                                 <VisibilityOff sx={{ color: '#00AAB5' }} />
@@ -155,16 +182,20 @@ function EnterNewPasswordDesktop(props) {
                         margin: '6px 3px'
                       }}
                       value={values.password2}
+                      error={Boolean(touched.password2 && errors.password2)}
+                      helperText={touched.password2 && errors.password2}
                       onChange={handleChange}
+                      onBlur={handleBlur}
                       type={showPassword2 === false ? 'password' : 'text'}
                       InputProps={{
                         endAdornment: (
-                          <InputAdornment position="end">
+                          <InputAdornment position="end" tabIndex={-1}>
                             <IconButton
                               aria-label="toggle password visibility"
                               onClick={handleClickShowPassword2}
                               // onMouseDown={handleMouseDownPassword}
                               edge="end"
+                              tabIndex={-1}
                             >
                               {!showPassword2 ? (
                                 <VisibilityOff sx={{ color: '#00AAB5' }} />
@@ -203,8 +234,12 @@ function EnterNewPasswordDesktop(props) {
                   width: '100%'
                 }}
               >
-                <ConfirmButton disabled={isSubmitting} type="submit">
-                  {'ثبت'}
+                <ConfirmButton
+                  disabled={isSubmitting}
+                  loading={isSubmitting}
+                  type="submit"
+                >
+                  {isSubmitting ? 'در حال ثبت' : 'ثبت'}
                 </ConfirmButton>
               </Box>
             </form>

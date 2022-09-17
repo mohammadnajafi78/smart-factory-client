@@ -13,11 +13,13 @@ import { API_BASE_URL } from 'src/utils/urls';
 import axios from 'axios';
 import useAuth from 'src/hooks/useAuth';
 import { TextCenterTextField } from 'src/components/Mobile/TextField/TextCenterTextField';
+import useScore from 'src/hooks/useScore';
 
 function LoginOTPMobile(props) {
   const history = useHistory();
   const [reSend, setReSend] = useState(false);
   const { registry } = useAuth();
+  const { setScore } = useScore();
 
   function remainingTime(finish) {
     let today = moment();
@@ -81,6 +83,7 @@ function LoginOTPMobile(props) {
                 axios.defaults.headers.common.Authorization = `Bearer ${res.headers['x-auth-token']}`;
                 localStorage.setItem('user', JSON.stringify(res.data));
                 registry(res.headers['x-auth-token']);
+                setScore();
                 // history.push('/home');
                 history.push('/' + res.data.profile_state.toLowerCase());
               }

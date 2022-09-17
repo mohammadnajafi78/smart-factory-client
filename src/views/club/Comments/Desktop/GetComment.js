@@ -64,10 +64,11 @@ export default function GetCommentDesktop({ selected }) {
 
       <Box
         sx={{
-          height: '400px',
+          height: '75vh',
           width: '100%',
           overflow: 'auto',
-          paddingRight: '30px'
+          paddingRight: '30px',
+          paddingBottom: '25px'
         }}
       >
         {chat?.message_list?.length > 0 &&

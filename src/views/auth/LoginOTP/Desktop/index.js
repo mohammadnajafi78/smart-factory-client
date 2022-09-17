@@ -14,11 +14,13 @@ import { API_BASE_URL } from 'src/utils/urls';
 import axios from 'axios';
 import useAuth from 'src/hooks/useAuth';
 import { TextCenterTextField } from 'src/components/Desktop/TextField/TextCenterTextField';
+import useScore from 'src/hooks/useScore';
 
 function LoginOTPDesktop(props) {
   const history = useHistory();
   const [reSend, setReSend] = useState(false);
   const { registry } = useAuth();
+  const { setScore } = useScore();
 
   function remainingTime(finish) {
     let today = moment();
@@ -98,6 +100,7 @@ function LoginOTPDesktop(props) {
                     axios.defaults.headers.common.Authorization = `Bearer ${res.headers['x-auth-token']}`;
                     registry(res.headers['x-auth-token']);
                     localStorage.setItem('user', JSON.stringify(res.data));
+                    setScore();
                     // history.push('/home');
                     history.push('/' + res.data.profile_state.toLowerCase());
                   }

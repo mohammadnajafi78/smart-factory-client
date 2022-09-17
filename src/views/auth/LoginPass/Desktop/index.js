@@ -18,11 +18,13 @@ import axios from 'axios';
 import useAuth from 'src/hooks/useAuth';
 import bcrypt from 'bcryptjs';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import useScore from 'src/hooks/useScore';
 
 function LoginPassDesktop(props) {
   const [showPassword, setShowPassword] = useState(false);
   const history = useHistory();
   const { registry } = useAuth();
+  const { setScore } = useScore();
 
   function handleClickShowPassword() {
     setShowPassword(!showPassword);
@@ -57,7 +59,8 @@ function LoginPassDesktop(props) {
             // }
             return errors;
           }}
-          onSubmit={async (values, { setErrors, setSubmitting }) => {
+          onSubmit={(values, { setErrors, setSubmitting }) => {
+            setSubmitting(true);
             httpService
               .post(`${API_BASE_URL}/api/users/login_with_pass/`, {
                 username: props.location.state.mobile,
@@ -68,15 +71,16 @@ function LoginPassDesktop(props) {
               })
               .then(res => {
                 if (res.status === 200) {
+                  setSubmitting(false);
                   localStorage.setItem('token', res.headers['x-auth-token']);
                   axios.defaults.headers.common.Authorization = `Bearer ${res.headers['x-auth-token']}`;
                   registry(res.headers['x-auth-token']);
                   localStorage.setItem('user', JSON.stringify(res.data));
+                  setScore();
                   // history.push('/home');
                   history.push('/' + res.data.profile_state.toLowerCase());
                 }
               });
-            setSubmitting(false);
           }}
         >
           {({
@@ -160,7 +164,7 @@ function LoginPassDesktop(props) {
                 /> */}
                 </Box>
                 <InputLabel
-                  style={{ color: '#049099' }}
+                  style={{ color: '#049099', cursor: 'pointer' }}
                   onClick={() => {
                     // history.push('/forgotPass');
                     httpService
@@ -185,8 +189,12 @@ function LoginPassDesktop(props) {
                 </InputLabel>
               </Box>
               <Box>
-                <ConfirmButton type="submit" disabled={isSubmitting}>
-                  {'ورود'}
+                <ConfirmButton
+                  type="submit"
+                  disabled={isSubmitting}
+                  loading={isSubmitting}
+                >
+                  {isSubmitting ? 'در حال ورود' : 'ورود'}
                 </ConfirmButton>
               </Box>
             </form>

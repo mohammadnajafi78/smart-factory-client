@@ -12,11 +12,13 @@ import { API_BASE_URL } from 'src/utils/urls';
 import axios from 'axios';
 import useAuth from 'src/hooks/useAuth';
 import bcrypt from 'bcryptjs';
+import useScore from 'src/hooks/useScore';
 
 function ForgotPasswodDesktop(props) {
   const recaptchaRef = useRef();
   const history = useHistory();
   const { registry } = useAuth();
+  const { setScore } = useScore();
 
   function onChange(value) {
     console.log('Captcha value:', value);
@@ -67,6 +69,7 @@ function ForgotPasswodDesktop(props) {
                   axios.defaults.headers.common.Authorization = `Bearer ${res.headers['x-auth-token']}`;
                   registry(res.headers['x-auth-token']);
                   localStorage.setItem('user', JSON.stringify(res.data));
+                  setScore();
                   history.push('/identity');
                 }
               });
