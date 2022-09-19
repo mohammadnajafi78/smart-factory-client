@@ -60,17 +60,19 @@ const TopBar = ({
   return (
     <AppBar
       sx={{
-        backgroundColor: '#f4f4f4',
+        // backgroundColor: '#f4f4f4',
         margin: 0,
         padding: 0,
         boxShadow: 'none',
-        width: '90%',
-        backgroundColor: 'white'
+        // width: '90%',
+        width: '100%',
+        paddingRight: '130px',
+        backgroundColor: '#33BBC4'
       }}
     >
       <Toolbar className={classes.toolbar}>
         <Box sx={{ display: 'flex', gap: '10px' }}>
-          <InputLabelHeader style={{ color: '#00346D' }}>
+          <InputLabelHeader style={{ color: 'white' }}>
             {selected === 'home'
               ? 'خانه'
               : selected === 'profile'

@@ -13,7 +13,8 @@ export default function AwardsDesktop() {
       style={{
         display: 'flex',
         flexDirection: 'row',
-        width: '100%'
+        width: '100%',
+        marginTop: '30px'
       }}
     >
       <Box
@@ -27,9 +28,11 @@ export default function AwardsDesktop() {
           overflow: 'auto'
         }}
       >
-        <Box sx={{ width: '100%', padding: '40px 30px 30px' }}>
+        <Box sx={{ width: '100%', padding: '30px 0px' }}>
           <Awards />
-          <AwardsList selected={selected} setSelected={setSelected} />
+          <Box sx={{ width: '100%', padding: '10px 30px 30px' }}>
+            <AwardsList selected={selected} setSelected={setSelected} />
+          </Box>
         </Box>
       </Box>
       <Box

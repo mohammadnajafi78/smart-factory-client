@@ -33,7 +33,7 @@ export default function ReceivedItemDesktop({ selected }) {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          padding: '12px 20px 0px'
+          padding: '0px 20px 0px'
         }}
       >
         <Box

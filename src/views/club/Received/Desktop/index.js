@@ -12,7 +12,8 @@ export default function ReceivedDesktop() {
       style={{
         display: 'flex',
         flexDirection: 'row',
-        width: '100%'
+        width: '100%',
+        marginTop: '40px'
       }}
     >
       <Box
@@ -35,7 +36,7 @@ export default function ReceivedDesktop() {
           flex: '1 1 auto',
           width: '50%',
           backgroundColor: 'white',
-          paddingTop: '50px'
+          paddingTop: '20px'
         }}
       >
         {selected ? (

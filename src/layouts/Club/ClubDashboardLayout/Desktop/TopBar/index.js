@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   toolbar: {
     minHeight: 60,
     margin: 0,
-    gap: 200,
+    gap: 600,
     padding: '0px 20px'
   }
 }));
@@ -58,11 +58,13 @@ const TopBar = ({
   return (
     <AppBar
       sx={{
-        backgroundColor: '#f4f4f4',
+        // backgroundColor: '#f4f4f4',
+        backgroundColor: '#33BBC4',
+        color: 'white',
         margin: 0,
         padding: 0,
         boxShadow: 'none',
-        width: '55%'
+        width: '90%'
       }}
     >
       <Toolbar className={classes.toolbar}>

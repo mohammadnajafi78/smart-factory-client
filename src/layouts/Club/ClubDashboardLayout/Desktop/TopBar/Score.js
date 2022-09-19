@@ -14,7 +14,7 @@ export default function Score() {
         alignItems: 'flex-end',
         padding: '4px',
 
-        width: '165px',
+        width: '105px',
         height: '49px',
 
         background: '#FFFFFF',

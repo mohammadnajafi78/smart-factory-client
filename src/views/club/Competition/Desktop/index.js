@@ -20,7 +20,8 @@ export default function CompetitionDesktop() {
       style={{
         display: 'flex',
         flexDirection: 'row',
-        width: '100%'
+        width: '100%',
+        marginTop: '30px'
       }}
     >
       <Box

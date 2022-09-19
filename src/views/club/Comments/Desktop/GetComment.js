@@ -53,7 +53,7 @@ export default function GetCommentDesktop({ selected }) {
         flexDirection: 'column',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
-        padding: '24px 30px 0px !important',
+        padding: '0px 30px 0px !important',
         gap: '20px',
         // background: '#FFFFFF',
         width: '100%',

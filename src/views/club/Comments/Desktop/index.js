@@ -12,7 +12,8 @@ export default function CommentDesktop() {
       style={{
         display: 'flex',
         flexDirection: 'row',
-        width: '100%'
+        width: '100%',
+        marginTop: '30px'
       }}
     >
       <Box
@@ -26,7 +27,7 @@ export default function CommentDesktop() {
           overflow: 'auto'
         }}
       >
-        <Box sx={{ width: '100%', padding: '40px 30px 0px' }}>
+        <Box sx={{ width: '100%', padding: '20px 30px 0px' }}>
           <CommentsList selected={selected} setSelected={setSelected} />
         </Box>
       </Box>

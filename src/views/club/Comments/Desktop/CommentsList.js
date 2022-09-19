@@ -8,6 +8,7 @@ import { Autocomplete, Box, TextField } from '@mui/material';
 import { AttachFile } from '@mui/icons-material';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import NewCommentImg from 'src/assets/img/icons/newComment.svg';
 
 export default function CommentsList({ selected, setSelected }) {
   const history = useHistory();
@@ -57,7 +58,7 @@ export default function CommentsList({ selected, setSelected }) {
         }}
       >
         <InputLabel>نظرات من</InputLabel>
-        <ConfirmButton
+        {/* <ConfirmButton
           style={{ width: '150px' }}
           onClick={() => {
             // history.push('/club/newComment');
@@ -65,7 +66,7 @@ export default function CommentsList({ selected, setSelected }) {
           }}
         >
           ایجاد نظر جدید
-        </ConfirmButton>
+        </ConfirmButton> */}
       </Box>
       <Box
         sx={{
@@ -91,6 +92,37 @@ export default function CommentsList({ selected, setSelected }) {
               // </div>
             );
           })}
+        <Box
+          sx={{
+            position: 'absolute',
+            bottom: '0%',
+            width: '35.6%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'white',
+            height: '60px',
+            // padding: '10px',
+            gap: '10px',
+            padding: '0px 30px 0px'
+          }}
+        >
+          <ConfirmButton
+            style={{
+              margin: '0px 10px',
+              backgroundColor: '#00346D',
+              width: '70%'
+            }}
+            onClick={() => {
+              // history.push('/club/newComment');
+              setOpen(true);
+            }}
+          >
+            <img src={NewCommentImg} style={{ marginLeft: '3px' }} />
+            ایجاد نظر جدید
+          </ConfirmButton>
+        </Box>
       </Box>
       <CustomizedDialogs
         title={'ایجاد نظر جدید'}

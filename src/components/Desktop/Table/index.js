@@ -329,7 +329,14 @@ let theme = createTheme({
           fontSize: '18px',
           fontWeight: 500,
           fontFamily: 'IRANSans',
-          color: '#00346D'
+          color: 'white'
+        },
+        root: {
+          color: 'white',
+          backgroundColor: '#00AAB5'
+        },
+        iconButton: {
+          color: 'white'
         }
       }
     },

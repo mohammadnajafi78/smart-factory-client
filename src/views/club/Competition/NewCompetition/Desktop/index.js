@@ -19,10 +19,10 @@ export default function NewCompetitionDesktop({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '20px 0px 50px'
+        padding: '0px 0px 50px'
       }}
     >
-      <Box
+      {/* <Box
         sx={{
           width: '95%',
           height: '140px',
@@ -50,13 +50,13 @@ export default function NewCompetitionDesktop({
             {selected?.description}
           </InputLabel>
         </Box>
-      </Box>
+      </Box> */}
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
-          padding: '16px 16px 0px',
+          padding: '0px 16px 0px',
           gap: '30px',
           // borderBottom: '0.5px solid #D3D2D2',
           width: '100%'

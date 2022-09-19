@@ -125,31 +125,43 @@ export default function ReceivedListDesktop({ selected, setSelected }) {
       </Box>
       <Box
         sx={{
-          position: 'absolute',
-          bottom: '0%',
-          width: '40%',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: 'white',
-          height: '79px',
-          // padding: '10px',
-          gap: '10px',
-          padding: '0px 30px 0px'
+          padding: '12px 0px 0px',
+          gap: '14px',
+          // height: '640px',
+          overflowY: 'auto'
         }}
       >
-        <ConfirmButton
-          style={{
-            margin: '0px 10px',
-            backgroundColor: '#00346D',
-            width: '70%'
+        <Box
+          sx={{
+            position: 'absolute',
+            bottom: '0%',
+            width: '35.6%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'white',
+            height: '60px',
+            // padding: '10px',
+            gap: '10px',
+            padding: '0px 30px 0px'
           }}
-          onClick={() => setOpenScan(true)}
         >
-          <img src={Scan} style={{ marginLeft: '3px' }} />
-          دریافت جایزه
-        </ConfirmButton>
+          <ConfirmButton
+            style={{
+              margin: '0px 10px',
+              backgroundColor: '#00346D',
+              width: '70%'
+            }}
+            onClick={() => setOpenScan(true)}
+          >
+            <img src={Scan} style={{ marginLeft: '3px' }} />
+            دریافت جایزه
+          </ConfirmButton>
+        </Box>
       </Box>
 
       <CustomizedDialogs

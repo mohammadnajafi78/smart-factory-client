@@ -40,6 +40,7 @@ import { ArrowBack, ArrowRight } from '@mui/icons-material';
 const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
 let item = {};
+let itemSort = {};
 const CompetitionTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
@@ -263,14 +264,16 @@ const CompetitionTable = props => {
     ]);
   }, []);
 
-  function getData(page, rowsPerPage) {
+  function getData(page, rowsPerPage, search) {
     httpService
-      .get(
-        `${API_BASE_URL}/api/management/club/matches/?limit=${page *
-          rowsPerPage +
-          rowsPerPage}&offset=${page}${filter !== '' ? `&${filter}` : ''}${
-          sort !== '' ? `&${sort}` : ''
-        }`
+      .post(
+        `${API_BASE_URL}/api/management/club/matches/?limit=${rowsPerPage}&offset=${page}${
+          filter !== '' ? `&${filter}` : ''
+        }`,
+        {
+          order: sort,
+          search: search
+        }
       )
 
       .then(res => {
@@ -283,8 +286,6 @@ const CompetitionTable = props => {
 
   function onFilterChange(column, filterList, type) {
     let filterType = '';
-    console.log('column', column);
-    console.log('filterList', filterList);
 
     switch (column) {
       case 'name':
@@ -339,7 +340,6 @@ const CompetitionTable = props => {
   }
 
   function onColumnSortChange(changedColumn, direction) {
-    let itemSort = {};
     switch (changedColumn) {
       case 'match_num':
         itemSort['match_num'] = direction;
@@ -363,13 +363,13 @@ const CompetitionTable = props => {
     let temp = itemSort;
     let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
 
-    let str = '';
+    let str = [];
     if (filterItems?.length > 0) {
       filterItems.map((itm, index) => {
-        str = itm[1] === 'asc' ? itm[0] : `-${itm[0]}`;
+        str.push(itm[1] === 'asc' ? itm[0] : `-${itm[0]}`);
       });
     }
-    setSort('order=' + str);
+    setSort(str);
   }
 
   function onRowClick(rowData, rowState) {
@@ -414,7 +414,9 @@ const CompetitionTable = props => {
       page={page}
       filter={filter}
       sort={sort}
-      getData={(page, rowsPerPage) => getData(page, rowsPerPage)}
+      getData={(page, rowsPerPage, search) =>
+        getData(page, rowsPerPage, search)
+      }
       onRowClick={(rowData, rowState) => onRowClick(rowData, rowState)}
       onFilterChange={(column, filterList, type) =>
         onFilterChange(column, filterList, type)

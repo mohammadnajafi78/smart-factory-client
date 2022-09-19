@@ -5,13 +5,14 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import LinkButton from 'src/components/Desktop/Button/Link';
 import makeStyles from '@mui/styles/makeStyles';
-import Chest from 'src/assets/img/icons/chest-win-close.svg';
+import Chest from 'src/assets/img/icons/giftBox.svg';
 import ChestWinOpen from 'src/assets/img/icons/chest-win-open.svg';
 import { useHistory } from 'react-router-dom';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import useScore from 'src/hooks/useScore';
+import { Star } from 'react-feather';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -60,11 +61,14 @@ export default function AwardsBox() {
           gap: '10px',
 
           width: '100%',
-          height: '122px',
-          marginTop: '6px'
+          height: '162px',
+          // marginTop: '6px',
+          backgroundColor: '#33BBC4'
         }}
       >
-        <InputLabel style={{ fontSize: '18px' }}>جوایز</InputLabel>
+        <InputLabel style={{ fontSize: '18px', color: 'white' }}>
+          جوایز
+        </InputLabel>
         <Box
           sx={{
             display: 'flex',
@@ -90,9 +94,26 @@ export default function AwardsBox() {
                   style={{ display: 'flex', flexDirection: 'column' }}
                 >
                   <img src={Chest} width="74" height="68" />
-                  <InputLabel
-                    style={{ color: '#00346D' }}
-                  >{`امتیاز: ${item.require_credit}`}</InputLabel>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '0px 6px !important',
+                      height: '22px',
+                      background: '#CCEEF0',
+                      borderRadius: '4px',
+                      color: '#00AAB5',
+                      position: 'relative',
+                      top: '-15px'
+                    }}
+                  >
+                    <InputLabel style={{ color: '#00AAB5' }}>
+                      {item?.require_credit}
+                    </InputLabel>
+                    <Star style={{ width: '11px', height: '15px' }} />
+                  </Box>
                 </IconButton>
               );
             })}
@@ -205,7 +226,7 @@ export default function AwardsBox() {
               flexDirection: 'column',
               justifyContent: 'space-between',
               alignItems: 'center',
-              padding: '60px 0px 0px !important',
+              padding: '0px',
               gap: '20px',
               background: '#FFFFFF'
             }}
@@ -215,7 +236,7 @@ export default function AwardsBox() {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                padding: '0px',
+                padding: '50px',
                 gap: '15px',
                 width: '100%'
               }}
