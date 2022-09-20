@@ -4,7 +4,7 @@ import ReceivedListDesktop from './MessageList';
 import MessageDetail from 'src/assets/img/icons/messageDetail.svg';
 import ReceivedItemDesktop from '../MessageItem/Desktop';
 
-export default function ReceivedDesktop() {
+export default function MessageDesktop() {
   const [selected, setSelected] = useState(null);
 
   return (

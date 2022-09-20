@@ -24,7 +24,7 @@ export default function HomeMobile() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-end',
-        padding: '19px',
+        padding: '30px 19px',
         gap: '30px',
         alignItems: 'flex-start',
         justifyContent: 'flex-start',

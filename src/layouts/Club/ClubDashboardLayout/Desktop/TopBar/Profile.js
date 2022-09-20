@@ -48,7 +48,10 @@ const Profile = () => {
 
   const handleClick = () => {
     // setOpen(true);
-    history.push('/profile');
+    history.push({
+      pathname: '/profile',
+      state: { formName: 'پروفایل کاربر' }
+    });
   };
 
   //   const handleClose = () => {

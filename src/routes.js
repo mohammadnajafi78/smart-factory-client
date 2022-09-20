@@ -176,6 +176,12 @@ const routes = [
   },
   {
     exact: true,
+    path: '/message/messageItem',
+    layout: FormsDashboardLayout,
+    component: lazy(() => import('src/views/message/MessageItem'))
+  },
+  {
+    exact: true,
     guard: AuthGuard,
     path: '/club/newComment',
     layout: ClubDashboardLayoutBackNoBottom,

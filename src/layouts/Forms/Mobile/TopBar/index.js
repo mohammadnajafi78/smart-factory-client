@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, SvgIcon, Toolbar, IconButton } from '@mui/material';
+import { AppBar, SvgIcon, Toolbar, IconButton, Box } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { Menu as MenuIcon } from 'react-feather';
 import { THEMES } from 'src/constants';
@@ -8,6 +8,8 @@ import Profile from './Profile';
 import { Close } from '@mui/icons-material';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import { useHistory } from 'react-router-dom';
+import ArrowRight from 'src/assets/img/icons/arrowRight.svg';
+import { propsToClassKey } from '@mui/styles';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,42 +31,66 @@ const useStyles = makeStyles(theme => ({
   toolbar: {
     minHeight: 49,
     margin: 0,
-    gap: 12,
-    display: 'flex',
-    justifyContent: 'space-between'
+    // gap: 12,
+    display: 'flex'
+    // justifyContent: 'space-between'
   }
 }));
 
-const TopBar = ({
-  className,
-  onMobileNavOpen,
-  openMobile,
-  onMobileClose,
-  ...rest
-}) => {
+const TopBar = props => {
   const classes = useStyles();
   const history = useHistory();
+  console.log('res', props);
 
   return (
     <AppBar
       sx={{
-        backgroundColor: '#FFF',
+        backgroundColor: '#33BBC4',
         margin: 0,
-        padding: 0,
+        padding: '7px 6px',
         boxShadow: 'none'
       }}
     >
       <Toolbar className={classes.toolbar}>
-        <Profile />
-        <InputLabelHeader
-          style={{ color: '#00346D' }}
+        {/* <Profile /> */}
+        <IconButton
+          color="inherit"
           onClick={() => {
-            history.push('/home');
+            history.goBack();
+          }}
+          size="large"
+          style={{
+            background: '#FFFFFF',
+            boxShadow: '1px 1px 6px rgba(201, 201, 201, 0.25)',
+            borderRadius: ' 6px',
+            width: '49px',
+            height: '44px'
           }}
         >
-          BTS
-        </InputLabelHeader>
-        <Message />
+          {/* <SvgIcon fontSize="small"> */}
+          {/* <ArrowRight color="#00346D" width="25px" height="21px" /> */}
+          <img src={ArrowRight} width="25px" height="21px" />
+          {/* </SvgIcon> */}
+        </IconButton>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            width: '100%',
+            marginRight: '50px'
+          }}
+        >
+          <InputLabelHeader
+            style={{ color: 'white' }}
+            onClick={() => {
+              history.push('/home');
+            }}
+          >
+            {props.children.props.location.state.formName}
+          </InputLabelHeader>
+        </Box>
+        {/* <Message /> */}
       </Toolbar>
     </AppBar>
   );

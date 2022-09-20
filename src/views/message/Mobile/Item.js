@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import React from 'react';
 import { ChevronLeft, Star } from 'react-feather';
 // import { NavLink } from 'react-router-dom';
@@ -25,8 +25,11 @@ export default function Item({ data }) {
       }}
       onClick={() =>
         history.push({
-          pathname: '/club/receivedItem',
-          state: data
+          pathname: '/message/messageItem',
+          state: {
+            data: data,
+            formName: 'پیام ها'
+          }
         })
       }
     >
@@ -140,11 +143,10 @@ export default function Item({ data }) {
             width: '100%'
           }}
         >
-          <InputLabel
-            style={{ fontWeight: 400, fontSize: '12px', color: '#808286' }}
-          >
-            {`اعتبار تا: ${MomentFa(data.expire_date)}`}
-          </InputLabel>
+          <Divider
+            variant="middle"
+            sx={{ margin: '2px', width: '94%', color: '#D3D2D2' }}
+          />
           <Box
             sx={{
               display: 'flex',
@@ -152,10 +154,10 @@ export default function Item({ data }) {
               justifyContent: 'space-between',
               alignItems: 'center',
               padding: '0px',
-              gap: '8px',
+              // gap: '8px',
 
-              width: '100%',
-              height: '25px'
+              width: '100%'
+              // height: '25px'
             }}
           >
             <InputLabel
@@ -166,7 +168,7 @@ export default function Item({ data }) {
                 lineHeight: '12px'
               }}
             >
-              {`تاریخ کسب: ${MomentFa(data.create_date)}`}
+              {`ارسال: ${MomentFa(data.create_date)}`}
             </InputLabel>
             <Box
               sx={{
@@ -176,8 +178,8 @@ export default function Item({ data }) {
                 textDecoration: 'none',
                 fontSize: '12px',
                 fontWeight: 400,
-                cursor: 'pointer',
-                marginBottom: '30px'
+                cursor: 'pointer'
+                // marginBottom: '30px'
               }}
             >
               {/* <NavLink

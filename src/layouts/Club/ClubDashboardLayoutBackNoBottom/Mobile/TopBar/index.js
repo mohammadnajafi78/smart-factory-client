@@ -11,7 +11,7 @@ import {
   SvgIcon
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
-import { ArrowRight } from 'react-feather';
+import ArrowRight from 'src/assets/img/icons/arrowRight.svg';
 import { THEMES } from 'src/constants';
 import Home from './Home';
 import Score from './Score';
@@ -72,9 +72,10 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
             height: '44px'
           }}
         >
-          <SvgIcon fontSize="small">
+          {/* <SvgIcon fontSize="small">
             <ArrowRight color="#00346D" width="25px" height="21px" />
-          </SvgIcon>
+          </SvgIcon> */}
+          <img src={ArrowRight} width="25px" height="21px" />
         </IconButton>
         <Score />
         <Home />

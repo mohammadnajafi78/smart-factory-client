@@ -480,13 +480,29 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           <Avatar /> My account
         </MenuItem>
         <Divider /> */}
-        <MenuItem color="#00346D" onClick={() => history.push('/profile')}>
+        <MenuItem
+          color="#00346D"
+          onClick={() =>
+            history.push({
+              pathname: '/profile',
+              state: { formName: 'پروفایل کاربر' }
+            })
+          }
+        >
           <ListItemIcon>
             <PersonAdd fontSize="small" />
           </ListItemIcon>
           حساب کاربری
         </MenuItem>
-        <MenuItem color="#00346D" onClick={() => history.push('/message')}>
+        <MenuItem
+          color="#00346D"
+          onClick={() =>
+            history.push({
+              pathname: '/message',
+              state: { formName: 'پیام ها' }
+            })
+          }
+        >
           <ListItemIcon>
             <Settings fontSize="small" />
           </ListItemIcon>

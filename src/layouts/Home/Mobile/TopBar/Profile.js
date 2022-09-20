@@ -29,7 +29,10 @@ const Profile = () => {
   const history = useHistory();
 
   const handleClick = () => {
-    history.push('/profile');
+    history.push({
+      pathname: '/profile',
+      state: { formName: 'پروفایل کاربر' }
+    });
   };
 
   return (

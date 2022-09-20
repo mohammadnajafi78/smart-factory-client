@@ -48,9 +48,9 @@ const TopBar = ({
   return (
     <AppBar
       sx={{
-        backgroundColor: '#E5E5E5',
+        backgroundColor: '#33BBC4',
         margin: 0,
-        padding: 0,
+        padding: '7px 6px',
         boxShadow: 'none'
       }}
     >
@@ -62,7 +62,7 @@ const TopBar = ({
             history.push('/home');
           }}
         >
-          BTS
+          خانه
         </InputLabelHeader>
         <Message />
       </Toolbar>

@@ -9,6 +9,8 @@ import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import { QrReader } from 'react-qr-reader';
 import makeStyles from '@mui/styles/makeStyles';
+import EmptyMessage from 'src/assets/img/icons/emptyMessage.svg';
+import InputLabel from 'src/components/Mobile/InputLabel';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -19,9 +21,9 @@ const useStyles = makeStyles(theme => ({
     minHeight: '40%'
   }
 }));
-export default function ReceivedMobile() {
+export default function MessageMobile() {
   const history = useHistory();
-  const [received, setReceived] = useState(null);
+  const [messages, setMessages] = useState(null);
   const [openScan, setOpenScan] = useState(null);
   const [scan, setScan] = useState(null);
   const [all, setAll] = useState(null);
@@ -32,7 +34,7 @@ export default function ReceivedMobile() {
   useEffect(() => {
     httpService.get(`${API_BASE_URL}/api/club/user_gifts/`).then(res => {
       if (res.status === 200) {
-        setReceived(res.data);
+        setMessages(res.data);
         setAll(res.data);
       }
     });
@@ -53,7 +55,7 @@ export default function ReceivedMobile() {
   }
 
   return (
-    <div>
+    <>
       <Box
         sx={{
           display: 'flex',
@@ -78,12 +80,12 @@ export default function ReceivedMobile() {
                 key={index}
                 onClick={() => {
                   setFilterSelected(item.id);
-                  if (item.id == 1) setReceived(all);
+                  if (item.id == 1) setMessages(all);
                   else if (item.id != 4 && item.id != 1)
-                    setReceived(
+                    setMessages(
                       all.filter(f => f?.gift_data?.gift_type == item.id)
                     );
-                  else setReceived(all.filter(f => !f?.gift_data?.gift_type));
+                  else setMessages(all.filter(f => !f?.gift_data?.gift_type));
                 }}
                 style={{ fontWeight: 300, fontSize: '12px' }}
               >
@@ -93,23 +95,39 @@ export default function ReceivedMobile() {
           })}
       </Box>
 
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          padding: '12px 0px 60px',
-          gap: '14px',
-          // height: '1000px',
-          overflowY: 'auto'
-        }}
-      >
-        {received &&
-          received.map((item, index) => {
-            return <ReceivedItem data={item} key={index} />;
-          })}
-      </Box>
-      <Box
+      {messages ? (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '12px 0px 60px',
+            gap: '14px',
+            // height: '1000px',
+            overflowY: 'auto'
+          }}
+        >
+          {messages &&
+            messages.map((item, index) => {
+              return <ReceivedItem data={item} key={index} />;
+            })}
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            height: '400px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column'
+          }}
+        >
+          <img src={EmptyMessage} width="112px" height="167px" />
+          <InputLabel style={{ color: '#00346D' }}>شما پیامی ندارید</InputLabel>
+        </Box>
+      )}
+
+      {/* <Box
         sx={{
           position: 'fixed',
           bottom: '9%',
@@ -176,7 +194,7 @@ export default function ReceivedMobile() {
           }}
         />
         <p>{scan}</p>
-      </Drawer>
-    </div>
+      </Drawer> */}
+    </>
   );
 }

@@ -454,7 +454,10 @@ export default function ProfileDesktop(props) {
                     disabled={false}
                     variant="outlined"
                     onClick={() => {
-                      history.push('/profile');
+                      history.push({
+                        pathname: '/profile',
+                        formName: 'پروفایل کاربر'
+                      });
                     }}
                     type={'button'}
                     style={{ width: '200px' }}

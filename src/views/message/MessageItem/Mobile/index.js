@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 export default function ReceivedItemMobile(props) {
-  const [data, setData] = useState(props.location.state);
+  const [data, setData] = useState(props.location.state.data);
   const [open, setOpen] = useState(false);
   const [qr, setQr] = useState(null);
   const classes = useStyles();
@@ -36,9 +36,10 @@ export default function ReceivedItemMobile(props) {
           flexDirection: 'column',
           alignItems: 'center',
           padding: '12px 12px 0px'
+          // marginTop: '50px'
         }}
       >
-        <Box
+        {/* <Box
           sx={{
             display: 'flex',
             flexDirection: 'row',
@@ -166,7 +167,7 @@ export default function ReceivedItemMobile(props) {
               </InputLabel>
             </Box>
           </Box>
-        </Box>
+        </Box> */}
         <Box
           sx={{
             display: 'flex',
@@ -206,7 +207,7 @@ export default function ReceivedItemMobile(props) {
             }}
             style={{
               position: 'absolute',
-              bottom: '90px',
+              bottom: '10px',
               width: '93%'
             }}
           >

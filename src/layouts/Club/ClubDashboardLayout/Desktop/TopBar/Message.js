@@ -48,7 +48,7 @@ const Message = () => {
 
   const handleClick = () => {
     // setOpen(true);
-    history.push('/message');
+    history.push({ pathname: '/message', state: { formName: 'پیام ها' } });
   };
 
   //   const handleClose = () => {

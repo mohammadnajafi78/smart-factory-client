@@ -29,7 +29,7 @@ const Message = () => {
   const history = useHistory();
 
   const handleClick = () => {
-    history.push('/message');
+    history.push({ pathname: '/message', state: { formName: 'پیام ها' } });
   };
 
   return (
