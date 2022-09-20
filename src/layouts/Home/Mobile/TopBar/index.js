@@ -57,7 +57,7 @@ const TopBar = ({
       <Toolbar className={classes.toolbar}>
         <Profile />
         <InputLabelHeader
-          style={{ color: '#00346D' }}
+          style={{ color: 'white' }}
           onClick={() => {
             history.push('/home');
           }}

@@ -15,7 +15,7 @@ function LocationMobile(props) {
   const [cities, setCities] = useState([]);
   const [cityId, setCityId] = useState(null);
   const history = useHistory();
-  const data = props.location.state.data;
+  const data = props.data;
 
   useEffect(() => {
     httpService
@@ -87,17 +87,15 @@ function LocationMobile(props) {
             justifyContent: 'space-between',
             padding: '0px',
             gap: '30px',
-            position: 'absolute',
-            width: '90%',
-            height: '90%',
-            left: '20px',
-            top: '57px'
+            // position: 'absolute',
+            width: '100%',
+            height: '100%'
+            // left: '20px',
+            // top: '57px'
           }}
         >
           <Box>
-            <InputLabelHeader>اطلاعات آدرس</InputLabelHeader>
-            <InputLabel>مشخصات شما شامل موارد زیر می باشد:</InputLabel>
-            <Box sx={{ mt: 2 }}>
+            <Box>
               <InputLabel>استان</InputLabel>
               <Autocomplete
                 disablePortal

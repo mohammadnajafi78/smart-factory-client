@@ -22,7 +22,7 @@ function WorkMobile(props) {
   const [selected, setSelected] = useState([]);
   const [provinces, setProvinces] = useState(null);
   const [provinceId, setProvinceId] = useState(null);
-  const data = props.location.state.data;
+  const data = props.data;
 
   useEffect(() => {
     if (provinceId !== null) {
@@ -91,17 +91,15 @@ function WorkMobile(props) {
             justifyContent: 'space-between',
             padding: '0px',
             // gap: '159px',
-            position: 'absolute',
-            width: '90%',
-            height: '90%',
-            left: '20px',
-            top: '57px'
+            // position: 'absolute',
+            width: '100%',
+            height: '100%'
+            // left: '20px',
+            // top: '57px'
           }}
         >
           <Box>
-            <InputLabelHeader>اطلاعات شغلی</InputLabelHeader>
-            <InputLabel>مشخصات شما شامل موارد زیر می باشد:</InputLabel>
-            <Box sx={{ mt: 2 }}>
+            <Box>
               <InputLabel>زمینه فعالیت</InputLabel>
               <Autocomplete
                 multiple

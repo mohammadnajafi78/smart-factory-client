@@ -25,8 +25,8 @@ export default function ReceivedListDesktop({ selected, setSelected }) {
   useEffect(() => {
     httpService.get(`${API_BASE_URL}/api/club/user_gifts/`).then(res => {
       if (res.status === 200) {
-        setMessages(res.data);
-        setAll(res.data);
+        // setMessages(res.data);
+        // setAll(res.data);
       }
     });
 

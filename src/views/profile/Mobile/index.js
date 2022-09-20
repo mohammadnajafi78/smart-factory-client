@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Avatar,
   Box,
   Button,
   Divider,
@@ -17,32 +18,15 @@ import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import makeStyles from '@mui/styles/makeStyles';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import { Minus, Plus } from 'react-feather';
-import { styled } from '@mui/material/styles';
+import { Minus, Plus, Star } from 'react-feather';
 import useScore from 'src/hooks/useScore';
+import Main from './Main';
+import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 
-const useStyles = makeStyles(theme => ({
-  paper: {
-    borderRadius: '20px 20px 0px 0px',
-    zIndex: 999,
-    position: 'fixed',
-    bottom: 0,
-    minHeight: '40%'
-  }
-}));
-const CssTextField = styled(TextField)({
-  '& .MuiOutlinedInput-input': {
-    textAlign: 'center'
-  }
-});
 export default function ProfileMobile() {
   const [data, setData] = useState();
-  const [openTransfer, setOpenTransfer] = useState(false);
-  const [count, setCount] = useState(0);
-  const [userId, setUserId] = useState();
   const history = useHistory();
   const { logout } = useAuth();
-  const classes = useStyles();
   const { setScore } = useScore();
 
   useEffect(() => {
@@ -60,43 +44,66 @@ export default function ProfileMobile() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-end',
-          padding: '25px 10px',
+          padding: '25px 0px',
           gap: '12px',
           alignItems: 'center',
           justifyContent: 'flex-start',
           width: '100%'
         }}
       >
-        <Score />
-        <Button
-          color="primary"
-          fullWidth
-          type="submit"
-          variant={'outlined'}
+        <Box
           sx={{
-            color: '#00346D',
-            backgroundColor: '#ECF1F8',
-            height: '48px',
-            borderRadius: '8px',
-            border: '0.733333px solid #00346D',
-            fontSize: '16px',
             display: 'flex',
-            justifyContent: 'space-between',
-            padding: '12px 11px',
-            fontWeight: 500,
-            width: '98%',
-            margin: 0,
-            fontFamily: 'IRANSans'
-          }}
-          onClick={() => {
-            setOpenTransfer(true);
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            padding: '0px 20px 30px',
+            gap: '20px',
+            width: '100%'
           }}
         >
-          انتقال امتیاز
-          <ArrowBack color="#00346D" height="13px" width="13px" />
-        </Button>
-        <Divider variant="middle" sx={{ margin: '20px 0px', width: '98%' }} />
-        <Box
+          <Avatar
+            alt={data?.first_name}
+            src={data?.user_profile_image}
+            sx={{
+              width: 100,
+              height: 100
+            }}
+          />
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <InputLabelHeader style={{ color: '#00346D', fontSize: '20px' }}>
+              {data?.first_name + ' ' + data?.last_name}
+            </InputLabelHeader>
+            <InputLabel style={{ color: '#00346D' }}>
+              {data?.user_id}
+            </InputLabel>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: '3px !important',
+                // height: '22px',
+                background: '#E3E3E3',
+                borderRadius: '4px',
+                color: '#4F4C4D'
+              }}
+            >
+              <Star
+                style={{ width: '27px', height: '18px', color: '#A7A5A6' }}
+              />
+              <InputLabel style={{ color: '#4F4C4D' }}>
+                {data?.user_club?.grade_info?.name}
+              </InputLabel>
+              {/* <InputLabel style={{ color: '#4F4C4D', fontSize: '' }}>
+                {data?.user_club?.grade_info?.total_credit}
+              </InputLabel> */}
+            </Box>
+          </Box>
+        </Box>
+        <Main data={data} />
+        {/* <Box
           sx={{
             display: 'flex',
             flexDirection: 'row',
@@ -141,136 +148,8 @@ export default function ProfileMobile() {
           }}
         >
           خروج از حساب کاربری
-        </InputLabel>
+        </InputLabel> */}
       </Box>
-      <Drawer
-        anchor={'bottom'}
-        open={openTransfer}
-        onClose={() => {
-          setOpenTransfer(false);
-        }}
-        classes={{
-          paper: classes.paper
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-start',
-            alignItems: 'flex-start',
-            padding: '30px 20px 40px',
-            gap: '20px',
-            background: '#FFFFFF',
-            mb: 6
-          }}
-        >
-          <InputLabel>جهت انتقال امتیاز، اطلاعات زیر را وارد کنید:</InputLabel>
-          <Box sx={{ mt: 2, width: '100%' }}>
-            <InputLabel style={{ color: '#7B7979' }}>
-              کد کاربر دریافت کننده
-            </InputLabel>
-            <TextField
-              id="address"
-              aria-describedby="my-helper-text"
-              fullWidth
-              sx={{
-                background: '#F2F2F2',
-                borderRadius: '4px',
-                margin: '6px 3px'
-              }}
-              value={userId}
-              onChange={event => setUserId(event.target.value)}
-            />
-          </Box>
-
-          <Box sx={{ mt: 2, width: '100%' }}>
-            <InputLabel style={{ color: '#7B7979' }}>امتیاز</InputLabel>
-            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
-              <ConfirmButton variant="outlined" onClick={() => setCount(50)}>
-                50 امتیاز
-              </ConfirmButton>
-              <ConfirmButton variant="outlined" onClick={() => setCount(100)}>
-                100 امتیاز
-              </ConfirmButton>
-              <ConfirmButton variant="outlined" onClick={() => setCount(200)}>
-                200 امتیاز
-              </ConfirmButton>
-            </Box>
-            <Divider sx={{ m: 2 }} />
-            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
-              <ConfirmButton
-                variant="outlined"
-                sx={{ width: '50px' }}
-                onClick={() => {
-                  setCount(count + 1);
-                }}
-              >
-                <Plus />
-              </ConfirmButton>
-              <CssTextField
-                value={count}
-                onChange={event => setCount(event.target.value)}
-                sx={{ textAlign: 'center' }}
-              />
-              <ConfirmButton
-                variant="outlined"
-                sx={{ width: '50px' }}
-                onClick={() => {
-                  setCount(count - 1);
-                }}
-              >
-                <Minus />
-              </ConfirmButton>
-            </Box>
-          </Box>
-        </Box>
-
-        <Box
-          sx={{
-            position: 'absolute',
-            bottom: '0%',
-            width: '55%',
-            backgroundColor: 'white',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '60px',
-            gap: '12px',
-            width: '100%',
-            borderTop: '1px solid #D3D2D2',
-            paddingTop: '5px'
-          }}
-        >
-          <ConfirmButton
-            disabled={false}
-            variant="outlined"
-            style={{ width: '150px' }}
-            onClick={() => setOpenTransfer(false)}
-          >
-            {'لغو'}
-          </ConfirmButton>
-          <ConfirmButton
-            disabled={false}
-            style={{ width: '150px' }}
-            onClick={() => {
-              httpService
-                .post(`${API_BASE_URL}/api/club/user_club/transfer_credit/`, {
-                  user_id: userId,
-                  credit: count
-                })
-                .then(res => {
-                  if (res.status === 200) {
-                    setOpenTransfer(false);
-                    setScore();
-                  }
-                });
-            }}
-          >
-            {'ثبت'}
-          </ConfirmButton>
-        </Box>
-      </Drawer>
     </>
   );
 }

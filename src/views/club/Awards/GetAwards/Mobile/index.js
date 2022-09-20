@@ -127,8 +127,8 @@ export default function GetAwardMobile(props) {
                     flexDirection: 'row',
                     justifyContent: 'flex-start',
                     alignItems: 'center',
-                    padding: '0px 6px !important',
-                    height: '22px',
+                    padding: '3px 6px !important',
+                    // height: '22px',
                     background: '#CCEEF0',
                     borderRadius: '4px',
                     color: '#00AAB5'

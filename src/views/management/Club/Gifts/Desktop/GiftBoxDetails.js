@@ -46,10 +46,10 @@ export default function GiftBoxDetails() {
                       flexDirection: 'row',
                       justifyContent: 'center',
                       alignItems: 'center',
-                      padding: '0px 6px !important',
+                      padding: '3px 6px !important',
                       //   gap: '2px',
                       // width: 54.1px,
-                      height: '22px',
+                      // height: '22px',
                       background: '#CCEEF0',
                       borderRadius: '4px',
                       color: '#00AAB5'

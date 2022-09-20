@@ -1,16 +1,13 @@
 import React from 'react';
 import { Box, TextField } from '@mui/material';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import { Formik } from 'formik';
-import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
-import { API_BASE_URL } from 'src/utils/urls';
 
 function IdentityInfoMobile(props) {
   const history = useHistory();
-  const data = props.location.state.data;
+  const data = props?.data;
 
   return (
     <>
@@ -61,17 +58,17 @@ function IdentityInfoMobile(props) {
               justifyContent: 'space-between',
               padding: '0px',
               gap: '140px',
-              position: 'absolute',
-              width: '90%',
-              height: '90%',
-              left: '20px',
-              top: '57px'
+              // position: 'absolute',
+              width: '100%',
+              height: '100%'
+              // left: '20px',
+              // top: '57px'
             }}
           >
             <Box>
-              <InputLabelHeader>اطلاعات هویتی</InputLabelHeader>
-              <InputLabel>مشخصات شما شامل موارد زیر می باشد:</InputLabel>
-              <Box sx={{ mt: 2 }}>
+              {/* <InputLabelHeader>اطلاعات هویتی</InputLabelHeader> */}
+              {/* <InputLabel>مشخصات شما شامل موارد زیر می باشد:</InputLabel> */}
+              <Box>
                 <InputLabel>نام</InputLabel>
                 <TextField
                   id="name"

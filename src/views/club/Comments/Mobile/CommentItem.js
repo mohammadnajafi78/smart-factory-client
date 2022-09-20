@@ -92,8 +92,8 @@ export default function CommentItem({ data }) {
                   flexDirection: 'row',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  padding: '2px 6px !important',
-                  height: '22px',
+                  padding: '3px 6px !important',
+                  // height: '22px',
                   background: '#CCEEF0',
                   borderRadius: '4px',
                   color: '#00AAB5'
@@ -110,8 +110,8 @@ export default function CommentItem({ data }) {
                   flexDirection: 'row',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  padding: '2px 6px !important',
-                  height: '22px',
+                  padding: '3px 6px !important',
+                  // height: '22px',
                   background: '#FDE8E8;',
                   borderRadius: '4px',
                   color: '#A7A5A6'
@@ -128,8 +128,8 @@ export default function CommentItem({ data }) {
                   flexDirection: 'row',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  padding: '2px 6px !important',
-                  height: '22px',
+                  padding: '3px 6px !important',
+                  // height: '22px',
                   background: '#F3F3F3;',
                   borderRadius: '4px',
                   color: '#A7A5A6'
