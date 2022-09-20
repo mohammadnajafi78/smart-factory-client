@@ -80,7 +80,9 @@ export default function CompetitionDesktop() {
             }}
           >
             <img src={Competition} width="90px" height="90px" />
-            <p>جهت مشاهده جزئیات مسابقه، روی آن کلیک کنید</p>
+            <p style={{ color: '#6685A7' }}>
+              جهت مشاهده جزئیات مسابقه، روی آن کلیک کنید
+            </p>
           </Box>
         )}
       </Box>

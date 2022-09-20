@@ -54,7 +54,9 @@ export default function ReceivedDesktop() {
             }}
           >
             <img src={Received} width="90px" height="90px" />
-            <p>جهت مشاهده جزئیات جایزه دریافتی، روی آن کلیک کنید</p>
+            <p style={{ color: '#6685A7' }}>
+              جهت مشاهده جزئیات جایزه دریافتی، روی آن کلیک کنید
+            </p>
           </Box>
         )}
       </Box>

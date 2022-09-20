@@ -43,33 +43,17 @@ const root = createRoot(container);
 //   true
 // );
 
-Sentry.init({
-  dsn: 'https://5f56610a4f514c4c917ad87f475e9022@sentry.hamravesh.com/376',
-  integrations: [new BrowserTracing()],
+if (process.env.NODE_ENV === 'production') {
+  Sentry.init({
+    dsn: 'https://5f56610a4f514c4c917ad87f475e9022@sentry.hamravesh.com/376',
+    integrations: [new BrowserTracing()],
 
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of transactions for performance monitoring.
-  // We recommend adjusting this value in production
-  tracesSampleRate: 1.0
-});
-
-// function walkNode(node) {
-//   if (node.nodeType == 3) {
-//     // Do your replacement here
-//     node.data = node.data.replace(/\d/g, convert);
-//   }
-
-//   // Also replace text in child nodes
-//   for (var i = 0; i < node.childNodes.length; i++) {
-//     walkNode(node.childNodes[i]);
-//   }
-// }
-
-// walkNode(document.getElementsByTagName('body')[0]);
-
-// function convert(a) {
-//   return ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'][a];
-// }
+    // Set tracesSampleRate to 1.0 to capture 100%
+    // of transactions for performance monitoring.
+    // We recommend adjusting this value in production
+    tracesSampleRate: 1.0
+  });
+}
 
 root.render(
   <Provider store={store}>

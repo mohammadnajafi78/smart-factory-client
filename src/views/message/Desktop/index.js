@@ -1,27 +1,65 @@
-import { Box } from '@mui/material';
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import InputLabel from 'src/components/Desktop/InputLabel';
+import { Box } from '@mui/material';
+import ReceivedListDesktop from './MessageList';
+import MessageDetail from 'src/assets/img/icons/messageDetail.svg';
+import ReceivedItemDesktop from '../MessageItem/Desktop';
 
-export default function MessageDesktop() {
-  const history = useHistory();
+export default function ReceivedDesktop() {
+  const [selected, setSelected] = useState(null);
 
   return (
-    <Box
-      sx={{
+    <div
+      style={{
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-end',
-        padding: '40px 80px',
-        gap: '30px',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
-        marginLeft: '130px',
+        flexDirection: 'row',
         width: '100%',
-        marginTop: '60px'
+        marginTop: '40px'
       }}
     >
-      Message
-    </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          flex: '1 1 auto',
+          width: '40%',
+          paddingLeft: '130px',
+          justifyContent: 'center',
+          height: '100vh',
+          overflow: 'auto'
+        }}
+      >
+        <Box sx={{ width: '100%' }}>
+          <ReceivedListDesktop selected={selected} setSelected={setSelected} />
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          flex: '1 1 auto',
+          width: '50%',
+          backgroundColor: 'white',
+          paddingTop: '20px'
+        }}
+      >
+        {selected ? (
+          // <GetCommentDesktop selected={selected} />
+          <ReceivedItemDesktop selected={selected} />
+        ) : (
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              pt: 20,
+              gap: '40px'
+            }}
+          >
+            <img src={MessageDetail} width="90px" height="90px" />
+            <p style={{ color: '#6685A7' }}>
+              جهت مشاهده جزئیات پیام، روی آن کلیک کنید
+            </p>
+          </Box>
+        )}
+      </Box>
+    </div>
   );
 }

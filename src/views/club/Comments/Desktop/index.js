@@ -54,7 +54,9 @@ export default function CommentDesktop() {
             }}
           >
             <img src={Comment} width="90px" height="90px" />
-            <p>جهت مشاهده جزئیات نظر، روی آن کلیک کنید</p>
+            <p style={{ color: '#6685A7' }}>
+              جهت مشاهده جزئیات نظر، روی آن کلیک کنید
+            </p>
           </Box>
         )}
       </Box>
