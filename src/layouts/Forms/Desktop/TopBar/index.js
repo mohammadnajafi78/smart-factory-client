@@ -57,6 +57,8 @@ const TopBar = ({
 }) => {
   const classes = useStyles();
 
+  console.log('selected', selected);
+
   return (
     <AppBar
       sx={{
@@ -66,7 +68,7 @@ const TopBar = ({
         boxShadow: 'none',
         // width: '90%',
         width: '100%',
-        paddingRight: '130px',
+        paddingLeft: '130px',
         backgroundColor: '#33BBC4'
       }}
     >
