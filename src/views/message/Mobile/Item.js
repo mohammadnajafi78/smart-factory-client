@@ -50,8 +50,8 @@ export default function Item({ data }) {
         }}
       >
         <img
-          src={data.gift_data.image}
-          alt={data.gift_data.name}
+          src={data?.icon}
+          alt={data?.title}
           style={{ width: '44px', height: '60px' }}
         />
       </Box>
@@ -89,9 +89,9 @@ export default function Item({ data }) {
               width: '46%'
             }}
           >
-            {data.gift_data.name}
+            {data?.title}
           </InputLabel>
-          {data.status.toLowerCase() === 'valid' ? (
+          {data?.is_read === true ? (
             <Box
               sx={{
                 display: 'flex',
@@ -108,7 +108,7 @@ export default function Item({ data }) {
               }}
             >
               <InputLabel style={{ color: '#00AAB5', paddingLeft: 0 }}>
-                موجود
+                خوانده شده
               </InputLabel>
             </Box>
           ) : (
@@ -128,9 +128,7 @@ export default function Item({ data }) {
               }}
             >
               <InputLabel style={{ color: '#F4777C', paddingLeft: 0 }}>
-                {data.status.toLowerCase() === 'used'
-                  ? 'استفاده شده'
-                  : 'منقضی شده'}
+                خوانده نشده
               </InputLabel>
             </Box>
           )}
@@ -168,7 +166,7 @@ export default function Item({ data }) {
                 lineHeight: '12px'
               }}
             >
-              {`ارسال: ${MomentFa(data.create_date)}`}
+              {`ارسال: ${MomentFa(data?.create_date)}`}
             </InputLabel>
             <Box
               sx={{

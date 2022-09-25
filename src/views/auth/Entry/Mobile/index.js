@@ -77,7 +77,11 @@ function EntryMobile(props) {
         >
           {'ورود با رمز عبور یک بار مصرف'}
         </LinkButton>
-        <InputLabel>شماره همراه یا ایمیل خود را اشتباه وارد کردید؟</InputLabel>
+        <Box onClick={() => history.push('/login')}>
+          <InputLabel style={{ cursor: 'pointer' }}>
+            شماره همراه خود را اشتباه وارد کردید؟
+          </InputLabel>
+        </Box>
       </Box>
     </Box>
   );

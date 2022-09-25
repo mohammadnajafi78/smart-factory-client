@@ -5,8 +5,16 @@ import InputLabel from 'src/components/Desktop/InputLabel';
 import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 import { useHistory } from 'react-router-dom';
 import MomentFa from 'src/utils/MomentFa';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
-export default function Item({ data, selected, setSelected }) {
+export default function Item({
+  data,
+  selected,
+  setSelected,
+  refresh,
+  setRefresh
+}) {
   const history = useHistory();
   return (
     <Box
@@ -23,7 +31,20 @@ export default function Item({ data, selected, setSelected }) {
         borderRadius: '8px',
         cursor: 'pointer'
       }}
-      onClick={() => setSelected(data)}
+      onClick={() => {
+        if (data?.is_read === false)
+          httpService
+            .patch(`${API_BASE_URL}/api/message/${data.id}/`, {
+              is_read: true
+            })
+            .then(res => {
+              if (res.status === 200) {
+                setSelected(res.data);
+                setRefresh(!refresh);
+              }
+            });
+        else setSelected(data);
+      }}
     >
       <Box
         sx={{
@@ -42,8 +63,8 @@ export default function Item({ data, selected, setSelected }) {
         }}
       >
         <img
-          src={data.gift_data.image}
-          alt={data.gift_data.name}
+          src={data?.icon}
+          alt={data?.title}
           style={{ width: '44px', height: '60px' }}
         />
       </Box>
@@ -76,9 +97,9 @@ export default function Item({ data, selected, setSelected }) {
           <InputLabel
             style={{ fontWeight: 500, fontSize: '16px', color: '#00346D' }}
           >
-            {data.gift_data.name}
+            {data?.title}
           </InputLabel>
-          {data.status.toLowerCase() === 'valid' ? (
+          {data.is_read === true ? (
             <Box
               sx={{
                 display: 'flex',
@@ -95,7 +116,7 @@ export default function Item({ data, selected, setSelected }) {
               }}
             >
               <InputLabel style={{ color: '#00AAB5', paddingLeft: 0 }}>
-                موجود
+                خوانده شده
               </InputLabel>
             </Box>
           ) : (
@@ -115,9 +136,7 @@ export default function Item({ data, selected, setSelected }) {
               }}
             >
               <InputLabel style={{ color: '#F4777C', paddingLeft: 0 }}>
-                {data.status.toLowerCase() === 'used'
-                  ? 'استفاده شده'
-                  : 'منقضی شده'}
+                خوانده نشده
               </InputLabel>
             </Box>
           )}
@@ -152,7 +171,7 @@ export default function Item({ data, selected, setSelected }) {
             <InputLabel
               style={{ fontWeight: 400, fontSize: '12px', color: '#808286' }}
             >
-              {`ارسال: ${MomentFa(data.expire_date)}`}
+              {`ارسال: ${MomentFa(data.create_date)}`}
             </InputLabel>
             <Box
               sx={{

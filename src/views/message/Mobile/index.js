@@ -32,14 +32,14 @@ export default function MessageMobile() {
   const classes = useStyles();
 
   useEffect(() => {
-    httpService.get(`${API_BASE_URL}/api/club/user_gifts/`).then(res => {
+    httpService.get(`${API_BASE_URL}/api/message/`).then(res => {
       if (res.status === 200) {
-        // setMessages(res.data);
-        // setAll(res.data);
+        setMessages(res.data);
+        setAll(res.data);
       }
     });
 
-    httpService.get(`${API_BASE_URL}/api/club/gift_type/`).then(res => {
+    httpService.get(`${API_BASE_URL}/api/message/type/`).then(res => {
       if (res.status === 200) {
         setFilters(res.data);
       }
@@ -56,62 +56,65 @@ export default function MessageMobile() {
 
   return (
     <>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-          padding: '14px 15px 6px',
-          gap: '2px',
-          position: 'sticky',
-          top: '58px',
-          // width: '385px',
-          width: '100%',
-          height: '57px',
-          backgroundColor: '#E5E5E5',
-          zIndex: 100
-        }}
-      >
-        {filters &&
-          filters.map((item, index) => {
-            return (
-              <FilterButton
-                key={index}
-                onClick={() => {
-                  setFilterSelected(item.id);
-                  if (item.id == 1) setMessages(all);
-                  else if (item.id != 4 && item.id != 1)
-                    setMessages(
-                      all.filter(f => f?.gift_data?.gift_type == item.id)
-                    );
-                  else setMessages(all.filter(f => !f?.gift_data?.gift_type));
-                }}
-                style={{ fontWeight: 300, fontSize: '12px' }}
-              >
-                {item.translate}
-              </FilterButton>
-            );
-          })}
-      </Box>
+      {all?.length > 0 ? (
+        <>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              padding: '14px 15px 6px',
+              gap: '2px',
+              position: 'sticky',
+              top: '58px',
+              // width: '385px',
+              width: '100%',
+              height: '57px',
+              backgroundColor: '#E5E5E5',
+              zIndex: 100
+            }}
+          >
+            {filters &&
+              filters.map((item, index) => {
+                return (
+                  <FilterButton
+                    key={index}
+                    onClick={() => {
+                      setFilterSelected(item.id);
+                      if (item.id == 1) setMessages(all);
+                      else setMessages(all.filter(f => f?.type?.id == item.id));
+                    }}
+                    style={{
+                      fontWeight: 300,
+                      fontSize: '12px',
+                      backgroundColor:
+                        filterSelected === item.id && 'rgba(0, 170, 181, 0.04)'
+                    }}
+                  >
+                    {item.translate}
+                  </FilterButton>
+                );
+              })}
+          </Box>
 
-      {messages ? (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            padding: '12px 0px 60px',
-            gap: '14px',
-            // height: '1000px',
-            overflowY: 'auto'
-          }}
-        >
-          {messages &&
-            messages.map((item, index) => {
-              return <ReceivedItem data={item} key={index} />;
-            })}
-        </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              padding: '12px 0px 60px',
+              gap: '14px',
+              // height: '1000px',
+              overflowY: 'auto'
+            }}
+          >
+            {messages &&
+              messages.map((item, index) => {
+                return <ReceivedItem data={item} key={index} />;
+              })}
+          </Box>
+        </>
       ) : (
         <Box
           sx={{

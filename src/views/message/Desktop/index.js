@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import ReceivedListDesktop from './MessageList';
+import MessageListDesktop from './MessageList';
 import MessageDetail from 'src/assets/img/icons/messageDetail.svg';
-import ReceivedItemDesktop from '../MessageItem/Desktop';
+import MessageItemDesktop from '../MessageItem/Desktop';
 
 export default function MessageDesktop() {
   const [selected, setSelected] = useState(null);
@@ -28,7 +28,7 @@ export default function MessageDesktop() {
         }}
       >
         <Box sx={{ width: '100%' }}>
-          <ReceivedListDesktop selected={selected} setSelected={setSelected} />
+          <MessageListDesktop selected={selected} setSelected={setSelected} />
         </Box>
       </Box>
       <Box
@@ -41,7 +41,7 @@ export default function MessageDesktop() {
       >
         {selected ? (
           // <GetCommentDesktop selected={selected} />
-          <ReceivedItemDesktop selected={selected} />
+          <MessageItemDesktop selected={selected} setSelected={setSelected} />
         ) : (
           <Box
             sx={{

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import LoginFrame from 'src/components/Desktop/LoginFrame';
-import { Formik } from 'formik';
+import { Formik, ErrorMessage } from 'formik';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import Button from 'src/components/Desktop/Button/Confirm';
 import InputLabelFooter from 'src/components/Desktop/InputLabel/InputLabelFooter';
@@ -9,9 +9,12 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 import httpService from 'src/utils/httpService';
+import P2E from 'src/utils/P2E';
+import * as Yup from 'yup';
 
 function LoginDesktop() {
   const history = useHistory();
+  const [message, setMessage] = useState(null);
 
   return (
     <LoginFrame>
@@ -35,18 +38,26 @@ function LoginDesktop() {
           initialValues={{
             input: ''
           }}
-          validate={values => {
-            const errors = {};
-            if (!values.input) {
-              errors.input = 'نام کاربری اجباری می باشد';
-            }
-            return errors;
-          }}
-          onSubmit={(values, { setErrors, setSubmitting }) => {
+          // validate={values => {
+          //   const errors = {};
+          //   if (!values.input) {
+          //     errors.input = 'نام کاربری اجباری می باشد';
+          //   }
+          //   return errors;
+          // }}
+          validationSchema={Yup.object().shape({
+            input: Yup.string()
+              .min(11, 'شماره باید ۱۱ رقم باشد')
+              .max(11)
+              .required('شماره تلفن اجباری می باشد')
+          })}
+          onSubmit={(values, { setErrors, setSubmitting, setFieldError }) => {
             setSubmitting(true);
             httpService
               .get(
-                `${API_BASE_URL}/api/users/login_or_register?mobile=${values.input}`
+                `${API_BASE_URL}/api/users/login_or_register?mobile=${P2E(
+                  values.input
+                )}`
               )
               .then(res => {
                 if (res.status === 204) {
@@ -61,19 +72,28 @@ function LoginDesktop() {
                         history.push({
                           pathname: `/otp`,
                           state: {
-                            mobile: values.input,
+                            mobile: P2E(values.input),
                             lastUpdate: result.data.last_update
                           }
                         });
                       } else console.log('error');
                     });
-                } else if (res.status === 200) setSubmitting(false);
-                history.push({
-                  pathname: '/entry',
-                  state: {
-                    mobile: values.input
-                  }
-                });
+                } else if (res.status === 200) {
+                  setSubmitting(false);
+                  history.push({
+                    pathname: '/entry',
+                    state: {
+                      mobile: values.input
+                    }
+                  });
+                } else {
+                  setSubmitting(false);
+                  setMessage('مشکلی رخ داده است');
+                }
+              })
+              .catch(error => {
+                setSubmitting(false);
+                setFieldError('input', 'مشکلی رخ داده است');
               });
           }}
         >
@@ -116,7 +136,14 @@ function LoginDesktop() {
                     }}
                     value={values.input}
                     onChange={handleChange}
+                    error={Boolean(touched.input && errors.input)}
+                    helperText={touched.input && errors.input}
                   />
+                  {/* {message && ( */}
+                  {/* <ErrorMessage name="input">
+                    <div style={{ color: 'red' }}>{'تست'}</div>
+                  </ErrorMessage> */}
+                  {/* )} */}
                 </Box>
               </div>
               <Box

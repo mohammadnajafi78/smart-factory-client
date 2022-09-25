@@ -101,9 +101,9 @@ function EntryDesktop(props) {
             </LinkButton>
           </Box>
         </Box>
-        <Box>
-          <InputLabel>
-            شماره همراه یا ایمیل خود را اشتباه وارد کردید؟
+        <Box onClick={() => history.push('/login')}>
+          <InputLabel style={{ cursor: 'pointer' }}>
+            شماره همراه خود را اشتباه وارد کردید؟
           </InputLabel>
         </Box>
       </Box>
