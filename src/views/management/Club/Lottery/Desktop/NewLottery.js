@@ -16,15 +16,19 @@ import AdapterJalali from '@date-io/date-fns-jalali';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import Upload from 'src/assets/img/icons/upload.svg';
+import { useHistory } from 'react-router-dom';
+import MomentEn from 'src/utils/MomentEn';
 
 export default function NewCompetition() {
-  const [works, setWorks] = useState([]);
+  const [gifts, setGifts] = useState([]);
+  const history = useHistory();
+
   useEffect(() => {
     httpService
-      .get(`${API_BASE_URL}/api/users/user_type/activity_list`)
+      .get(`${API_BASE_URL}/api/management/club/gifts/select_list/`)
       .then(res => {
         if (res.status === 200) {
-          setWorks(res.data);
+          setGifts(res.data);
         }
       });
   }, []);
@@ -48,28 +52,35 @@ export default function NewCompetition() {
       >
         <Formik
           initialValues={{
-            // field: data?.user_type_list,
-            // company: data?.company?.name,
-            company: ''
-            // address: data?.company?.location_info?.address
+            name: '',
+            date: new Date(),
+            credit: 0,
+            description: '',
+            gift: ''
           }}
-          validate={values => {
-            const errors = {};
-            if (!values.input) {
-              errors.username = 'نام کاربری اجباری می باشد';
-            }
-            return errors;
-          }}
-          onSubmit={async (values, { setErrors, setSubmitting }) => {
-            // httpsService
-            //   .post(`${API_BASE_URL}/api/users/add_user_type/`, {
-            //     user_type: selected
-            //   })
-            //   .then(res => {
-            //     if (res.status === 200) {
-            //       history.push('/home');
-            //     }
-            //   });
+          // validate={values => {
+          //   const errors = {};
+          //   if (!values.input) {
+          //     errors.username = 'نام کاربری اجباری می باشد';
+          //   }
+          //   return errors;
+          // }}
+          onSubmit={(values, { setErrors, setSubmitting }) => {
+            setSubmitting(true);
+            httpService
+              .post(`${API_BASE_URL}/api/management/club/lottery/`, {
+                name: values.name,
+                date: MomentEn(values.date),
+                credit: values.credit,
+                description: values.description,
+                gift: values.gift
+              })
+              .then(res => {
+                if (res.status === 201) {
+                  setSubmitting(false);
+                  history.push('/management/club/lottery');
+                }
+              });
           }}
         >
           {({
@@ -106,7 +117,7 @@ export default function NewCompetition() {
                 <Box sx={{ mt: 3 }}>
                   <InputLabel>عنوان قرعه کشی</InputLabel>
                   <TextField
-                    id="company"
+                    id="name"
                     aria-describedby="my-helper-text"
                     fullWidth
                     // placeholder="رمز عبور"
@@ -115,8 +126,8 @@ export default function NewCompetition() {
                       borderRadius: '4px',
                       margin: '6px 3px'
                     }}
-                    // value={values.company}
-                    // onChange={handleChange}
+                    value={values.name}
+                    onChange={handleChange}
                   />
                 </Box>
                 <Grid container spacing={2}>
@@ -125,8 +136,11 @@ export default function NewCompetition() {
                       <InputLabel>اعتبار تا</InputLabel>
                       <LocalizationProvider dateAdapter={AdapterJalali}>
                         <DatePicker
-                          //   value={}
-                          //   onChange={newValue => {}}
+                          id="date"
+                          value={values.date}
+                          onChange={newValue => {
+                            setFieldValue('date', newValue);
+                          }}
                           renderInput={params => (
                             <TextField
                               {...params}
@@ -144,51 +158,30 @@ export default function NewCompetition() {
                     <Box sx={{ mt: 3 }}>
                       <InputLabel>امتیاز</InputLabel>
                       <TextField
-                        id="company"
+                        id="credit"
                         aria-describedby="my-helper-text"
                         fullWidth
                         // placeholder="رمز عبور"
+                        type={'number'}
+                        InputProps={{ inputProps: { min: 0 } }}
                         sx={{
                           background: '#F2F2F2',
                           borderRadius: '4px'
                           //   margin: '6px 3px'
                         }}
-                        // value={values.company}
-                        // onChange={handleChange}
+                        value={values.credit}
+                        onChange={handleChange}
                       />
                     </Box>
                   </Grid>
                 </Grid>
-                <Grid container spacing={2}>
-                  <Grid item xs={6}>
-                    <Box sx={{ mt: 3 }}>
-                      <InputLabel>سطح کاربری</InputLabel>
-                      <Autocomplete
-                        multiple
-                        fullWidth
-                        disablePortal
-                        id="field"
-                        limitTags={1}
-                        options={works}
-                        getOptionLabel={option => option.translate}
-                        defaultValue={values.field}
-                        renderInput={params => <TextField {...params} />}
-                        // onChange={(event, values) => {
-                        //   setFieldValue('field', values);
-                        // }}
-                        isOptionEqualToValue={(option, value) =>
-                          option.translate === value.translate
-                        }
-                      />
-                    </Box>
-                  </Grid>
-                </Grid>
+
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <Box sx={{ mt: 3 }}>
                       <InputLabel>توضیحات بیش تر</InputLabel>
                       <TextField
-                        id="company"
+                        id="description"
                         aria-describedby="my-helper-text"
                         fullWidth
                         // placeholder="رمز عبور"
@@ -199,8 +192,8 @@ export default function NewCompetition() {
                         }}
                         multiline
                         rows={3}
-                        // value={values.company}
-                        // onChange={handleChange}
+                        value={values.description}
+                        onChange={handleChange}
                       />
                     </Box>
                   </Grid>
@@ -215,21 +208,26 @@ export default function NewCompetition() {
                 جایزه قرعه کشی
               </InputLabelHeader>
               <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                   <Box sx={{ mt: 3 }}>
-                    <InputLabel>جایزه ۱</InputLabel>
-                    <TextField
-                      id="company"
-                      aria-describedby="my-helper-text"
+                    <InputLabel>جایزه ها</InputLabel>
+                    <Autocomplete
+                      // multiple
                       fullWidth
-                      // placeholder="رمز عبور"
-                      sx={{
-                        background: '#F2F2F2',
-                        borderRadius: '4px',
-                        margin: '6px 3px'
+                      disablePortal
+                      id="gift"
+                      limitTags={2}
+                      options={gifts}
+                      getOptionLabel={option => option.name}
+                      // defaultValue={values.field}
+                      renderInput={params => <TextField {...params} />}
+                      onChange={(event, values) => {
+                        setFieldValue('gift', values.id);
                       }}
-                      // value={values.company}
-                      // onChange={handleChange}
+                      isOptionEqualToValue={(option, value) =>
+                        option.id === value.id
+                      }
+                      noOptionsText={'موردی یافت نشد'}
                     />
                   </Box>
                 </Grid>
@@ -254,6 +252,7 @@ export default function NewCompetition() {
                   //     })
                   //   }
                   style={{ width: '25%' }}
+                  type="submit"
                 >
                   {'ثبت قرعه کشی'}
                 </ConfirmButton>

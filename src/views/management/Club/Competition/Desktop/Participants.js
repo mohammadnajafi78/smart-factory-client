@@ -20,14 +20,15 @@ export default function Item({ data }) {
       }}
     >
       <img
-        src={data?.attach}
+        src={data?.files?.[0]?.file}
         style={{
           width: '100%',
           height: '222.03px',
           borderRadius: '8px',
-          borderBottom: '0.5px solid #D3D2D2',
+          // borderBottom: '0.5px solid #D3D2D2',
           paddingBottom: '6px'
         }}
+        alt={data?.name}
       />
       <Box
         sx={{
@@ -67,7 +68,9 @@ export default function Item({ data }) {
         </InputLabel>
         <Rating value={data?.overall_rate} size="small" readOnly />
       </Box>
-      <InputLabel style={{ color: '#00346D' }}>نام و نام خانوادگی</InputLabel>
+      <InputLabel style={{ color: '#00346D' }}>
+        {data?.user?.first_name + ' ' + data?.user?.last_name}
+      </InputLabel>
     </Box>
   );
 }

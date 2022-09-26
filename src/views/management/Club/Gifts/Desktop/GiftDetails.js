@@ -4,9 +4,13 @@ import InputLabel from 'src/components/Desktop/InputLabel';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import { Star } from 'react-feather';
 import GiftReceiverTable from './GiftReceiverTable';
+import { useState } from 'react';
+import MomentFa from 'src/utils/MomentFa';
 // import Participants from './Participants';
 
-export default function GiftDetails() {
+export default function GiftDetails(props) {
+  const [data, setData] = useState(props.location.state.data[0]);
+
   return (
     <>
       <Box sx={{ mb: 2, width: '100%' }}>
@@ -24,7 +28,7 @@ export default function GiftDetails() {
           }}
         >
           <InputLabelHeader style={{ color: '#00346D' }}>
-            هاردیسک یک ترابایت
+            {data?.name}
           </InputLabelHeader>
           <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
             <Grid container spacing={2}>
@@ -34,12 +38,12 @@ export default function GiftDetails() {
                     اعتبار تا:
                   </InputLabel>
                   <InputLabel style={{ color: '#335D8A' }}>
-                    {'تاریخ'}
+                    {MomentFa(data?.expire_date)}
                   </InputLabel>
                 </div>
               </Grid>
               <Grid item xs={6}>
-                <div style={{ display: 'inline-flex' }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center' }}>
                   <InputLabel style={{ color: '#00AAB5' }}>امتیاز:</InputLabel>
                   <Box
                     sx={{
@@ -60,7 +64,7 @@ export default function GiftDetails() {
                       {/* {data.gift_grade
                       ? data.gift_grade
                       : data.gift_detail.gift_grade} */}
-                      5000
+                      {data?.credit}
                     </InputLabel>
                     <Star style={{ width: '27px', height: '18px' }} />
                   </Box>
@@ -71,12 +75,9 @@ export default function GiftDetails() {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <div style={{ display: 'inline-flex' }}>
-                <InputLabel style={{ color: '#00AAB5' }}>
-                  {' '}
-                  دسته بندی:
-                </InputLabel>
+                <InputLabel style={{ color: '#00AAB5' }}>دسته بندی:</InputLabel>
                 <InputLabel style={{ color: '#335D8A' }}>
-                  {'هدایای تبلیغاتی'}
+                  {data?.gift_type_info?.translate}
                 </InputLabel>
               </div>
             </Grid>
@@ -89,12 +90,7 @@ export default function GiftDetails() {
                     توضیحات:
                   </InputLabel>
                   <InputLabel style={{ color: '#335D8A' }}>
-                    نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است. لورم
-                    ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-                    استفاده از طراحان گرافیک است. لورم ایپسوم متن ساختگی با
-                    تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان
-                    گرافیک است. لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از
-                    صنعت چاپ، و با استفاده از طراحان گرافیک است.
+                    {data?.description}
                   </InputLabel>
                 </div>
               </Grid>

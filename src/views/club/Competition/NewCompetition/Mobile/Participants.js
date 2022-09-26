@@ -1,16 +1,13 @@
+import React, { useState } from 'react';
 import { Box, Rating } from '@mui/material';
-import React from 'react';
-import { ChevronLeft, Star } from 'react-feather';
-// import { NavLink } from 'react-router-dom';
-import InputLabel from 'src/components/Mobile/InputLabel';
-import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 import { useHistory } from 'react-router-dom';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
-import Image from 'src/assets/img/06.jpg';
-import Comment from 'src/assets/img/icons/comment.svg';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
 export default function Item({ data }) {
+  const [selected, setSelected] = useState(data);
   const history = useHistory();
+
   return (
     <Box
       sx={{
@@ -32,12 +29,12 @@ export default function Item({ data }) {
       // }
     >
       <img
-        src={data?.files[0].file}
+        src={selected?.files[0]?.file}
         style={{
           width: '100%',
           height: '222.03px',
           borderRadius: '8px',
-          borderBottom: '0.5px solid #D3D2D2',
+          padding: '4px',
           paddingBottom: '6px'
         }}
       />
@@ -52,21 +49,24 @@ export default function Item({ data }) {
           width: '100%'
         }}
       >
-        {/* <Box> */}
-        {/* <img src={Comment} /> */}
-        <Rating value={data?.overall_rate} size="small" readOnly />
-        {/* </Box> */}
-        {/* <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-            padding: '0px',
-            gap: '8px'
+        <Rating
+          value={selected?.overall_rate}
+          size="small"
+          precision={0.1}
+          readOnly={selected?.rates?.length > 0 ? true : false}
+          onChange={(event, newValue) => {
+            httpService
+              .post(`${API_BASE_URL}/api/club/match_rate/`, {
+                participant_id: selected?.id,
+                rate: newValue
+              })
+              .then(res => {
+                if (res.status === 200) {
+                  setSelected(res.data);
+                }
+              });
           }}
-        >
-
-        </Box> */}
+        />
       </Box>
     </Box>
   );

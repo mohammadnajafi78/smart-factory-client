@@ -294,6 +294,7 @@ export default function ProfileDesktop(props) {
                         sx={{
                           width: '94%'
                         }}
+                        noOptionsText={'موردی یافت نشد'}
                       />
                     </Box>
                     <Box sx={{ mt: 2 }}>
@@ -315,6 +316,7 @@ export default function ProfileDesktop(props) {
                         sx={{
                           width: '94%'
                         }}
+                        noOptionsText={'موردی یافت نشد'}
                       />
                     </Box>
                     <Box sx={{ mt: 2 }}>
@@ -396,6 +398,7 @@ export default function ProfileDesktop(props) {
                         sx={{
                           width: '94%'
                         }}
+                        noOptionsText={'موردی یافت نشد'}
                       />
                     </Box>
                     <Box sx={{ mt: 2 }}>

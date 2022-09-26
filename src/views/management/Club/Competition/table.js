@@ -51,8 +51,22 @@ const CompetitionTable = props => {
   const [sort, setSort] = useState('');
   const [startDate, setStartDate] = React.useState(new Date());
   const [endDate, setEndDate] = React.useState(new Date());
+  const [reset, setReset] = useState(false);
+  const [state, setState] = useState(null);
 
   const history = useHistory();
+
+  useEffect(() => {
+    setFilter('');
+    setSort('');
+  }, [reset]);
+
+  useEffect(() => {
+    if (filter.length === 0 && sort.length === 0 && reset === true) {
+      getData(page, rowsPerPage, '');
+      setReset(false);
+    }
+  }, [filter, sort]);
 
   useEffect(() => {
     setColumns([
@@ -82,6 +96,45 @@ const CompetitionTable = props => {
                     fullWidth
                     placeholder="نام"
                     value={filterList[index]}
+                    onChange={event => {
+                      if (event.target.value) {
+                        filterList[index][0] = event.target.value;
+                        onChange(filterList[index], index, column);
+                      } else {
+                        filterList[index] = [];
+                        onChange(filterList[index], index, column);
+                      }
+                    }}
+                  />
+                </FormControl>
+              );
+            }
+          }
+        }
+      },
+      {
+        name: 'participant_count',
+        label: 'تعداد شرکت کننده',
+        options: {
+          // customBodyRender: (value, tableMeta, updateValue) => {
+          //   return value?.length;
+          // },
+          filter: true,
+          filterType: 'custom',
+          filterOptions: {
+            display: (filterList, onChange, index, column) => {
+              return (
+                <FormControl>
+                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
+                    تعداد شرکت کنندگان
+                  </InputLabel>
+                  <TextField
+                    id="name"
+                    aria-describedby="my-helper-text"
+                    fullWidth
+                    placeholder="تعداد شرکت کنندگان"
+                    value={filterList[index]}
+                    type={'number'}
                     onChange={event => {
                       if (event.target.value) {
                         filterList[index][0] = event.target.value;
@@ -221,40 +274,125 @@ const CompetitionTable = props => {
           }
         }
       },
+
       {
-        name: 'winner_count',
-        label: 'تعداد شرکت کننده',
+        name: 'status',
+        label: 'وضعیت',
         options: {
+          customBodyRender: value => {
+            return (
+              <>
+                {value.toLowerCase() === 'performing' ? (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '3px 6px !important',
+                      background: '#CCEEF0',
+                      borderRadius: '4px',
+                      color: '#00AAB5'
+                    }}
+                  >
+                    <InputLabel style={{ color: '#00AAB5', paddingLeft: 0 }}>
+                      در حال برگزاری
+                    </InputLabel>
+                  </Box>
+                ) : value.toLowerCase() === 'finished' ? (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '3px 6px !important',
+                      background: '#FDE8E8',
+                      borderRadius: '4px',
+                      color: '#F4777C !important'
+                    }}
+                  >
+                    <InputLabel style={{ color: '#F4777C', paddingLeft: 0 }}>
+                      برگزار شده
+                    </InputLabel>
+                  </Box>
+                ) : (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '3px 6px !important',
+                      background: '#F3F3F3',
+                      borderRadius: '4px'
+                      // color: '#F3F3F3 !important'
+                    }}
+                  >
+                    <InputLabel style={{ color: '#A7A5A6', paddingLeft: 0 }}>
+                      برگزار نشده
+                    </InputLabel>
+                  </Box>
+                )}
+              </>
+            );
+          },
           filter: true,
           filterType: 'custom',
           filterOptions: {
-            customBodyRender: (value, tableMeta, updateValue) => {
-              console.log('value', value);
-              return value.length;
-            },
             display: (filterList, onChange, index, column) => {
               return (
-                <FormControl>
+                <FormControl sx={{ marginTop: '10px' }}>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    تعداد شرکت کنندگان
+                    وضعیت
                   </InputLabel>
-                  <TextField
-                    id="name"
-                    aria-describedby="my-helper-text"
-                    fullWidth
-                    placeholder="تعداد شرکت کنندگان"
-                    value={filterList[index]}
-                    type={'number'}
-                    onChange={event => {
-                      if (event.target.value) {
-                        filterList[index][0] = event.target.value;
-                        onChange(filterList[index], index, column);
-                      } else {
-                        filterList[index] = [];
-                        onChange(filterList[index], index, column);
-                      }
+                  <ToggleButtonGroup
+                    color="primary"
+                    value={state}
+                    exclusive
+                    onChange={(event, newValue) => {
+                      setState(newValue);
+
+                      if (newValue?.toLowerCase() === 'performing')
+                        filterList[index][0] = 'در حال برگزاری';
+                      else if (newValue?.toLowerCase() === 'pending')
+                        filterList[index][0] = 'برگزار نشده';
+                      else if (newValue?.toLowerCase() === 'finished')
+                        filterList[index][0] = 'برگزار شده';
+                      else filterList[index] = [];
+                      onChange(filterList[index], index, column);
                     }}
-                  />
+                    sx={{
+                      marginTop: '5px',
+                      direction: 'ltr',
+                      justifyContent: 'flex-end'
+                    }}
+                  >
+                    <ToggleButton
+                      value="PERFORMING"
+                      sx={{
+                        fontFamily: 'IRANSans'
+                      }}
+                    >
+                      در حال برگزاری
+                    </ToggleButton>
+                    <ToggleButton
+                      value="FINISHED"
+                      sx={{
+                        fontFamily: 'IRANSans'
+                      }}
+                    >
+                      برگزار شده
+                    </ToggleButton>
+                    <ToggleButton
+                      value="PENDING"
+                      sx={{
+                        fontFamily: 'IRANSans'
+                      }}
+                    >
+                      برگزار نشده
+                    </ToggleButton>
+                  </ToggleButtonGroup>
                 </FormControl>
               );
             }
@@ -262,12 +400,13 @@ const CompetitionTable = props => {
         }
       }
     ]);
-  }, []);
+  }, [state]);
 
   function getData(page, rowsPerPage, search) {
+    console.log('filer', filter);
     httpService
       .post(
-        `${API_BASE_URL}/api/management/club/matches/?limit=${rowsPerPage}&offset=${page}${
+        `${API_BASE_URL}/api/management/club/matches/match_list/?limit=${rowsPerPage}&offset=${page}${
           filter !== '' ? `&${filter}` : ''
         }`,
         {
@@ -296,8 +435,15 @@ const CompetitionTable = props => {
           delete item['name'];
         }
         break;
-      case 'start_date':
+      case 'participant_count':
         if (filterList[2][0]) {
+          item['participant_count'] = filterList[2][0];
+          filterType = '';
+        } else {
+          delete item['participant_count'];
+        }
+      case 'start_date':
+        if (filterList[3][0]) {
           item['start_date'] = startDate;
           filterType = '';
         } else {
@@ -305,20 +451,29 @@ const CompetitionTable = props => {
         }
         break;
       case 'end_date':
-        if (filterList[3][0]) {
+        if (filterList[4][0]) {
           item['end_date'] = endDate;
           filterType = '';
         } else {
           delete item['end_date'];
         }
         break;
-      case 'winner_count':
-        if (filterList[4][0]) {
-          item['winner_count'] = filterList[4][0];
+      case 'status':
+        if (filterList[5][0]) {
+          console.log('filterlist', filterList[5][0]);
+          item['status'] =
+            filterList[5][0] == 'در حال برگزاری'
+              ? 'PERFORMING'
+              : filterList[5][0] == 'برگزار شده'
+              ? 'FINISHED'
+              : 'PENDING';
           filterType = '';
         } else {
-          delete item['winner_count'];
+          delete item['status'];
+          setState(null);
         }
+        break;
+
         break;
       default:
         item = item;
@@ -353,8 +508,11 @@ const CompetitionTable = props => {
       case 'end_date':
         itemSort['end_date'] = direction;
         break;
-      case 'winner_count':
-        itemSort['winner_count'] = direction;
+      case 'participant_count':
+        itemSort['participant_count'] = direction;
+        break;
+      case 'status':
+        itemSort['status'] = direction;
         break;
       default:
         itemSort = itemSort;
@@ -376,10 +534,32 @@ const CompetitionTable = props => {
     history.push({
       pathname: '/management/club/competition/details',
       state: {
-        rowData,
-        rowState
+        data: data.filter(f => f.match_num === rowData[0])
       }
     });
+  }
+
+  function onRowsDelete(rowsDeleted, newData) {
+    const matchNums = [];
+    rowsDeleted.data.map((item, index) => {
+      matchNums.push(data[item.index].match_num);
+    });
+
+    httpService
+      .post(`${API_BASE_URL}/api/management/club/matches/match_delete/`, {
+        match_nums: matchNums
+      })
+      .then(res => {
+        if (res.status === 200) {
+          getData(page, rowsPerPage, '');
+        }
+      });
+  }
+
+  function onRowSelectionChange(rowsSelectedData, allRows, rowsSelected) {
+    // console.log('rowsSelectedData', rowsSelectedData);
+    // console.log('allRows', allRows);
+    // console.log('rowsSelected', rowsSelected);
   }
 
   return (
@@ -414,6 +594,13 @@ const CompetitionTable = props => {
       page={page}
       filter={filter}
       sort={sort}
+      setReset={setReset}
+      onRowSelectionChange={(rowsSelectedData, allRows, rowsSelected) =>
+        onRowSelectionChange(rowsSelectedData, allRows, rowsSelected)
+      }
+      onRowsDelete={(rowsDeleted, newData) =>
+        onRowsDelete(rowsDeleted, newData)
+      }
       getData={(page, rowsPerPage, search) =>
         getData(page, rowsPerPage, search)
       }

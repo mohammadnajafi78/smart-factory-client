@@ -603,10 +603,6 @@ const CommentTable = props => {
                     // getOptionLabel={option => option.label}
                     disableClearable
                     onChange={(event, values, reason, details) => {
-                      console.log('event', event);
-                      console.log('values', values);
-                      console.log('reason', reason);
-                      console.log('details', details);
                       setProvinceId(values.id);
                       filterList[index][0] = values.label;
                       onChange(filterList[index], index, column);
@@ -615,6 +611,7 @@ const CommentTable = props => {
                       background: '#F2F2F2',
                       borderRadius: '4px'
                     }}
+                    noOptionsText={'موردی یافت نشد'}
                   />
                 </FormControl>
               );
@@ -657,6 +654,7 @@ const CommentTable = props => {
                       background: '#F2F2F2',
                       borderRadius: '4px'
                     }}
+                    noOptionsText={'موردی یافت نشد'}
                   />
                 </FormControl>
               );
@@ -708,6 +706,7 @@ const CommentTable = props => {
                       background: '#F2F2F2',
                       borderRadius: '4px'
                     }}
+                    noOptionsText={'موردی یافت نشد'}
                   />
                 </FormControl>
               );

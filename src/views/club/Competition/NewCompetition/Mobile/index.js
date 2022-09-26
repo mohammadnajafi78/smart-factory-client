@@ -24,33 +24,6 @@ export default function NewCompetitionMobile(props) {
     >
       <Box
         sx={{
-          width: '100%',
-          height: '140px',
-          background:
-            'linear-gradient(91.93deg, #5FD5DD -10%, #00AAB5 109.19%)',
-          opacity: 0.7,
-          filter: 'drop-shadow(1px 1px 8px rgba(82, 82, 82, 0.25))',
-          borderRadius: '10px'
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            padding: '0px',
-            gap: '11.92px',
-            padding: '12px'
-          }}
-        >
-          <InputLabelHeader style={{ color: '#00346D' }}>
-            مسابقه جدید
-          </InputLabelHeader>
-          <InputLabel style={{ color: '#00346D' }}>{awards?.name}</InputLabel>
-        </Box>
-      </Box>
-      <Box
-        sx={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',

@@ -32,6 +32,7 @@ const AllUsersTable = props => {
   const [confirmed, setConfirmed] = useState(null);
   const [sort, setSort] = useState('');
   const [filter, setFilter] = useState('');
+  const [reset, setReset] = useState(false);
 
   const history = useHistory();
 
@@ -66,6 +67,18 @@ const AllUsersTable = props => {
         }
       });
   }, []);
+
+  useEffect(() => {
+    setFilter('');
+    setSort('');
+  }, [reset]);
+
+  useEffect(() => {
+    if (filter.length === 0 && sort.length === 0 && reset === true) {
+      getData(page, rowsPerPage, '');
+      setReset(false);
+    }
+  }, [filter, sort]);
 
   useEffect(() => {
     setColumns([
@@ -212,10 +225,6 @@ const AllUsersTable = props => {
                     // getOptionLabel={option => option.label}
                     disableClearable
                     onChange={(event, values, reason, details) => {
-                      console.log('event', event);
-                      console.log('values', values);
-                      console.log('reason', reason);
-                      console.log('details', details);
                       setProvinceId(values.id);
                       filterList[index][0] = values.label;
                       onChange(filterList[index], index, column);
@@ -224,6 +233,7 @@ const AllUsersTable = props => {
                       background: '#F2F2F2',
                       borderRadius: '4px'
                     }}
+                    noOptionsText={'موردی یافت نشد'}
                   />
                 </FormControl>
               );
@@ -266,6 +276,7 @@ const AllUsersTable = props => {
                       background: '#F2F2F2',
                       borderRadius: '4px'
                     }}
+                    noOptionsText={'موردی یافت نشد'}
                   />
                 </FormControl>
               );
@@ -278,7 +289,7 @@ const AllUsersTable = props => {
         label: 'فعالیت',
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return value.map(option => option.translate).toString();
+            return value?.map(option => option.translate).toString();
           },
           filter: true,
           filterType: 'custom',
@@ -291,7 +302,7 @@ const AllUsersTable = props => {
                     فعالیت
                   </InputLabel>
                   <Autocomplete
-                    multiple
+                    // multiple
                     disablePortal
                     id="field"
                     limitTags={1}
@@ -302,9 +313,8 @@ const AllUsersTable = props => {
                     renderValue={selected => selected.join(', ')}
                     disableClearable
                     onChange={(event, values) => {
-                      if (values.length > 0) {
-                        filterList[index][values?.length - 1] =
-                          values[values?.length - 1].translate;
+                      if (values) {
+                        filterList[index][0] = values.translate;
                         onChange(filterList[index], index, column);
                       } else {
                         filterList[index] = [];
@@ -318,6 +328,7 @@ const AllUsersTable = props => {
                       background: '#F2F2F2',
                       borderRadius: '4px'
                     }}
+                    noOptionsText={'موردی یافت نشد'}
                   />
                 </FormControl>
               );
@@ -356,7 +367,9 @@ const AllUsersTable = props => {
                       onChange(filterList[index], index, column);
                     }}
                     sx={{
-                      marginTop: '5px'
+                      marginTop: '5px',
+                      direction: 'ltr',
+                      justifyContent: 'flex-end'
                     }}
                   >
                     <ToggleButton
@@ -370,8 +383,8 @@ const AllUsersTable = props => {
                     <ToggleButton
                       value="false"
                       sx={{
-                        fontFamily: 'IRANSans',
-                        borderLeft: '1px solid rgba(0,0,0, 0.12) !important'
+                        fontFamily: 'IRANSans'
+                        // borderLeft: '1px solid rgba(0,0,0, 0.12) !important'
                       }}
                     >
                       تکمیل نشده
@@ -415,7 +428,9 @@ const AllUsersTable = props => {
                       onChange(filterList[index], index, column);
                     }}
                     sx={{
-                      marginTop: '5px'
+                      marginTop: '5px',
+                      direction: 'ltr',
+                      justifyContent: 'flex-end'
                       // width: '82%',
                       // borderLeft: '1px solid rgba(0,0,0, 0.12)'
                     }}
@@ -439,8 +454,8 @@ const AllUsersTable = props => {
                     <ToggleButton
                       value="NA"
                       sx={{
-                        fontFamily: 'IRANSans',
-                        borderLeft: '1px solid rgba(0,0,0, 0.12) !important'
+                        fontFamily: 'IRANSans'
+                        // borderLeft: '1px solid rgba(0,0,0, 0.12) !important'
                       }}
                     >
                       نامشخص
@@ -504,26 +519,26 @@ const AllUsersTable = props => {
         break;
       case 'location.province_name':
         if (filterList[4][0]) {
-          item['province_name'] = filterList[4][0];
+          item['location_province'] = filterList[4][0];
           filterType = '';
         } else {
-          delete item['province_name'];
+          delete item['location_province'];
         }
         break;
       case 'location.city_name':
         if (filterList[5][0]) {
-          item['city_name'] = filterList[5][0];
+          item['location_city'] = filterList[5][0];
           filterType = '';
         } else {
-          delete item['city_name'];
+          delete item['location_city'];
         }
         break;
       case 'user.user_type_list':
         if (filterList[6][0]) {
-          item['user_type'] = filterList[6][0];
+          item['user_type__activity_translate__item_fa'] = filterList[6][0];
           filterType = '';
         } else {
-          delete item['user_type'];
+          delete item['user_type__activity_translate__item_fa'];
         }
         break;
       case 'user.profile_is_completed':
@@ -618,6 +633,28 @@ const AllUsersTable = props => {
     });
   }
 
+  function onRowsDelete(rowsDeleted, newData) {
+    const userIds = [];
+    rowsDeleted.data.map((item, index) => {
+      userIds.push(data[item.index].user.user_id);
+    });
+
+    httpService
+      .post(`${API_BASE_URL}/api/management/user/user_delete/`, {
+        user_ids: userIds
+      })
+      .then(res => {
+        if (res.status === 200) {
+          getData(page, rowsPerPage, '');
+        }
+      });
+  }
+  function onRowSelectionChange(rowsSelectedData, allRows, rowsSelected) {
+    // console.log('rowsSelectedData', rowsSelectedData);
+    // console.log('allRows', allRows);
+    // console.log('rowsSelected', rowsSelected);
+  }
+
   return (
     <Table
       title={'لیست'}
@@ -629,10 +666,17 @@ const AllUsersTable = props => {
       page={page}
       filter={filter}
       sort={sort}
+      setReset={setReset}
       getData={(page, rowsPerPage, search) =>
         getData(page, rowsPerPage, search)
       }
       onRowClick={(rowData, rowState) => onRowClick(rowData, rowState)}
+      onRowsDelete={(rowsDeleted, newData) =>
+        onRowsDelete(rowsDeleted, newData)
+      }
+      onRowSelectionChange={(rowsSelectedData, allRows, rowsSelected) =>
+        onRowSelectionChange(rowsSelectedData, allRows, rowsSelected)
+      }
       onFilterChange={(column, filterList, type) =>
         onFilterChange(column, filterList, type)
       }

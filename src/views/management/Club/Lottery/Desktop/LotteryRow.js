@@ -45,7 +45,7 @@ function a11yProps(index) {
   };
 }
 
-export default function CompetitionDesktop() {
+export default function LotteryRow(props) {
   const [value, setValue] = React.useState(0);
   const [userData, setUserData] = React.useState(null);
   const theme = useTheme();
@@ -93,10 +93,10 @@ export default function CompetitionDesktop() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <LotteryDetails />
+          <LotteryDetails {...props} />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <LotteryReceiverTable />
+          <LotteryReceiverTable {...props} />
         </TabPanel>
       </SwipeableViews>
     </Box>

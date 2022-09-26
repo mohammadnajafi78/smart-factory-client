@@ -125,6 +125,7 @@ function LocationDesktop() {
                     isOptionEqualToValue={(option, value) =>
                       option.label === value.label
                     }
+                    noOptionsText={'موردی یافت نشد'}
                   />
                 </Box>
                 <Box sx={{ mt: 2 }}>
@@ -144,6 +145,7 @@ function LocationDesktop() {
                     isOptionEqualToValue={(option, value) =>
                       option.label === value.label
                     }
+                    noOptionsText={'موردی یافت نشد'}
                   />
                 </Box>
               </Box>

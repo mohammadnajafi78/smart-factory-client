@@ -1,37 +1,83 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes, { string } from 'prop-types';
 
-import { TextField, FormControl, InputLabel } from '@mui/material';
+import {
+  Box,
+  Card,
+  Typography,
+  Link,
+  TextField,
+  FormControl,
+  InputLabel,
+  Autocomplete,
+  colors,
+  ToggleButtonGroup,
+  ToggleButton,
+  Tab
+} from '@mui/material';
+
 import { Link as RouterLink, useHistory } from 'react-router-dom';
+import SearchIcon from '@mui/icons-material/Search';
+import DownloadIcon from '@mui/icons-material/FileUpload';
+import ViewColumnIcon from '@mui/icons-material/ViewColumn';
+import FilterIcon from '@mui/icons-material/FilterAlt';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { consoleSandbox } from '@sentry/utils';
 import FaTOEn from 'src/utils/FaTOEn';
 import MomentFa from 'src/utils/MomentFa';
-import Datepicker from 'src/components/Desktop/Datepicker';
+// import Datepicker from 'src/components/Desktop/Datepicker';
+import AdapterJalali from '@date-io/date-fns-jalali';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import moment from 'jalali-moment';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
-import { Plus } from 'react-feather';
+import { Plus, Star } from 'react-feather';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import Table from 'src/components/Desktop/Table';
+import { ArrowBack, ArrowRight } from '@mui/icons-material';
 
 const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
 let item = {};
+let itemSort = {};
 const LotteryTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(15);
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
-  const [sort, setSort] = useState('');
   const [filter, setFilter] = useState('');
+  const [sort, setSort] = useState('');
+  const [startDate, setStartDate] = React.useState(new Date());
+  const [endDate, setEndDate] = React.useState(new Date());
+  const [reset, setReset] = useState(false);
+  const [state, setState] = useState(null);
 
   const history = useHistory();
 
   useEffect(() => {
+    setFilter('');
+    setSort('');
+  }, [reset]);
+
+  useEffect(() => {
+    if (filter.length === 0 && sort.length === 0 && reset === true) {
+      getData(page, rowsPerPage, '');
+      setReset(false);
+    }
+  }, [filter, sort]);
+
+  useEffect(() => {
     setColumns([
+      {
+        name: 'id',
+        label: 'شناسه',
+        options: {
+          filter: false,
+          display: false
+        }
+      },
       {
         name: 'name',
         label: 'نام',
@@ -68,11 +114,28 @@ const LotteryTable = props => {
         }
       },
       {
-        name: 'start_date',
-        label: 'تاریخ شروع',
+        name: 'credit',
+        label: 'امتیاز',
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return MomentFa(value);
+            return (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  padding: '3px 6px !important',
+                  background: '#CCEEF0',
+                  borderRadius: '4px',
+                  color: '#00AAB5',
+                  width: '35%'
+                }}
+              >
+                <InputLabel style={{ color: '#00AAB5' }}>{value}</InputLabel>
+                <Star style={{ width: '27px', height: '18px' }} />
+              </Box>
+            );
           },
           filter: true,
           filterType: 'custom',
@@ -81,46 +144,25 @@ const LotteryTable = props => {
               return (
                 <FormControl>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    تاریخ شروع
+                    امتیاز
                   </InputLabel>
-
-                  <LocalizationProvider dateAdapter={AdapterJalali}>
-                    <DatePicker
-                      mask="____/__/__"
-                      value={
-                        filterList[index].length > 0
-                          ? moment
-                              .from(
-                                p2e(
-                                  moment(filterList[index][0]).format(
-                                    'YYYY/MM/DD'
-                                  )
-                                ),
-                                'fa',
-                                'YYYY/MM/DD'
-                              )
-                              .locale('en')
-                          : new Date()
+                  <TextField
+                    id="name"
+                    aria-describedby="my-helper-text"
+                    fullWidth
+                    placeholder="امتیاز"
+                    value={filterList[index]}
+                    type={'number'}
+                    onChange={event => {
+                      if (event.target.value) {
+                        filterList[index][0] = event.target.value;
+                        onChange(filterList[index], index, column);
+                      } else {
+                        filterList[index] = [];
+                        onChange(filterList[index], index, column);
                       }
-                      onChange={newValue => {
-                        if (newValue) {
-                          filterList[index][0] = MomentFa(newValue);
-                          onChange(filterList[index], index, column);
-                        } else {
-                          filterList[index] = [];
-                          onChange(filterList[index], index, column);
-                        }
-                      }}
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          sx={{
-                            background: '#F2F2F2'
-                          }}
-                        />
-                      )}
-                    />
-                  </LocalizationProvider>
+                    }}
+                  />
                 </FormControl>
               );
             }
@@ -128,8 +170,8 @@ const LotteryTable = props => {
         }
       },
       {
-        name: 'end_date',
-        label: 'تاریخ پایان',
+        name: 'date',
+        label: 'تاریخ انقضا',
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
             return MomentFa(value);
@@ -139,8 +181,13 @@ const LotteryTable = props => {
           filterOptions: {
             display: (filterList, onChange, index, column) => {
               return (
-                <FormControl>
-                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
+                <FormControl sx={{ marginTop: '10px' }}>
+                  <InputLabel
+                    sx={{
+                      transform: 'none',
+                      position: 'initial'
+                    }}
+                  >
                     تاریخ پایان
                   </InputLabel>
                   <LocalizationProvider dateAdapter={AdapterJalali}>
@@ -163,6 +210,7 @@ const LotteryTable = props => {
                       }
                       onChange={newValue => {
                         if (newValue) {
+                          setEndDate(moment(newValue).format('YYYY-MM-DD'));
                           filterList[index][0] = MomentFa(newValue);
                           onChange(filterList[index], index, column);
                         } else {
@@ -187,39 +235,99 @@ const LotteryTable = props => {
         }
       },
       {
-        name: 'winner_count',
-        label: 'تعداد شرکت کننده',
+        name: 'status',
+        label: 'وضعیت',
         options: {
+          customBodyRender: value => {
+            console.log('value', value);
+            return (
+              <>
+                {value?.toLowerCase() === 'performing' ? (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '3px 6px !important',
+                      background: '#CCEEF0',
+                      borderRadius: '4px',
+                      color: '#00AAB5',
+                      width: '35%'
+                    }}
+                  >
+                    <InputLabel style={{ color: '#00AAB5', paddingLeft: 0 }}>
+                      در جریان
+                    </InputLabel>
+                  </Box>
+                ) : (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '3px 6px !important',
+                      background: '#FDE8E8',
+                      borderRadius: '4px',
+                      color: '#F4777C !important',
+                      width: '35%'
+                    }}
+                  >
+                    <InputLabel style={{ color: '#F4777C', paddingLeft: 0 }}>
+                      خاتمه یافته
+                    </InputLabel>
+                  </Box>
+                )}
+              </>
+            );
+          },
           filter: true,
           filterType: 'custom',
           filterOptions: {
-            customBodyRender: (value, tableMeta, updateValue) => {
-              console.log('value', value);
-              return value.length;
-            },
             display: (filterList, onChange, index, column) => {
               return (
-                <FormControl>
+                <FormControl sx={{ marginTop: '10px' }}>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    تعداد شرکت کنندگان
+                    وضعیت
                   </InputLabel>
-                  <TextField
-                    id="name"
-                    aria-describedby="my-helper-text"
-                    fullWidth
-                    placeholder="تعداد شرکت کنندگان"
-                    value={filterList[index]}
-                    type={'number'}
-                    onChange={event => {
-                      if (event.target.value) {
-                        filterList[index][0] = event.target.value;
-                        onChange(filterList[index], index, column);
-                      } else {
-                        filterList[index] = [];
-                        onChange(filterList[index], index, column);
-                      }
+                  <ToggleButtonGroup
+                    color="primary"
+                    value={state}
+                    exclusive
+                    onChange={(event, newValue) => {
+                      setState(newValue);
+
+                      if (newValue?.toLowerCase() === 'performing')
+                        filterList[index][0] = 'در جریان';
+                      else if (newValue?.toLowerCase() === 'finished')
+                        filterList[index][0] = 'خاتمه یافته';
+                      else filterList[index] = [];
+                      onChange(filterList[index], index, column);
                     }}
-                  />
+                    sx={{
+                      marginTop: '5px',
+                      direction: 'ltr',
+                      justifyContent: 'flex-end'
+                    }}
+                  >
+                    <ToggleButton
+                      value="PERFORMING"
+                      sx={{
+                        fontFamily: 'IRANSans'
+                      }}
+                    >
+                      در جریان
+                    </ToggleButton>
+                    <ToggleButton
+                      value="FINISHED"
+                      sx={{
+                        fontFamily: 'IRANSans'
+                      }}
+                    >
+                      خاتمه یافته
+                    </ToggleButton>
+                  </ToggleButtonGroup>
                 </FormControl>
               );
             }
@@ -227,16 +335,19 @@ const LotteryTable = props => {
         }
       }
     ]);
-  }, []);
+  }, [state]);
 
-  function getData(page, rowsPerPage) {
+  function getData(page, rowsPerPage, search) {
+    console.log('filer', filter);
     httpService
-      .get(
-        `${API_BASE_URL}/api/management/club/matches/?limit=${page *
-          rowsPerPage +
-          rowsPerPage}&offset=${page}${filter !== '' ? `&${filter}` : ''}${
-          sort !== '' ? `&${sort}` : ''
-        }`
+      .post(
+        `${API_BASE_URL}/api/management/club/lottery/lottery_list/?limit=${rowsPerPage}&offset=${page}${
+          filter !== '' ? `&${filter}` : ''
+        }`,
+        {
+          order: sort,
+          search: search
+        }
       )
 
       .then(res => {
@@ -247,84 +358,44 @@ const LotteryTable = props => {
       });
   }
 
-  useEffect(() => {
-    getData(page, rowsPerPage);
-  }, []);
-
   function onFilterChange(column, filterList, type) {
     let filterType = '';
 
     switch (column) {
-      case 'user.first_name':
+      case 'name':
         if (filterList[1][0]) {
-          item['first_name'] = filterList[1][0];
+          item['name'] = filterList[0][1];
           filterType = '__contains';
         } else {
-          delete item['first_name'];
+          delete item['name'];
         }
         break;
-      case 'user.last_name':
+      case 'credit':
         if (filterList[2][0]) {
-          item['last_name'] = filterList[2][0];
-          filterType = '__contains';
+          item['credit'] = filterList[2][0];
+          filterType = '';
         } else {
-          delete item['last_name'];
+          delete item['credit'];
         }
+
         break;
-      case 'user.mobile':
+      case 'date':
         if (filterList[3][0]) {
-          item['mobile'] = FaTOEn(filterList[3][0]);
-          filterType = '__contains';
+          item['date'] = endDate;
+          filterType = '';
         } else {
-          delete item['mobile'];
+          delete item['date'];
         }
         break;
-      case 'location.province_name':
+      case 'status':
         if (filterList[4][0]) {
-          item['province_name'] = filterList[4][0];
+          item['status'] =
+            filterList[4][0] == 'در جریان' ? 'PERFORMING' : 'FINISHED';
+
           filterType = '';
         } else {
-          delete item['province_name'];
-        }
-        break;
-      case 'location.city_name':
-        if (filterList[5][0]) {
-          item['city_name'] = filterList[5][0];
-          filterType = '';
-        } else {
-          delete item['city_name'];
-        }
-        break;
-      case 'user.user_type_list':
-        if (filterList[6][0]) {
-          item['user_type'] = filterList[6][0];
-          filterType = '';
-        } else {
-          delete item['user_type'];
-        }
-        break;
-      case 'user.profile_is_completed':
-        if (filterList[7][0]) {
-          item['profile_is_complete'] =
-            filterList[7][0] == 'تکمیل شده' ? 'True' : 'False';
-          filterType = '';
-        } else {
-          delete item['profile_is_complete'];
-          setCompleted(null);
-        }
-        break;
-      case 'user.is_verified':
-        if (filterList[8][0]) {
-          item['is_verified'] =
-            filterList[8][0] == 'تایید شده'
-              ? 'Verified'
-              : filterList[8][0] == 'تایید نشده'
-              ? 'Rejected'
-              : 'NA';
-          filterType = '';
-        } else {
-          delete item['is_verified'];
-          setConfirmed(false);
+          delete item['status'];
+          setState(null);
         }
         break;
       default:
@@ -333,7 +404,6 @@ const LotteryTable = props => {
 
     let temp = item;
     let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
-    console.log('filterItems', filterItems);
 
     let str = '';
     if (filterItems?.length > 0) {
@@ -347,28 +417,18 @@ const LotteryTable = props => {
   }
 
   function onColumnSortChange(changedColumn, direction) {
-    let itemSort = {};
     switch (changedColumn) {
-      case 'user.user_id':
-        itemSort['user_id'] = direction;
+      case 'name':
+        itemSort['name'] = direction;
         break;
-      case 'user.first_name':
-        itemSort['first_name'] = direction;
+      case 'date':
+        itemSort['date'] = direction;
         break;
-      case 'user.last_name':
-        itemSort['last_name'] = direction;
+      case 'credit':
+        itemSort['credit'] = direction;
         break;
-      case 'user.mobile':
-        itemSort['mobile'] = direction;
-        break;
-      case 'location.province_name':
-        itemSort['mobile'] = direction;
-        break;
-      case 'location.city_name':
-        itemSort['mobile'] = direction;
-        break;
-      case 'user.user_type_list':
-        itemSort['mobile'] = direction;
+      case 'status':
+        itemSort['status'] = direction;
         break;
       default:
         itemSort = itemSort;
@@ -377,23 +437,45 @@ const LotteryTable = props => {
     let temp = itemSort;
     let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
 
-    let str = '';
+    let str = [];
     if (filterItems?.length > 0) {
       filterItems.map((itm, index) => {
-        str = itm[1] === 'asc' ? itm[0] : `-${itm[0]}`;
+        str.push(itm[1] === 'asc' ? itm[0] : `-${itm[0]}`);
       });
     }
-    setSort('order=' + str);
+    setSort(str);
   }
 
   function onRowClick(rowData, rowState) {
     history.push({
       pathname: '/management/club/lottery/details',
       state: {
-        rowData,
-        rowState
+        data: data.filter(f => f.id === rowData[0])
       }
     });
+  }
+
+  function onRowsDelete(rowsDeleted, newData) {
+    const lotteryIds = [];
+    rowsDeleted.data.map((item, index) => {
+      lotteryIds.push(data[item.index].id);
+    });
+
+    httpService
+      .post(`${API_BASE_URL}/api/management/club/lottery/delete/`, {
+        lottery_ids: lotteryIds
+      })
+      .then(res => {
+        if (res.status === 200) {
+          getData(page, rowsPerPage, '');
+        }
+      });
+  }
+
+  function onRowSelectionChange(rowsSelectedData, allRows, rowsSelected) {
+    // console.log('rowsSelectedData', rowsSelectedData);
+    // console.log('allRows', allRows);
+    // console.log('rowsSelected', rowsSelected);
   }
 
   return (
@@ -428,7 +510,16 @@ const LotteryTable = props => {
       page={page}
       filter={filter}
       sort={sort}
-      getData={(page, rowsPerPage) => getData(page, rowsPerPage)}
+      setReset={setReset}
+      onRowSelectionChange={(rowsSelectedData, allRows, rowsSelected) =>
+        onRowSelectionChange(rowsSelectedData, allRows, rowsSelected)
+      }
+      onRowsDelete={(rowsDeleted, newData) =>
+        onRowsDelete(rowsDeleted, newData)
+      }
+      getData={(page, rowsPerPage, search) =>
+        getData(page, rowsPerPage, search)
+      }
       onRowClick={(rowData, rowState) => onRowClick(rowData, rowState)}
       onFilterChange={(column, filterList, type) =>
         onFilterChange(column, filterList, type)
@@ -438,10 +529,6 @@ const LotteryTable = props => {
       }
     />
   );
-};
-
-LotteryTable.propTypes = {
-  className: PropTypes.string
 };
 
 export default LotteryTable;

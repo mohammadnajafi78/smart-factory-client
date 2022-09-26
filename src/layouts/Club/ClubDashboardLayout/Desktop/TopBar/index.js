@@ -64,7 +64,8 @@ const TopBar = ({
         margin: 0,
         padding: 0,
         boxShadow: 'none',
-        width: '90%'
+        width: '100%',
+        paddingLeft: '120px'
       }}
     >
       <Toolbar className={classes.toolbar}>

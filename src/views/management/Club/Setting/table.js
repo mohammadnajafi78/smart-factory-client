@@ -600,6 +600,7 @@ const AllUsersTable = props => {
                       background: '#F2F2F2',
                       borderRadius: '4px'
                     }}
+                    noOptionsText={'موردی یافت نشد'}
                   />
                 </FormControl>
               );
@@ -642,6 +643,7 @@ const AllUsersTable = props => {
                       background: '#F2F2F2',
                       borderRadius: '4px'
                     }}
+                    noOptionsText={'موردی یافت نشد'}
                   />
                 </FormControl>
               );
@@ -700,6 +702,7 @@ const AllUsersTable = props => {
                       background: '#F2F2F2',
                       borderRadius: '4px'
                     }}
+                    noOptionsText={'موردی یافت نشد'}
                   />
                 </FormControl>
               );

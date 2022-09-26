@@ -179,6 +179,7 @@ export default function NewGiftBox() {
                         isOptionEqualToValue={(option, value) =>
                           option.translate === value.translate
                         }
+                        noOptionsText={'موردی یافت نشد'}
                       />
                     </Box>
                   </Grid>

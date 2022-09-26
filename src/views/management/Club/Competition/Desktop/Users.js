@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Grid } from '@mui/material';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import Participants from './Participants';
 
-export default function Users() {
+export default function Users(props) {
+  const [data, setData] = useState(props.location.state.data[0]);
+
   return (
     <Box
       sx={{
@@ -20,7 +22,7 @@ export default function Users() {
     >
       <InputLabelHeader style={{ color: '#00346D' }}>مسابقه ۱</InputLabelHeader>
       <Grid container spacing={2}>
-        {[1, 2, 3].map((item, index) => {
+        {data?.participants.map((item, index) => {
           return (
             <Grid xs={4} item>
               <Participants data={item} />

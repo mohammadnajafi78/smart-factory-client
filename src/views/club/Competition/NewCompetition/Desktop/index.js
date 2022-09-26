@@ -22,35 +22,6 @@ export default function NewCompetitionDesktop({
         padding: '0px 0px 50px'
       }}
     >
-      {/* <Box
-        sx={{
-          width: '95%',
-          height: '140px',
-          background:
-            'linear-gradient(91.93deg, #5FD5DD -10%, #00AAB5 109.19%)',
-          opacity: 0.7,
-          filter: 'drop-shadow(1px 1px 8px rgba(82, 82, 82, 0.25))',
-          borderRadius: '10px'
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            padding: '0px',
-            gap: '11.92px',
-            padding: '12px'
-          }}
-        >
-          <InputLabelHeader style={{ color: '#00346D' }}>
-            {selected?.name}
-          </InputLabelHeader>
-          <InputLabel style={{ color: '#00346D' }}>
-            {selected?.description}
-          </InputLabel>
-        </Box>
-      </Box> */}
       <Box
         sx={{
           display: 'flex',
@@ -58,7 +29,6 @@ export default function NewCompetitionDesktop({
           alignItems: 'flex-start',
           padding: '0px 16px 0px',
           gap: '30px',
-          // borderBottom: '0.5px solid #D3D2D2',
           width: '100%'
         }}
       >
@@ -140,20 +110,18 @@ export default function NewCompetitionDesktop({
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
-          padding: '12px',
           width: '100%',
           gap: '10px',
-          marginTop: '6px'
+          marginTop: '20px',
+          marginBottom: '30px'
         }}
       >
-        <InputLabelHeader style={{ marginBottom: '6px' }}>
+        <InputLabelHeader style={{ padding: '0px 20px' }}>
           شرکت کنندگان
         </InputLabelHeader>
         <Box
           sx={{
             display: 'grid',
-            // flexDirection: 'column',
-            // alignItems: 'center',
             padding: '0px',
             gap: '16px',
             width: '100%',

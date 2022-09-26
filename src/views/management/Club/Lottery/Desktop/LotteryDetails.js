@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Grid } from '@mui/material';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import { Plus, Star } from 'react-feather';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import Iphone13 from 'src/assets/img/icons/iphone13.jpeg';
+import MomentFa from 'src/utils/MomentFa';
 
-export default function LotteryDetails() {
+export default function LotteryDetails(props) {
+  const [data, setData] = useState(props.location.state.data[0]);
+  // const [data, setData] = useState([]);
+
   return (
     <>
       <Box sx={{ mb: 2, width: '100%' }}>
@@ -24,7 +28,7 @@ export default function LotteryDetails() {
           }}
         >
           <InputLabelHeader style={{ color: '#00346D' }}>
-            هاردیسک یک ترابایت
+            {data?.name}
           </InputLabelHeader>
           <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
             <Grid container spacing={2}>
@@ -34,12 +38,12 @@ export default function LotteryDetails() {
                     اعتبار تا:
                   </InputLabel>
                   <InputLabel style={{ color: '#335D8A' }}>
-                    {'تاریخ'}
+                    {MomentFa(data?.date)}
                   </InputLabel>
                 </div>
               </Grid>
               <Grid item xs={6}>
-                <div style={{ display: 'inline-flex' }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center' }}>
                   <InputLabel style={{ color: '#00AAB5' }}>امتیاز:</InputLabel>
                   <Box
                     sx={{
@@ -60,7 +64,7 @@ export default function LotteryDetails() {
                       {/* {data.gift_grade
                       ? data.gift_grade
                       : data.gift_detail.gift_grade} */}
-                      5000
+                      {data?.credit}
                     </InputLabel>
                     <Star style={{ width: '27px', height: '18px' }} />
                   </Box>
@@ -68,19 +72,16 @@ export default function LotteryDetails() {
               </Grid>
             </Grid>
           </Box>
-          <Grid container spacing={2}>
+          {/* <Grid container spacing={2}>
             <Grid item xs={12}>
               <div style={{ display: 'inline-flex' }}>
-                <InputLabel style={{ color: '#00AAB5' }}>
-                  {' '}
-                  دسته بندی:
-                </InputLabel>
+                <InputLabel style={{ color: '#00AAB5' }}>دسته بندی:</InputLabel>
                 <InputLabel style={{ color: '#335D8A' }}>
                   {'هدایای تبلیغاتی'}
                 </InputLabel>
               </div>
             </Grid>
-          </Grid>
+          </Grid> */}
           <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -89,12 +90,7 @@ export default function LotteryDetails() {
                     توضیحات:
                   </InputLabel>
                   <InputLabel style={{ color: '#335D8A' }}>
-                    نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است. لورم
-                    ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-                    استفاده از طراحان گرافیک است. لورم ایپسوم متن ساختگی با
-                    تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان
-                    گرافیک است. لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از
-                    صنعت چاپ، و با استفاده از طراحان گرافیک است.
+                    {data?.description}
                   </InputLabel>
                 </div>
               </Grid>
@@ -103,14 +99,13 @@ export default function LotteryDetails() {
         </Box>
       </Box>
       <Grid container spacing={2}>
-        <Grid item xs={4}>
+        {/* <Grid item xs={4}>
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'flex-start',
               padding: '16px',
-              gap: '50px',
               background: '#FFFFFF',
               borderRadius: '8px',
               width: '100%',
@@ -124,26 +119,20 @@ export default function LotteryDetails() {
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
+                justifyContent: 'center',
                 alignItems: 'center',
                 padding: '0px',
-                width: '100%'
+                width: '100%',
+                height: '100%'
               }}
             >
               <InputLabel style={{ color: '#6685A7' }}>
                 برنده هنوز مشخص نشده است
               </InputLabel>
-              <ConfirmButton
-                style={{ width: '130px', marginTop: '15px' }}
-                onClick={() => {}}
-                variant="contained"
-              >
-                <Plus />
-                <div>تعیین برنده</div>
-              </ConfirmButton>
             </Box>
           </Box>
-        </Grid>
-        <Grid item xs={4}>
+        </Grid> */}
+        <Grid item xs={6}>
           <Box
             sx={{
               display: 'flex',
@@ -175,12 +164,16 @@ export default function LotteryDetails() {
                 width: '100%'
               }}
             >
-              <img src={Iphone13} width="71px" height={'110px'} />
-              <InputLabel>هندزفری</InputLabel>
+              <img
+                src={data?.gift_detail?.image}
+                width="71px"
+                height={'110px'}
+              />
+              <InputLabel>{data?.gift_detail?.name}</InputLabel>
             </Box>
           </Box>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={6}>
           <Box
             sx={{
               display: 'flex',
@@ -198,7 +191,7 @@ export default function LotteryDetails() {
             <InputLabelHeader
               style={{ color: '#00346D', fontSize: '40px', fontWeight: 700 }}
             >
-              781
+              {data?.participants?.length}
             </InputLabelHeader>
             <InputLabel style={{ color: '#00346D' }}>
               تعداد شرکت کنندگان

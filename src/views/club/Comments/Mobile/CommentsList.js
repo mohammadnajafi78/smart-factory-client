@@ -143,6 +143,7 @@ export default function CommentsList() {
               getOptionLabel={option =>
                 option.suggestion_type + ' ' + option.name
               }
+              noOptionsText={'موردی یافت نشد'}
             />
           </Box>
         </Box>

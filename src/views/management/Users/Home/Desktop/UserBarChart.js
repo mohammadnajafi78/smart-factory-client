@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   BarChart,
   Bar,
@@ -9,53 +9,79 @@ import {
   Legend,
   Label
 } from 'recharts';
+import httpService from 'src/utils/httpService';
+import MomentEn from 'src/utils/MomentEn';
+import { API_BASE_URL } from 'src/utils/urls';
 
-const data = [
-  {
-    name: 'Page A',
-    uv: 4000,
-    pv: 2400,
-    amt: 2400
-  },
-  {
-    name: 'Page B',
-    uv: 3000,
-    pv: 1398,
-    amt: 2210
-  },
-  {
-    name: 'Page C',
-    uv: 2000,
-    pv: 9800,
-    amt: 2290
-  },
-  {
-    name: 'Page D',
-    uv: 2780,
-    pv: 3908,
-    amt: 2000
-  },
-  {
-    name: 'Page E',
-    uv: 1890,
-    pv: 4800,
-    amt: 2181
-  },
-  {
-    name: 'Page F',
-    uv: 2390,
-    pv: 3800,
-    amt: 2500
-  },
-  {
-    name: 'Page G',
-    uv: 3490,
-    pv: 4300,
-    amt: 2100
-  }
-];
+// const data = [
+//   {
+//     name: 'Page A',
+//     uv: 4000,
+//     pv: 2400,
+//     amt: 2400
+//   },
+//   {
+//     name: 'Page B',
+//     uv: 3000,
+//     pv: 1398,
+//     amt: 2210
+//   },
+//   {
+//     name: 'Page C',
+//     uv: 2000,
+//     pv: 9800,
+//     amt: 2290
+//   },
+//   {
+//     name: 'Page D',
+//     uv: 2780,
+//     pv: 3908,
+//     amt: 2000
+//   },
+//   {
+//     name: 'Page E',
+//     uv: 1890,
+//     pv: 4800,
+//     amt: 2181
+//   },
+//   {
+//     name: 'Page F',
+//     uv: 2390,
+//     pv: 3800,
+//     amt: 2500
+//   },
+//   {
+//     name: 'Page G',
+//     uv: 3490,
+//     pv: 4300,
+//     amt: 2100
+//   }
+// ];
 
 export default function UserBarChart() {
+  const [data, setData] = useState();
+
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 7);
+
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  useEffect(() => {
+    httpService
+      .get(
+        `${API_BASE_URL}/api/management/user/user_count/?create_date__lt=${MomentEn(
+          tomorrow
+        )}&create_date__gt=${MomentEn(yesterday)}&period=daily`
+      )
+      .then(res => {
+        if (res.status == 200) {
+          setData(res.data);
+        }
+      });
+  }, []);
+
   return (
     <BarChart
       width={630}
@@ -76,11 +102,11 @@ export default function UserBarChart() {
       </defs>
 
       <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
-      <YAxis tick={{ dx: -30 }} />
+      <XAxis dataKey="date" />
+      <YAxis tick={{ dx: -30 }} domain={[0, 'dataMax + 10']} />
       {/* <Tooltip /> */}
       {/* <Legend /> */}
-      <Bar dataKey="pv" fill="url(#colorUv2)" barSize={40} />
+      <Bar dataKey="count" fill="url(#colorUv2)" barSize={40} />
       {/* <Bar dataKey="uv" fill="#82ca9d" /> */}
     </BarChart>
   );

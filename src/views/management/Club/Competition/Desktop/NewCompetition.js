@@ -4,19 +4,25 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel';
 import { Formik } from 'formik';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
+import IconButton from 'src/components/Desktop/Button/Icon';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import AdapterJalali from '@date-io/date-fns-jalali';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { Plus } from 'react-feather';
+import p2e from 'src/utils/P2E';
+import { useHistory } from 'react-router-dom';
 
 export default function NewCompetition() {
-  const [works, setWorks] = useState([]);
+  const [gifts, setGifts] = useState([]);
+  const history = useHistory();
+
   useEffect(() => {
     httpService
-      .get(`${API_BASE_URL}/api/users/user_type/activity_list`)
+      .get(`${API_BASE_URL}/api/management/club/gifts/select_list/`)
       .then(res => {
         if (res.status === 200) {
-          setWorks(res.data);
+          setGifts(res.data);
         }
       });
   }, []);
@@ -40,28 +46,40 @@ export default function NewCompetition() {
       >
         <Formik
           initialValues={{
-            // field: data?.user_type_list,
-            // company: data?.company?.name,
-            company: ''
-            // address: data?.company?.location_info?.address
+            name: '',
+            start_date: new Date(),
+            end_date: new Date(),
+            winner_count: 0,
+            description: '',
+            details: '',
+            prize: []
           }}
-          validate={values => {
-            const errors = {};
-            if (!values.input) {
-              errors.username = 'نام کاربری اجباری می باشد';
-            }
-            return errors;
-          }}
-          onSubmit={async (values, { setErrors, setSubmitting }) => {
-            // httpsService
-            //   .post(`${API_BASE_URL}/api/users/add_user_type/`, {
-            //     user_type: selected
-            //   })
-            //   .then(res => {
-            //     if (res.status === 200) {
-            //       history.push('/home');
-            //     }
-            //   });
+          // validate={values => {
+          //   const errors = {};
+          //   if (!values.input) {
+          //     errors.username = 'نام کاربری اجباری می باشد';
+          //   }
+          //   return errors;
+          // }}
+          onSubmit={(values, { setErrors, setSubmitting }) => {
+            console.log('values', values);
+            setSubmitting(true);
+            httpService
+              .post(`${API_BASE_URL}/api/management/club/matches/`, {
+                name: values.name,
+                start_date: values.start_date,
+                end_date: values.end_date,
+                winner_count: values.winner_count,
+                description: values.description,
+                details: values.details,
+                prize: values.prize
+              })
+              .then(res => {
+                if (res.status === 201) {
+                  setSubmitting(false);
+                  history.push('/management/club/competition');
+                }
+              });
           }}
         >
           {({
@@ -98,7 +116,7 @@ export default function NewCompetition() {
                 <Box sx={{ mt: 3 }}>
                   <InputLabel>عنوان مسابقه</InputLabel>
                   <TextField
-                    id="company"
+                    id="name"
                     aria-describedby="my-helper-text"
                     fullWidth
                     // placeholder="رمز عبور"
@@ -107,8 +125,8 @@ export default function NewCompetition() {
                       borderRadius: '4px',
                       margin: '6px 3px'
                     }}
-                    // value={values.company}
-                    // onChange={handleChange}
+                    value={values.name}
+                    onChange={handleChange}
                   />
                 </Box>
                 <Grid container spacing={2}>
@@ -117,8 +135,11 @@ export default function NewCompetition() {
                       <InputLabel>زمان شروع</InputLabel>
                       <LocalizationProvider dateAdapter={AdapterJalali}>
                         <DatePicker
-                          //   value={}
-                          //   onChange={newValue => {}}
+                          id="start_date"
+                          value={values.start_date}
+                          onChange={newValue => {
+                            setFieldValue('start_date', newValue);
+                          }}
                           renderInput={params => (
                             <TextField
                               {...params}
@@ -137,8 +158,11 @@ export default function NewCompetition() {
                       <InputLabel>زمان پایان</InputLabel>
                       <LocalizationProvider dateAdapter={AdapterJalali}>
                         <DatePicker
-                          //   value={}
-                          //   onChange={newValue => {}}
+                          id="end_date"
+                          value={values.end_date}
+                          onChange={newValue => {
+                            setFieldValue('end_date', newValue);
+                          }}
                           renderInput={params => (
                             <TextField
                               {...params}
@@ -154,7 +178,7 @@ export default function NewCompetition() {
                   </Grid>
                 </Grid>
                 <Grid container spacing={2}>
-                  <Grid item xs={6}>
+                  {/* <Grid item xs={6}>
                     <Box sx={{ mt: 3 }}>
                       <InputLabel>کاربران هدف</InputLabel>
                       <Autocomplete
@@ -167,30 +191,38 @@ export default function NewCompetition() {
                         getOptionLabel={option => option.translate}
                         defaultValue={values.field}
                         renderInput={params => <TextField {...params} />}
-                        // onChange={(event, values) => {
-                        //   setFieldValue('field', values);
-                        // }}
+                        onChange={(event, values) => {
+                          setFieldValue('field', values);
+                        }}
                         isOptionEqualToValue={(option, value) =>
                           option.translate === value.translate
                         }
                       />
                     </Box>
-                  </Grid>
+                  </Grid> */}
                   <Grid item xs={6}>
                     <Box sx={{ mt: 3 }}>
-                      <InputLabel>شرکت کنندگان</InputLabel>
+                      <InputLabel>تعداد برندگان</InputLabel>
                       <TextField
-                        id="company"
+                        id="winner_count"
                         aria-describedby="my-helper-text"
                         fullWidth
+                        type="number"
+                        InputProps={{ inputProps: { min: 0 } }}
                         // placeholder="رمز عبور"
                         sx={{
                           background: '#F2F2F2',
                           borderRadius: '4px'
                           //   margin: '6px 3px'
                         }}
-                        // value={values.company}
-                        // onChange={handleChange}
+                        value={values.winner_count}
+                        onChange={(event, values) => {
+                          console.log('values', event.target.value);
+                          setFieldValue(
+                            'winner_count',
+                            p2e(event.target.value)
+                          );
+                        }}
                       />
                     </Box>
                   </Grid>
@@ -200,7 +232,7 @@ export default function NewCompetition() {
                     <Box sx={{ mt: 3 }}>
                       <InputLabel>معرفی مسابقه</InputLabel>
                       <TextField
-                        id="company"
+                        id="description"
                         aria-describedby="my-helper-text"
                         fullWidth
                         // placeholder="رمز عبور"
@@ -209,8 +241,8 @@ export default function NewCompetition() {
                           borderRadius: '4px',
                           margin: '6px 3px'
                         }}
-                        // value={values.company}
-                        // onChange={handleChange}
+                        value={values.description}
+                        onChange={handleChange}
                       />
                     </Box>
                   </Grid>
@@ -220,7 +252,7 @@ export default function NewCompetition() {
                     <Box sx={{ mt: 3 }}>
                       <InputLabel>توضیحات بیش تر</InputLabel>
                       <TextField
-                        id="company"
+                        id="details"
                         aria-describedby="my-helper-text"
                         fullWidth
                         // placeholder="رمز عبور"
@@ -231,8 +263,8 @@ export default function NewCompetition() {
                         }}
                         multiline
                         rows={3}
-                        // value={values.company}
-                        // onChange={handleChange}
+                        value={values.details}
+                        onChange={handleChange}
                       />
                     </Box>
                   </Grid>
@@ -247,44 +279,34 @@ export default function NewCompetition() {
                 جوایز
               </InputLabelHeader>
               <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                   <Box sx={{ mt: 3 }}>
-                    <InputLabel>جایزه ۱</InputLabel>
-                    <TextField
-                      id="company"
-                      aria-describedby="my-helper-text"
+                    <InputLabel>جایزه ها</InputLabel>
+                    <Autocomplete
+                      multiple
                       fullWidth
-                      // placeholder="رمز عبور"
-                      sx={{
-                        background: '#F2F2F2',
-                        borderRadius: '4px',
-                        margin: '6px 3px'
+                      disablePortal
+                      id="prize"
+                      limitTags={2}
+                      options={gifts}
+                      getOptionLabel={option => option.name}
+                      // defaultValue={values.field}
+                      renderInput={params => <TextField {...params} />}
+                      onChange={(event, values) => {
+                        setFieldValue(
+                          'prize',
+                          values.map(option => option.id)
+                        );
                       }}
-                      // value={values.company}
-                      // onChange={handleChange}
-                    />
-                  </Box>
-                </Grid>
-                <Grid item xs={6}>
-                  <Box sx={{ mt: 3 }}>
-                    <InputLabel>جایزه ۲</InputLabel>
-                    <TextField
-                      id="company"
-                      aria-describedby="my-helper-text"
-                      fullWidth
-                      // placeholder="رمز عبور"
-                      sx={{
-                        background: '#F2F2F2',
-                        borderRadius: '4px',
-                        margin: '6px 3px'
-                      }}
-                      // value={values.company}
-                      // onChange={handleChange}
+                      isOptionEqualToValue={(option, value) =>
+                        option.id === value.id
+                      }
+                      noOptionsText={'موردی یافت نشد'}
                     />
                   </Box>
                 </Grid>
               </Grid>
-              <Grid container spacing={2}>
+              {/* <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <Box sx={{ mt: 3 }}>
                     <InputLabel>جایزه ۳</InputLabel>
@@ -321,7 +343,7 @@ export default function NewCompetition() {
                     />
                   </Box>
                 </Grid>
-              </Grid>
+              </Grid> */}
               <Box
                 sx={{
                   display: 'flex',
@@ -331,17 +353,19 @@ export default function NewCompetition() {
                 }}
               >
                 <ConfirmButton
-                  disabled={false}
+                  disabled={isSubmitting}
                   variant="contained"
                   //   onClick={() =>
                   //     history.push({
-                  //       pathname: '/profile/detail',
+                  //       pathname: '/profile/details',
                   //       state: {
                   //         data: data
                   //       }
                   //     })
                   //   }
                   style={{ width: '25%' }}
+                  type="submit"
+                  loading={isSubmitting}
                 >
                   {'ثبت مسابقه'}
                 </ConfirmButton>

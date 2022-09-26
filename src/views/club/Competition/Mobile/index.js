@@ -77,10 +77,10 @@ export default function CompetitionMobile() {
             height: '100.92px'
           }}
         >
-          <InputLabelHeader style={{ color: '#00346D' }}>
+          <InputLabelHeader style={{ color: 'white' }}>
             مسابقه جدید
           </InputLabelHeader>
-          <InputLabel style={{ color: '#00346D' }}>
+          <InputLabel style={{ color: 'white' }}>
             {newComp && newComp[0]?.description}
           </InputLabel>
         </Box>

@@ -12,7 +12,8 @@ import {
   Autocomplete,
   colors,
   ToggleButtonGroup,
-  ToggleButton
+  ToggleButton,
+  IconButton
 } from '@mui/material';
 import MUIDataTable from 'mui-datatables';
 import { CacheProvider } from '@emotion/react';
@@ -26,6 +27,8 @@ import FilterIcon from '@mui/icons-material/FilterAlt';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import { consoleSandbox } from '@sentry/utils';
+import { Co2Sharp } from '@mui/icons-material';
+import { Delete } from '@mui/icons-material';
 
 const muiCache = createCache({
   key: 'mui-datatables',
@@ -373,6 +376,12 @@ let theme = createTheme({
 
 theme = responsiveFontSizes(theme);
 
+function isFunction(functionToCheck) {
+  return (
+    functionToCheck && {}.toString.call(functionToCheck) === '[object Function]'
+  );
+}
+
 const Table = props => {
   const [search, setSearch] = useState('');
 
@@ -398,9 +407,9 @@ const Table = props => {
     }
   };
 
-  useEffect(() => {
-    props.getData(props.page, props.rowsPerPage, search);
-  }, []);
+  // useEffect(() => {
+  //   props.getData(props.page, props.rowsPerPage, search);
+  // }, []);
 
   useEffect(() => {
     props.getData(props.page, props.rowsPerPage, search);
@@ -421,7 +430,7 @@ const Table = props => {
     enableNestedDataAccess: '.',
     //rowsPerPageOptions: rowsPerPageOptions,
     print: false,
-    //search: true,
+    search: props.search !== undefined ? props.search : true,
     responsive: 'vertical',
     //download: true,
     downloadOptions: {
@@ -501,13 +510,16 @@ const Table = props => {
         case 'changePage':
           changePage(tableState.page, tableState.rowsPerPage);
           break;
+        case 'resetFilters':
+          props.setReset(true);
+          break;
         // case 'sort':
         //   this.sort(tableState.page, tableState.sortOrder);
         //   break;
 
         // case 'filterChange'
         // default:
-        //   console.log('action not handled.', action, tableState);
+        //   console.log('action not handled.', action);
       }
     },
     onFilterChange: (column, filterList, type) => {
@@ -519,9 +531,39 @@ const Table = props => {
     onRowClick: (rowData, rowState) => {
       props.onRowClick(rowData, rowState);
     },
+    onRowsDelete: (rowsDeleted, newData) => {
+      props.onRowsDelete(rowsDeleted, newData);
+    },
     onSearchChange: text => {
       setSearch(text);
     },
+    onSearchClose: () => {
+      props.getData(props.page, props.rowsPerPage, '');
+    },
+    onRowSelectionChange: (rowsSelectedData, allRows, rowsSelected) => {
+      props.onRowSelectionChange(rowsSelectedData, allRows, rowsSelected);
+    },
+    customToolbarSelect: (selectedRows, displayData, setSelectedRows) => {
+      if (props.customToolbarSelectActive === true) {
+        return props.customToolbarSelect(
+          selectedRows,
+          displayData,
+          setSelectedRows
+        );
+      } else
+        return (
+          <IconButton
+            onClick={() => {
+              props.onRowsDelete(selectedRows);
+              setSelectedRows([]);
+            }}
+          >
+            <Delete style={{ color: 'white' }} />
+          </IconButton>
+        );
+    },
+    selectToolbarPlacement: 'replace',
+
     searchText: search,
     // searchProps: {
     //   onkeydown: e => {
@@ -534,7 +576,6 @@ const Table = props => {
     searchProps: {
       onKeyDown: e => {
         if (e.key === 'Enter') {
-          console.log('onKeyUp!');
           props.getData(props.page, props.rowsPerPage, search);
         }
       }

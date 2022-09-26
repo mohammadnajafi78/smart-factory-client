@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Grid } from '@mui/material';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import Participants from './Participants';
+import MomentFa from 'src/utils/MomentFa';
+import { filter } from 'lodash';
 
 export default function Details(props) {
-  console.log('competition props', props.location.state.rowData);
+  const [data, setData] = useState(props.location.state.data[0]);
 
   return (
     <Box>
@@ -23,7 +25,7 @@ export default function Details(props) {
         }}
       >
         <InputLabelHeader style={{ color: '#00346D' }}>
-          مسابقه ۱
+          {data?.name}
         </InputLabelHeader>
         <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
           <Grid container spacing={2}>
@@ -32,14 +34,64 @@ export default function Details(props) {
                 <InputLabel style={{ color: '#00AAB5' }}>
                   زمان برگزاری:
                 </InputLabel>
-                <InputLabel style={{ color: '#335D8A' }}>{'تاریخ'}</InputLabel>
+                <InputLabel style={{ color: '#335D8A' }}>
+                  {MomentFa(data?.start_date)}
+                </InputLabel>
               </div>
             </Grid>
             <Grid item xs={6}>
-              <div style={{ display: 'inline-flex' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center' }}>
                 <InputLabel style={{ color: '#00AAB5' }}>وضعیت:</InputLabel>
                 <InputLabel style={{ color: '#335D8A' }}>
-                  {'در جریان'}
+                  <>
+                    {data?.status?.toLowerCase() === 'performing' ? (
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          padding: '3px 6px !important',
+                          //   gap: '2px',
+                          // width: 54.1px,
+                          // height: '22px',
+                          background: '#CCEEF0',
+                          borderRadius: '4px',
+                          color: '#00AAB5'
+                        }}
+                      >
+                        <InputLabel
+                          style={{ color: '#00AAB5', paddingLeft: 0 }}
+                        >
+                          در حال برگزاری
+                        </InputLabel>
+                      </Box>
+                    ) : (
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          padding: '3px 6px !important',
+                          //   gap: '2px',
+                          // width: 54.1px,
+                          // height: '22px',
+                          background: '#FDE8E8',
+                          borderRadius: '4px',
+                          color: '#F4777C !important'
+                        }}
+                      >
+                        <InputLabel
+                          style={{ color: '#F4777C', paddingLeft: 0 }}
+                        >
+                          {data?.status?.toLowerCase() === 'finished'
+                            ? 'برگزار شده'
+                            : 'برگزار نشده'}
+                        </InputLabel>
+                      </Box>
+                    )}
+                  </>
                 </InputLabel>
               </div>
             </Grid>
@@ -53,12 +105,7 @@ export default function Details(props) {
                   توضیحات:
                 </InputLabel>
                 <InputLabel style={{ color: '#335D8A' }}>
-                  نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است. لورم
-                  ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-                  استفاده از طراحان گرافیک است. لورم ایپسوم متن ساختگی با تولید
-                  سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است.
-                  لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و
-                  با استفاده از طراحان گرافیک است.
+                  {data?.details}
                 </InputLabel>
               </div>
             </Grid>
@@ -92,7 +139,7 @@ export default function Details(props) {
               }}
             >
               <div>
-                {[1, 2, 3].map((item, key) => {
+                {data?.prizes.map((item, key) => {
                   return (
                     <InputLabel style={{ color: '#4F4C4D' }}>
                       {item?.name}
@@ -107,7 +154,7 @@ export default function Details(props) {
                   justifyContent: 'flex-end'
                 }}
               >
-                {[1, 2, 3].map((item, key) => {
+                {data?.prizes.map((item, key) => {
                   return (
                     <Box
                       sx={{
@@ -120,10 +167,11 @@ export default function Details(props) {
                         width: '73px',
                         height: '84px',
                         background: '#FFFFFF',
-                        borderRadius: '8px'
+                        borderRadius: '8px',
+                        backgroundColor: '#CCEEF0'
                       }}
                     >
-                      <img src={item?.image} width="44.26px" height="50px" />
+                      <img src={item?.image} width="100px" height="100px" />
                     </Box>
                   );
                 })}
@@ -149,7 +197,7 @@ export default function Details(props) {
             <InputLabelHeader
               style={{ color: '#00346D', fontSize: '40px', fontWeight: 700 }}
             >
-              ۷۸۱
+              {data?.participant_count}
             </InputLabelHeader>
             <InputLabel style={{ color: '#00346D' }}>
               تعداد شرکت کنندگان
@@ -157,34 +205,38 @@ export default function Details(props) {
           </Box>
         </Grid>
       </Grid>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start',
-          padding: '15px',
-          gap: '10px',
-          width: '100%',
-          backgroundColor: 'white',
-          borderRadius: '8px',
-          //   height: '200px',
-          mt: 3
-        }}
-      >
-        <InputLabelHeader style={{ color: '#00346D' }}>
-          برندگان مسابقه
-        </InputLabelHeader>
-        <Grid container spacing={2}>
-          {[1, 2, 3].map((item, index) => {
-            return (
-              <Grid xs={4} item>
-                <Participants data={item} />
-              </Grid>
-            );
-          })}
-        </Grid>
-      </Box>
+      {data?.status?.toLowerCase() === 'finished' && (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+            padding: '15px',
+            gap: '10px',
+            width: '100%',
+            backgroundColor: 'white',
+            borderRadius: '8px',
+            //   height: '200px',
+            mt: 3
+          }}
+        >
+          <InputLabelHeader style={{ color: '#00346D' }}>
+            برندگان مسابقه
+          </InputLabelHeader>
+          <Grid container spacing={2}>
+            {data?.participants
+              ?.filter(f => f.is_winner === true)
+              .map((item, index) => {
+                return (
+                  <Grid xs={4} item>
+                    <Participants data={item} />
+                  </Grid>
+                );
+              })}
+          </Grid>
+        </Box>
+      )}
     </Box>
   );
 }
