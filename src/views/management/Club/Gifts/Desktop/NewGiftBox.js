@@ -16,15 +16,34 @@ import AdapterJalali from '@date-io/date-fns-jalali';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import Upload from 'src/assets/img/icons/upload.svg';
+import { useHistory } from 'react-router-dom';
+import MomentEn from 'src/utils/MomentEn';
 
 export default function NewGiftBox() {
-  const [works, setWorks] = useState([]);
+  const [gifts, setGifts] = useState([]);
+  const [grades, setGrades] = useState([]);
+
+  const history = useHistory();
+
   useEffect(() => {
     httpService
-      .get(`${API_BASE_URL}/api/users/user_type/activity_list`)
+      .get(`${API_BASE_URL}/api/management/club/gifts/select_list/`)
       .then(res => {
         if (res.status === 200) {
-          setWorks(res.data);
+          setGifts(res.data);
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    httpService
+      .post(`${API_BASE_URL}/api/management/club/club_grade/grade_list/`, {
+        search: '',
+        order: ''
+      })
+      .then(res => {
+        if (res.status === 200) {
+          setGrades(res.data);
         }
       });
   }, []);
@@ -48,28 +67,32 @@ export default function NewGiftBox() {
       >
         <Formik
           initialValues={{
-            // field: data?.user_type_list,
-            // company: data?.company?.name,
-            company: ''
-            // address: data?.company?.location_info?.address
+            name: '',
+            valid_date: new Date(),
+            require_credit: 0,
+            require_grade: '',
+            description: ''
           }}
-          validate={values => {
-            const errors = {};
-            if (!values.input) {
-              errors.username = 'نام کاربری اجباری می باشد';
-            }
-            return errors;
-          }}
-          onSubmit={async (values, { setErrors, setSubmitting }) => {
-            // httpsService
-            //   .post(`${API_BASE_URL}/api/users/add_user_type/`, {
-            //     user_type: selected
-            //   })
-            //   .then(res => {
-            //     if (res.status === 200) {
-            //       history.push('/home');
-            //     }
-            //   });
+          // validate={values => {
+          //   const errors = {};
+          //   if (!values.input) {
+          //     errors.username = 'نام کاربری اجباری می باشد';
+          //   }
+          //   return errors;
+          // }}
+          onSubmit={(values, { setErrors, setSubmitting }) => {
+            setSubmitting(true);
+            httpService
+              .post(`${API_BASE_URL}/api/management/club/gift_box/`, values)
+              .then(res => {
+                if (res.status === 201) {
+                  setSubmitting(false);
+                  history.push('/management/club/gifts');
+                }
+              })
+              .catch(err => {
+                setSubmitting(false);
+              });
           }}
         >
           {({
@@ -106,7 +129,7 @@ export default function NewGiftBox() {
                 <Box sx={{ mt: 3 }}>
                   <InputLabel>عنوان صندوق</InputLabel>
                   <TextField
-                    id="company"
+                    id="name"
                     aria-describedby="my-helper-text"
                     fullWidth
                     // placeholder="رمز عبور"
@@ -115,8 +138,8 @@ export default function NewGiftBox() {
                       borderRadius: '4px',
                       margin: '6px 3px'
                     }}
-                    // value={values.company}
-                    // onChange={handleChange}
+                    value={values.name}
+                    onChange={handleChange}
                   />
                 </Box>
                 <Grid container spacing={2}>
@@ -125,8 +148,10 @@ export default function NewGiftBox() {
                       <InputLabel>اعتبار تا</InputLabel>
                       <LocalizationProvider dateAdapter={AdapterJalali}>
                         <DatePicker
-                          //   value={}
-                          //   onChange={newValue => {}}
+                          value={values.valid_date}
+                          onChange={newValue => {
+                            setFieldValue('valid_date', MomentEn(newValue));
+                          }}
                           renderInput={params => (
                             <TextField
                               {...params}
@@ -144,7 +169,7 @@ export default function NewGiftBox() {
                     <Box sx={{ mt: 3 }}>
                       <InputLabel>امتیاز</InputLabel>
                       <TextField
-                        id="company"
+                        id="require_credit"
                         aria-describedby="my-helper-text"
                         fullWidth
                         // placeholder="رمز عبور"
@@ -153,8 +178,10 @@ export default function NewGiftBox() {
                           borderRadius: '4px'
                           //   margin: '6px 3px'
                         }}
-                        // value={values.company}
-                        // onChange={handleChange}
+                        value={values.require_credit}
+                        onChange={handleChange}
+                        type="number"
+                        InputProps={{ inputProps: { min: 0 } }}
                       />
                     </Box>
                   </Grid>
@@ -164,45 +191,48 @@ export default function NewGiftBox() {
                     <Box sx={{ mt: 3 }}>
                       <InputLabel>سطح کاربری</InputLabel>
                       <Autocomplete
-                        multiple
+                        // multiple
                         fullWidth
                         disablePortal
-                        id="field"
+                        id="require_grade"
                         limitTags={1}
-                        options={works}
-                        getOptionLabel={option => option.translate}
-                        defaultValue={values.field}
+                        options={grades}
+                        getOptionLabel={option => option.name}
+                        // defaultValue={values.field}
                         renderInput={params => <TextField {...params} />}
-                        // onChange={(event, values) => {
-                        //   setFieldValue('field', values);
-                        // }}
+                        onChange={(event, values) => {
+                          setFieldValue('require_grade', values.id);
+                        }}
                         isOptionEqualToValue={(option, value) =>
-                          option.translate === value.translate
+                          option.name === value.name
                         }
                         noOptionsText={'موردی یافت نشد'}
                       />
                     </Box>
                   </Grid>
-                  <Grid item xs={6}>
+                </Grid>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
                     <Box sx={{ mt: 3 }}>
-                      <InputLabel>تعداد جوایز</InputLabel>
+                      <InputLabel>توضیحات بیش تر</InputLabel>
                       <TextField
-                        id="company"
+                        id="description"
                         aria-describedby="my-helper-text"
                         fullWidth
                         // placeholder="رمز عبور"
                         sx={{
                           background: '#F2F2F2',
-                          borderRadius: '4px'
-                          //   margin: '6px 3px'
+                          borderRadius: '4px',
+                          margin: '6px 3px'
                         }}
-                        // value={values.company}
-                        // onChange={handleChange}
+                        multiline
+                        rows={3}
+                        value={values.description}
+                        onChange={handleChange}
                       />
                     </Box>
                   </Grid>
                 </Grid>
-
                 <Divider
                   variant="middle"
                   sx={{ margin: '20px 0px', width: '98%' }}
@@ -212,77 +242,29 @@ export default function NewGiftBox() {
                 جوایز
               </InputLabelHeader>
               <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                   <Box sx={{ mt: 3 }}>
-                    <InputLabel>جایزه ۱</InputLabel>
-                    <TextField
-                      id="company"
-                      aria-describedby="my-helper-text"
+                    <InputLabel>جایزه ها</InputLabel>
+                    <Autocomplete
+                      multiple
                       fullWidth
-                      // placeholder="رمز عبور"
-                      sx={{
-                        background: '#F2F2F2',
-                        borderRadius: '4px',
-                        margin: '6px 3px'
+                      disablePortal
+                      id="gifts"
+                      limitTags={2}
+                      options={gifts}
+                      getOptionLabel={option => option.name}
+                      // defaultValue={values.field}
+                      renderInput={params => <TextField {...params} />}
+                      onChange={(event, values) => {
+                        setFieldValue(
+                          'gifts',
+                          values.map(option => option.id)
+                        );
                       }}
-                      // value={values.company}
-                      // onChange={handleChange}
-                    />
-                  </Box>
-                </Grid>
-                <Grid item xs={6}>
-                  <Box sx={{ mt: 3 }}>
-                    <InputLabel>جایزه ۲</InputLabel>
-                    <TextField
-                      id="company"
-                      aria-describedby="my-helper-text"
-                      fullWidth
-                      // placeholder="رمز عبور"
-                      sx={{
-                        background: '#F2F2F2',
-                        borderRadius: '4px',
-                        margin: '6px 3px'
-                      }}
-                      // value={values.company}
-                      // onChange={handleChange}
-                    />
-                  </Box>
-                </Grid>
-              </Grid>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <Box sx={{ mt: 3 }}>
-                    <InputLabel>جایزه ۳</InputLabel>
-                    <TextField
-                      id="company"
-                      aria-describedby="my-helper-text"
-                      fullWidth
-                      // placeholder="رمز عبور"
-                      sx={{
-                        background: '#F2F2F2',
-                        borderRadius: '4px',
-                        margin: '6px 3px'
-                      }}
-                      // value={values.company}
-                      // onChange={handleChange}
-                    />
-                  </Box>
-                </Grid>
-                <Grid item xs={6}>
-                  <Box sx={{ mt: 3 }}>
-                    <InputLabel>جایزه ۴</InputLabel>
-                    <TextField
-                      id="company"
-                      aria-describedby="my-helper-text"
-                      fullWidth
-                      // placeholder="رمز عبور"
-                      sx={{
-                        background: '#F2F2F2',
-                        borderRadius: '4px',
-                        margin: '6px 3px'
-                      }}
-                      // value={values.company}
-                      // onChange={handleChange}
+                      isOptionEqualToValue={(option, value) =>
+                        option.id === value.id
+                      }
+                      noOptionsText={'موردی یافت نشد'}
                     />
                   </Box>
                 </Grid>
@@ -299,15 +281,9 @@ export default function NewGiftBox() {
                 <ConfirmButton
                   disabled={false}
                   variant="contained"
-                  //   onClick={() =>
-                  //     history.push({
-                  //       pathname: '/profile/detail',
-                  //       state: {
-                  //         data: data
-                  //       }
-                  //     })
-                  //   }
                   style={{ width: '25%' }}
+                  type="submit"
+                  loading={isSubmitting}
                 >
                   {'ثبت جایزه'}
                 </ConfirmButton>

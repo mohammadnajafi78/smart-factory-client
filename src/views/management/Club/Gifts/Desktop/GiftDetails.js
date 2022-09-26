@@ -98,7 +98,7 @@ export default function GiftDetails(props) {
           </Box>
         </Box>
       </Box>
-      <GiftReceiverTable />
+      <GiftReceiverTable data={data} />
     </>
   );
 }

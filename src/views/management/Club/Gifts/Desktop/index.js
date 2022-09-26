@@ -63,6 +63,7 @@ export default function CompetitionDesktop() {
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
+          sx={{ overflow: 'hidden' }}
         >
           <Tab
             label="جوایز"
@@ -90,6 +91,7 @@ export default function CompetitionDesktop() {
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={value}
         onChangeIndex={handleChangeIndex}
+        style={{ overflow: 'hidden' }}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
           <GiftTable />

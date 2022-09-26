@@ -2,538 +2,74 @@ import React, { useState, useEffect } from 'react';
 import PropTypes, { string } from 'prop-types';
 
 import {
-  Box,
-  Card,
-  Typography,
-  Link,
   TextField,
   FormControl,
   InputLabel,
   Autocomplete,
-  colors,
   ToggleButtonGroup,
-  ToggleButton
+  ToggleButton,
+  Box
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
-import PerfectScrollbar from 'react-perfect-scrollbar';
-import MaterialTable, { Column, MTableFilterRow } from 'material-table';
-import { Link as RouterLink, useHistory } from 'react-router-dom';
-import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
-import LockRoundedIcon from '@mui/icons-material/LockRounded';
-import LockOpenRoundedIcon from '@mui/icons-material/LockOpenRounded';
-import IconButton from '@mui/material/IconButton';
-import Dialog from '@mui/material/Dialog/Dialog';
-import Button from '@mui/material/Button';
-import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
-import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
-import AssignmentLateOutlinedIcon from '@mui/icons-material/AssignmentLateOutlined';
-import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined';
-import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
-import Tooltip from '@mui/material/Tooltip';
-import MUIDataTable from 'mui-datatables';
-import { CacheProvider } from '@emotion/react';
-import createCache from '@emotion/cache';
-import { ThemeProvider } from '@mui/material/styles';
-import { createTheme, responsiveFontSizes } from '@mui/material/styles';
-import SearchIcon from '@mui/icons-material/Search';
-import DownloadIcon from '@mui/icons-material/FileUpload';
-import ViewColumnIcon from '@mui/icons-material/ViewColumn';
-import FilterIcon from '@mui/icons-material/FilterAlt';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import { consoleSandbox } from '@sentry/utils';
+import Table from 'src/components/Desktop/Table';
+import { useHistory } from 'react-router-dom';
 import FaTOEn from 'src/utils/FaTOEn';
 
-const muiCache = createCache({
-  key: 'mui-datatables',
-  prepend: true
-});
-
-let theme = createTheme({
-  palette: {
-    mode: 'light',
-    action: {
-      active: colors.blueGrey[600]
-    },
-    background: {
-      default: colors.common.white,
-      dark: '#f4f6f8',
-      paper: colors.common.white
-    },
-    primary: {
-      // main: colors.indigo[600]
-      main: '#00AAB5'
-    },
-    secondary: {
-      // main: '#5850EC'
-      main: '#00AAB5'
-    },
-    text: {
-      primary: colors.blueGrey[900],
-      secondary: colors.blueGrey[600]
-      // secondary: colors.common.white
-    }
-  },
-  components: {
-    MUIDataTable: {
-      styleOverrides: {
-        root: {
-          direction: 'rtl',
-          fontFamily: 'IRANSans'
-        },
-        paper: {
-          boxShadow: 'none'
-        },
-        caption: {
-          display: 'none'
-        }
-      }
-    },
-    MuiToolbar: {
-      styleOverrides: {
-        root: {
-          //backgroundColor: '#f00',
-          fontFamily: 'IRANSans',
-          textAlign: 'center'
-        }
-      }
-    },
-    MuiCheckbox: {
-      styleOverrides: {
-        root: {
-          // color: 'rgba(0, 0, 0, 0.6) !important'
-          color: '#00AAB5 !important'
-        }
-      }
-    },
-    MUIDataTableHeadCell: {
-      styleOverrides: {
-        root: {
-          //textAlign: 'center',
-          fontFamily: 'IRANSans'
-        },
-        toolButton: {
-          marginRight: '2px',
-          marginLeft: '8px'
-        }
-      }
-    },
-    MuiTableCell: {
-      styleOverrides: {
-        root: {
-          textAlign: 'right'
-        },
-        head: {
-          backgroundColor: 'purple'
-          //textAlign: 'center'
-        }
-      }
-    },
-    MUIDataTableSelectCell: {
-      styleOverrides: {
-        headerCell: {
-          //backgroundColor: 'blue',
-        }
-      }
-    },
-    MuiTableFooter: {
-      styleOverrides: {
-        root: {
-          fontFamily: 'IRANSans',
-          '& .MuiToolbar-root': {
-            backgroundColor: 'white',
-            fontFamily: 'IRANSans'
-          }
-        }
-      }
-    },
-    MuiTablePagination: {
-      styleOverrides: {
-        root: {
-          fontFamily: 'IRANSans'
-        },
-        selectLabel: {
-          fontFamily: 'IRANSans',
-          fontSize: 10
-        }
-      }
-    },
-    MuiFormControlLabel: {
-      styleOverrides: {
-        root: {
-          fontFamily: 'IRANSans',
-          fontSize: 12,
-          fontWeight: 8,
-          display: 'inline',
-          flexDirection: 'column'
-        }
-      }
-    },
-    MuiTypography: {
-      styleOverrides: {
-        root: {
-          fontFamily: 'IRANSans',
-          fontSize: 12,
-          fontWeight: 8
-        }
-      }
-    },
-    MUIDataTableFilter: {
-      styleOverrides: {
-        root: {
-          direction: 'rtl',
-          fontFamily: 'IRANSans',
-          fontSize: 12,
-          fontWeight: 8
-        },
-        resetLink: {
-          color: '#00AAB5',
-          fontSize: '16px',
-          fontWeight: 700
-        },
-        title: {
-          fontSize: '16px',
-          fontWeight: 700
-        },
-        reset: {
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          alignItems: 'center',
-          width: '700px'
-        },
-        gridListTile: {
-          margin: 0,
-          padding: 0
-        }
-      }
-    },
-    MuiInputBase: {
-      styleOverrides: {
-        root: {
-          direction: 'rtl',
-          fontFamily: 'IRANSans',
-          fontSize: 12
-        },
-        label: {
-          direction: 'rtl',
-          fontFamily: 'IRANSans',
-          fontSize: 12
-        }
-      }
-    },
-    MuiGrid: {
-      styleOverrides: {
-        root: {
-          direction: 'rtl',
-          fontFamily: 'IRANSans',
-          fontSize: 12,
-          margin: 0,
-          paddingTop: 0,
-          paddingBottom: 0
-        },
-        item: {
-          margin: 0,
-          paddingTop: 0,
-          paddingBottom: 0
-        },
-        grid: {
-          margin: 0,
-          paddingTop: 0,
-          paddingBottom: 0
-        }
-      }
-    },
-    MUIDataTableViewCol: {
-      styleOverrides: {
-        root: {
-          direction: 'rtl',
-          fontFamily: 'IRANSans',
-          fontSize: 12,
-          padding: '16px 0px 16px 44px'
-        },
-        label: {
-          direction: 'rtl',
-          fontFamily: 'IRANSans',
-          fontSize: 12
-        }
-      }
-    },
-    MuiFormLabel: {
-      styleOverrides: {
-        root: {
-          right: 0,
-          fontFamily: 'IRANSans',
-          fontSize: 12
-        }
-      }
-    },
-    MuiInputLabel: {
-      styleOverrides: {
-        root: {
-          right: 0,
-          fontFamily: 'IRANSans',
-          fontSize: 12
-        }
-      }
-    },
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          right: 0,
-          fontFamily: 'IRANSans',
-          fontSize: 12
-        }
-      }
-    },
-    MUIDataTableSearch: {
-      styleOverrides: {
-        main: {
-          direction: 'initial'
-        }
-      }
-    },
-    MuiTooltip: {
-      styleOverrides: {
-        tooltip: {
-          fontFamily: 'IRANSans',
-          fontSize: 9
-        }
-      }
-    },
-    MUIDataTableBodyCell: {
-      styleOverrides: {
-        stackedCommon: {
-          fontSize: 12
-        }
-      }
-    },
-    MUIDataTableToolbar: {
-      styleOverrides: {
-        actions: {
-          textAlign: 'left'
-        },
-        filterCloseIcon: {
-          // position: 'absolute',
-          // left: 0,
-          // top: 0,
-          // width: '1200px',
-
-          // '&:hover': {
-          //   backgroundColor: 'white'
-          // }
-          display: 'none'
-        },
-        left: {
-          display: 'flex',
-          justifyContent: 'flex-start'
-        },
-        titleText: {
-          color: '#00346D',
-          fontWeight: 700,
-          fontSize: '20px',
-          fontFamily: 'IRANSans'
-        }
-      }
-    },
-    MUIDataTableToolbarSelect: {
-      styleOverrides: {
-        title: {
-          paddingRight: '10px',
-          fontSize: '18px',
-          fontWeight: 500,
-          fontFamily: 'IRANSans',
-          color: '#00346D'
-        }
-      }
-    },
-    MUIDataTableSelectCell: {
-      styleOverrides: {
-        // checked: { color: '#00AAB5 !important' },
-        // color: '#00AAB5 !important',
-        headerCell: {
-          // fill: '#00AAB5 !important'
-        },
-        checkboxRoot: {
-          color: '#00AAB5 !important'
-        }
-      }
-    },
-    MUIDataTableFilterList: {
-      styleOverrides: {
-        root: {
-          justifyContent: 'flex-start'
-        }
-      }
-    },
-    MuiOutlinedInput: {
-      styleOverrides: {
-        input: {
-          background: '#F2F2F2'
-          // borderRadius: '4px'
-          // margin: '6px 3px'
-        }
-      }
-    }
-  }
-});
-
-theme = responsiveFontSizes(theme);
-
 let item = {};
+let itemSort = {};
 const CommentTable = props => {
-  const { className, rest, returnFunction, gridData } = props;
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(15);
   const [data, setData] = useState([]);
-  const tableRef = React.createRef();
-  const [openModal, setOpenModal] = useState(false);
-  const [newColumns, setNewColumns] = useState([]);
   const [provinces, setProvinces] = useState([]);
-  const [provinceId, setProvinceId] = useState(null);
+  const [topics, setTopics] = useState(null);
   const [cities, setCities] = useState([]);
   const [cityId, setCityId] = useState(null);
   const [works, setWorks] = useState([]);
   const [columns, setColumns] = useState([]);
   const [completed, setCompleted] = useState(null);
   const [confirmed, setConfirmed] = useState(null);
-  const [filterObj, setFilterObj] = useState([]);
-  const [filter, setFilter] = useState('');
   const [sort, setSort] = useState('');
-  // let itemSort = {};
+  const [filter, setFilter] = useState('');
+  const [reset, setReset] = useState(false);
+  const [status, setStatus] = useState(null);
 
   const history = useHistory();
 
   useEffect(() => {
-    httpService
-      .get(`${API_BASE_URL}/api/utils/provinces/?country_id=25`)
-      .then(res => {
-        if (res.status === 200) {
-          setProvinces(res.data);
-        }
-      });
+    httpService.get(`${API_BASE_URL}/api/club/suggestion_topic/`).then(res => {
+      if (res.status === 200) {
+        setTopics(res.data);
+      }
+    });
   }, []);
 
   useEffect(() => {
-    if (provinceId !== null) {
-      httpService
-        .get(`${API_BASE_URL}/api/utils/cities/?province__id=${provinceId}`)
-        .then(res => {
-          if (res.status === 200) {
-            setCities(res.data);
-          }
-        });
+    setFilter('');
+    setSort('');
+  }, [reset]);
+
+  useEffect(() => {
+    if (filter.length === 0 && sort.length === 0 && reset === true) {
+      getData(page, rowsPerPage, '');
+      setReset(false);
     }
-  }, [provinceId]);
-
-  useEffect(() => {
-    httpService
-      .get(`${API_BASE_URL}/api/users/user_type/activity_list`)
-      .then(res => {
-        if (res.status === 200) {
-          setWorks(res.data);
-        }
-      });
-  }, []);
-
-  useEffect(() => {
-    document.getElementById('pagination-next').style.rotate = '180deg';
-    document.getElementById('pagination-back').style.rotate = '180deg';
-  }, []);
-
-  useEffect(() => {
-    getData(page, rowsPerPage);
   }, [filter, sort]);
 
   useEffect(() => {
     setColumns([
       {
-        name: 'user.first_name',
-        label: 'نام',
+        name: 'suggestion_id',
+        label: 'شناسه',
         options: {
-          filter: true,
-          filterType: 'custom',
-          filterOptions: {
-            display: (filterList, onChange, index, column) => {
-              return (
-                <FormControl
-                // sx={{ margin: 0, paddingTop: 0, paddingBottom: 0 }}
-                >
-                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    نام
-                  </InputLabel>
-                  <TextField
-                    id="name"
-                    aria-describedby="my-helper-text"
-                    fullWidth
-                    placeholder="نام"
-                    // sx={{
-                    //   background: '#F2F2F2',
-                    //   borderRadius: '4px'
-                    // }}
-                    value={filterList[index]}
-                    onChange={event => {
-                      if (event.target.value) {
-                        filterList[index][0] = event.target.value;
-                        onChange(filterList[index], index, column);
-                      } else {
-                        filterList[index] = [];
-                        onChange(filterList[index], index, column);
-                      }
-                    }}
-                  />
-                </FormControl>
-              );
-            }
-          }
+          filter: false
         }
       },
       {
-        name: 'user.last_name',
-        label: 'نام خانوادگی',
-        options: {
-          filter: true,
-          filterType: 'custom',
-          filterOptions: {
-            display: (filterList, onChange, index, column) => {
-              return (
-                <FormControl
-                // sx={{ margin: 0, paddingTop: 0, paddingBottom: 0 }}
-                >
-                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    نام خانوادگی
-                  </InputLabel>
-                  <TextField
-                    id="name"
-                    aria-describedby="my-helper-text"
-                    fullWidth
-                    // sx={{
-                    //   background: '#F2F2F2',
-                    //   borderRadius: '4px',
-                    //   margin: '6px 3px'
-                    // }}
-                    value={filterList[index]}
-                    onChange={event => {
-                      if (event.target.value) {
-                        filterList[index][0] = event.target.value;
-                        onChange(filterList[index], index, column);
-                      } else {
-                        filterList[index] = [];
-                        onChange(filterList[index], index, column);
-                      }
-                    }}
-                  />
-                </FormControl>
-              );
-            }
-          }
-        }
-      },
-      {
-        name: 'user.mobile',
-        label: 'شماره موبایل',
+        name: 'subject',
+        label: 'عنوان',
         options: {
           filter: true,
           filterType: 'custom',
@@ -542,17 +78,13 @@ const CommentTable = props => {
               return (
                 <FormControl>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    شماره موبایل
+                    عنوان
                   </InputLabel>
                   <TextField
-                    id="name"
+                    id="subject"
                     aria-describedby="my-helper-text"
                     fullWidth
-                    // sx={{
-                    //   background: '#F2F2F2',
-                    //   borderRadius: '4px',
-                    //   margin: '6px 3px'
-                    // }}
+                    placeholder="عنوان"
                     value={filterList[index]}
                     onChange={event => {
                       if (event.target.value) {
@@ -571,40 +103,35 @@ const CommentTable = props => {
         }
       },
       {
-        name: 'location.province_name',
-        label: 'استان',
+        name: 'topic_detail.name',
+        label: 'موضوع',
         options: {
           filter: true,
           filterType: 'custom',
           filterOptions: {
-            logic: (orderStatus, filters) => {
-              // console.log('filters', filters);
-              // if (filters.length) return !filters.includes(orderStatus.status);
-              // return false;
-            },
             display: (filterList, onChange, index, column) => {
               return (
                 <FormControl>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    استان
+                    موضوع
                   </InputLabel>
                   <Autocomplete
                     disablePortal
                     fullWidth
-                    id="province"
-                    options={provinces}
+                    id="topics"
+                    options={topics}
                     renderInput={params => (
-                      <TextField {...params} placeholder="استان" fullWidth />
+                      <TextField {...params} placeholder="موضوع" fullWidth />
                     )}
                     isOptionEqualToValue={(option, value) =>
-                      option.label === value.label
+                      option.name === value.name
                     }
-                    value={filterList[index]}
-                    // getOptionLabel={option => option.label}
+                    // value={filterList[index]}
+                    getOptionLabel={option => option.name}
                     disableClearable
                     onChange={(event, values, reason, details) => {
-                      setProvinceId(values.id);
-                      filterList[index][0] = values.label;
+                      // setProvinceId(values.id);
+                      filterList[index][0] = values.name;
                       onChange(filterList[index], index, column);
                     }}
                     sx={{
@@ -620,106 +147,70 @@ const CommentTable = props => {
         }
       },
       {
-        name: 'location.city_name',
-        label: 'شهر',
+        name: 'status',
+        label: 'وضعیت',
         options: {
-          filter: true,
-          filterType: 'custom',
-          filterOptions: {
-            display: (filterList, onChange, index, column) => {
-              return (
-                <FormControl>
-                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    شهر
-                  </InputLabel>
-                  <Autocomplete
-                    disablePortal
-                    id="city"
-                    options={cities}
-                    renderInput={params => (
-                      <TextField {...params} placeholder="شهر" />
-                    )}
-                    // getOptionLabel={option => option.label}
-                    disableClearable
-                    value={filterList[index]}
-                    onChange={(event, values) => {
-                      setCityId(values.id);
-                      filterList[index][0] = values.label;
-                      onChange(filterList[index], index, column);
-                    }}
-                    isOptionEqualToValue={(option, value) =>
-                      option.label === value.label
-                    }
+          customBodyRender: value => {
+            return (
+              <>
+                {value.toLowerCase() === 'answered' ? (
+                  <Box
                     sx={{
-                      background: '#F2F2F2',
-                      borderRadius: '4px'
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '3px 6px !important',
+                      background: '#CCEEF0',
+                      borderRadius: '4px',
+                      color: '#00AAB5',
+                      width: '45%'
                     }}
-                    noOptionsText={'موردی یافت نشد'}
-                  />
-                </FormControl>
-              );
-            }
-          }
-        }
-      },
-      {
-        name: 'user.user_type_list',
-        label: 'فعالیت',
-        options: {
-          customBodyRender: (value, tableMeta, updateValue) => {
-            return value.map(option => option.translate).toString();
-          },
-          filter: true,
-          filterType: 'custom',
-          filterOptions: {
-            display: (filterList, onChange, index, column) => {
-              return (
-                <FormControl>
-                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    فعالیت
-                  </InputLabel>
-                  <Autocomplete
-                    multiple
-                    disablePortal
-                    id="field"
-                    limitTags={1}
-                    options={works}
-                    getOptionLabel={option => option.translate}
-                    renderInput={params => <TextField {...params} />}
-                    // value={filterList[index]}
-                    renderValue={selected => selected.join(', ')}
-                    disableClearable
-                    onChange={(event, values) => {
-                      if (values.length > 0) {
-                        filterList[index][values?.length - 1] =
-                          values[values?.length - 1].translate;
-                        onChange(filterList[index], index, column);
-                      } else {
-                        filterList[index] = [];
-                        onChange(filterList[index], index, column);
-                      }
-                    }}
-                    isOptionEqualToValue={(option, value) =>
-                      option.translate === value.translate
-                    }
+                  >
+                    <InputLabel style={{ color: '#00AAB5', paddingLeft: 0 }}>
+                      پاسخ داده شده
+                    </InputLabel>
+                  </Box>
+                ) : value.toLowerCase() === 'closed' ? (
+                  <Box
                     sx={{
-                      background: '#F2F2F2',
-                      borderRadius: '4px'
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '3px 6px !important',
+                      background: '#FDE8E8',
+                      borderRadius: '4px',
+                      color: '#F4777C !important',
+                      width: '45%'
                     }}
-                    noOptionsText={'موردی یافت نشد'}
-                  />
-                </FormControl>
-              );
-            }
-          }
-        }
-      },
-      {
-        name: 'user.profile_is_completed',
-        label: 'تکمیل شده',
-        options: {
-          customBodyRender: (value, tableMeta, updateValue) => {
-            return value === true ? 'بله' : 'خیر';
+                  >
+                    <InputLabel style={{ color: '#F4777C', paddingLeft: 0 }}>
+                      بسته شده
+                    </InputLabel>
+                  </Box>
+                ) : (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '3px 6px !important',
+                      background: '#F3F3F3',
+                      borderRadius: '4px',
+                      width: '45%'
+
+                      // color: '#F3F3F3 !important'
+                    }}
+                  >
+                    <InputLabel style={{ color: '#A7A5A6', paddingLeft: 0 }}>
+                      در انتظار پاسخ
+                    </InputLabel>
+                  </Box>
+                )}
+              </>
+            );
           },
           filter: true,
           filterType: 'custom',
@@ -728,113 +219,55 @@ const CommentTable = props => {
               return (
                 <FormControl sx={{ marginTop: '10px' }}>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    وضعیت اطلاعات کاربر
+                    وضعیت
                   </InputLabel>
                   <ToggleButtonGroup
                     color="primary"
-                    value={completed}
+                    value={status}
                     exclusive
-                    onChange={event => {
-                      setCompleted(event.target.value);
-                      filterList[index][0] =
-                        event.target.value == 'true'
-                          ? 'تکمیل شده'
-                          : 'تکمیل نشده';
+                    onChange={(event, newValue) => {
+                      setStatus(newValue);
+                      if (newValue?.toLowerCase() === 'answered')
+                        filterList[index][0] = 'پاسخ داده شده';
+                      else if (newValue?.toLowerCase() === 'closed')
+                        filterList[index][0] = 'بسته شده';
+                      else if (newValue?.toLowerCase() === 'pending')
+                        filterList[index][0] = 'در انتظار پاسخ';
+                      else filterList[index] = [];
                       onChange(filterList[index], index, column);
                     }}
                     sx={{
                       marginTop: '5px',
-                      width: '60.5%',
-                      borderLeft: '1px solid rgba(0,0,0, 0.12)'
+                      direction: 'ltr',
+                      justifyContent: 'flex-end'
+                      // width: '82%',
+                      // borderLeft: '1px solid rgba(0,0,0, 0.12)'
                     }}
                   >
                     <ToggleButton
-                      value="true"
+                      value="ANSWERED"
                       sx={{
                         fontFamily: 'IRANSans'
                       }}
                     >
-                      تکمیل شده
+                      پاسخ داده شده
                     </ToggleButton>
                     <ToggleButton
-                      value="false"
-                      sx={{
-                        fontFamily: 'IRANSans',
-                        borderLeft: '1px solid rgba(0,0,0, 0.12)'
-                      }}
-                    >
-                      تکمیل نشده
-                    </ToggleButton>
-                  </ToggleButtonGroup>
-                </FormControl>
-              );
-            }
-          }
-        }
-      },
-      {
-        name: 'user.is_verified',
-        label: 'تایید شده',
-        options: {
-          customBodyRender: (value, tableMeta, updateValue) => {
-            return value.toLowerCase() === 'verified'
-              ? 'بله'
-              : value.toLowerCase() === 'rejected'
-              ? 'خیر'
-              : 'نامشخص';
-          },
-          filter: true,
-          filterType: 'custom',
-          filterOptions: {
-            display: (filterList, onChange, index, column) => {
-              return (
-                <FormControl sx={{ marginTop: '10px' }}>
-                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    وضعیت تایید کاربر
-                  </InputLabel>
-                  <ToggleButtonGroup
-                    color="primary"
-                    value={confirmed}
-                    exclusive
-                    onChange={event => {
-                      setConfirmed(event.target.value);
-                      filterList[index][0] =
-                        event.target.value.toLowerCase() === 'verified'
-                          ? 'تایید شده'
-                          : event.target.value.toLowerCase() === 'rejected'
-                          ? 'تایید نشده'
-                          : 'نامشخص';
-                      onChange(filterList[index], index, column);
-                    }}
-                    sx={{
-                      marginTop: '5px',
-                      width: '82%',
-                      borderLeft: '1px solid rgba(0,0,0, 0.12)'
-                    }}
-                  >
-                    <ToggleButton
-                      value="Verified"
+                      value="CLOSED"
                       sx={{
                         fontFamily: 'IRANSans'
                       }}
                     >
-                      تایید شده
+                      بسته شده
                     </ToggleButton>
                     <ToggleButton
-                      value="Rejected"
+                      value="PENDING"
                       sx={{
                         fontFamily: 'IRANSans'
+                        // borderLeft: '1px solid rgba(0,0,0, 0.12) !important'
                       }}
                     >
-                      تایید نشده
-                    </ToggleButton>
-                    <ToggleButton
-                      value="NA"
-                      sx={{
-                        fontFamily: 'IRANSans'
-                      }}
-                    >
-                      نامشخص
+                      در انتظار پاسخ
                     </ToggleButton>
                   </ToggleButtonGroup>
                 </FormControl>
@@ -844,39 +277,19 @@ const CommentTable = props => {
         }
       }
     ]);
-  }, [provinces, cities, works, completed, confirmed]);
+  }, [topics, status]);
 
-  const CustomSearchIcon = props => {
-    return <SearchIcon {...props} style={{ color: '#00AAB5' }} />;
-  };
-  const CustomDownloadIcon = props => {
-    return <DownloadIcon {...props} style={{ color: '#00AAB5' }} />;
-  };
-  const CustomViewColumnIcon = props => {
-    return <ViewColumnIcon {...props} style={{ color: '#00AAB5' }} />;
-  };
-  const CustomFilterIcon = props => {
-    return <FilterIcon {...props} style={{ color: '#00AAB5' }} />;
-  };
-
-  const components = {
-    icons: {
-      SearchIcon: CustomSearchIcon,
-      DownloadIcon: CustomDownloadIcon,
-      ViewColumnIcon: CustomViewColumnIcon,
-      FilterIcon: CustomFilterIcon
-    }
-  };
-
-  function getData(page, rowsPerPage) {
+  function getData(page, rowsPerPage, search) {
     httpService
-      .get(
-        `${API_BASE_URL}/api/management/user/?limit=${page * rowsPerPage +
-          rowsPerPage}&offset=${page}${filter !== '' ? `&${filter}` : ''}${
-          sort !== '' ? `&${sort}` : ''
-        }`
+      .post(
+        `${API_BASE_URL}/api/management/club/suggestions/suggestion_list/?limit=${rowsPerPage}&offset=${page}${
+          filter !== '' ? `&${filter}` : ''
+        }`,
+        {
+          order: sort,
+          search: search
+        }
       )
-
       .then(res => {
         if (res.status === 200) {
           setData(res.data.results);
@@ -885,267 +298,159 @@ const CommentTable = props => {
       });
   }
 
-  useEffect(() => {
-    getData(page, rowsPerPage);
-  }, []);
+  function onFilterChange(column, filterList, type) {
+    let filterType = '';
 
-  function changePage(page, rowsPerPage, sortOrder) {
-    setRowsPerPage(rowsPerPage);
-    getData(page, rowsPerPage);
-  }
-
-  const tableOptions = {
-    filter: true,
-    selectableRows: true,
-    filterType: 'textField',
-    rowsPerPage: rowsPerPage,
-    count: count,
-    serverSide: true,
-    enableNestedDataAccess: '.',
-    //rowsPerPageOptions: rowsPerPageOptions,
-    print: false,
-    //search: true,
-    responsive: 'vertical',
-    //download: true,
-    downloadOptions: {
-      // filename: 'لیست وظایف',
-      filterOptions: {
-        useDisplayedColumnsOnly: true,
-        useDisplayedRowsOnly: true
-      }
-    },
-    ///To fix utf8 probliem in Excel file
-    onDownload: (buildHead, buildBody, columns, data) => {
-      return '\uFEFF' + buildHead(columns) + buildBody(data);
-    },
-    //columnHeader: columnHeader,
-    //draggableColumns: { enabled: draggableColumnsEnabled, transitionTime: 300 },
-    //jumpToPage: jumpToPage,
-    rowHover: true,
-    //selectableRowsHeader: selectableRowsHeader,
-    //confirmFilters: confirmFilters,
-    //customFilterDialogFooter: customFilterDialogFooter,
-    //pagination: true,
-    //sortThirdClickReset: true,
-    //serverside:true,
-    // setRowProps: (row, dataIndex, rowIndex) => {
-    //   return <div></div>;
-    // },
-    //columnOrder:[],
-    resizableColumns: false,
-    textLabels: {
-      body: {
-        noMatch: 'رکوردی برای نمایش نیست',
-        toolTip: (
-          <Typography variant="body2" color="inherit">
-            مرتب سازی
-          </Typography>
-        ),
-        columnHeaderTooltip: column => (
-          <Typography variant="body2" color="inherit">
-            مرتب سازی براساس {column.label}
-          </Typography>
-        )
-      },
-      pagination: {
-        next: 'صفحه بعد',
-        previous: 'صفحه قبل',
-        rowsPerPage: 'ردیف در هر صفحه',
-        displayRows: 'از',
-        jumpToPage: 'رفتن به صفحه'
-      },
-      toolbar: {
-        search: 'جستجو',
-        downloadCsv: 'دانلود فایل اکسل',
-        print: 'پرینت',
-        viewColumns: 'نمایش ستونها',
-        filterTable: 'فیلتر'
-      },
-      filter: {
-        all: 'همه',
-        title: 'فیلترها',
-        reset: 'پاک کردن'
-      },
-      viewColumns: {
-        title: 'نمایش ستونها',
-        titleAria: 'نمایش/عدم نمایش ستونها'
-      },
-      selectedRows: {
-        text: `ردیف انتخاب شده`,
-        delete: 'حذف',
-        deleteAria: 'حذف سطر(های) انتخاب شده'
-      }
-    },
-    onTableChange: (action, tableState) => {
-      switch (action) {
-        case 'changeRowsPerPage':
-          changePage(tableState.page, tableState.rowsPerPage);
-          break;
-        default:
-        // console.log('action not handled.', action, tableState);
-      }
-    },
-    onFilterChange: (column, filterList, type) => {
-      let filterType = '';
-      switch (column) {
-        case 'user.first_name':
-          if (filterList[0][0]) {
-            item['first_name'] = filterList[0][0];
-            filterType = '__contains';
-          } else {
-            delete item['first_name'];
-          }
-          break;
-        case 'user.last_name':
-          if (filterList[1][0]) {
-            item['last_name'] = filterList[1][0];
-            filterType = '__contains';
-          } else {
-            delete item['last_name'];
-          }
-          break;
-        case 'user.mobile':
-          if (filterList[2][0]) {
-            item['mobile'] = FaTOEn(filterList[2][0]);
-            filterType = '__contains';
-          } else {
-            delete item['mobile'];
-          }
-          break;
-        case 'location.province_name':
-          if (filterList[3][0]) {
-            item['province_name'] = filterList[3][0];
-            filterType = '';
-          } else {
-            delete item['province_name'];
-          }
-          break;
-        case 'location.city_name':
-          if (filterList[4][0]) {
-            item['city_name'] = filterList[4][0];
-            filterType = '';
-          } else {
-            delete item['city_name'];
-          }
-          break;
-        case 'user.user_type_list':
-          if (filterList[5][0]) {
-            item['user_type'] = filterList[5][0];
-            filterType = '';
-          } else {
-            delete item['user_type'];
-          }
-          break;
-        case 'user.profile_is_completed':
-          if (filterList[6][0]) {
-            item['profile_is_complete'] =
-              filterList[6][0] == 'تکمیل شده' ? 'True' : 'False';
-            filterType = '';
-          } else {
-            delete item['profile_is_complete'];
-            setCompleted(null);
-          }
-          break;
-        case 'user.is_verified':
-          if (filterList[7][0]) {
-            item['is_verified'] =
-              filterList[7][0] == 'تایید شده'
-                ? 'Verified'
-                : filterList[7][0] == 'تایید نشده'
-                ? 'Rejected'
-                : 'NA';
-            filterType = '';
-          } else {
-            delete item['is_verified'];
-            setConfirmed(false);
-          }
-          break;
-        default:
-          item = item;
-      }
-
-      let temp = item;
-      let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
-      console.log('filterItems', filterItems);
-
-      let str = '';
-      if (filterItems?.length > 0) {
-        filterItems.map((itm, index) => {
-          str =
-            str + itm[0] + filterType + '=' + decodeURIComponent(itm[1]) + '&';
-        });
-      }
-      str.replace('&&', '&');
-      setFilter(str);
-    },
-    onColumnSortChange: (changedColumn, direction) => {
-      let itemSort = {};
-      switch (changedColumn) {
-        case 'user.first_name':
-          itemSort['first_name'] = direction;
-          break;
-        case 'user.last_name':
-          itemSort['last_name'] = direction;
-          break;
-        case 'user.mobile':
-          itemSort['mobile'] = direction;
-          break;
-        case 'location.province_name':
-          itemSort['mobile'] = direction;
-          break;
-        case 'location.city_name':
-          itemSort['mobile'] = direction;
-          break;
-        case 'user.user_type_list':
-          itemSort['mobile'] = direction;
-          break;
-        default:
-          itemSort = itemSort;
-      }
-
-      let temp = itemSort;
-      let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
-
-      let str = '';
-      if (filterItems?.length > 0) {
-        filterItems.map((itm, index) => {
-          str = itm[1] === 'asc' ? itm[0] : `-${itm[0]}`;
-        });
-      }
-      setSort('order=' + str);
-    },
-    onRowClick: (rowData, rowState) => {
-      history.push({
-        pathname: '/management/club/comment/details',
-        state: {
-          rowData,
-          rowState
+    switch (column) {
+      case 'subject':
+        if (filterList[1][0]) {
+          item['subject'] = filterList[1][0];
+          filterType = '__contains';
+        } else {
+          delete item['subject'];
         }
+        break;
+      case 'topic_detail.name':
+        if (filterList[2][0]) {
+          item['topic__name'] = filterList[2][0];
+          filterType = '__contains';
+        } else {
+          delete item['topic__name'];
+        }
+        break;
+      case 'status':
+        if (filterList[3][0]) {
+          item['status'] =
+            filterList[3][0] == 'پاسخ داده شده'
+              ? 'ANSWERED'
+              : filterList[3][0] == 'بسته شده'
+              ? 'CLOSED'
+              : 'PENDING';
+          filterType = '';
+        } else {
+          delete item['status'];
+          setConfirmed(false);
+        }
+        break;
+      default:
+        item = item;
+    }
+
+    let temp = item;
+    let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
+    console.log('filterItems', filterItems);
+
+    let str = '';
+    if (filterItems?.length > 0) {
+      filterItems.map((itm, index) => {
+        str =
+          str + itm[0] + filterType + '=' + decodeURIComponent(itm[1]) + '&';
       });
     }
-  };
+    str.replace('&&', '&');
+    setFilter(str);
+  }
+
+  function onColumnSortChange(changedColumn, direction) {
+    switch (changedColumn) {
+      case 'user.user_id':
+        itemSort['user_id'] = direction;
+        break;
+      case 'user.first_name':
+        itemSort['first_name'] = direction;
+        break;
+      case 'user.last_name':
+        itemSort['last_name'] = direction;
+        break;
+      case 'user.mobile':
+        itemSort['mobile'] = direction;
+        break;
+      case 'location.province_name':
+        itemSort['province_name'] = direction;
+        break;
+      case 'location.city_name':
+        itemSort['city_name'] = direction;
+        break;
+      case 'user.user_type_list':
+        itemSort['user_type_list'] = direction;
+        break;
+      default:
+        itemSort = itemSort;
+    }
+
+    let temp = itemSort;
+    let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
+
+    let str = [];
+    if (filterItems?.length > 0) {
+      filterItems.map((itm, index) => {
+        str.push(itm[1] === 'asc' ? itm[0] : `-${itm[0]}`);
+      });
+    }
+    setSort(str);
+  }
+
+  function onRowClick(rowData, rowState) {
+    history.push({
+      pathname: '/management/club/comment/details',
+      state: {
+        data: data.filter(f => f.suggestion_id === rowData[0])
+      }
+    });
+  }
+
+  function onRowsDelete(rowsDeleted, newData) {
+    const userIds = [];
+    rowsDeleted.data.map((item, index) => {
+      userIds.push(data[item.index].user.user_id);
+    });
+
+    httpService
+      .post(`${API_BASE_URL}/api/management/user/user_delete/`, {
+        user_ids: userIds
+      })
+      .then(res => {
+        if (res.status === 200) {
+          getData(page, rowsPerPage, '');
+        }
+      });
+  }
+  function onRowSelectionChange(rowsSelectedData, allRows, rowsSelected) {
+    // console.log('rowsSelectedData', rowsSelectedData);
+    // console.log('allRows', allRows);
+    // console.log('rowsSelected', rowsSelected);
+  }
 
   return (
-    <CacheProvider value={muiCache}>
-      <ThemeProvider theme={theme}>
-        <Card>
-          <Box sx={{ height: '87vh' }}>
-            <MUIDataTable
-              title={'لیست'}
-              data={data}
-              columns={columns}
-              options={tableOptions}
-              components={components}
-            />
-          </Box>
-        </Card>
-      </ThemeProvider>
-    </CacheProvider>
+    <Table
+      title={'لیست'}
+      data={data}
+      columns={columns}
+      rowsPerPage={rowsPerPage}
+      setRowsPerPage={setRowsPerPage}
+      count={count}
+      page={page}
+      filter={filter}
+      sort={sort}
+      setReset={setReset}
+      getData={(page, rowsPerPage, search) =>
+        getData(page, rowsPerPage, search)
+      }
+      onRowClick={(rowData, rowState) => onRowClick(rowData, rowState)}
+      onRowsDelete={(rowsDeleted, newData) =>
+        onRowsDelete(rowsDeleted, newData)
+      }
+      onRowSelectionChange={(rowsSelectedData, allRows, rowsSelected) =>
+        onRowSelectionChange(rowsSelectedData, allRows, rowsSelected)
+      }
+      onFilterChange={(column, filterList, type) =>
+        onFilterChange(column, filterList, type)
+      }
+      onColumnSortChange={(changedColumn, direction) =>
+        onColumnSortChange(changedColumn, direction)
+      }
+    />
   );
-};
-
-CommentTable.propTypes = {
-  className: PropTypes.string
 };
 
 export default CommentTable;

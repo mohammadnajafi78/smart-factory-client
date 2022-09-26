@@ -53,8 +53,34 @@ const GiftBoxTable = props => {
   const [endDate, setEndDate] = React.useState(new Date());
   const [reset, setReset] = useState(false);
   const [state, setState] = useState(null);
+  const [giftType, setGiftType] = useState([]);
+  const [grades, setGrades] = useState([]);
+  const [giftList, setGiftList] = useState([]);
 
   const history = useHistory();
+
+  useEffect(() => {
+    httpService
+      .get(`${API_BASE_URL}/api/management/club/gifts/select_list/`)
+      .then(res => {
+        if (res.status === 200) {
+          setGiftList(res.data);
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    httpService
+      .post(`${API_BASE_URL}/api/management/club/club_grade/grade_list/`, {
+        search: '',
+        order: ''
+      })
+      .then(res => {
+        if (res.status === 200) {
+          setGrades(res.data);
+        }
+      });
+  }, []);
 
   useEffect(() => {
     setFilter('');
@@ -71,11 +97,11 @@ const GiftBoxTable = props => {
   useEffect(() => {
     setColumns([
       {
-        name: 'id',
+        name: 'box_num',
         label: 'شناسه',
         options: {
-          filter: false,
-          display: false
+          filter: false
+          // display: false
         }
       },
       {
@@ -114,7 +140,7 @@ const GiftBoxTable = props => {
         }
       },
       {
-        name: 'credit',
+        name: 'require_credit',
         label: 'امتیاز',
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
@@ -128,8 +154,7 @@ const GiftBoxTable = props => {
                   padding: '3px 6px !important',
                   background: '#CCEEF0',
                   borderRadius: '4px',
-                  color: '#00AAB5',
-                  width: '35%'
+                  color: '#00AAB5'
                 }}
               >
                 <InputLabel style={{ color: '#00AAB5' }}>{value}</InputLabel>
@@ -170,8 +195,8 @@ const GiftBoxTable = props => {
         }
       },
       {
-        name: 'date',
-        label: 'تاریخ انقضا',
+        name: 'valid_date',
+        label: 'تاریخ اعتبار',
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
             return MomentFa(value);
@@ -188,7 +213,7 @@ const GiftBoxTable = props => {
                       position: 'initial'
                     }}
                   >
-                    تاریخ پایان
+                    تاریخ اعتبار
                   </InputLabel>
                   <LocalizationProvider dateAdapter={AdapterJalali}>
                     <DatePicker
@@ -235,52 +260,55 @@ const GiftBoxTable = props => {
         }
       },
       {
-        name: 'status',
-        label: 'وضعیت',
+        name: 'grade',
+        label: 'سطح',
         options: {
-          customBodyRender: value => {
-            console.log('value', value);
-            return (
-              <>
-                {value?.toLowerCase() === 'performing' ? (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: '3px 6px !important',
-                      background: '#CCEEF0',
-                      borderRadius: '4px',
-                      color: '#00AAB5',
-                      width: '45%'
+          filter: true,
+          filterType: 'custom',
+          filterOptions: {
+            display: (filterList, onChange, index, column) => {
+              return (
+                <FormControl sx={{ marginTop: '10px' }}>
+                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
+                    سطح
+                  </InputLabel>
+                  <Autocomplete
+                    disablePortal
+                    id="grades"
+                    options={grades}
+                    renderInput={params => (
+                      <TextField {...params} placeholder="سطح" />
+                    )}
+                    // getOptionLabel={option => option.label}
+                    disableClearable
+                    // value={filterList[index]}
+                    onChange={(event, values) => {
+                      // setCityId(values.id);
+                      filterList[index][0] = values.name;
+                      onChange(filterList[index], index, column);
                     }}
-                  >
-                    <InputLabel style={{ color: '#00AAB5', paddingLeft: 0 }}>
-                      در جریان
-                    </InputLabel>
-                  </Box>
-                ) : (
-                  <Box
+                    isOptionEqualToValue={(option, value) =>
+                      option.name === value.name
+                    }
+                    getOptionLabel={option => option.name}
                     sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: '3px 6px !important',
-                      background: '#FDE8E8',
-                      borderRadius: '4px',
-                      color: '#F4777C !important',
-                      width: '45%'
+                      background: '#F2F2F2',
+                      borderRadius: '4px'
                     }}
-                  >
-                    <InputLabel style={{ color: '#F4777C', paddingLeft: 0 }}>
-                      خاتمه یافته
-                    </InputLabel>
-                  </Box>
-                )}
-              </>
-            );
+                    noOptionsText={'موردی یافت نشد'}
+                  />
+                </FormControl>
+              );
+            }
+          }
+        }
+      },
+      {
+        name: 'gifts_list',
+        label: 'هدایا',
+        options: {
+          customBodyRender: (value, tableMeta, updateValue) => {
+            return value?.map(option => option.name).toString();
           },
           filter: true,
           filterType: 'custom',
@@ -289,45 +317,37 @@ const GiftBoxTable = props => {
               return (
                 <FormControl sx={{ marginTop: '10px' }}>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    وضعیت
+                    هدایا
                   </InputLabel>
-                  <ToggleButtonGroup
-                    color="primary"
-                    value={state}
-                    exclusive
-                    onChange={(event, newValue) => {
-                      setState(newValue);
-
-                      if (newValue?.toLowerCase() === 'performing')
-                        filterList[index][0] = 'در جریان';
-                      else if (newValue?.toLowerCase() === 'finished')
-                        filterList[index][0] = 'خاتمه یافته';
-                      else filterList[index] = [];
-                      onChange(filterList[index], index, column);
+                  <Autocomplete
+                    // multiple
+                    disablePortal
+                    id="gifts_list"
+                    limitTags={1}
+                    options={giftList}
+                    getOptionLabel={option => option.name}
+                    renderInput={params => <TextField {...params} />}
+                    // value={filterList[index]}
+                    renderValue={selected => selected.join(', ')}
+                    disableClearable
+                    onChange={(event, values) => {
+                      if (values) {
+                        filterList[index][0] = values.name;
+                        onChange(filterList[index], index, column);
+                      } else {
+                        filterList[index] = [];
+                        onChange(filterList[index], index, column);
+                      }
                     }}
+                    isOptionEqualToValue={(option, value) =>
+                      option.translate === value.translate
+                    }
                     sx={{
-                      marginTop: '5px',
-                      direction: 'ltr',
-                      justifyContent: 'flex-end'
+                      background: '#F2F2F2',
+                      borderRadius: '4px'
                     }}
-                  >
-                    <ToggleButton
-                      value="PERFORMING"
-                      sx={{
-                        fontFamily: 'IRANSans'
-                      }}
-                    >
-                      در جریان
-                    </ToggleButton>
-                    <ToggleButton
-                      value="FINISHED"
-                      sx={{
-                        fontFamily: 'IRANSans'
-                      }}
-                    >
-                      خاتمه یافته
-                    </ToggleButton>
-                  </ToggleButtonGroup>
+                    noOptionsText={'موردی یافت نشد'}
+                  />
                 </FormControl>
               );
             }
@@ -335,13 +355,12 @@ const GiftBoxTable = props => {
         }
       }
     ]);
-  }, [state]);
+  }, [state, grades, giftType, endDate]);
 
   function getData(page, rowsPerPage, search) {
-    console.log('filer', filter);
     httpService
       .post(
-        `${API_BASE_URL}/api/management/club/lottery/lottery_list/?limit=${rowsPerPage}&offset=${page}${
+        `${API_BASE_URL}/api/management/club/gift_box/gift_box_list/?limit=${rowsPerPage}&offset=${page}${
           filter !== '' ? `&${filter}` : ''
         }`,
         {
@@ -364,39 +383,44 @@ const GiftBoxTable = props => {
     switch (column) {
       case 'name':
         if (filterList[1][0]) {
-          item['name'] = filterList[0][1];
+          item['name'] = filterList[1][0];
           filterType = '__contains';
         } else {
           delete item['name'];
         }
         break;
-      case 'credit':
+      case 'require_credit':
         if (filterList[2][0]) {
-          item['credit'] = filterList[2][0];
+          item['require_credit'] = filterList[2][0];
           filterType = '';
         } else {
-          delete item['credit'];
+          delete item['require_credit'];
         }
 
         break;
-      case 'date':
+      case 'valid_date':
         if (filterList[3][0]) {
-          item['date'] = endDate;
+          item['valid_date'] = endDate;
           filterType = '';
         } else {
-          delete item['date'];
+          delete item['valid_date'];
         }
         break;
-      case 'status':
+      case 'grade':
         if (filterList[4][0]) {
-          item['status'] =
-            filterList[4][0] == 'در جریان' ? 'PERFORMING' : 'FINISHED';
-
+          item['require_grade__name'] = filterList[4][0];
           filterType = '';
         } else {
-          delete item['status'];
-          setState(null);
+          delete item['require_grade__name'];
         }
+      case 'gifts_list':
+        if (filterList[5][0]) {
+          item['gifts__name'] = filterList[5][0];
+          filterType = '';
+        } else {
+          delete item['gifts__name'];
+        }
+
         break;
       default:
         item = item;
@@ -421,14 +445,14 @@ const GiftBoxTable = props => {
       case 'name':
         itemSort['name'] = direction;
         break;
-      case 'date':
-        itemSort['date'] = direction;
+      case 'valid_date':
+        itemSort['valid_date'] = direction;
         break;
-      case 'credit':
-        itemSort['credit'] = direction;
+      case 'require_credit':
+        itemSort['require_credit'] = direction;
         break;
-      case 'status':
-        itemSort['status'] = direction;
+      case 'grade':
+        itemSort['grade'] = direction;
         break;
       default:
         itemSort = itemSort;
@@ -450,20 +474,20 @@ const GiftBoxTable = props => {
     history.push({
       pathname: '/management/club/giftBox/details',
       state: {
-        data: data.filter(f => f.id === rowData[0])
+        data: data.filter(f => f.box_num === rowData[0])
       }
     });
   }
 
   function onRowsDelete(rowsDeleted, newData) {
-    const lotteryIds = [];
+    const boxIds = [];
     rowsDeleted.data.map((item, index) => {
-      lotteryIds.push(data[item.index].id);
+      boxIds.push(data[item.index].box_num);
     });
 
     httpService
-      .post(`${API_BASE_URL}/api/management/club/lottery/delete/`, {
-        lottery_ids: lotteryIds
+      .post(`${API_BASE_URL}/api/management/club/gift_box/delete/`, {
+        box_ids: boxIds
       })
       .then(res => {
         if (res.status === 200) {

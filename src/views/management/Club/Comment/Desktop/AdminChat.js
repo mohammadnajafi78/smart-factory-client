@@ -5,17 +5,18 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader
 import Call from 'src/assets/img/icons/call.svg';
 import PDF from 'src/assets/img/icons/pdf.svg';
 import FileDownload from 'src/assets/img/icons/fileDownload.svg';
+import MomentTimeFa from 'src/utils/MomentTimeFa';
 
-export default function AdminChat({ file }) {
+export default function UserChat({ message }) {
   return (
     <Box
       sx={{
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'flex-end',
+        justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        padding: '0px 30px 0px 20px',
-        gap: '10px'
+        gap: '10px',
+        width: '100%'
       }}
     >
       <Box
@@ -65,7 +66,7 @@ export default function AdminChat({ file }) {
               color: '#FFFFFF'
             }}
           >
-            {!file ? (
+            {message?.message.length > 0 && (
               <InputLabel
                 style={{
                   fontWeight: 400,
@@ -74,9 +75,10 @@ export default function AdminChat({ file }) {
                   color: 'white'
                 }}
               >
-                سلام چظور می‌تونم به شما کمک کنم؟
+                {message.message}
               </InputLabel>
-            ) : (
+            )}
+            {message?.files_list.length > 0 && (
               <Box>
                 <Box
                   sx={{
@@ -91,10 +93,11 @@ export default function AdminChat({ file }) {
                   <img src={PDF} width={'31px'} height={'36px'} />
                   <InputLabel
                     style={{
-                      color: 'white'
+                      color: 'white',
+                      width: '130px'
                     }}
                   >
-                    سایت_و_اپلیکیشن_های_گروه_صنایع_BTS_v1_7.pdf
+                    {message?.files_list[0]?.file_name}
                   </InputLabel>
                   <Box
                     sx={{
@@ -110,23 +113,29 @@ export default function AdminChat({ file }) {
                       borderRadius: '8px'
                     }}
                   >
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: '4px',
-                        gap: '10px',
-                        width: '24px',
-                        height: '24px',
-                        background: '#E3E3E3',
-                        border: '0.5px solid #A7A5A6',
-                        borderRadius: '12px'
-                      }}
+                    <a
+                      href={message?.files_list[0]?.file}
+                      download
+                      // target={'_self'}
                     >
-                      <img src={FileDownload} />
-                    </Box>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          padding: '4px',
+                          gap: '10px',
+                          width: '24px',
+                          height: '24px',
+                          background: '#E3E3E3',
+                          border: '0.5px solid #A7A5A6',
+                          borderRadius: '12px'
+                        }}
+                      >
+                        <img src={FileDownload} />
+                      </Box>
+                    </a>
                   </Box>
                 </Box>
                 <Divider sx={{ my: 2 }} color="white" />
@@ -140,8 +149,12 @@ export default function AdminChat({ file }) {
                     gap: '10px'
                   }}
                 >
-                  <InputLabel style={{ color: 'white' }}>43 صفحه</InputLabel>
-                  <InputLabel style={{ color: 'white' }}>280kb</InputLabel>
+                  {/* <InputLabel style={{ color: 'white' }}>43 صفحه</InputLabel> */}
+                  <InputLabel style={{ color: 'white', direction: 'ltr' }}>
+                    {`${Math.round(
+                      message?.files_list[0]?.file_size / 1024
+                    )} KB`}
+                  </InputLabel>
                 </Box>
               </Box>
             )}
@@ -152,7 +165,7 @@ export default function AdminChat({ file }) {
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            padding: '0px 4px 0px 0px',
+            padding: '0px 4px 10px 0px',
             gap: '10px'
           }}
         >
@@ -162,10 +175,11 @@ export default function AdminChat({ file }) {
               fontSize: '10px',
               lineHeight: '16px',
               textAlign: 'right',
-              color: '#A7A5A6'
+              color: '#A7A5A6',
+              direction: 'ltr'
             }}
           >
-            ۵ دقیقه پیش
+            {MomentTimeFa(message?.create_date)}
           </InputLabel>
         </Box>
       </Box>

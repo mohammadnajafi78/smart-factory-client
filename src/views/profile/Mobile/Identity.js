@@ -15,7 +15,8 @@ function IdentityInfoMobile(props) {
         initialValues={{
           name: data?.first_name,
           family: data?.last_name,
-          mobile: data?.mobile
+          mobile: data?.mobile,
+          email: data?.email
         }}
         validate={values => {
           const errors = {};
@@ -69,20 +70,26 @@ function IdentityInfoMobile(props) {
               {/* <InputLabelHeader>اطلاعات هویتی</InputLabelHeader> */}
               {/* <InputLabel>مشخصات شما شامل موارد زیر می باشد:</InputLabel> */}
               <Box>
-                <InputLabel>نام</InputLabel>
-                <TextField
-                  id="name"
-                  aria-describedby="my-helper-text"
-                  fullWidth
-                  // placeholder="رمز عبور"
-                  sx={{
-                    background: '#F2F2F2',
-                    borderRadius: '4px',
-                    margin: '6px 3px'
-                  }}
-                  value={values.name}
-                  onChange={handleChange}
-                />
+                <InputLabel style={{ color: '#A7A5A6' }}>ایمیل</InputLabel>
+                {values.email ? (
+                  <InputLabel style={{ color: '#231F20' }}>
+                    {values.email}
+                  </InputLabel>
+                ) : (
+                  <TextField
+                    id="email"
+                    aria-describedby="my-helper-text"
+                    fullWidth
+                    // placeholder="رمز عبور"
+                    sx={{
+                      background: '#F2F2F2',
+                      borderRadius: '4px',
+                      margin: '6px 3px'
+                    }}
+                    value={values.email}
+                    onChange={handleChange}
+                  />
+                )}
               </Box>
               <Box sx={{ mt: 2 }}>
                 <InputLabel>نام خانوادگی</InputLabel>

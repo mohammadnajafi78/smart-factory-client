@@ -590,7 +590,7 @@ const Table = props => {
     <CacheProvider value={muiCache}>
       <ThemeProvider theme={theme}>
         <Card>
-          <Box sx={{ height: '87vh' }}>
+          <Box sx={{ height: '72vh', overflow: 'auto' }}>
             <MUIDataTable
               title={props.title}
               data={props.data}

@@ -45,9 +45,10 @@ function a11yProps(index) {
   };
 }
 
-export default function CompetitionDesktop() {
+export default function CompetitionDesktop(props) {
   const [value, setValue] = React.useState(0);
-  const [userData, setUserData] = React.useState(null);
+  // const [userData, setUserData] = React.useState(null);
+
   const theme = useTheme();
 
   const handleChange = (event, newValue) => {
@@ -93,10 +94,10 @@ export default function CompetitionDesktop() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <GiftBoxDetails />
+          <GiftBoxDetails {...props} />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <GiftBoxUsers />
+          <GiftBoxUsers {...props} />
         </TabPanel>
       </SwipeableViews>
     </Box>

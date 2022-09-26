@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Divider, Grid } from '@mui/material';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
@@ -7,8 +7,24 @@ import ChatUser from 'src/assets/img/icons/chatUser.svg';
 import AdminChat from './AdminChat';
 import UserChat from './UserChat';
 import SendMessage from './SendMessage';
+import MomentFa from 'src/utils/MomentFa';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
-export default function Details() {
+export default function Details(props) {
+  const [data, setData] = useState(props.location.state.data[0]);
+  const userId = JSON.parse(localStorage.getItem('user')).user_id;
+
+  function getData() {
+    httpService
+      .get(`${API_BASE_URL}/api/club/suggestions/${data.id}`)
+      .then(res => {
+        if (res.status === 200) {
+          setData(res.data);
+        }
+      });
+  }
+
   return (
     <Box>
       <Box
@@ -25,14 +41,14 @@ export default function Details() {
         }}
       >
         <InputLabelHeader style={{ color: '#00346D' }}>
-          پیشنهاد فنی
+          {data?.subject}
         </InputLabelHeader>
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <div style={{ display: 'inline-flex' }}>
               <InputLabel style={{ color: '#00AAB5' }}>موضوع:</InputLabel>
               <InputLabel style={{ color: '#335D8A' }}>
-                {'دفاتر و کارشناس فروش'}
+                {data?.topic_detail?.name}
               </InputLabel>
             </div>
           </Grid>
@@ -42,19 +58,38 @@ export default function Details() {
                 زمان ثبت نام:
               </InputLabel>
               <InputLabel style={{ color: '#335D8A' }}>
-                {'دفاتر و کارشناس فروش'}
+                {MomentFa(data?.create_date)}
               </InputLabel>
             </div>
           </Grid>
         </Grid>
         <Divider variant="middle" sx={{ margin: '20px 0px', width: '98%' }} />
 
-        <AdminChat />
+        {/* <AdminChat />
         <UserChat />
         <UserChat file={true} />
-        <AdminChat file={true} />
+        <AdminChat file={true} /> */}
 
-        <SendMessage />
+        <Box
+          sx={{
+            height: '75vh',
+            width: '100%',
+            overflow: 'auto',
+            paddingRight: '30px',
+            paddingBottom: '25px'
+          }}
+        >
+          {data?.message_list?.length > 0 &&
+            data.message_list.map((item, index) => {
+              return item?.user_info?.user_id === userId ? (
+                <AdminChat message={item} />
+              ) : (
+                <UserChat message={item} />
+              );
+            })}
+        </Box>
+
+        <SendMessage message={data} getData={getData} />
       </Box>
     </Box>
   );

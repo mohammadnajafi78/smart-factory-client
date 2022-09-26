@@ -16,15 +16,33 @@ import AdapterJalali from '@date-io/date-fns-jalali';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import Upload from 'src/assets/img/icons/upload.svg';
+import Delete from 'src/assets/img/icons/delete.svg';
+import Attach from 'src/assets/img/icons/attach.svg';
+import MomentEn from 'src/utils/MomentEn';
+import { useHistory } from 'react-router-dom';
 
 export default function NewCompetition() {
-  const [works, setWorks] = useState([]);
+  const [giftType, setGiftType] = useState([]);
+  const [grades, setGrades] = useState([]);
+  const history = useHistory();
+
+  useEffect(() => {
+    httpService.get(`${API_BASE_URL}/api/club/gift_type/`).then(res => {
+      if (res.status === 200) {
+        setGiftType(res.data);
+      }
+    });
+  }, []);
+
   useEffect(() => {
     httpService
-      .get(`${API_BASE_URL}/api/users/user_type/activity_list`)
+      .post(`${API_BASE_URL}/api/management/club/club_grade/grade_list/`, {
+        search: '',
+        order: ''
+      })
       .then(res => {
         if (res.status === 200) {
-          setWorks(res.data);
+          setGrades(res.data);
         }
       });
   }, []);
@@ -48,28 +66,45 @@ export default function NewCompetition() {
       >
         <Formik
           initialValues={{
-            // field: data?.user_type_list,
-            // company: data?.company?.name,
-            company: ''
-            // address: data?.company?.location_info?.address
+            name: '',
+            description: '',
+            credit: '',
+            start_date: new Date(),
+            expire_date: new Date(),
+            grade: '',
+            gift_type: '',
+            image: null
           }}
-          validate={values => {
-            const errors = {};
-            if (!values.input) {
-              errors.username = 'نام کاربری اجباری می باشد';
-            }
-            return errors;
-          }}
-          onSubmit={async (values, { setErrors, setSubmitting }) => {
-            // httpsService
-            //   .post(`${API_BASE_URL}/api/users/add_user_type/`, {
-            //     user_type: selected
-            //   })
-            //   .then(res => {
-            //     if (res.status === 200) {
-            //       history.push('/home');
-            //     }
-            //   });
+          // validate={values => {
+          //   const errors = {};
+          //   if (!values.input) {
+          //     errors.username = 'نام کاربری اجباری می باشد';
+          //   }
+          //   return errors;
+          // }}
+          onSubmit={(values, { setErrors, setSubmitting }) => {
+            const formData = new FormData();
+            formData.append('image', values.image);
+            formData.append('name', values.name);
+            formData.append('description', values.description);
+            formData.append('credit', values.credit);
+            formData.append('start_date', MomentEn(values.start_date));
+            formData.append('expire_date', MomentEn(values.expire_date));
+            formData.append('grade', values.grade);
+            formData.append('gift_type', values.gift_type);
+
+            setSubmitting(true);
+            httpService
+              .post(`${API_BASE_URL}/api/management/club/gifts/`, formData)
+              .then(res => {
+                if (res.status === 201) {
+                  setSubmitting(false);
+                  history.push('/management/club/gifts');
+                }
+              })
+              .catch(err => {
+                setSubmitting(false);
+              });
           }}
         >
           {({
@@ -106,7 +141,7 @@ export default function NewCompetition() {
                 <Box sx={{ mt: 3 }}>
                   <InputLabel>عنوان جایزه</InputLabel>
                   <TextField
-                    id="company"
+                    id="name"
                     aria-describedby="my-helper-text"
                     fullWidth
                     // placeholder="رمز عبور"
@@ -115,18 +150,20 @@ export default function NewCompetition() {
                       borderRadius: '4px',
                       margin: '6px 3px'
                     }}
-                    // value={values.company}
-                    // onChange={handleChange}
+                    value={values.name}
+                    onChange={handleChange}
                   />
                 </Box>
                 <Grid container spacing={2}>
                   <Grid item xs={6}>
                     <Box sx={{ mt: 3 }}>
-                      <InputLabel>اعتبار تا</InputLabel>
+                      <InputLabel>تاریخ شروع</InputLabel>
                       <LocalizationProvider dateAdapter={AdapterJalali}>
                         <DatePicker
-                          //   value={}
-                          //   onChange={newValue => {}}
+                          value={values.start_date}
+                          onChange={newValue => {
+                            setFieldValue('start_date', newValue);
+                          }}
                           renderInput={params => (
                             <TextField
                               {...params}
@@ -142,19 +179,68 @@ export default function NewCompetition() {
                   </Grid>
                   <Grid item xs={6}>
                     <Box sx={{ mt: 3 }}>
+                      <InputLabel>تاریخ پایان</InputLabel>
+                      <LocalizationProvider dateAdapter={AdapterJalali}>
+                        <DatePicker
+                          value={values.expire_date}
+                          onChange={newValue => {
+                            setFieldValue('start_date', newValue);
+                          }}
+                          renderInput={params => (
+                            <TextField
+                              {...params}
+                              sx={{
+                                background: '#F2F2F2'
+                              }}
+                              fullWidth
+                            />
+                          )}
+                        />
+                      </LocalizationProvider>
+                    </Box>
+                  </Grid>
+                </Grid>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <Box sx={{ mt: 3 }}>
                       <InputLabel>امتیاز</InputLabel>
                       <TextField
-                        id="company"
+                        id="credit"
                         aria-describedby="my-helper-text"
                         fullWidth
                         // placeholder="رمز عبور"
+                        InputProps={{ inputProps: { min: 0 } }}
+                        type="number"
                         sx={{
                           background: '#F2F2F2',
                           borderRadius: '4px'
                           //   margin: '6px 3px'
                         }}
-                        // value={values.company}
-                        // onChange={handleChange}
+                        value={values.credit}
+                        onChange={handleChange}
+                      />
+                    </Box>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Box sx={{ mt: 3 }}>
+                      <InputLabel>نوع</InputLabel>
+                      <Autocomplete
+                        // multiple
+                        fullWidth
+                        disablePortal
+                        id="gift_type"
+                        limitTags={1}
+                        options={giftType}
+                        getOptionLabel={option => option.translate}
+                        // defaultValue={values.field}
+                        renderInput={params => <TextField {...params} />}
+                        onChange={(event, values) => {
+                          setFieldValue('gift_type', values.id);
+                        }}
+                        isOptionEqualToValue={(option, value) =>
+                          option.translate === value.translate
+                        }
+                        noOptionsText={'موردی یافت نشد'}
                       />
                     </Box>
                   </Grid>
@@ -162,22 +248,22 @@ export default function NewCompetition() {
                 <Grid container spacing={2}>
                   <Grid item xs={6}>
                     <Box sx={{ mt: 3 }}>
-                      <InputLabel>دسته بندی</InputLabel>
+                      <InputLabel>سطح</InputLabel>
                       <Autocomplete
-                        multiple
+                        // multiple
                         fullWidth
                         disablePortal
-                        id="field"
+                        id="grade"
                         limitTags={1}
-                        options={works}
-                        getOptionLabel={option => option.translate}
-                        defaultValue={values.field}
+                        options={grades}
+                        getOptionLabel={option => option.name}
+                        // defaultValue={values.field}
                         renderInput={params => <TextField {...params} />}
-                        // onChange={(event, values) => {
-                        //   setFieldValue('field', values);
-                        // }}
+                        onChange={(event, values) => {
+                          setFieldValue('grade', values.id);
+                        }}
                         isOptionEqualToValue={(option, value) =>
-                          option.translate === value.translate
+                          option.name === value.name
                         }
                         noOptionsText={'موردی یافت نشد'}
                       />
@@ -189,7 +275,7 @@ export default function NewCompetition() {
                     <Box sx={{ mt: 3 }}>
                       <InputLabel>توضیحات بیش تر</InputLabel>
                       <TextField
-                        id="company"
+                        id="description"
                         aria-describedby="my-helper-text"
                         fullWidth
                         // placeholder="رمز عبور"
@@ -200,8 +286,8 @@ export default function NewCompetition() {
                         }}
                         multiline
                         rows={3}
-                        // value={values.company}
-                        // onChange={handleChange}
+                        value={values.description}
+                        onChange={handleChange}
                       />
                     </Box>
                   </Grid>
@@ -216,32 +302,100 @@ export default function NewCompetition() {
                 عکس جایزه
               </InputLabelHeader>
               <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Box sx={{ mt: 3 }}>
-                    <Button
+                <Grid item xs={12} justifyContent="center">
+                  {values.image === null ? (
+                    <Box sx={{ mt: 3 }}>
+                      <Button
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          padding: '40px 0px',
+                          gap: '30px',
+                          width: '100%',
+                          height: '150px',
+                          border: '2px dashed #99DDE1',
+                          borderRadius: '4px',
+                          color: '#4F4C4D',
+                          fontFamily: 'IRANSans',
+                          fontWeight: 400,
+                          fontSize: '16px'
+                        }}
+                        component="label"
+                        onChange={event => {
+                          setFieldValue('image', event.target.files[0]);
+                        }}
+                      >
+                        <img src={Upload} with="33px" height="28px" />
+                        {'انتخاب فایل'}
+                        <input type="file" hidden />
+                      </Button>
+                    </Box>
+                  ) : (
+                    <Box
                       sx={{
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        padding: '40px 0px',
-                        gap: '30px',
-                        width: '100%',
-                        height: '150px',
+                        padding: '20px 0px 5px',
+                        gap: '20px',
+                        // width: '480px',
+                        height: '320px',
                         border: '2px dashed #99DDE1',
                         borderRadius: '4px',
-                        color: '#4F4C4D',
-                        fontFamily: 'IRANSans',
-                        fontWeight: 400,
-                        fontSize: '16px'
+                        margin: '20px'
                       }}
-                      component="label"
                     >
-                      <img src={Upload} with="33px" height="28px" />
-                      {'انتخاب فایل'}
-                      <input type="file" hidden />
-                    </Button>
-                  </Box>
+                      <img
+                        src={URL.createObjectURL(values.image)}
+                        width="300px"
+                        height="180px"
+                        style={{ borderRadius: '8px' }}
+                      />
+                      <InputLabel style={{ color: '#335D8A' }}>
+                        {values.image.name}
+                      </InputLabel>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'space-around',
+                          width: '100%'
+                        }}
+                      >
+                        <Button
+                          sx={{
+                            fontFamily: 'IRANSans',
+                            fontSize: '16px',
+                            fontWeight: 400
+                          }}
+                          onClick={() => {
+                            setFieldValue('image', null);
+                          }}
+                        >
+                          <img src={Delete} width="13px" height="13px" />
+                          پاک کردن
+                        </Button>
+                        <Button
+                          sx={{
+                            fontFamily: 'IRANSans',
+                            fontSize: '16px',
+                            fontWeight: 400
+                          }}
+                          component="label"
+                          onChange={e => {
+                            setFieldValue('image', e.target.files[0]);
+                          }}
+                        >
+                          <img src={Attach} width="13px" height="20px" />
+                          تغییر فایل
+                          <input type="file" hidden multiple={false} />
+                        </Button>
+                      </Box>
+                    </Box>
+                  )}
                 </Grid>
               </Grid>
 
@@ -265,6 +419,8 @@ export default function NewCompetition() {
                   //     })
                   //   }
                   style={{ width: '25%' }}
+                  type="submit"
+                  loading={isSubmitting}
                 >
                   {'ثبت جایزه'}
                 </ConfirmButton>

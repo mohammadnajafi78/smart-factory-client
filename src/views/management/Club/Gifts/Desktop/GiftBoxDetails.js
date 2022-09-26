@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Grid } from '@mui/material';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import { Star } from 'react-feather';
 import Iphone13 from 'src/assets/img/icons/iphone13.jpeg';
+import MomentFa from 'src/utils/MomentFa';
 
-export default function GiftBoxDetails() {
+export default function GiftBoxDetails(props) {
+  const [data, setData] = useState(props.location.state.data[0]);
+
   return (
     <>
       <Box sx={{ mb: 2, width: '100%' }}>
@@ -23,7 +26,7 @@ export default function GiftBoxDetails() {
           }}
         >
           <InputLabelHeader style={{ color: '#00346D' }}>
-            صندوق ۱
+            {data?.name}
           </InputLabelHeader>
           <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
             <Grid container spacing={2}>
@@ -33,7 +36,7 @@ export default function GiftBoxDetails() {
                     اعتبار تا:
                   </InputLabel>
                   <InputLabel style={{ color: '#335D8A' }}>
-                    {'تاریخ'}
+                    {MomentFa(data?.valid_date)}
                   </InputLabel>
                 </div>
               </Grid>
@@ -59,7 +62,7 @@ export default function GiftBoxDetails() {
                       {/* {data.gift_grade
                       ? data.gift_grade
                       : data.gift_detail.gift_grade} */}
-                      5000
+                      {data?.require_credit}
                     </InputLabel>
                     <Star style={{ width: '27px', height: '18px' }} />
                   </Box>
@@ -71,7 +74,21 @@ export default function GiftBoxDetails() {
                     سطح کاربری :
                   </InputLabel>
                   <InputLabel style={{ color: '#335D8A' }}>
-                    {'طلایی'}
+                    {data?.grade}
+                  </InputLabel>
+                </div>
+              </Grid>
+            </Grid>
+          </Box>
+          <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <div style={{ display: 'inline-flex' }}>
+                  <InputLabel style={{ color: '#00AAB5' }}>
+                    توضیحات :
+                  </InputLabel>
+                  <InputLabel style={{ color: '#335D8A' }}>
+                    {data?.description}
                   </InputLabel>
                 </div>
               </Grid>
@@ -96,7 +113,7 @@ export default function GiftBoxDetails() {
             جوایز صندوق
           </InputLabelHeader>
           <Grid container spacing={2}>
-            {[1, 2, 3, 4, 5, 6].map((item, index) => {
+            {data?.gifts_list.map((item, index) => {
               return (
                 <Grid item xs={2}>
                   <Box
@@ -113,8 +130,8 @@ export default function GiftBoxDetails() {
                       borderRadius: '10px'
                     }}
                   >
-                    <img src={Iphone13} width="71px" height={'110px'} />
-                    <InputLabel>هندزفری</InputLabel>
+                    <img src={item?.image} width="71px" height={'110px'} />
+                    <InputLabel>{item?.name}</InputLabel>
                   </Box>
                 </Grid>
               );

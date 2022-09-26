@@ -2,18 +2,20 @@ import React from 'react';
 import { Box, Divider, Grid } from '@mui/material';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
-import ChatUser from 'src/assets/img/icons/chatUser.svg';
+import Call from 'src/assets/img/icons/call.svg';
 import PDF from 'src/assets/img/icons/pdf.svg';
 import FileDownload from 'src/assets/img/icons/fileDownload.svg';
+import MomentTimeFa from 'src/utils/MomentTimeFa';
 
-export default function UserChat({ file }) {
+export default function Admin({ message }) {
+  console.log('message', message);
   return (
     <Box
       sx={{
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'flex-start',
-        padding: '0px 20px 0px 30px',
+        // padding: '0px 10px 0px 10px',
         gap: '10px',
         width: '100%',
         justifyContent: 'flex-end'
@@ -39,10 +41,11 @@ export default function UserChat({ file }) {
 
             background: '#FFFFFF',
             boxShadow: '0px 0px 8px rgba(146, 146, 146, 0.25)',
-            borderRadius: '20px 0px 20px 20px'
+            borderRadius: '20px 0px 20px 20px',
+            width: '100%'
           }}
         >
-          {!file ? (
+          {message?.message.length > 0 && (
             <InputLabel
               style={{
                 fontWeight: 400,
@@ -51,10 +54,10 @@ export default function UserChat({ file }) {
                 color: '#4F4C4D'
               }}
             >
-              من مشکلی با بخش جوایز دارم. بعد از خرید هدیه غیر تبلیغاتی با
-              امتیاز، دو روز طول می‌کشه تا به بخش دریافتی‌هام اضافه بشه
+              {message.message}
             </InputLabel>
-          ) : (
+          )}
+          {message?.files_list.length > 0 && (
             <Box>
               <Box
                 sx={{
@@ -69,10 +72,11 @@ export default function UserChat({ file }) {
                 <img src={PDF} width={'31px'} height={'36px'} />
                 <InputLabel
                   style={{
-                    color: '#4F4C4D'
+                    color: '#4F4C4D',
+                    width: '130px'
                   }}
                 >
-                  سایت_و_اپلیکیشن_های_گروه_صنایع_BTS_v1_7.pdf
+                  {message?.files_list[0]?.file_name}
                 </InputLabel>
                 <Box
                   sx={{
@@ -88,23 +92,29 @@ export default function UserChat({ file }) {
                     borderRadius: '8px'
                   }}
                 >
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: '4px',
-                      gap: '10px',
-                      width: '24px',
-                      height: '24px',
-                      background: '#E3E3E3',
-                      border: '0.5px solid #A7A5A6',
-                      borderRadius: '12px'
-                    }}
+                  <a
+                    href={message?.files_list[0]?.file}
+                    download
+                    // target={'_self'}
                   >
-                    <img src={FileDownload} />
-                  </Box>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        padding: '4px',
+                        gap: '10px',
+                        width: '24px',
+                        height: '24px',
+                        background: '#E3E3E3',
+                        border: '0.5px solid #A7A5A6',
+                        borderRadius: '12px'
+                      }}
+                    >
+                      <img src={FileDownload} />
+                    </Box>
+                  </a>
                 </Box>
               </Box>
               <Divider sx={{ my: 2, color: '#D3D2D2' }} />
@@ -113,12 +123,15 @@ export default function UserChat({ file }) {
                   display: 'flex',
                   flexDirection: 'row',
                   alignItems: 'center',
+                  justifyContent: 'space-between',
                   padding: '0px',
                   gap: '10px'
                 }}
               >
-                <InputLabel>43 صفحه</InputLabel>
-                <InputLabel>280kb</InputLabel>
+                {/* <InputLabel style={{ color: '#4F4C4D' }}>43 صفحه</InputLabel> */}
+                <InputLabel style={{ color: '#4F4C4D', direction: 'ltr' }}>
+                  {`${Math.round(message?.files_list[0]?.file_size / 1024)} KB`}
+                </InputLabel>
               </Box>
             </Box>
           )}
@@ -128,10 +141,11 @@ export default function UserChat({ file }) {
             fontWeight: 400,
             fontSize: '10px',
             textAlign: 'right',
-            color: '#A7A5A6'
+            color: '#A7A5A6',
+            direction: 'ltr'
           }}
         >
-          5 دقیقه پیش
+          {MomentTimeFa(message?.create_date)}
         </InputLabel>
       </Box>
       <Box
@@ -139,13 +153,15 @@ export default function UserChat({ file }) {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
-          //   padding: '10px 9.5px',
           gap: '10px',
           background: '#CCD6E2',
           borderRadius: '20px'
         }}
       >
-        <img src={ChatUser} />
+        <img
+          src={message?.user_info?.user_profile_image}
+          style={{ width: '40px', height: '40px', borderRadius: '30px' }}
+        />
       </Box>
     </Box>
   );

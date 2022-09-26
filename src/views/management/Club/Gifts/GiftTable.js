@@ -549,14 +549,14 @@ const GiftTable = props => {
   }
 
   function onRowsDelete(rowsDeleted, newData) {
-    const lotteryIds = [];
+    const giftIds = [];
     rowsDeleted.data.map((item, index) => {
-      lotteryIds.push(data[item.index].id);
+      giftIds.push(data[item.index].gift_id);
     });
 
     httpService
-      .post(`${API_BASE_URL}/api/management/club/lottery/delete/`, {
-        lottery_ids: lotteryIds
+      .post(`${API_BASE_URL}/api/management/club/gifts/delete/`, {
+        gift_ids: giftIds
       })
       .then(res => {
         if (res.status === 200) {

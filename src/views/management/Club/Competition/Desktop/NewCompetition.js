@@ -12,6 +12,7 @@ import { API_BASE_URL } from 'src/utils/urls';
 import { Plus } from 'react-feather';
 import p2e from 'src/utils/P2E';
 import { useHistory } from 'react-router-dom';
+import MomentEn from 'src/utils/MomentEn';
 
 export default function NewCompetition() {
   const [gifts, setGifts] = useState([]);
@@ -67,8 +68,8 @@ export default function NewCompetition() {
             httpService
               .post(`${API_BASE_URL}/api/management/club/matches/`, {
                 name: values.name,
-                start_date: values.start_date,
-                end_date: values.end_date,
+                start_date: MomentEn(values.start_date),
+                end_date: MomentEn(values.end_date),
                 winner_count: values.winner_count,
                 description: values.description,
                 details: values.details,

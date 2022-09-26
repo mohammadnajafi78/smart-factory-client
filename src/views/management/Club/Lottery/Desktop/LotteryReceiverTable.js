@@ -18,7 +18,6 @@ import Table from 'src/components/Desktop/Table';
 import { useHistory } from 'react-router-dom';
 import FaTOEn from 'src/utils/FaTOEn';
 import Confirm from 'src/components/Desktop/Button/Confirm';
-import CustomToolbarSelect from './CustomToolbarSelect';
 import { Plus } from 'react-feather';
 
 let item = {};
