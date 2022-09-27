@@ -3,7 +3,7 @@ import { Box, ButtonGroup, Button } from '@mui/material';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Desktop/InputLabel';
-import { Formik } from 'formik';
+import { ErrorMessage, Formik } from 'formik';
 import LoginFrame from 'src/components/Desktop/LoginFrame';
 import { useHistory } from 'react-router-dom';
 // import httpService from 'src/utils/httpService';
@@ -13,15 +13,8 @@ import { API_BASE_URL } from 'src/utils/urls';
 import axios from 'axios';
 import { Http } from '@mui/icons-material';
 import httpService from 'src/utils/httpService';
+import * as Yup from 'yup';
 
-const arr = [
-  'فروشگاه',
-  'مهندس / مجری تاسیسات',
-  'مهندس طراح / ناظر',
-  'پیمانکار',
-  'کارفرما',
-  'پرسنل شرکت'
-];
 function WorkDesktop() {
   const [works, setWorks] = useState([]);
   const [selected, setSelected] = useState([]);
@@ -60,7 +53,7 @@ function WorkDesktop() {
           gap: '60px',
           position: 'absolute',
           width: '386px',
-          height: '590px',
+          height: '600px',
           background: '#FFFFFF',
           border: '1px solid #D3D2D2',
           borderRadius: '10px'
@@ -70,23 +63,13 @@ function WorkDesktop() {
           initialValues={{
             input: ''
           }}
-          validate={values => {
-            // const errors = {};
-            // if (!values.input) {
-            //   errors.username = 'نام کاربری اجباری می باشد';
-            // }
-            // return errors;
-          }}
-          onSubmit={async (values, { setErrors, setSubmitting }) => {
-            //   try {
-            //     await login(values.username, values.password);
-            //     setSubmitting(false);
-            //   } catch (err) {
-            //     setErrors({
-            //       submit: t('login.validation')
-            //     });
-            //     setSubmitting(false);
-            //   }
+          validationSchema={Yup.object().shape({
+            input: Yup.string().required(
+              ' حداقل یک فعالیت باید انتخاب شده باشد'
+            )
+          })}
+          onSubmit={(values, { setErrors, setSubmitting }) => {
+            setSubmitting(true);
             httpService
               .post(`${API_BASE_URL}/api/users/add_user_type/`, {
                 user_type: selected
@@ -94,8 +77,10 @@ function WorkDesktop() {
               .then(res => {
                 if (res.status === 200) {
                   history.push('/home');
+                  setSubmitting(false);
                 }
               });
+            setSubmitting(false);
           }}
         >
           {({
@@ -103,6 +88,7 @@ function WorkDesktop() {
             handleBlur,
             handleChange,
             handleSubmit,
+            setFieldValue,
             isSubmitting,
             touched,
             values
@@ -132,6 +118,7 @@ function WorkDesktop() {
                     variant="contained"
                     sx={{ gap: 2, boxShadow: 'none' }}
                     // color="#CCEEF0"
+                    id="input"
                   >
                     {works &&
                       works.map((item, index) => {
@@ -178,8 +165,17 @@ function WorkDesktop() {
                                 setSelected(
                                   selected.filter(f => f.id !== item.id)
                                 );
-                              } else
+                                setFieldValue(
+                                  'input',
+                                  selected.filter(f => f.id !== item.id)
+                                );
+                              } else {
                                 setSelected(prevState => [...prevState, item]);
+                                setFieldValue('input', prevState => [
+                                  ...prevState,
+                                  item
+                                ]);
+                              }
                             }}
                           >
                             {item.translate}
@@ -188,26 +184,44 @@ function WorkDesktop() {
                       })}
                   </ButtonGroup>
                 </Box>
+                {touched['input'] && errors['input'] && (
+                  <ErrorMessage name={'input'}>
+                    {msg => (
+                      <div
+                        style={{
+                          color: 'red',
+                          textAlign: 'right',
+                          marginTop: '10px',
+                          marginBottom: '10px'
+                        }}
+                      >
+                        {msg}
+                      </div>
+                    )}
+                  </ErrorMessage>
+                )}
               </Box>
               <Box
                 sx={{
                   display: 'inline-flex',
-                  justifyContent: 'space-between',
+                  justifyContent: 'center',
                   gap: 2,
                   padding: '0px',
                   margin: 0,
                   width: '100%'
                 }}
               >
-                <ConfirmButton
+                {/* <ConfirmButton
                   disabled={false}
                   variant="outlined"
                   onClick={() => history.push('/location')}
                   type="button"
                 >
                   {'قبلی'}
+                </ConfirmButton> */}
+                <ConfirmButton disabled={isSubmitting} loading={isSubmitting}>
+                  {'ثبت'}
                 </ConfirmButton>
-                <ConfirmButton disabled={isSubmitting}>{'بعدی'}</ConfirmButton>
               </Box>
             </form>
           )}

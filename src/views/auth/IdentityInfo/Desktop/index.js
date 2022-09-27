@@ -9,6 +9,8 @@ import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 import axios from 'axios';
+import * as Yup from 'yup';
+
 // import axios from 'axios';
 // import axiosInstance from 'src/utils/axios';
 
@@ -38,14 +40,12 @@ function IdentityInfoDesktop(props) {
             name: '',
             family: ''
           }}
-          validate={values => {
-            // const errors = {};
-            // if (!values.input) {
-            //   errors.username = 'نام کاربری اجباری می باشد';
-            // }
-            // return errors;
-          }}
-          onSubmit={async (values, { setErrors, setSubmitting }) => {
+          validationSchema={Yup.object().shape({
+            name: Yup.string().required('نام اجباری می باشد'),
+            family: Yup.string().required('نام خانوادگی اجباری می باشد')
+          })}
+          onSubmit={(values, { setErrors, setSubmitting }) => {
+            setSubmitting(true);
             axios
               .patch(
                 `${API_BASE_URL}/api/users/${
@@ -56,6 +56,7 @@ function IdentityInfoDesktop(props) {
               .then(res => {
                 if (res.status === 200) {
                   history.push('/location');
+                  setSubmitting(false);
                 }
               });
             setSubmitting(false);
@@ -101,6 +102,8 @@ function IdentityInfoDesktop(props) {
                     }}
                     value={values.name}
                     onChange={handleChange}
+                    error={Boolean(touched.name && errors.name)}
+                    helperText={touched.name && errors.name}
                   />
                 </Box>
                 <Box sx={{ mt: 2 }}>
@@ -119,6 +122,8 @@ function IdentityInfoDesktop(props) {
                     }}
                     value={values.family}
                     onChange={handleChange}
+                    error={Boolean(touched.family && errors.family)}
+                    helperText={touched.family && errors.family}
                   />
                 </Box>
               </Box>
@@ -128,18 +133,20 @@ function IdentityInfoDesktop(props) {
                   margin: 0,
                   width: '100%',
                   display: 'inline-flex',
-                  justifyContent: 'space-between',
+                  justifyContent: 'center',
                   gap: 2
                 }}
               >
-                <ConfirmButton
+                {/* <ConfirmButton
                   disabled={true}
                   variant="outlined"
                   type={'button'}
                 >
                   {'قبلی'}
+                </ConfirmButton> */}
+                <ConfirmButton disabled={isSubmitting} loading={isSubmitting}>
+                  {'ثبت'}
                 </ConfirmButton>
-                <ConfirmButton disabled={isSubmitting}>{'بعدی'}</ConfirmButton>
               </Box>
             </form>
           )}

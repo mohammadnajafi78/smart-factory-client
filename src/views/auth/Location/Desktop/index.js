@@ -9,6 +9,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
+import * as Yup from 'yup';
 
 function LocationDesktop() {
   const [provinces, setProvinces] = useState([]);
@@ -62,14 +63,12 @@ function LocationDesktop() {
             province: '',
             city: ''
           }}
-          validate={values => {
-            // const errors = {};
-            // if (!values.input) {
-            //   errors.username = 'نام کاربری اجباری می باشد';
-            // }
-            // return errors;
-          }}
-          onSubmit={async (values, { setErrors, setSubmitting }) => {
+          validationSchema={Yup.object().shape({
+            province: Yup.string().required('استان اجباری می باشد'),
+            city: Yup.string().required('شهر اجباری می باشد')
+          })}
+          onSubmit={(values, { setErrors, setSubmitting }) => {
+            setSubmitting(true);
             httpService
               .post(`${API_BASE_URL}/api/utils/locations/`, {
                 country_id: 25,
@@ -80,6 +79,7 @@ function LocationDesktop() {
               .then(res => {
                 if (res.status === 200) {
                   history.push('/work');
+                  setSubmitting(false);
                 }
               });
             setSubmitting(false);
@@ -91,6 +91,7 @@ function LocationDesktop() {
             handleChange,
             handleSubmit,
             isSubmitting,
+            setFieldValue,
             touched,
             values
           }) => (
@@ -114,13 +115,24 @@ function LocationDesktop() {
                   <Autocomplete
                     disablePortal
                     fullWidth
-                    id="province"
                     options={provinces}
                     renderInput={params => (
-                      <TextField {...params} placeholder="استان" fullWidth />
+                      <TextField
+                        {...params}
+                        placeholder="استان"
+                        fullWidth
+                        id="province"
+                        error={Boolean(touched.province && errors.province)}
+                        helperText={touched.province && errors.province}
+                      />
                     )}
                     onChange={(event, newValue) => {
-                      if (newValue) setProvinceId(newValue.id);
+                      if (newValue) {
+                        setFieldValue('province', newValue.id);
+                        setProvinceId(newValue.id);
+                      } else {
+                        setFieldValue('province', '');
+                      }
                     }}
                     isOptionEqualToValue={(option, value) =>
                       option.label === value.label
@@ -133,14 +145,25 @@ function LocationDesktop() {
                   <Autocomplete
                     disablePortal
                     fullWidth
-                    id="city"
                     options={cities}
                     // sx={{ width: 300 }}
                     renderInput={params => (
-                      <TextField {...params} placeholder="شهر" fullWidth />
+                      <TextField
+                        {...params}
+                        placeholder="شهر"
+                        fullWidth
+                        id="city"
+                        error={Boolean(touched.city && errors.city)}
+                        helperText={touched.city && errors.city}
+                      />
                     )}
                     onChange={(event, newValue) => {
-                      if (newValue) setCityId(newValue.id);
+                      if (newValue) {
+                        setFieldValue('city', newValue.id);
+                        setCityId(newValue.id);
+                      } else {
+                        setFieldValue('city', '');
+                      }
                     }}
                     isOptionEqualToValue={(option, value) =>
                       option.label === value.label
@@ -152,14 +175,14 @@ function LocationDesktop() {
               <Box
                 sx={{
                   display: 'inline-flex',
-                  justifyContent: 'space-between',
+                  justifyContent: 'center',
                   gap: 2,
                   padding: '0px',
                   margin: 0,
                   width: '100%'
                 }}
               >
-                <ConfirmButton
+                {/* <ConfirmButton
                   disabled={true}
                   variant="outlined"
                   onClick={() => {
@@ -168,8 +191,10 @@ function LocationDesktop() {
                   type={'button'}
                 >
                   {'قبلی'}
+                </ConfirmButton> */}
+                <ConfirmButton disabled={isSubmitting} loading={isSubmitting}>
+                  {'ثبت'}
                 </ConfirmButton>
-                <ConfirmButton disabled={isSubmitting}>{'بعدی'}</ConfirmButton>
               </Box>
             </form>
           )}

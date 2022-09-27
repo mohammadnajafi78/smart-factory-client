@@ -7,6 +7,7 @@ import { Formik } from 'formik';
 import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
+import * as Yup from 'yup';
 
 function IdentityInfoMobile(props) {
   const history = useHistory();
@@ -18,14 +19,12 @@ function IdentityInfoMobile(props) {
           name: '',
           family: ''
         }}
-        validate={values => {
-          const errors = {};
-          // if (!values.input) {
-          //   errors.username = 'نام کاربری اجباری می باشد';
-          // }
-          return errors;
-        }}
-        onSubmit={async (values, { setErrors, setSubmitting }) => {
+        validationSchema={Yup.object().shape({
+          name: Yup.string().required('نام اجباری می باشد'),
+          family: Yup.string().required('نام خانوادگی اجباری می باشد')
+        })}
+        onSubmit={(values, { setErrors, setSubmitting }) => {
+          setSubmitting(true);
           httpService
             .patch(
               `${API_BASE_URL}/api/users/${
@@ -36,6 +35,7 @@ function IdentityInfoMobile(props) {
             .then(res => {
               if (res.status === 200) {
                 history.push('/location');
+                setSubmitting(false);
               }
             });
           setSubmitting(false);
@@ -83,6 +83,8 @@ function IdentityInfoMobile(props) {
                   }}
                   value={values.name}
                   onChange={handleChange}
+                  error={Boolean(touched.name && errors.name)}
+                  helperText={touched.name && errors.name}
                 />
               </Box>
               <Box sx={{ mt: 2 }}>
@@ -99,25 +101,28 @@ function IdentityInfoMobile(props) {
                   }}
                   value={values.family}
                   onChange={handleChange}
+                  error={Boolean(touched.family && errors.family)}
+                  helperText={touched.family && errors.family}
                 />
               </Box>
             </Box>
             <Box
               sx={{
                 display: 'inline-flex',
-                justifyContent: 'space-between',
+                justifyContent: 'center',
                 gap: 2
               }}
             >
-              <ConfirmButton disabled={true} variant="outlined">
+              {/* <ConfirmButton disabled={true} variant="outlined">
                 {'قبلی'}
-              </ConfirmButton>
+              </ConfirmButton> */}
               <ConfirmButton
                 disabled={false}
                 type="submit"
                 onClick={() => handleSubmit()}
+                loading={isSubmitting}
               >
-                {'بعدی'}
+                {'ثبت'}
               </ConfirmButton>
             </Box>
           </form>

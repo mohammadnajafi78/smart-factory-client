@@ -1,23 +1,22 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Box, ButtonGroup, Button, ListItemIcon } from '@mui/material';
+import {
+  Box,
+  ButtonGroup,
+  Button,
+  ListItemIcon,
+  TextField
+} from '@mui/material';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
-import { Formik } from 'formik';
+import { ErrorMessage, Formik } from 'formik';
 import { useHistory } from 'react-router-dom';
 // import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import axios from 'src/utils/axios';
 import httpService from 'src/utils/httpService';
+import * as Yup from 'yup';
 
-// const arr = [
-//   'فروشگاه',
-//   'مهندس / مجری تاسیسات',
-//   'مهندس طراح / ناظر',
-//   'پیمانکار',
-//   'کارفرما',
-//   'پرسنل شرکت'
-// ];
 function WorkMobile() {
   const history = useHistory();
   const [works, setWorks] = useState([]);
@@ -38,32 +37,22 @@ function WorkMobile() {
       initialValues={{
         input: ''
       }}
-      validate={values => {
-        const errors = {};
-        if (!values.input) {
-          errors.username = 'نام کاربری اجباری می باشد';
-        }
-        return errors;
-      }}
-      onSubmit={async (values, { setErrors, setSubmitting }) => {
-        //   try {
-        //     await login(values.username, values.password);
-        //     setSubmitting(false);
-        //   } catch (err) {
-        //     setErrors({
-        //       submit: t('login.validation')
-        //     });
-        //     setSubmitting(false);
-        //   }
-        httpsService
+      validationSchema={Yup.object().shape({
+        input: Yup.string().required(' حداقل یک فعالیت باید انتخاب شده باشد')
+      })}
+      onSubmit={(values, { setErrors, setSubmitting }) => {
+        setSubmitting(true);
+        httpService
           .post(`${API_BASE_URL}/api/users/add_user_type/`, {
             user_type: selected
           })
           .then(res => {
             if (res.status === 200) {
               history.push('/home');
+              setSubmitting(false);
             }
           });
+        setSubmitting(false);
       }}
     >
       {({
@@ -72,6 +61,7 @@ function WorkMobile() {
         handleChange,
         handleSubmit,
         isSubmitting,
+        setFieldValue,
         touched,
         values
       }) => (
@@ -102,6 +92,7 @@ function WorkMobile() {
                 variant="contained"
                 sx={{ gap: 2, boxShadow: 'none' }}
                 // color="#CCEEF0"
+                id="input"
               >
                 {works &&
                   works.map((item, index) => {
@@ -142,7 +133,17 @@ function WorkMobile() {
                             selected.filter(f => f.id === item.id).length > 0
                           ) {
                             setSelected(selected.filter(f => f.id !== item.id));
-                          } else setSelected(prevState => [...prevState, item]);
+                            setFieldValue(
+                              'input',
+                              selected.filter(f => f.id !== item.id)
+                            );
+                          } else {
+                            setSelected(prevState => [...prevState, item]);
+                            setFieldValue('input', prevState => [
+                              ...prevState,
+                              item
+                            ]);
+                          }
                         }}
                       >
                         {item.translate}
@@ -151,22 +152,42 @@ function WorkMobile() {
                   })}
               </ButtonGroup>
             </Box>
+            {touched['input'] && errors['input'] && (
+              <ErrorMessage name={'input'}>
+                {msg => (
+                  <div
+                    style={{
+                      color: 'red',
+                      textAlign: 'right',
+                      marginTop: '5px'
+                    }}
+                  >
+                    {msg}
+                  </div>
+                )}
+              </ErrorMessage>
+            )}
           </Box>
           <Box
             sx={{
               display: 'inline-flex',
-              justifyContent: 'space-between',
+              justifyContent: 'center',
               gap: 2
             }}
           >
-            <ConfirmButton
+            {/* <ConfirmButton
               disabled={false}
               variant="outlined"
               onClick={() => history.push('/location')}
             >
               {'قبلی'}
-            </ConfirmButton>
-            <ConfirmButton disabled={false} onClick={handleSubmit}>
+            </ConfirmButton> */}
+            <ConfirmButton
+              disabled={isSubmitting}
+              // onClick={handleSubmit}
+              loading={isSubmitting}
+              type={'submit'}
+            >
               {'ثبت'}
             </ConfirmButton>
           </Box>
