@@ -9,10 +9,10 @@ import { useTheme } from '@mui/material/styles';
 // import UserProfile from './UserProfile';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import ClubGrade from './clubGrade';
-import GiftTypes from './giftTypes';
-import SuggestionType from './suggestionType';
-import SuggestionTopic from './suggestionTopic';
+import UserType from './userType';
+// import GiftTypes from './giftTypes';
+// import SuggestionType from './suggestionType';
+// import SuggestionTopic from './suggestionTopic';
 
 // import Club from './Club';
 
@@ -69,7 +69,7 @@ export default function SettingDesktop(props) {
           aria-label="basic tabs example"
         >
           <Tab
-            label="سطوح کاربری"
+            label="نوع کاربر"
             {...a11yProps(0)}
             sx={{
               fontFamily: 'IRANSans',
@@ -78,7 +78,7 @@ export default function SettingDesktop(props) {
               color: '#335D8A'
             }}
           />
-          <Tab
+          {/* <Tab
             label="نوع هدایا"
             {...a11yProps(1)}
             sx={{
@@ -107,7 +107,7 @@ export default function SettingDesktop(props) {
               fontWeight: 400,
               color: '#335D8A'
             }}
-          />
+          /> */}
         </Tabs>
       </Box>
       <SwipeableViews
@@ -116,9 +116,9 @@ export default function SettingDesktop(props) {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <ClubGrade />
+          <UserType />
         </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
+        {/* <TabPanel value={value} index={1} dir={theme.direction}>
           <GiftTypes />
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
@@ -126,7 +126,7 @@ export default function SettingDesktop(props) {
         </TabPanel>
         <TabPanel value={value} index={3} dir={theme.direction}>
           <SuggestionTopic />
-        </TabPanel>
+        </TabPanel> */}
       </SwipeableViews>
     </Box>
   );

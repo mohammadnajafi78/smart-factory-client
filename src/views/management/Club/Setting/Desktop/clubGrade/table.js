@@ -1,32 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes, { string } from 'prop-types';
-
 import {
   Box,
-  Card,
-  Typography,
-  Link,
   TextField,
   FormControl,
   InputLabel,
-  Autocomplete,
-  colors,
-  ToggleButtonGroup,
-  ToggleButton,
-  Tab
+  Divider
 } from '@mui/material';
-
-import { Link as RouterLink, useHistory } from 'react-router-dom';
-import SearchIcon from '@mui/icons-material/Search';
-import DownloadIcon from '@mui/icons-material/FileUpload';
-import ViewColumnIcon from '@mui/icons-material/ViewColumn';
-import FilterIcon from '@mui/icons-material/FilterAlt';
+import { useHistory } from 'react-router-dom';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import { consoleSandbox } from '@sentry/utils';
-import FaTOEn from 'src/utils/FaTOEn';
 import MomentFa from 'src/utils/MomentFa';
-// import Datepicker from 'src/components/Desktop/Datepicker';
 import AdapterJalali from '@date-io/date-fns-jalali';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -35,25 +18,25 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader
 import { Plus, Star } from 'react-feather';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import Table from 'src/components/Desktop/Table';
-import { ArrowBack, ArrowRight } from '@mui/icons-material';
+import CustomizedDialogs from 'src/components/Desktop/Dialog';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
 let item = {};
 let itemSort = {};
-const LotteryTable = props => {
+const ClubGradeTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(15);
   const [data, setData] = useState([]);
+  const [rowsPerPage, setRowsPerPage] = useState(15);
   const [columns, setColumns] = useState([]);
   const [filter, setFilter] = useState('');
   const [sort, setSort] = useState('');
-  const [startDate, setStartDate] = React.useState(new Date());
   const [endDate, setEndDate] = React.useState(new Date());
   const [reset, setReset] = useState(false);
-  const [state, setState] = useState(null);
-
+  const [open, setOpen] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -170,8 +153,8 @@ const LotteryTable = props => {
         }
       },
       {
-        name: 'date',
-        label: 'تاریخ انقضا',
+        name: 'create_date',
+        label: 'تاریخ ایجاد',
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
             return MomentFa(value);
@@ -188,7 +171,7 @@ const LotteryTable = props => {
                       position: 'initial'
                     }}
                   >
-                    تاریخ پایان
+                    تاریخ ایجاد
                   </InputLabel>
                   <LocalizationProvider dateAdapter={AdapterJalali}>
                     <DatePicker
@@ -212,6 +195,7 @@ const LotteryTable = props => {
                         if (newValue) {
                           setEndDate(moment(newValue).format('YYYY-MM-DD'));
                           filterList[index][0] = MomentFa(newValue);
+                          console.log('change', filterList);
                           onChange(filterList[index], index, column);
                         } else {
                           filterList[index] = [];
@@ -233,115 +217,14 @@ const LotteryTable = props => {
             }
           }
         }
-      },
-      {
-        name: 'status',
-        label: 'وضعیت',
-        options: {
-          customBodyRender: value => {
-            console.log('value', value);
-            return (
-              <>
-                {value?.toLowerCase() === 'performing' ? (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: '3px 6px !important',
-                      background: '#CCEEF0',
-                      borderRadius: '4px',
-                      color: '#00AAB5',
-                      width: '35%'
-                    }}
-                  >
-                    <InputLabel style={{ color: '#00AAB5', paddingLeft: 0 }}>
-                      در جریان
-                    </InputLabel>
-                  </Box>
-                ) : (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: '3px 6px !important',
-                      background: '#FDE8E8',
-                      borderRadius: '4px',
-                      color: '#F4777C !important',
-                      width: '35%'
-                    }}
-                  >
-                    <InputLabel style={{ color: '#F4777C', paddingLeft: 0 }}>
-                      خاتمه یافته
-                    </InputLabel>
-                  </Box>
-                )}
-              </>
-            );
-          },
-          filter: true,
-          filterType: 'custom',
-          filterOptions: {
-            display: (filterList, onChange, index, column) => {
-              return (
-                <FormControl sx={{ marginTop: '10px' }}>
-                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    وضعیت
-                  </InputLabel>
-                  <ToggleButtonGroup
-                    color="primary"
-                    value={state}
-                    exclusive
-                    onChange={(event, newValue) => {
-                      setState(newValue);
-
-                      if (newValue?.toLowerCase() === 'performing')
-                        filterList[index][0] = 'در جریان';
-                      else if (newValue?.toLowerCase() === 'finished')
-                        filterList[index][0] = 'خاتمه یافته';
-                      else filterList[index] = [];
-                      onChange(filterList[index], index, column);
-                    }}
-                    sx={{
-                      marginTop: '5px',
-                      direction: 'ltr',
-                      justifyContent: 'flex-end'
-                    }}
-                  >
-                    <ToggleButton
-                      value="PERFORMING"
-                      sx={{
-                        fontFamily: 'IRANSans'
-                      }}
-                    >
-                      در جریان
-                    </ToggleButton>
-                    <ToggleButton
-                      value="FINISHED"
-                      sx={{
-                        fontFamily: 'IRANSans'
-                      }}
-                    >
-                      خاتمه یافته
-                    </ToggleButton>
-                  </ToggleButtonGroup>
-                </FormControl>
-              );
-            }
-          }
-        }
       }
     ]);
-  }, [state]);
+  }, [endDate]);
 
   function getData(page, rowsPerPage, search) {
-    console.log('filer', filter);
     httpService
       .post(
-        `${API_BASE_URL}/api/management/club/lottery/lottery_list/?limit=${rowsPerPage}&offset=${page}${
+        `${API_BASE_URL}/api/management/club/club_grade/grade_list/?limit=${rowsPerPage}&offset=${page}${
           filter !== '' ? `&${filter}` : ''
         }`,
         {
@@ -361,7 +244,17 @@ const LotteryTable = props => {
   function onFilterChange(column, filterList, type) {
     let filterType = '';
 
+    console.log('column', column);
     switch (column) {
+      case 'create_date':
+        console.log('inja', filterList);
+        if (filterList[3][0]) {
+          item['create_date'] = endDate;
+          filterType = '';
+        } else {
+          delete item['create_date'];
+        }
+        break;
       case 'name':
         if (filterList[1][0]) {
           item['name'] = filterList[1][0];
@@ -377,26 +270,9 @@ const LotteryTable = props => {
         } else {
           delete item['credit'];
         }
-        break;
-      case 'date':
-        if (filterList[3][0]) {
-          item['date'] = endDate;
-          filterType = '';
-        } else {
-          delete item['date'];
-        }
-        break;
-      case 'status':
-        if (filterList[4][0]) {
-          item['status'] =
-            filterList[4][0] == 'در جریان' ? 'PERFORMING' : 'FINISHED';
 
-          filterType = '';
-        } else {
-          delete item['status'];
-          setState(null);
-        }
         break;
+
       default:
         item = item;
     }
@@ -420,14 +296,11 @@ const LotteryTable = props => {
       case 'name':
         itemSort['name'] = direction;
         break;
-      case 'date':
-        itemSort['date'] = direction;
+      case 'create_date':
+        itemSort['create_date'] = direction;
         break;
       case 'credit':
         itemSort['credit'] = direction;
-        break;
-      case 'status':
-        itemSort['status'] = direction;
         break;
       default:
         itemSort = itemSort;
@@ -446,23 +319,23 @@ const LotteryTable = props => {
   }
 
   function onRowClick(rowData, rowState) {
-    history.push({
-      pathname: '/management/club/lottery/details',
-      state: {
-        data: data.filter(f => f.id === rowData[0])
-      }
-    });
+    // history.push({
+    //   pathname: '/management/club/lottery/details',
+    //   state: {
+    //     data: data.filter(f => f.id === rowData[0])
+    //   }
+    // });
   }
 
   function onRowsDelete(rowsDeleted, newData) {
-    const lotteryIds = [];
+    const gradeIds = [];
     rowsDeleted.data.map((item, index) => {
-      lotteryIds.push(data[item.index].id);
+      gradeIds.push(data[item.index].id);
     });
 
     httpService
-      .post(`${API_BASE_URL}/api/management/club/lottery/delete/`, {
-        lottery_ids: lotteryIds
+      .post(`${API_BASE_URL}/api/management/club/club_grade/delete/`, {
+        grade_ids: gradeIds
       })
       .then(res => {
         if (res.status === 200) {
@@ -478,56 +351,185 @@ const LotteryTable = props => {
   }
 
   return (
-    <Table
-      title={
-        <>
-          <InputLabelHeader
-            style={{
-              color: '#00346D',
-              display: 'flex',
-              alignItems: 'center'
-            }}
-          >
-            لیست
-          </InputLabelHeader>
-          <ConfirmButton
-            style={{ width: '180px', marginRight: '20px' }}
-            onClick={() => {
-              history.push('/management/club/lottery/new');
-            }}
-          >
-            <Plus />
-            <di>قرعه کشی جدید</di>
-          </ConfirmButton>
-        </>
-      }
-      data={data}
-      columns={columns}
-      rowsPerPage={rowsPerPage}
-      setRowsPerPage={setRowsPerPage}
-      count={count}
-      page={page}
-      filter={filter}
-      sort={sort}
-      setReset={setReset}
-      onRowSelectionChange={(rowsSelectedData, allRows, rowsSelected) =>
-        onRowSelectionChange(rowsSelectedData, allRows, rowsSelected)
-      }
-      onRowsDelete={(rowsDeleted, newData) =>
-        onRowsDelete(rowsDeleted, newData)
-      }
-      getData={(page, rowsPerPage, search) =>
-        getData(page, rowsPerPage, search)
-      }
-      onRowClick={(rowData, rowState) => onRowClick(rowData, rowState)}
-      onFilterChange={(column, filterList, type) =>
-        onFilterChange(column, filterList, type)
-      }
-      onColumnSortChange={(changedColumn, direction) =>
-        onColumnSortChange(changedColumn, direction)
-      }
-    />
+    <>
+      <Table
+        title={
+          <>
+            <InputLabelHeader
+              style={{
+                color: '#00346D',
+                display: 'flex',
+                alignItems: 'center'
+              }}
+            >
+              لیست
+            </InputLabelHeader>
+            <ConfirmButton
+              style={{ width: '180px', marginRight: '20px' }}
+              onClick={() => {
+                //   history.push('/management/club/lottery/new');
+                setOpen(true);
+              }}
+            >
+              <Plus />
+              <di>سطح کاربری جدید</di>
+            </ConfirmButton>
+          </>
+        }
+        data={data}
+        columns={columns}
+        rowsPerPage={rowsPerPage}
+        setRowsPerPage={setRowsPerPage}
+        count={count}
+        page={page}
+        filter={filter}
+        sort={sort}
+        setReset={setReset}
+        onRowSelectionChange={(rowsSelectedData, allRows, rowsSelected) =>
+          onRowSelectionChange(rowsSelectedData, allRows, rowsSelected)
+        }
+        onRowsDelete={(rowsDeleted, newData) =>
+          onRowsDelete(rowsDeleted, newData)
+        }
+        getData={(page, rowsPerPage, search) =>
+          getData(page, rowsPerPage, search)
+        }
+        onRowClick={(rowData, rowState) => onRowClick(rowData, rowState)}
+        onFilterChange={(column, filterList, type) =>
+          onFilterChange(column, filterList, type)
+        }
+        onColumnSortChange={(changedColumn, direction) =>
+          onColumnSortChange(changedColumn, direction)
+        }
+      />
+      <div>
+        <CustomizedDialogs
+          open={open}
+          handleClose={() => setOpen(false)}
+          title={'سطح کاربری'}
+          content={
+            <Box>
+              <Formik
+                initialValues={{
+                  name: '',
+                  credit: ''
+                }}
+                validationSchema={Yup.object().shape({
+                  name: Yup.string().required('نام اجباری می باشد'),
+                  credit: Yup.string().required('امتیاز اجباری می باشد')
+                })}
+                onSubmit={(values, { setErrors, setSubmitting }) => {
+                  setSubmitting(true);
+                  httpService
+                    .post(
+                      `${API_BASE_URL}/api/management/club/club_grade/`,
+                      values
+                    )
+                    .then(res => {
+                      if (res.status === 201) {
+                        getData(page, rowsPerPage, '');
+                        setOpen(false);
+                        setSubmitting(false);
+                      }
+                    })
+                    .catch(err => {
+                      setSubmitting(false);
+                    });
+                }}
+              >
+                {({
+                  errors,
+                  handleBlur,
+                  handleChange,
+                  handleSubmit,
+                  isSubmitting,
+                  touched,
+                  values
+                }) => (
+                  <form
+                    noValidate
+                    onSubmit={handleSubmit}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'start',
+                      justifyContent: 'space-between',
+                      width: '400px',
+                      height: '270px'
+                    }}
+                  >
+                    <Box sx={{ width: '100%', padding: '10px 16px 30px 16px' }}>
+                      <Box sx={{ width: '100%' }}>
+                        <InputLabel>نام </InputLabel>
+                        <TextField
+                          id="name"
+                          aria-describedby="my-helper-text"
+                          fullWidth
+                          // placeholder="رمز عبور"
+                          sx={{
+                            background: '#F2F2F2',
+                            borderRadius: '4px',
+                            margin: '6px 3px'
+                          }}
+                          value={values.name}
+                          onChange={handleChange}
+                          error={Boolean(touched.name && errors.name)}
+                          helperText={touched.name && errors.name}
+                        />
+                      </Box>
+                      <Box sx={{ width: '100%' }}>
+                        <InputLabel>امتیاز</InputLabel>
+                        <TextField
+                          id="credit"
+                          aria-describedby="my-helper-text"
+                          fullWidth
+                          // placeholder="رمز عبور"
+                          sx={{
+                            background: '#F2F2F2',
+                            borderRadius: '4px',
+                            margin: '6px 3px'
+                          }}
+                          type={'number'}
+                          InputProps={{ inputProps: { min: 0 } }}
+                          value={values.credit}
+                          onChange={handleChange}
+                          error={Boolean(touched.credit && errors.credit)}
+                          helperText={touched.credit && errors.credit}
+                        />
+                      </Box>
+                    </Box>
+                    <Divider sx={{ width: '100%', marginBottom: '10px' }} />
+
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'flex-end',
+                        gap: 2,
+                        width: '100%',
+                        height: '60px'
+                        // borderTop: '0.5px solid #D3D2D2',
+                        // padding: '12px 16px'
+                      }}
+                    >
+                      <ConfirmButton
+                        variant={'contained'}
+                        style={{ width: '50%' }}
+                        type="submit"
+                        loading={isSubmitting}
+                      >
+                        ثبت سطح کاربری
+                      </ConfirmButton>
+                    </Box>
+                  </form>
+                )}
+              </Formik>
+            </Box>
+          }
+        />
+      </div>
+    </>
   );
 };
 
-export default LotteryTable;
+export default ClubGradeTable;

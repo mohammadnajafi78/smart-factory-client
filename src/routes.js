@@ -288,6 +288,11 @@ const routes = [
       },
       {
         exact: true,
+        path: '/management/user/setting',
+        component: lazy(() => import('src/views/management/Users/Setting'))
+      },
+      {
+        exact: true,
         path: '/management/club/competition',
         component: lazy(() => import('src/views/management/Club/Competition'))
       },

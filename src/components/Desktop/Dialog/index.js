@@ -69,7 +69,7 @@ export default function CustomizedDialogs({
           {title}
         </BootstrapDialogTitle>
         <DialogContent dividers>{content}</DialogContent>
-        <DialogActions>{actions}</DialogActions>
+        {actions && <DialogActions>{actions}</DialogActions>}
       </BootstrapDialog>
     </div>
   );

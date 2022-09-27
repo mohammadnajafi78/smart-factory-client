@@ -94,6 +94,13 @@ export default function DrawerComp(props) {
           image1: <AllUserMng fill="#335D8A" />,
           image2: <AllUserMng fill="#00AAB5" />
         }
+        // {
+        //   name: 'settings',
+        //   title: 'تنظیمات',
+        //   path: '/management/user/setting',
+        //   image1: <SettingMng fill="#335D8A" />,
+        //   image2: <SettingMng fill="#00AAB5" />
+        // }
       ]
     },
     {

@@ -144,6 +144,9 @@ let theme = createTheme({
         },
         actions: {
           direction: 'ltr'
+        },
+        displayedRows: {
+          fontFamily: 'IRANSans'
         }
       }
     },
@@ -423,6 +426,9 @@ const Table = props => {
   const tableOptions = {
     filter: true,
     selectableRows: true,
+    fixedHeader: true,
+    fixedSelectColumn: true,
+    tableBodyHeight: '56vh',
     filterType: 'textField',
     rowsPerPage: props.rowsPerPage,
     count: props.count,
@@ -590,15 +596,15 @@ const Table = props => {
     <CacheProvider value={muiCache}>
       <ThemeProvider theme={theme}>
         <Card>
-          <Box sx={{ height: '72vh', overflow: 'auto' }}>
-            <MUIDataTable
-              title={props.title}
-              data={props.data}
-              columns={props.columns}
-              options={tableOptions}
-              components={components}
-            />
-          </Box>
+          {/* <Box sx={{ height: '72vh', overflow: 'auto' }}> */}
+          <MUIDataTable
+            title={props.title}
+            data={props.data}
+            columns={props.columns}
+            options={tableOptions}
+            components={components}
+          />
+          {/* </Box> */}
         </Card>
       </ThemeProvider>
     </CacheProvider>
