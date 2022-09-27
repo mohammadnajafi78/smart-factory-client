@@ -94,7 +94,8 @@ export default function NewCompetitionDesktop({
                       width: '73px',
                       height: '84px',
                       background: '#FFFFFF',
-                      borderRadius: '8px'
+                      borderRadius: '8px',
+                      margin: '3px'
                     }}
                   >
                     <img src={item?.image} width="44.26px" height="50px" />
