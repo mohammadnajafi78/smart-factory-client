@@ -36,19 +36,21 @@ export const ScoreProvider = ({ children }) => {
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
-      httpService.get(`${API_BASE_URL}/api/users/refresh_user`).then(result => {
-        if (result.status === 200) {
-          localStorage.setItem('user', JSON.stringify(result.data));
+      // httpService.get(`${API_BASE_URL}/api/users/refresh_user`).then(result => {
+      //   if (result.status === 200) {
+      //     localStorage.setItem('user', JSON.stringify(result.data));
 
-          dispatch({
-            type: 'SET_SCORE',
-            payload: {
-              spent_credit: result.data.user_club.spent_credit,
-              total_credit: result.data.user_club.total_credit
-            }
-          });
+      dispatch({
+        type: 'SET_SCORE',
+        payload: {
+          spent_credit: JSON.parse(localStorage.getItem('user')).user_club
+            .spent_credit,
+          total_credit: JSON.parse(localStorage.getItem('user')).user_club
+            .total_credit
         }
       });
+      //   }
+      // });
     }
   }, []);
 

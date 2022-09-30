@@ -61,7 +61,7 @@ export default function AwardsBox() {
           gap: '10px',
 
           width: '100%',
-          height: '162px',
+          height: '182px',
           // marginTop: '6px',
           backgroundColor: '#33BBC4'
         }}
@@ -75,11 +75,13 @@ export default function AwardsBox() {
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            padding: '0px 30px',
+            // padding: '0px 30px',
             gap: '15px',
 
             width: '100%',
-            height: '68px'
+            height: '100px',
+            overflowX: 'auto',
+            overflowY: 'hidden'
           }}
         >
           {awards &&

@@ -62,7 +62,7 @@ export default function AwardsBox() {
           gap: '10px',
 
           width: '100%',
-          height: '140px',
+          height: '150px',
           // marginTop: '6px',
           backgroundColor: '#33BBC4'
         }}
@@ -82,7 +82,9 @@ export default function AwardsBox() {
             gap: '15px',
 
             width: '100%',
-            height: '68px'
+            height: '80px',
+            overflowX: 'auto',
+            overflowY: 'hidden'
           }}
         >
           {awards &&
@@ -104,7 +106,7 @@ export default function AwardsBox() {
                       justifyContent: 'center',
                       alignItems: 'center',
                       padding: '3px 6px !important',
-                      // height: '22px',
+                      height: '22px',
                       background: '#CCEEF0',
                       borderRadius: '4px',
                       color: '#00AAB5',

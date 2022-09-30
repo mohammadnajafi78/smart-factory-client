@@ -44,7 +44,7 @@ export default function UserPieChart({ allUser }) {
         fill={'#00346D'}
         style={{ fontSize: '40px', fontWeight: 700 }}
       >
-        {`${(completed / allUser) * 100}%`}
+        {`${Math.round((completed / allUser) * 100)}%`}
       </text>
       <Pie
         data={data}

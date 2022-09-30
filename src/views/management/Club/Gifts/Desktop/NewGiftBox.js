@@ -71,7 +71,8 @@ export default function NewGiftBox() {
             valid_date: new Date(),
             require_credit: 0,
             require_grade: '',
-            description: ''
+            description: '',
+            gifts: ''
           }}
           // validate={values => {
           //   const errors = {};
@@ -83,7 +84,14 @@ export default function NewGiftBox() {
           onSubmit={(values, { setErrors, setSubmitting }) => {
             setSubmitting(true);
             httpService
-              .post(`${API_BASE_URL}/api/management/club/gift_box/`, values)
+              .post(`${API_BASE_URL}/api/management/club/gift_box/`, {
+                name: values.name,
+                valid_date: MomentEn(values.valid_date),
+                require_credit: values.require_credit,
+                require_grade: values.require_grade,
+                description: values.description,
+                gifts: values.gifts
+              })
               .then(res => {
                 if (res.status === 201) {
                   setSubmitting(false);
@@ -150,7 +158,7 @@ export default function NewGiftBox() {
                         <DatePicker
                           value={values.valid_date}
                           onChange={newValue => {
-                            setFieldValue('valid_date', MomentEn(newValue));
+                            setFieldValue('valid_date', newValue);
                           }}
                           renderInput={params => (
                             <TextField
