@@ -9,6 +9,7 @@ import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 import { isSubmitting } from 'redux-form';
+import p2e from 'src/utils/P2E';
 
 function LoginMobile() {
   const history = useHistory();
@@ -63,13 +64,15 @@ function LoginMobile() {
               setSubmitting(true);
               httpService
                 .get(
-                  `${API_BASE_URL}/api/users/login_or_register?mobile=${values.input}`
+                  `${API_BASE_URL}/api/users/login_or_register?mobile=${p2e(
+                    values.input
+                  )}`
                 )
                 .then(res => {
                   if (res.status === 204) {
                     httpService
                       .post(`${API_BASE_URL}/api/users/register/`, {
-                        mobile: values.input
+                        mobile: p2e(values.input)
                       })
                       .then(result => {
                         if (result.status === 200) {
@@ -79,7 +82,7 @@ function LoginMobile() {
                           history.push({
                             pathname: `/otp`,
                             state: {
-                              mobile: values.input,
+                              mobile: p2e(values.input),
                               lastUpdate: result.data.last_update
                             }
                           });
@@ -91,7 +94,7 @@ function LoginMobile() {
                     history.push({
                       pathname: '/entry',
                       state: {
-                        mobile: values.input
+                        mobile: p2e(values.input)
                       }
                     });
                   }

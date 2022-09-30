@@ -9,7 +9,7 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 import httpService from 'src/utils/httpService';
-import P2E from 'src/utils/P2E';
+import p2e from 'src/utils/P2E';
 import * as Yup from 'yup';
 
 function LoginDesktop() {
@@ -55,7 +55,7 @@ function LoginDesktop() {
             setSubmitting(true);
             httpService
               .get(
-                `${API_BASE_URL}/api/users/login_or_register?mobile=${P2E(
+                `${API_BASE_URL}/api/users/login_or_register?mobile=${p2e(
                   values.input
                 )}`
               )
@@ -64,7 +64,7 @@ function LoginDesktop() {
                   setSubmitting(false);
                   httpService
                     .post(`${API_BASE_URL}/api/users/register/`, {
-                      mobile: values.input
+                      mobile: p2e(values.input)
                     })
                     .then(result => {
                       if (result.status === 200) {
@@ -72,7 +72,7 @@ function LoginDesktop() {
                         history.push({
                           pathname: `/otp`,
                           state: {
-                            mobile: P2E(values.input),
+                            mobile: p2e(values.input),
                             lastUpdate: result.data.last_update
                           }
                         });
@@ -83,7 +83,7 @@ function LoginDesktop() {
                   history.push({
                     pathname: '/entry',
                     state: {
-                      mobile: values.input
+                      mobile: p2e(values.input)
                     }
                   });
                 } else {
