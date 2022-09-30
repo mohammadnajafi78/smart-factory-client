@@ -3,7 +3,14 @@ import { TextField } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 export const TextCenterTextField = styled(TextField)({
-  '& .MuiOutlinedInput-input': {
-    textAlign: 'center'
+  '& .MuiFilledInput-input': {
+    textAlign: 'center',
+    padding: '18px'
+  },
+  '& .Mui-error': {
+    backgroundColor: '#FEEEEC'
+  },
+  '& .MuiFormHelperText-root': {
+    backgroundColor: 'white'
   }
 });

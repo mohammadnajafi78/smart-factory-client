@@ -15,6 +15,8 @@ import axios from 'axios';
 import useAuth from 'src/hooks/useAuth';
 import { TextCenterTextField } from 'src/components/Desktop/TextField/TextCenterTextField';
 import useScore from 'src/hooks/useScore';
+import * as Yup from 'yup';
+import p2e from 'src/utils/P2E';
 
 function LoginOTPDesktop(props) {
   const history = useHistory();
@@ -75,23 +77,24 @@ function LoginOTPDesktop(props) {
             input5: '',
             input6: ''
           }}
-          validate={values => {
-            const errors = {};
-            // if (!values.input) {
-            //   errors.username = 'نام کاربری اجباری می باشد';
-            // }
-            return errors;
-          }}
-          onSubmit={async (values, { setErrors, setSubmitting }) => {
+          validationSchema={Yup.object().shape({
+            // input1: Yup.string().required('.'),
+            // input2: Yup.string().required('.'),
+            // input3: Yup.string().required('.'),
+            // input4: Yup.string().required('.'),
+            // input5: Yup.string().required('.'),
+            // input6: Yup.string().required('.')
+          })}
+          onSubmit={(values, { setErrors, setSubmitting, setFieldError }) => {
             if (props.location.state.status === 'entry') {
               httpService
                 .post(`${API_BASE_URL}/api/users/login_with_otp/`, {
-                  verification_code: `${values.input1 +
-                    values.input2 +
-                    values.input3 +
-                    values.input4 +
-                    values.input5 +
-                    values.input6}`,
+                  verification_code: `${p2e(values.input1) +
+                    p2e(values.input2) +
+                    p2e(values.input3) +
+                    p2e(values.input4) +
+                    p2e(values.input5) +
+                    p2e(values.input6)}`,
                   username: props.location.state.mobile
                 })
                 .then(res => {
@@ -103,11 +106,26 @@ function LoginOTPDesktop(props) {
                     setScore();
                     // history.push('/home');
                     history.push('/' + res.data.profile_state.toLowerCase());
+                  } else {
+                    setErrors({
+                      input1: true,
+                      input2: true,
+                      input3: true,
+                      input4: true,
+                      input5: true,
+                      input6: true
+                    });
                   }
                 })
                 .catch(err => {
-                  console.log('err');
-                  alert('کد اشتباه وارد شده است');
+                  setErrors({
+                    input1: true,
+                    input2: true,
+                    input3: true,
+                    input4: true,
+                    input5: true,
+                    input6: true
+                  });
                 });
             } else if (props.location.state.status === 'forgot') {
               history.push({
@@ -115,23 +133,23 @@ function LoginOTPDesktop(props) {
                 state: {
                   mobile: props.location.state.mobile,
                   verification_code:
-                    values.input1 +
-                    values.input2 +
-                    values.input3 +
-                    values.input4 +
-                    values.input5 +
-                    values.input6
+                    p2e(values.input1) +
+                    p2e(values.input2) +
+                    p2e(values.input3) +
+                    p2e(values.input4) +
+                    p2e(values.input5) +
+                    p2e(values.input6)
                 }
               });
             } else {
               httpService
                 .post(`${API_BASE_URL}/api/users/mobile_verification/`, {
-                  verification_code: `${values.input1 +
-                    values.input2 +
-                    values.input3 +
-                    values.input4 +
-                    values.input5 +
-                    values.input6}`,
+                  verification_code: `${p2e(values.input1) +
+                    p2e(values.input2) +
+                    p2e(values.input3) +
+                    p2e(values.input4) +
+                    p2e(values.input5) +
+                    p2e(values.input6)}`,
                   mobile: props.location.state.mobile
                 })
                 .then(res => {
@@ -218,6 +236,9 @@ function LoginOTPDesktop(props) {
                       }
                     }}
                     autoFocus={true}
+                    error={Boolean(touched.input1 && errors.input1)}
+                    helperText={touched.input1 && errors.input1}
+                    variant="filled"
                   />
                   <TextCenterTextField
                     id="input2"
@@ -245,6 +266,9 @@ function LoginOTPDesktop(props) {
                       }
                     }}
                     type="tel"
+                    error={Boolean(touched.input2 && errors.input2)}
+                    helperText={touched.input2 && errors.input2}
+                    variant="filled"
                   />
                   <TextCenterTextField
                     id="input3"
@@ -270,6 +294,9 @@ function LoginOTPDesktop(props) {
                         document.getElementById('input2').focus();
                       }
                     }}
+                    error={Boolean(touched.input3 && errors.input3)}
+                    helperText={touched.input3 && errors.input3}
+                    variant="filled"
                   />
                   <TextCenterTextField
                     id="input4"
@@ -295,6 +322,9 @@ function LoginOTPDesktop(props) {
                         document.getElementById('input3').focus();
                       }
                     }}
+                    error={Boolean(touched.input4 && errors.input4)}
+                    helperText={touched.input4 && errors.input4}
+                    variant="filled"
                   />
                   <TextCenterTextField
                     id="input5"
@@ -320,6 +350,9 @@ function LoginOTPDesktop(props) {
                         document.getElementById('input4').focus();
                       }
                     }}
+                    error={Boolean(touched.input5 && errors.input5)}
+                    helperText={touched.input5 && errors.input5}
+                    variant="filled"
                   />
                   <TextCenterTextField
                     id="input6"
@@ -337,7 +370,7 @@ function LoginOTPDesktop(props) {
                     onChange={event => {
                       handleChange(event, 'input6');
                       if (event.target.value.length === 1) {
-                        document.getElementById('input6').focus();
+                        document.getElementById('input7').focus();
                         handleSubmit();
                       }
                     }}
@@ -347,15 +380,16 @@ function LoginOTPDesktop(props) {
                         document.getElementById('input5').focus();
                       }
                     }}
+                    error={Boolean(touched.input6 && errors.input6)}
+                    helperText={touched.input6 && errors.input6}
+                    variant="filled"
                   />
                 </Box>
               </Box>
               <Box>
-                <InputLabel id={'input7'}>
-                  شماره همراه خود را اشتباه وارد کردید؟
-                </InputLabel>
+                <InputLabel>شماره همراه خود را اشتباه وارد کردید؟</InputLabel>
                 {!reSend && (
-                  <DisableButton disabled={isSubmitting}>
+                  <DisableButton disabled={isSubmitting} id={'input7'}>
                     <CountDown
                       seconds={() =>
                         remainingTime(new Date(props.location.state.lastUpdate))
