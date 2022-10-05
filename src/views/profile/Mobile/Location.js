@@ -113,12 +113,12 @@ function LocationMobile(props) {
           }}
         >
           <Box>
-            {values.province_name && editable === false && (
+            {editable === false && (
               <>
                 <Box sx={{ mt: 1, mb: 1 }}>
                   <InputLabel style={{ color: '#A7A5A6' }}>استان</InputLabel>
                   <InputLabel style={{ color: '#231F20' }}>
-                    {values.province_name}
+                    {values?.province_name}
                   </InputLabel>
                 </Box>
                 <Divider />
@@ -158,12 +158,12 @@ function LocationMobile(props) {
                 />
               </Box>
             )}
-            {values.city_name && editable === false && (
+            {editable === false && (
               <>
                 <Box sx={{ mt: 1, mb: 1 }}>
                   <InputLabel style={{ color: '#A7A5A6' }}>شهر</InputLabel>
                   <InputLabel style={{ color: '#231F20' }}>
-                    {values.city_name}
+                    {values?.city_name}
                   </InputLabel>
                 </Box>
                 <Divider />
@@ -203,12 +203,12 @@ function LocationMobile(props) {
                 />
               </Box>
             )}
-            {values.postal_code && editable === false && (
+            {editable === false && (
               <>
                 <Box sx={{ mt: 1, mb: 1 }}>
                   <InputLabel style={{ color: '#A7A5A6' }}>کد پستی</InputLabel>
                   <InputLabel style={{ color: '#231F20' }}>
-                    {values.postal_code}
+                    {values?.postal_code}
                   </InputLabel>
                 </Box>
                 <Divider />
@@ -233,11 +233,11 @@ function LocationMobile(props) {
                 />
               </Box>
             )}
-            {values.address && editable === false && (
+            {editable === false && (
               <Box sx={{ mt: 1, mb: 1 }}>
                 <InputLabel style={{ color: '#A7A5A6' }}>آدرس</InputLabel>
                 <InputLabel style={{ color: '#231F20' }}>
-                  {values.address}
+                  {values?.address}
                 </InputLabel>
               </Box>
             )}

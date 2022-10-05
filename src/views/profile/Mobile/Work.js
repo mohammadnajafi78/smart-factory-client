@@ -127,12 +127,12 @@ function WorkMobile(props) {
           }}
         >
           <Box>
-            {values.name && editable === false && (
+            {editable === false && (
               <>
                 <Box sx={{ mt: 1, mb: 1 }}>
                   <InputLabel style={{ color: '#A7A5A6' }}>نام شرکت</InputLabel>
                   <InputLabel style={{ color: '#231F20' }}>
-                    {values.name}
+                    {values?.name}
                   </InputLabel>
                 </Box>
                 <Divider />
@@ -157,12 +157,12 @@ function WorkMobile(props) {
                 />
               </Box>
             )}
-            {values.phone && editable === false && (
+            {editable === false && (
               <>
                 <Box sx={{ mt: 1, mb: 1 }}>
                   <InputLabel style={{ color: '#A7A5A6' }}>تلفن</InputLabel>
                   <InputLabel style={{ color: '#231F20' }}>
-                    {values.phone}
+                    {values?.phone}
                   </InputLabel>
                 </Box>
                 <Divider />
@@ -187,12 +187,12 @@ function WorkMobile(props) {
                 />
               </Box>
             )}
-            {values.email && editable === false && (
+            {editable === false && (
               <>
                 <Box sx={{ mt: 1, mb: 1 }}>
                   <InputLabel style={{ color: '#A7A5A6' }}>ایمیل</InputLabel>
                   <InputLabel style={{ color: '#231F20' }}>
-                    {values.email}
+                    {values?.email}
                   </InputLabel>
                 </Box>
                 <Divider />
@@ -217,12 +217,12 @@ function WorkMobile(props) {
                 />
               </Box>
             )}
-            {values.website && editable === false && (
+            {editable === false && (
               <>
                 <Box sx={{ mt: 1, mb: 1 }}>
                   <InputLabel style={{ color: '#A7A5A6' }}>وب سایت</InputLabel>
                   <InputLabel style={{ color: '#231F20' }}>
-                    {values.website}
+                    {values?.website}
                   </InputLabel>
                 </Box>
                 <Divider />
@@ -247,14 +247,14 @@ function WorkMobile(props) {
                 />
               </Box>
             )}
-            {values.national_id && editable === false && (
+            {editable === false && (
               <>
                 <Box sx={{ mt: 1, mb: 1 }}>
                   <InputLabel style={{ color: '#A7A5A6' }}>
                     شناسه ملی
                   </InputLabel>
                   <InputLabel style={{ color: '#231F20' }}>
-                    {values.national_id}
+                    {values?.national_id}
                   </InputLabel>
                 </Box>
                 <Divider />
@@ -279,12 +279,12 @@ function WorkMobile(props) {
                 />
               </Box>
             )}
-            {values.province_name && editable === false && (
+            {editable === false && (
               <>
                 <Box sx={{ mt: 1, mb: 1 }}>
                   <InputLabel style={{ color: '#A7A5A6' }}>استان</InputLabel>
                   <InputLabel style={{ color: '#231F20' }}>
-                    {values.province_name}
+                    {values?.province_name}
                   </InputLabel>
                 </Box>
                 <Divider />
@@ -324,12 +324,12 @@ function WorkMobile(props) {
                 />
               </Box>
             )}
-            {values.city_name && editable === false && (
+            {editable === false && (
               <>
                 <Box sx={{ mt: 1, mb: 1 }}>
                   <InputLabel style={{ color: '#A7A5A6' }}>شهر</InputLabel>
                   <InputLabel style={{ color: '#231F20' }}>
-                    {values.city_name}
+                    {values?.city_name}
                   </InputLabel>
                 </Box>
                 <Divider />
@@ -369,12 +369,12 @@ function WorkMobile(props) {
                 />
               </Box>
             )}
-            {values.postal_code && editable === false && (
+            {editable === false && (
               <>
                 <Box sx={{ mt: 1, mb: 1 }}>
                   <InputLabel style={{ color: '#A7A5A6' }}>کد پستی</InputLabel>
                   <InputLabel style={{ color: '#231F20' }}>
-                    {values.postal_code}
+                    {values?.postal_code}
                   </InputLabel>
                 </Box>
                 <Divider />
@@ -399,11 +399,11 @@ function WorkMobile(props) {
                 />
               </Box>
             )}
-            {values.address && editable === false && (
+            {editable === false && (
               <Box sx={{ mt: 1, mb: 1 }}>
                 <InputLabel style={{ color: '#A7A5A6' }}>آدرس</InputLabel>
                 <InputLabel style={{ color: '#231F20' }}>
-                  {values.address}
+                  {values?.address}
                 </InputLabel>
               </Box>
             )}

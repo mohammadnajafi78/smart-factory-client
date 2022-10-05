@@ -58,13 +58,13 @@ export default function Main(props) {
     setValue(index);
   };
 
-  React.useEffect(() => {
-    httpService.get(`${API_BASE_URL}/api/users/get_user_profile/`).then(res => {
-      if (res.status === 200) {
-        setUserData(res.data);
-      }
-    });
-  }, []);
+  // React.useEffect(() => {
+  //   httpService.get(`${API_BASE_URL}/api/users/get_user_profile/`).then(res => {
+  //     if (res.status === 200) {
+  //       setUserData(res.data);
+  //     }
+  //   });
+  // }, []);
 
   return (
     <Box sx={{ width: '100%' }}>

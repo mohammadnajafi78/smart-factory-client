@@ -152,11 +152,11 @@ function IdentityInfoMobile(props) {
                   />
                 </Box>
               )}
-              {values.email && editable === false && (
+              {editable === false && (
                 <Box sx={{ mt: 1, mb: 1 }}>
                   <InputLabel style={{ color: '#A7A5A6' }}>ایمیل</InputLabel>
                   <InputLabel style={{ color: '#231F20' }}>
-                    {values.email}
+                    {values?.email}
                   </InputLabel>
                   <Divider />
                 </Box>
@@ -180,12 +180,12 @@ function IdentityInfoMobile(props) {
                   />
                 </Box>
               )}
-              {values.national_id && editable === false && (
+              {editable === false && (
                 <>
                   <Box sx={{ mt: 1, mb: 1 }}>
                     <InputLabel style={{ color: '#A7A5A6' }}>کد ملی</InputLabel>
                     <InputLabel style={{ color: '#231F20' }}>
-                      {values.national_id}
+                      {values?.national_id}
                     </InputLabel>
                   </Box>
                   <Divider />
@@ -210,14 +210,14 @@ function IdentityInfoMobile(props) {
                   />
                 </Box>
               )}
-              {values.birth_date && editable === false && (
+              {editable === false && (
                 <>
                   <Box sx={{ mt: 1, mb: 1 }}>
                     <InputLabel style={{ color: '#A7A5A6' }}>
                       تاریخ تولد
                     </InputLabel>
                     <InputLabel style={{ color: '#231F20' }}>
-                      {MomentFa(values.birth_date)}
+                      {values.birth_date && MomentFa(values.birth_date)}
                     </InputLabel>
                   </Box>
                   <Divider />
@@ -248,12 +248,12 @@ function IdentityInfoMobile(props) {
                   </LocalizationProvider>
                 </Box>
               )}
-              {values.user_type_list.length > 0 && editable === false && (
+              {editable === false && (
                 <>
                   <Box sx={{ mt: 1, mb: 1 }}>
                     <InputLabel style={{ color: '#A7A5A6' }}>فعالیت</InputLabel>
                     <InputLabel style={{ color: '#231F20' }}>
-                      {values.user_type_list
+                      {values?.user_type_list
                         ?.map(option => option.translate)
                         .toString()}
                     </InputLabel>
@@ -290,16 +290,16 @@ function IdentityInfoMobile(props) {
                   />
                 </Box>
               )} */}
-              {values.supplier_data && editable === false && (
+              {editable === false && (
                 <>
                   <Box sx={{ mt: 1, mb: 1 }}>
                     <InputLabel style={{ color: '#A7A5A6' }}>
                       تامین کننده
                     </InputLabel>
                     <InputLabel style={{ color: '#231F20' }}>
-                      {values.supplier_data.first_name +
+                      {values?.supplier_data.first_name +
                         ' ' +
-                        values.supplier_data.last_name}
+                        values?.supplier_data.last_name}
                     </InputLabel>
                   </Box>
                   <Divider />
@@ -326,14 +326,14 @@ function IdentityInfoMobile(props) {
                   />
                 </Box>
               )}
-              {values.introducer_data && editable === false && (
+              {editable === false && (
                 <>
                   <Box sx={{ mt: 1, mb: 1 }}>
                     <InputLabel style={{ color: '#A7A5A6' }}>معرف</InputLabel>
                     <InputLabel style={{ color: '#231F20' }}>
-                      {values.introducer_data.first_name +
+                      {values?.introducer_data.first_name +
                         ' ' +
-                        values.introducer_data.last_name}
+                        values?.introducer_data.last_name}
                     </InputLabel>
                   </Box>
                   <Divider />
@@ -358,14 +358,14 @@ function IdentityInfoMobile(props) {
                   />
                 </Box>
               )}
-              {values.job_certificate_id && editable === false && (
+              {editable === false && (
                 <>
                   <Box sx={{ mt: 1, mb: 1 }}>
                     <InputLabel style={{ color: '#A7A5A6' }}>
                       شناسه مدرک فعالیت
                     </InputLabel>
                     <InputLabel style={{ color: '#231F20' }}>
-                      {values.job_certificate_id}
+                      {values?.job_certificate_id}
                     </InputLabel>
                   </Box>
                   <Divider />
@@ -392,13 +392,13 @@ function IdentityInfoMobile(props) {
                   />
                 </Box>
               )}
-              {values.id_card && editable === false && (
+              {editable === false && (
                 <>
                   <Box sx={{ mt: 1, mb: 1 }}>
                     <InputLabel style={{ color: '#A7A5A6' }}>
                       کارت ملی
                     </InputLabel>
-                    <img src={values.id_card} width="320px" height="160px" />
+                    <img src={values?.id_card} width="320px" height="160px" />
                   </Box>
                 </>
               )}

@@ -38,6 +38,7 @@ export default function ProfileDesktop(props) {
   const [profileImage, setProfileImage] = useState(null);
 
   function getData() {
+    setData(null);
     httpService.get(`${API_BASE_URL}/api/users/get_user_profile/`).then(res => {
       if (res.status === 200) {
         setData(res.data);
@@ -57,6 +58,7 @@ export default function ProfileDesktop(props) {
         .post(`${API_BASE_URL}/api/users/update_user/`, formData)
         .then(res => {
           if (res.status === 200) {
+            setProfileImage(null);
             getData();
           }
         });
@@ -177,7 +179,7 @@ export default function ProfileDesktop(props) {
           data={data}
           editable={editable}
           setEditable={setEditable}
-          getData={getData}
+          getData={() => getData}
         />
       )}
       {/* <Box

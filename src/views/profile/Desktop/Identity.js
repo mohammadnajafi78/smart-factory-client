@@ -364,7 +364,7 @@ function IdentityInfoMobile(props) {
                           تاریخ تولد
                         </InputLabel>
                         <InputLabel style={{ color: '#231F20' }}>
-                          {MomentFa(values?.birth_date)}
+                          {values.birth_date && MomentFa(values?.birth_date)}
                         </InputLabel>
                       </Box>
                     </Grid>
