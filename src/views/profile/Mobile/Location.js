@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, TextField } from '@mui/material';
+import { Box, TextField, Divider } from '@mui/material';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
@@ -10,12 +10,17 @@ import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 
 function LocationMobile(props) {
+  const data = props?.data;
+  const editable = props?.editable;
+
+  console.log('ppp', data?.user_location?.province);
   const [provinces, setProvinces] = useState([]);
-  const [provinceId, setProvinceId] = useState(null);
+  const [provinceId, setProvinceId] = useState(
+    props.data?.user_location?.province
+  );
   const [cities, setCities] = useState([]);
-  const [cityId, setCityId] = useState(null);
+  const [cityId, setCityId] = useState(props.data?.user_location?.city);
   const history = useHistory();
-  const data = props.data;
 
   useEffect(() => {
     httpService
@@ -44,29 +49,41 @@ function LocationMobile(props) {
       initialValues={{
         province_name: data?.user_location?.province_name,
         city_name: data?.user_location?.city_name,
-        code: data?.postal_code,
+        postal_code: data?.user_location?.postal_code,
         address: data?.user_location?.address
       }}
-      validate={values => {
-        // const errors = {};
-        // if (!values.input) {
-        //   errors.username = 'نام کاربری اجباری می باشد';
-        // }
-        // return errors;
-      }}
-      onSubmit={async (values, { setErrors, setSubmitting }) => {
+      // validate={values => {
+      //   // const errors = {};
+      //   // if (!values.input) {
+      //   //   errors.username = 'نام کاربری اجباری می باشد';
+      //   // }
+      //   // return errors;
+      // }}
+      onSubmit={(values, { setErrors, setSubmitting }) => {
+        setSubmitting(true);
         httpService
-          .post(`${API_BASE_URL}/api/utils/locations/`, {
-            country_id: 25,
-            province_id: provinceId,
-            city_id: cityId
-          })
+          .patch(
+            `${API_BASE_URL}/api/utils/locations/${data?.user_location?.id}/`,
+            {
+              country_id: 25,
+              province: provinceId,
+              city: cityId,
+              address: values.address,
+              postal_code: values.postal_code
+            }
+          )
           .then(res => {
             if (res.status === 200) {
-              history.push('/work');
+              props.getData();
+              setSubmitting(false);
+              props.setEditable(false);
+            } else {
+              setSubmitting(false);
             }
+          })
+          .catch(err => {
+            setSubmitting(false);
           });
-        setSubmitting(false);
       }}
     >
       {({
@@ -76,7 +93,8 @@ function LocationMobile(props) {
         handleSubmit,
         isSubmitting,
         touched,
-        values
+        values,
+        setFieldValue
       }) => (
         <form
           noValidate
@@ -86,7 +104,7 @@ function LocationMobile(props) {
             flexDirection: 'column',
             justifyContent: 'space-between',
             padding: '0px',
-            gap: '30px',
+            gap: '100px',
             // position: 'absolute',
             width: '100%',
             height: '100%'
@@ -95,102 +113,190 @@ function LocationMobile(props) {
           }}
         >
           <Box>
-            <Box>
-              <InputLabel>استان</InputLabel>
-              <Autocomplete
-                disablePortal
-                fullWidth
-                id="province"
-                name="province"
-                value={values.province_name}
-                options={provinces}
-                renderInput={params => <TextField {...params} fullWidth />}
-                onChange={(event, newValue) => {
-                  setProvinceId(newValue.id);
-                }}
-                isOptionEqualToValue={(option, value) =>
-                  option.label === value.label
-                }
-                noOptionsText={'موردی یافت نشد'}
-              />
-            </Box>
-            <Box sx={{ mt: 2 }}>
-              <InputLabel>شهر</InputLabel>
-              <Autocomplete
-                disablePortal
-                fullWidth
-                id="city"
-                name="city"
-                options={cities}
-                value={values.city_name}
-                renderInput={params => <TextField {...params} fullWidth />}
-                onChange={(event, newValue) => {
-                  if (newValue) setCityId(newValue.id);
-                }}
-                isOptionEqualToValue={(option, value) =>
-                  option.label === value.label
-                }
-                noOptionsText={'موردی یافت نشد'}
-              />
-            </Box>
-            <Box sx={{ mt: 2 }}>
-              <InputLabel>کد پستی</InputLabel>
-              <TextField
-                id="code"
-                aria-describedby="my-helper-text"
-                fullWidth
-                // placeholder="رمز عبور"
-                sx={{
-                  background: '#F2F2F2',
-                  borderRadius: '4px',
-                  margin: '6px 3px'
-                }}
-                value={values.code}
-                onChange={handleChange}
-              />
-            </Box>
-            <Box sx={{ mt: 2 }}>
-              <InputLabel>آدرس</InputLabel>
-              <TextField
-                id="address"
-                aria-describedby="my-helper-text"
-                fullWidth
-                multiline
-                rows={3}
-                sx={{
-                  background: '#F2F2F2',
-                  borderRadius: '4px',
-                  margin: '6px 3px'
-                }}
-                value={values.address}
-                onChange={handleChange}
-              />
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              display: 'inline-flex',
-              justifyContent: 'space-between',
-              gap: 2
-            }}
-          >
-            <ConfirmButton
-              disabled={false}
-              variant="outlined"
-              onClick={() =>
-                history.push({
-                  pathname: '/profile/detail',
-                  state: {
-                    data: data
+            {values.province_name && editable === false && (
+              <>
+                <Box sx={{ mt: 1, mb: 1 }}>
+                  <InputLabel style={{ color: '#A7A5A6' }}>استان</InputLabel>
+                  <InputLabel style={{ color: '#231F20' }}>
+                    {values.province_name}
+                  </InputLabel>
+                </Box>
+                <Divider />
+              </>
+            )}
+            {editable === true && (
+              <Box sx={{ mt: 1, mb: 1 }}>
+                <InputLabel style={{ color: '#A7A5A6' }}>استان</InputLabel>
+                <Autocomplete
+                  disablePortal
+                  fullWidth
+                  options={provinces}
+                  value={provinces.filter(f => f.id === provinceId)[0]}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      placeholder="استان"
+                      fullWidth
+                      id="province"
+                      // error={Boolean(touched.province && errors.province)}
+                      // helperText={touched.province && errors.province}
+                    />
+                  )}
+                  onChange={(event, newValue) => {
+                    if (newValue) {
+                      setFieldValue('province', newValue.id);
+                      setProvinceId(newValue.id);
+                      setCityId(null);
+                    } else {
+                      setFieldValue('province', '');
+                    }
+                  }}
+                  isOptionEqualToValue={(option, value) =>
+                    option.label === value.label
                   }
-                })
-              }
-              type={'button'}
-            >
-              {'لغو'}
-            </ConfirmButton>
-            <ConfirmButton disabled={isSubmitting}>{'ویرایش'}</ConfirmButton>
+                  noOptionsText={'موردی یافت نشد'}
+                />
+              </Box>
+            )}
+            {values.city_name && editable === false && (
+              <>
+                <Box sx={{ mt: 1, mb: 1 }}>
+                  <InputLabel style={{ color: '#A7A5A6' }}>شهر</InputLabel>
+                  <InputLabel style={{ color: '#231F20' }}>
+                    {values.city_name}
+                  </InputLabel>
+                </Box>
+                <Divider />
+              </>
+            )}
+            {editable === true && (
+              <Box sx={{ mt: 1, mb: 1 }}>
+                <InputLabel style={{ color: '#A7A5A6' }}>شهر</InputLabel>
+                <Autocomplete
+                  disablePortal
+                  fullWidth
+                  options={cities}
+                  // sx={{ width: 300 }}
+                  defaultValue={cities.filter(f => f.id === cityId)[0]}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      placeholder="شهر"
+                      fullWidth
+                      id="city"
+                      // error={Boolean(touched.city && errors.city)}
+                      // helperText={touched.city && errors.city}
+                    />
+                  )}
+                  onChange={(event, newValue) => {
+                    if (newValue) {
+                      setFieldValue('city', newValue.id);
+                      setCityId(newValue.id);
+                    } else {
+                      setFieldValue('city', '');
+                    }
+                  }}
+                  isOptionEqualToValue={(option, value) =>
+                    option.label === value.label
+                  }
+                  noOptionsText={'موردی یافت نشد'}
+                />
+              </Box>
+            )}
+            {values.postal_code && editable === false && (
+              <>
+                <Box sx={{ mt: 1, mb: 1 }}>
+                  <InputLabel style={{ color: '#A7A5A6' }}>کد پستی</InputLabel>
+                  <InputLabel style={{ color: '#231F20' }}>
+                    {values.postal_code}
+                  </InputLabel>
+                </Box>
+                <Divider />
+              </>
+            )}
+            {editable === true && (
+              <Box sx={{ mt: 1, mb: 1 }}>
+                <InputLabel style={{ color: '#A7A5A6' }}>کد پستی</InputLabel>
+                <TextField
+                  id="postal_code"
+                  aria-describedby="my-helper-text"
+                  fullWidth
+                  placeholder="کد پستی"
+                  sx={{
+                    background: '#F2F2F2',
+                    borderRadius: '4px',
+                    margin: '3px 3px'
+                  }}
+                  value={values.postal_code}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+              </Box>
+            )}
+            {values.address && editable === false && (
+              <Box sx={{ mt: 1, mb: 1 }}>
+                <InputLabel style={{ color: '#A7A5A6' }}>آدرس</InputLabel>
+                <InputLabel style={{ color: '#231F20' }}>
+                  {values.address}
+                </InputLabel>
+              </Box>
+            )}
+            {editable === true && (
+              <Box sx={{ mt: 1, mb: 1 }}>
+                <InputLabel style={{ color: '#A7A5A6' }}>آدرس</InputLabel>
+                <TextField
+                  id="address"
+                  aria-describedby="my-helper-text"
+                  fullWidth
+                  placeholder="آدرس"
+                  sx={{
+                    background: '#F2F2F2',
+                    borderRadius: '4px',
+                    margin: '3px 3px'
+                  }}
+                  value={values.address}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+              </Box>
+            )}
           </Box>
+          {editable && (
+            // <Box
+            //   sx={{
+            //     width: '100%',
+            //     backgroundColor: 'white',
+            //     // position: 'fixed',
+            //     // bottom: 0,
+            //     // left: 0,
+            //     display: 'flex',
+            //     justifyContent: 'center'
+            //   }}
+            // >
+            <Box
+              sx={{
+                display: 'inline-flex',
+                justifyContent: 'space-between',
+                gap: 2,
+                width: '100%'
+                // padding: '10px',
+                // zIndex: 9999,
+                // backgroundColor: 'white'
+              }}
+            >
+              <ConfirmButton disabled={false} variant="outlined" type="submit">
+                {'لغو'}
+              </ConfirmButton>
+              <ConfirmButton
+                disabled={isSubmitting}
+                type="submit"
+                loading={isSubmitting}
+              >
+                {'ذخیره'}
+              </ConfirmButton>
+            </Box>
+            // </Box>
+          )}
         </form>
       )}
     </Formik>

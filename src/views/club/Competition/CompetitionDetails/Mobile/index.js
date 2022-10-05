@@ -10,6 +10,7 @@ import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 
 export default function CompetitionDetailsMobile(props) {
   const [awards, setAwards] = useState(props.location.state);
+  const userId = JSON.parse(localStorage.getItem('user')).user_id;
 
   return (
     <Box
@@ -154,7 +155,9 @@ export default function CompetitionDetailsMobile(props) {
           }}
         >
           <Participants
-            data={awards?.participants.filter(f => f.user_id === userId)[0]}
+            data={
+              awards?.participants.filter(f => f.user.user_id === userId)[0]
+            }
           />
         </Box>
       </Box>

@@ -17,6 +17,9 @@ import { styled } from '@mui/material/styles';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import useScore from 'src/hooks/useScore';
 import MomentFa from 'src/utils/MomentFa';
+import Main from './Main';
+import EditSquare from 'src/assets/img/icons/edit_square.svg';
+import ProfileEdit from 'src/assets/img/icons/profileEdit.svg';
 
 const CssTextField = styled(TextField)({
   '& .MuiOutlinedInput-input': {
@@ -28,17 +31,37 @@ export default function ProfileDesktop(props) {
   const [openTransfer, setOpenTransfer] = useState(false);
   const [count, setCount] = useState(0);
   const [userId, setUserId] = useState();
+  const [editable, setEditable] = useState(false);
   const history = useHistory();
   const { logout } = useAuth();
   const { setScore } = useScore();
+  const [profileImage, setProfileImage] = useState(null);
 
-  useEffect(() => {
+  function getData() {
     httpService.get(`${API_BASE_URL}/api/users/get_user_profile/`).then(res => {
       if (res.status === 200) {
         setData(res.data);
       }
     });
+  }
+
+  useEffect(() => {
+    getData();
   }, []);
+
+  useEffect(() => {
+    if (profileImage !== null) {
+      const formData = new FormData();
+      formData.append('profile_image', profileImage);
+      httpService
+        .post(`${API_BASE_URL}/api/users/update_user/`, formData)
+        .then(res => {
+          if (res.status === 200) {
+            getData();
+          }
+        });
+    }
+  }, [profileImage]);
 
   return (
     <Box
@@ -56,55 +79,108 @@ export default function ProfileDesktop(props) {
         overflow: 'auto'
       }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '0px 40px 60px',
-          gap: '20px',
-          width: '25%'
-        }}
-      >
-        <Avatar
-          alt={data?.first_name}
-          src={data?.user_profile_image}
-          sx={{
-            width: 160,
-            height: 160
-          }}
-        />
-        <InputLabelHeader style={{ color: '#00346D' }}>
-          {data?.first_name + ' ' + data?.last_name}
-        </InputLabelHeader>
-        <InputLabel style={{ color: '#00346D' }}>{data?.user_id}</InputLabel>
+      {data && (
         <Box
           sx={{
             display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
+            flexDirection: 'column',
             alignItems: 'center',
-            padding: '2px 6px !important',
-            height: '22px',
-            background: '#E3E3E3',
-            borderRadius: '4px',
-            color: '#4F4C4D'
+            justifyContent: 'center',
+            // padding: '0px 40px 60px',
+            gap: '20px',
+            width: '25%'
           }}
         >
-          <Star style={{ width: '27px', height: '18px', color: '#A7A5A6' }} />
-          <InputLabel style={{ color: '#4F4C4D', fontSize: '' }}>
-            {data?.user_club?.grade_info?.name}
-          </InputLabel>
+          <Box sx={{ position: 'relative' }}>
+            <Avatar
+              alt={data?.first_name}
+              src={data?.user_profile_image}
+              sx={{
+                width: 160,
+                height: 160
+                // position: 'relative'
+              }}
+            />
+            <Button
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: '10px 9px 10px 11px',
+                gap: '10px',
+
+                position: 'absolute',
+                width: '32px',
+                minWidth: '30.38px',
+                height: '30.4px',
+                left: '20px',
+                top: '130px',
+                backgroundColor: '#DDF5F6',
+                borderRadius: '8px'
+              }}
+              component="label"
+              onChange={event => {
+                setProfileImage(event.target.files[0]);
+              }}
+            >
+              <img src={EditSquare} width="19px" height={'19px'} />
+              <input type="file" hidden multiple={false} />
+            </Button>
+          </Box>
+
+          <InputLabelHeader style={{ color: '#00346D' }}>
+            {data?.first_name + ' ' + data?.last_name}
+          </InputLabelHeader>
+          <InputLabel style={{ color: '#00346D' }}>{data?.user_id}</InputLabel>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: '2px 6px !important',
+              height: '22px',
+              background: '#E3E3E3',
+              borderRadius: '4px',
+              color: '#4F4C4D'
+            }}
+          >
+            <Star style={{ width: '27px', height: '18px', color: '#A7A5A6' }} />
+            <InputLabel style={{ color: '#4F4C4D', fontSize: '' }}>
+              {data?.user_club?.grade_info?.name}
+            </InputLabel>
+          </Box>
+          {editable === false && (
+            <ConfirmButton
+              style={{
+                // width: '90%',
+                backgroundColor: '#CCEEF0',
+                color: '#00AAB5'
+              }}
+              onClick={() => setEditable(true)}
+            >
+              <img src={ProfileEdit} style={{ marginLeft: '5px' }} />
+              ویرایش پروفایل
+            </ConfirmButton>
+          )}
         </Box>
-      </Box>
+      )}
       <Divider
         // variant="middle"
         light={true}
         orientation="vertical"
         // sx={{ margin: '3px 0px', width: '100%' }}
       />
-      <Box
+      {data && (
+        <Main
+          data={data}
+          editable={editable}
+          setEditable={setEditable}
+          getData={getData}
+        />
+      )}
+      {/* <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
@@ -325,8 +401,8 @@ export default function ProfileDesktop(props) {
             </InputLabel>
           </Box>
         </Box>
-      </Box>
-      <CustomizedDialogs
+      </Box> */}
+      {/* <CustomizedDialogs
         // anchor={'bottom'}
         open={openTransfer}
         handleClose={() => setOpenTransfer(false)}
@@ -456,7 +532,7 @@ export default function ProfileDesktop(props) {
             </ConfirmButton>
           </Box>
         }
-      />
+      /> */}
     </Box>
   );
 }

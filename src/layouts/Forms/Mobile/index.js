@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   content: {
     flex: '1 1 auto',
     height: '100%',
-    paddingBottom: '100px',
+    // paddingBottom: '100px',
     width: '100%'
   },
   paper: {

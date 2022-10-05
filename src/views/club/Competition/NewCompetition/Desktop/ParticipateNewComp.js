@@ -29,7 +29,8 @@ export default function ParticipateNewComp({ selected, setSelected }) {
       </InputLabelHeader>
       <InputLabel>{selected?.description}</InputLabel>
 
-      {selected?.participants.filter(f => f.user_id === userId).length <= 0 ? (
+      {selected?.participants.filter(f => f.user.user_id === userId).length <=
+      0 ? (
         <>
           <InputLabel>
             جهت شرکت در مسابقه عکس مورد نظر خود را انتخاب کنید:
@@ -146,13 +147,16 @@ export default function ParticipateNewComp({ selected, setSelected }) {
         >
           <Box sx={{ width: '50%' }}>
             <Participants
-              data={selected?.participants.filter(f => f.user_id === userId)[0]}
+              data={
+                selected?.participants.filter(f => f.user.user_id === userId)[0]
+              }
             />
           </Box>
         </Box>
       )}
 
-      {selected?.participants.filter(f => f.user_id === userId).length <= 0 && (
+      {selected?.participants.filter(f => f.user.user_id === userId).length <=
+        0 && (
         <Box
           sx={{
             position: 'absolute',

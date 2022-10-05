@@ -153,7 +153,9 @@ export default function CompetitionDetailsDesktop({ selected }) {
           }}
         >
           <Participants
-            data={selected?.participants.filter(f => f.user_id === userId)[0]}
+            data={
+              selected?.participants.filter(f => f.user.user_id === userId)[0]
+            }
           />
         </Box>
       </Box>

@@ -14,8 +14,12 @@ export default function ParticipateNewComp(props) {
   const [selected, setSelected] = useState(props.location.state.data);
   const [file, setFile] = useState(null);
   const userId = JSON.parse(localStorage.getItem('user')).user_id;
+  // console.log('userId', userId);
 
-  console.log('selected', selected);
+  // console.log(
+  //   'selected',
+  //   selected?.participants.filter(f => f.user.user_id === userId).length
+  // );
 
   return (
     <>
@@ -33,7 +37,7 @@ export default function ParticipateNewComp(props) {
         </InputLabelHeader>
         <InputLabel>{selected?.description}</InputLabel>
 
-        {selected?.participants.filter(f => f.user_id === userId).length <=
+        {selected?.participants.filter(f => f.user.user_id === userId).length <=
         0 ? (
           <>
             <InputLabel>
@@ -156,14 +160,17 @@ export default function ParticipateNewComp(props) {
             <Box sx={{ width: '100%' }}>
               <Participants
                 data={
-                  selected?.participants.filter(f => f.user_id === userId)[0]
+                  selected?.participants.filter(
+                    f => f.user.user_id === userId
+                  )[0]
                 }
               />
             </Box>
           </Box>
         )}
       </Box>
-      {selected?.participants.filter(f => f.user_id === userId).length <= 0 && (
+      {selected?.participants.filter(f => f.user.user_id === userId).length <=
+        0 && (
         <Box
           sx={{
             position: 'absolute',
