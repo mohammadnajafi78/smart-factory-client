@@ -13,6 +13,7 @@ import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import useScore from 'src/hooks/useScore';
 import { Star } from 'react-feather';
+import ErrorImg from 'src/assets/img/icons/error.svg';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -40,6 +41,8 @@ export default function AwardsBox() {
   const classes = useStyles();
   const history = useHistory();
   const { setScore } = useScore();
+  const [openError, setOpenError] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     httpService.get(`${API_BASE_URL}/api/club/gift_box/`).then(res => {
@@ -208,10 +211,85 @@ export default function AwardsBox() {
                       setOpenSecond(true);
                       setScore();
                     }
+                  })
+                  .catch(err => {
+                    if (err.response.status === 417) {
+                      setOpenError(true);
+                      setError(err.response.data.error);
+                      setOpenFirst(false);
+                    }
                   });
               }}
             >
               {'بله'}
+            </ConfirmButton>
+          </Box>
+        }
+      />
+      <CustomizedDialogs
+        // anchor={'bottom'}
+        open={openError}
+        handleClose={() => setOpenError(false)}
+        // classes={{
+        //   paper: classes.paper
+        // }}
+        title={'دریافت جایزه'}
+        content={
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: '60px 0px 0px !important',
+              gap: '20px',
+              // height: '342px',
+              background: '#FFFFFF',
+              width: '300px'
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                padding: '0px',
+                gap: '40px'
+              }}
+            >
+              <img src={ErrorImg} alt="awards" />
+              <Box sx={{ display: 'inline-flex' }}>
+                <InputLabelHeader
+                  style={{
+                    color: '#00346D',
+                    fontSize: '18px',
+                    fontWeight: 700
+                  }}
+                >
+                  {error}
+                </InputLabelHeader>
+              </Box>
+            </Box>
+          </Box>
+        }
+        actions={
+          <Box
+            sx={{
+              display: 'inline-flex',
+              justifyContent: 'space-between',
+              gap: 2,
+              width: '100%',
+              height: '76px',
+              // borderTop: '0.5px solid #D3D2D2',
+              padding: '12px 16px'
+            }}
+          >
+            <ConfirmButton
+              disabled={false}
+              // variant="outlined"
+              onClick={() => setOpenError(false)}
+            >
+              {'متوجه شدم'}
             </ConfirmButton>
           </Box>
         }

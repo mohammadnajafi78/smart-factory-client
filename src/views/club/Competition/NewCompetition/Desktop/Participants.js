@@ -3,6 +3,7 @@ import { Box, Rating } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import InputLabel from 'src/components/Desktop/InputLabel';
 
 export default function Item({ data }) {
   const history = useHistory();
@@ -35,13 +36,17 @@ export default function Item({ data }) {
         sx={{
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'flex-end',
+          justifyContent: 'space-between',
           alignItems: 'center',
           padding: '0px',
           gap: '36px',
           width: '100%'
         }}
       >
+        <InputLabel
+          style={{ fontSize: '12px' }}
+        >{`تعداد شرکت کننده: ${selected.rate_count}`}</InputLabel>
+
         <Rating
           value={selected?.overall_rate}
           size="small"

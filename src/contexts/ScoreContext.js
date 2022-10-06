@@ -35,11 +35,10 @@ export const ScoreProvider = ({ children }) => {
   const history = useHistory();
 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem('user')) {
       // httpService.get(`${API_BASE_URL}/api/users/refresh_user`).then(result => {
       //   if (result.status === 200) {
       //     localStorage.setItem('user', JSON.stringify(result.data));
-
       dispatch({
         type: 'SET_SCORE',
         payload: {

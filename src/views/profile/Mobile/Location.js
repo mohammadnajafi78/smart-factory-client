@@ -8,6 +8,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
+import * as Yup from 'yup';
 
 function LocationMobile(props) {
   const data = props?.data;
@@ -50,15 +51,14 @@ function LocationMobile(props) {
         province_name: data?.user_location?.province_name,
         city_name: data?.user_location?.city_name,
         postal_code: data?.user_location?.postal_code,
-        address: data?.user_location?.address
+        address: data?.user_location?.address,
+        provinceId: props.data?.user_location?.province,
+        cityId: props.data?.user_location?.city
       }}
-      // validate={values => {
-      //   // const errors = {};
-      //   // if (!values.input) {
-      //   //   errors.username = 'نام کاربری اجباری می باشد';
-      //   // }
-      //   // return errors;
-      // }}
+      validationSchema={Yup.object().shape({
+        cityId: Yup.string().required('شهر نباید خالی باشد'),
+        provinceId: Yup.string().required('استان نباید خالی باشد')
+      })}
       onSubmit={(values, { setErrors, setSubmitting }) => {
         setSubmitting(true);
         httpService
@@ -131,29 +131,29 @@ function LocationMobile(props) {
                   disablePortal
                   fullWidth
                   options={provinces}
-                  value={provinces.filter(f => f.id === provinceId)[0]}
+                  value={provinces.filter(f => f.id === values.provinceId)[0]}
                   renderInput={params => (
                     <TextField
                       {...params}
                       placeholder="استان"
                       fullWidth
                       id="province"
-                      // error={Boolean(touched.province && errors.province)}
-                      // helperText={touched.province && errors.province}
+                      error={Boolean(touched.provinceId && errors.provinceId)}
+                      helperText={touched.provinceId && errors.provinceId}
                     />
                   )}
                   onChange={(event, newValue) => {
                     if (newValue) {
-                      setFieldValue('province', newValue.id);
+                      setFieldValue('provinceId', newValue.id);
                       setProvinceId(newValue.id);
                       setCityId(null);
                     } else {
-                      setFieldValue('province', '');
+                      setFieldValue('provinceId', '');
                     }
                   }}
-                  isOptionEqualToValue={(option, value) =>
-                    option.label === value.label
-                  }
+                  // isOptionEqualToValue={(option, value) =>
+                  //   option.label === value.label
+                  // }
                   noOptionsText={'موردی یافت نشد'}
                 />
               </Box>
@@ -177,28 +177,28 @@ function LocationMobile(props) {
                   fullWidth
                   options={cities}
                   // sx={{ width: 300 }}
-                  defaultValue={cities.filter(f => f.id === cityId)[0]}
+                  defaultValue={cities.filter(f => f.id === values.cityId)[0]}
                   renderInput={params => (
                     <TextField
                       {...params}
                       placeholder="شهر"
                       fullWidth
-                      id="city"
-                      // error={Boolean(touched.city && errors.city)}
-                      // helperText={touched.city && errors.city}
+                      id="cityId"
+                      error={Boolean(touched.cityId && errors.cityId)}
+                      helperText={touched.cityId && errors.cityId}
                     />
                   )}
                   onChange={(event, newValue) => {
                     if (newValue) {
-                      setFieldValue('city', newValue.id);
+                      setFieldValue('cityId', newValue.id);
                       setCityId(newValue.id);
                     } else {
-                      setFieldValue('city', '');
+                      setFieldValue('cityId', '');
                     }
                   }}
-                  isOptionEqualToValue={(option, value) =>
-                    option.label === value.label
-                  }
+                  // isOptionEqualToValue={(option, value) =>
+                  //   option.label === value.label
+                  // }
                   noOptionsText={'موردی یافت نشد'}
                 />
               </Box>

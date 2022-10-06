@@ -16,6 +16,7 @@ import { useHistory } from 'react-router-dom';
 import MomentFa from 'src/utils/MomentFa';
 import UserClub from 'src/utils/userClub';
 import useScore from 'src/hooks/useScore';
+import ErrorImg from 'src/assets/img/icons/error.svg';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -33,6 +34,8 @@ export default function GetAwardMobile(props) {
   const history = useHistory();
   const classes = useStyles();
   const { setScore } = useScore();
+  const [openError, setOpenError] = useState(false);
+  const [error, setError] = useState(null);
 
   return (
     <>
@@ -271,6 +274,13 @@ export default function GetAwardMobile(props) {
                         // UserClub();
                         setScore();
                       }
+                    })
+                    .catch(err => {
+                      if (err.response.status === 417) {
+                        setOpenError(true);
+                        setError(err.response.data.error);
+                        setOpenFirst(false);
+                      }
                     });
                 } else {
                   httpService
@@ -284,6 +294,13 @@ export default function GetAwardMobile(props) {
                         setScore();
 
                         // UserClub();
+                      }
+                    })
+                    .catch(err => {
+                      if (err.response.status === 417) {
+                        setOpenError(true);
+                        setError(err.response.data.error);
+                        setOpenFirst(false);
                       }
                     });
                 }
@@ -345,6 +362,60 @@ export default function GetAwardMobile(props) {
             >
               مشاهده جوایز در لیست دریافتی ها
             </LinkButton>
+          </Box>
+        </Box>
+      </Drawer>
+      <Drawer
+        anchor={'bottom'}
+        open={openError}
+        onClose={() => setOpenError(false)}
+        classes={{
+          paper: classes.paper
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '60px 0px 0px !important',
+            gap: '20px',
+            // height: '342px',
+            background: '#FFFFFF'
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              padding: '0px',
+              gap: '40px'
+            }}
+          >
+            <img src={ErrorImg} alt="awards" width={'61px'} height={'60px'} />
+            <InputLabel style={{ color: '#00346D', fontWeight: 500 }}>
+              {error}
+            </InputLabel>
+          </Box>
+          <Box
+            sx={{
+              display: 'inline-flex',
+              justifyContent: 'space-between',
+              gap: 2,
+              width: '100%',
+              height: '76px',
+              borderTop: '0.5px solid #D3D2D2',
+              padding: '12px 16px'
+            }}
+          >
+            <ConfirmButton
+              variant={'contained'}
+              onClick={() => setOpenError(false)}
+            >
+              متوجه شدم
+            </ConfirmButton>
           </Box>
         </Box>
       </Drawer>

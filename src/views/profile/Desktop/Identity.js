@@ -12,14 +12,15 @@ import AdapterJalali from '@date-io/date-fns-jalali';
 import LinkIconButton from 'src/components/Mobile/Button/LinkIcon';
 import IdCard from 'src/assets/img/icons/id_card.svg';
 import MomentEn from 'src/utils/MomentEn';
+import * as Yup from 'yup';
 
 function IdentityInfoMobile(props) {
   const history = useHistory();
   const data = props?.data;
   const editable = props?.editable;
   const [works, setWorks] = useState([]);
-  const [supplier, setSupplier] = useState(null);
-  const [introducer, setIntroducer] = useState(null);
+  // const [supplier, setSupplier] = useState(null);
+  // const [introducer, setIntroducer] = useState(null);
 
   // useEffect(() => {
   //   httpService
@@ -46,28 +47,34 @@ function IdentityInfoMobile(props) {
           introducer_data: data?.introducer_data,
           job_certificate_id: data?.job_certificate_id,
           job_certificate: data?.job_certificate,
-          id_card: data?.id_card
+          id_card: data?.id_card,
+          introducer: data?.introducer_data?.user_id,
+          supplier: data?.supplier_data?.user_id
         }}
-        // validate={values => {
-        //   const errors = {};
-        //   // if (!values.input) {
-        //   //   errors.username = 'نام کاربری اجباری می باشد';
-        //   // }
-        //   return errors;
-        // }}
-        onSubmit={(values, { setErrors, setSubmitting }) => {
+        validationSchema={Yup.object().shape({
+          email: Yup.string().email('عبارت وارد شده باید به فرمت ایمیل باشد')
+        })}
+        onSubmit={(values, { setErrors, setSubmitting, setFieldError }) => {
           const formData = new FormData();
-          formData.append('first_name', values.name);
-          formData.append('last_name', values.family);
+          if (values.name != null) formData.append('first_name', values.name);
+          if (values.family != null)
+            formData.append('last_name', values.family);
           // formData.append('mobile', values.mobile);
-          formData.append('email', values.email);
-          formData.append('national_id', values.national_id);
-          formData.append('birth_date', MomentEn(values.birth_date));
-          formData.append('job_certificate_id', values.job_certificate_id);
-          formData.append('job_certificate', values.job_certificate);
-          if (supplier !== null) formData.append('supplier', supplier);
-          if (introducer !== null) formData.append('introducer', introducer);
-          formData.append('id_card', values.id_card);
+          if (values.email != null) formData.append('email', values.email);
+          if (values.national_id != null)
+            formData.append('national_id', values.national_id);
+          if (values.birth_date != null)
+            formData.append('birth_date', MomentEn(values.birth_date));
+          if (values.job_certificate_id != null)
+            formData.append('job_certificate_id', values.job_certificate_id);
+          if (values.job_certificate != null)
+            formData.append('job_certificate', values.job_certificate);
+          if (values.supplier !== null)
+            formData.append('supplier', values.supplier);
+          if (values.introducer !== null)
+            formData.append('introducer', values.introducer);
+          if (values.id_card != null)
+            formData.append('id_card', values.id_card);
 
           setSubmitting(true);
           httpService
@@ -83,6 +90,10 @@ function IdentityInfoMobile(props) {
               }
             })
             .catch(err => {
+              console.log('error', err.response.data);
+              err.response.data.map(e => {
+                setFieldError(e.field, e.error);
+              });
               setSubmitting(false);
             });
         }}
@@ -142,6 +153,8 @@ function IdentityInfoMobile(props) {
                           value={values.name}
                           onChange={handleChange}
                           onBlur={handleBlur}
+                          error={Boolean(touched.name && errors.name)}
+                          helperText={touched.name && errors.name}
                         />
                       </Box>
                     </Grid>
@@ -164,6 +177,8 @@ function IdentityInfoMobile(props) {
                           value={values.family}
                           onChange={handleChange}
                           onBlur={handleBlur}
+                          error={Boolean(touched.family && errors.family)}
+                          helperText={touched.family && errors.family}
                         />
                       </Box>
                     </Grid>
@@ -187,6 +202,8 @@ function IdentityInfoMobile(props) {
                           value={values.email}
                           onChange={handleChange}
                           onBlur={handleBlur}
+                          error={Boolean(touched.email && errors.email)}
+                          helperText={touched.email && errors.email}
                         />
                       </Box>
                     </Grid>
@@ -210,6 +227,12 @@ function IdentityInfoMobile(props) {
                                   margin: '3px'
                                 }}
                                 fullWidth
+                                error={Boolean(
+                                  touched.birth_date && errors.birth_date
+                                )}
+                                helperText={
+                                  touched.birth_date && errors.birth_date
+                                }
                               />
                             )}
                           />
@@ -236,6 +259,10 @@ function IdentityInfoMobile(props) {
                           value={values.national_id}
                           onChange={handleChange}
                           onBlur={handleBlur}
+                          error={Boolean(
+                            touched.national_id && errors.national_id
+                          )}
+                          helperText={touched.national_id && errors.national_id}
                         />
                       </Box>
                     </Grid>
@@ -256,6 +283,21 @@ function IdentityInfoMobile(props) {
                         کارت ملی
                         <input type="file" hidden multiple={false} />
                       </LinkIconButton>
+                      {touched['id_card'] && errors['id_card'] && (
+                        <ErrorMessage name={'id_card'}>
+                          {msg => (
+                            <div
+                              style={{
+                                color: 'red',
+                                textAlign: 'right',
+                                marginTop: '5px'
+                              }}
+                            >
+                              {msg}
+                            </div>
+                          )}
+                        </ErrorMessage>
+                      )}
                     </Grid>
                   </Grid>
                   <Divider variant="middle" sx={{ margin: '10px 0px' }} />
@@ -276,9 +318,11 @@ function IdentityInfoMobile(props) {
                               borderRadius: '4px',
                               margin: '3px'
                             }}
-                            value={event => setSupplier(event.target.value)}
+                            value={values.supplier}
                             onChange={handleChange}
                             onBlur={handleBlur}
+                            error={Boolean(touched.supplier && errors.supplier)}
+                            helperText={touched.supplier && errors.supplier}
                           />
                         </Box>
                       )}
@@ -300,10 +344,12 @@ function IdentityInfoMobile(props) {
                               margin: '3px'
                             }}
                             value={values.introducer}
-                            onChange={event =>
-                              setIntroducer(event.target.value)
-                            }
+                            onChange={handleChange}
                             onBlur={handleBlur}
+                            error={Boolean(
+                              touched.introducer && errors.introducer
+                            )}
+                            helperText={touched.introducer && errors.introducer}
                           />
                         </Box>
                       )}
@@ -327,6 +373,14 @@ function IdentityInfoMobile(props) {
                           value={values.job_certificate_id}
                           onChange={handleChange}
                           onBlur={handleBlur}
+                          error={Boolean(
+                            touched.job_certificate_id &&
+                              errors.job_certificate_id
+                          )}
+                          helperText={
+                            touched.job_certificate_id &&
+                            errors.job_certificate_id
+                          }
                         />
                       </Box>
                     </Grid>
@@ -350,6 +404,21 @@ function IdentityInfoMobile(props) {
                         مدرک فعالیت
                         <input type="file" hidden multiple={false} />
                       </LinkIconButton>
+                      {touched['job_certificate'] && errors['job_certificate'] && (
+                        <ErrorMessage name={'job_certificate'}>
+                          {msg => (
+                            <div
+                              style={{
+                                color: 'red',
+                                textAlign: 'right',
+                                marginTop: '5px'
+                              }}
+                            >
+                              {msg}
+                            </div>
+                          )}
+                        </ErrorMessage>
+                      )}
                     </Grid>
                   </Grid>
                 </>
@@ -413,9 +482,11 @@ function IdentityInfoMobile(props) {
                           تامین کننده
                         </InputLabel>
                         <InputLabel style={{ color: '#231F20' }}>
-                          {values?.supplier_data?.first_name +
-                            ' ' +
-                            values?.supplier_data?.last_name}
+                          {values.supplier_data
+                            ? values?.supplier_data?.first_name +
+                              ' ' +
+                              values?.supplier_data?.last_name
+                            : ''}
                         </InputLabel>
                       </Box>
                     </Grid>
@@ -425,9 +496,11 @@ function IdentityInfoMobile(props) {
                           معرف
                         </InputLabel>
                         <InputLabel style={{ color: '#231F20' }}>
-                          {values?.introducer_data?.first_name +
-                            ' ' +
-                            values?.introducer_data?.last_name}
+                          {values.introducer_data
+                            ? values?.introducer_data?.first_name +
+                              ' ' +
+                              values?.introducer_data?.last_name
+                            : ''}
                         </InputLabel>
                       </Box>
                     </Grid>

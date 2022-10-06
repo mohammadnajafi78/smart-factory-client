@@ -29,18 +29,28 @@ export default function ParticipateNewComp(props) {
           flexDirection: 'column',
           alignItems: 'flex-start',
           padding: '6px 20px',
-          gap: '14px'
+          gap: '14px',
+          height:
+            selected?.participants.filter(f => f.user.user_id === userId)
+              .length <= 0
+              ? '410px'
+              : '100%',
+          overflow: 'auto'
         }}
       >
-        <InputLabelHeader style={{ fontWeight: 700, fontSize: '20px' }}>
+        <InputLabelHeader
+          style={{ fontWeight: 700, fontSize: '20px', minHeight: '8%' }}
+        >
           شرکت در مسابقه
         </InputLabelHeader>
-        <InputLabel>{selected?.description}</InputLabel>
+        <InputLabel style={{ minHeight: '20%' }}>
+          {selected?.description}
+        </InputLabel>
 
         {selected?.participants.filter(f => f.user.user_id === userId).length <=
         0 ? (
           <>
-            <InputLabel>
+            <InputLabel style={{ minHeight: '12%' }}>
               جهت شرکت در مسابقه عکس مورد نظر خود را انتخاب کنید:
             </InputLabel>
             <Box

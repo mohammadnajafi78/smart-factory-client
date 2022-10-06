@@ -1,20 +1,25 @@
-import React, { useRef } from 'react';
-import { Box, TextField } from '@mui/material';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
+import React, { useRef, useState } from 'react';
+import { Box, IconButton, InputAdornment, TextField } from '@mui/material';
+import Logo from 'src/assets/img/LogoBTS.svg';
 import InputLabel from 'src/components/Mobile/InputLabel';
-import { Formik } from 'formik';
-import ReCAPTCHA from 'react-google-recaptcha';
-import httpService from 'src/utils/httpService';
+import LinkButton from 'src/components/Mobile/Button/Link';
 import { useHistory } from 'react-router-dom';
+import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import axios from 'axios';
 import useAuth from 'src/hooks/useAuth';
+import { Formik } from 'formik';
+import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
+import ConfirmButton from 'src/components/Mobile/Button/Confirm';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import bcrypt from 'bcryptjs';
+import * as Yup from 'yup';
 import useScore from 'src/hooks/useScore';
+import axios from 'axios';
 
 // const TEST_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
 function EnterPasswordMobile(props) {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
   const recaptchaRef = useRef();
   const history = useHistory();
   const { registry } = useAuth();
@@ -24,6 +29,13 @@ function EnterPasswordMobile(props) {
     console.log('Captcha value:', value);
   }
 
+  function handleClickShowPassword() {
+    setShowPassword(!showPassword);
+  }
+  function handleClickShowPassword2() {
+    setShowPassword2(!showPassword2);
+  }
+
   return (
     <>
       <Formik
@@ -31,14 +43,36 @@ function EnterPasswordMobile(props) {
           password: '',
           password2: ''
         }}
-        validate={values => {
-          const errors = {};
-          // if (!values.input) {
-          //   errors.username = 'نام کاربری اجباری می باشد';
-          // }
-          return errors;
-        }}
-        onSubmit={async (values, { setErrors, setSubmitting }) => {
+        validationSchema={Yup.object().shape({
+          password: Yup.string()
+            .min(8, 'پسورد باید حداقل ۸ کاراکتر داشته باشد')
+            .max(255)
+            .required('رمز عبور اجباری می باشد')
+            .matches(
+              '(?=.*[A-Z]).',
+              'رمز عبور باید شامل حداقل یکی از حروف بزرگ باشد'
+            )
+            .matches(
+              '(?=.*[a-z]).',
+              'رمز عبور باید شامل حداقل یکی از حروف کوچک باشد'
+            )
+            .matches(
+              '(?=.*[0-9])',
+              'رمز عبور باید شامل حداقل یک عدد ۰ تا ۹ باشد'
+            )
+            .matches(
+              '([^A-Za-z0-9])',
+              'رمز عبور باید شامل حداقل یک کاراکتر خاص باشد باشد'
+            ),
+          password2: Yup.string()
+            .oneOf(
+              [Yup.ref('password'), null],
+              'رمز عبور و تکرار رمز عبور باید یکسان باشند'
+            )
+            .required('تکرار رمز عبور اجباری می باشد')
+        })}
+        onSubmit={(values, { setErrors, setSubmitting }) => {
+          setSubmitting(true);
           httpService
             .post(`${API_BASE_URL}/api/users/`, {
               mobile: props.location.state.mobile,
@@ -49,15 +83,16 @@ function EnterPasswordMobile(props) {
             })
             .then(res => {
               if (res.status === 200) {
+                setSubmitting(false);
                 localStorage.setItem('token', res.headers['x-auth-token']);
                 axios.defaults.headers.common.Authorization = `Bearer ${res.headers['x-auth-token']}`;
                 registry(res.headers['x-auth-token']);
                 localStorage.setItem('user', JSON.stringify(res.data));
                 setScore();
-                history.push('/identity');
+                // history.push('/home');
+                history.push('/' + res.data.profile_state.toLowerCase());
               }
             });
-          setSubmitting(false);
         }}
       >
         {({
@@ -95,7 +130,7 @@ function EnterPasswordMobile(props) {
                     id="password"
                     aria-describedby="my-helper-text"
                     fullWidth
-                    placeholder="رمز عبور"
+                    placeholder="رمز عبور جدید"
                     sx={{
                       background: '#F2F2F2',
                       borderRadius: '4px',
@@ -103,7 +138,29 @@ function EnterPasswordMobile(props) {
                     }}
                     value={values.password}
                     onChange={handleChange}
-                    type="password"
+                    onBlur={handleBlur}
+                    error={Boolean(touched.password && errors.password)}
+                    helperText={touched.password && errors.password}
+                    type={showPassword === false ? 'password' : 'text'}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end" tabIndex={-1}>
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            // onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                            tabIndex={-1}
+                          >
+                            {!showPassword ? (
+                              <VisibilityOff sx={{ color: '#00AAB5' }} />
+                            ) : (
+                              <Visibility sx={{ color: '#00AAB5' }} />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
                   />
                 </Box>
                 <Box>
@@ -111,7 +168,7 @@ function EnterPasswordMobile(props) {
                     id="password2"
                     aria-describedby="my-helper-text"
                     fullWidth
-                    placeholder="تکرار رمز عبور"
+                    placeholder="تکرار رمز عبور جدید"
                     sx={{
                       background: '#F2F2F2',
                       borderRadius: '4px',
@@ -119,7 +176,29 @@ function EnterPasswordMobile(props) {
                     }}
                     value={values.password2}
                     onChange={handleChange}
-                    type="password"
+                    onBlur={handleBlur}
+                    error={Boolean(touched.password2 && errors.password2)}
+                    helperText={touched.password2 && errors.password2}
+                    type={showPassword2 === false ? 'password' : 'text'}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end" tabIndex={-1}>
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword2}
+                            // onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                            tabIndex={-1}
+                          >
+                            {!showPassword2 ? (
+                              <VisibilityOff sx={{ color: '#00AAB5' }} />
+                            ) : (
+                              <Visibility sx={{ color: '#00AAB5' }} />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
                   />
                 </Box>
                 {/* <Box sx={{ mt: 1 }}>
@@ -142,7 +221,11 @@ function EnterPasswordMobile(props) {
               </Box>
             </Box>
             <Box>
-              <ConfirmButton disabled={isSubmitting} type="submit">
+              <ConfirmButton
+                disabled={isSubmitting}
+                type="submit"
+                loading={isSubmitting}
+              >
                 {'ثبت'}
               </ConfirmButton>
             </Box>

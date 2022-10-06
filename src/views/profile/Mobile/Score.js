@@ -32,28 +32,28 @@ export default function Score({ data }) {
 
   return (
     <>
-      {data?.user_club && (
-        <>
-          <Box sx={{ mt: 1, mb: 1 }}>
-            <InputLabel style={{ color: '#A7A5A6' }}>امتیاز من</InputLabel>
-            <InputLabel
-              style={{ color: '#231F20' }}
-            >{`${data?.user_club?.spent_credit} از ${data?.user_club?.total_credit}`}</InputLabel>
-          </Box>
-          <Divider />
-        </>
-      )}
-      {data?.user_club?.grade_info?.name && (
-        <>
-          <Box sx={{ mt: 1, mb: 1 }}>
-            <InputLabel style={{ color: '#A7A5A6' }}>سطح من</InputLabel>
-            <InputLabel style={{ color: '#231F20' }}>
-              {data?.user_club?.grade_info?.name}
-            </InputLabel>
-          </Box>
-          <Divider />
-        </>
-      )}
+      {/* {data?.user_club && ( */}
+      <>
+        <Box sx={{ mt: 1, mb: 1 }}>
+          <InputLabel style={{ color: '#A7A5A6' }}>امتیاز من</InputLabel>
+          <InputLabel
+            style={{ color: '#231F20' }}
+          >{`${data?.user_club?.spent_credit} از ${data?.user_club?.total_credit}`}</InputLabel>
+        </Box>
+        <Divider />
+      </>
+      {/* )} */}
+      {/* {data?.user_club?.grade_info?.name && ( */}
+      <>
+        <Box sx={{ mt: 1, mb: 1 }}>
+          <InputLabel style={{ color: '#A7A5A6' }}>سطح من</InputLabel>
+          <InputLabel style={{ color: '#231F20' }}>
+            {data?.user_club?.grade_info?.name}
+          </InputLabel>
+        </Box>
+        <Divider />
+      </>
+      {/* )} */}
       <Button
         color="primary"
         fullWidth
