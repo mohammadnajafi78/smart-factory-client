@@ -45,6 +45,7 @@ function IdentityInfoMobile(props) {
           supplier_data: data?.supplier_data,
           introducer_data: data?.introducer_data,
           job_certificate_id: data?.job_certificate_id,
+          job_certificate: data?.job_certificate,
           id_card: data?.id_card
         }}
         // validate={values => {
@@ -63,6 +64,7 @@ function IdentityInfoMobile(props) {
           formData.append('national_id', values.national_id);
           formData.append('birth_date', MomentEn(values.birth_date));
           formData.append('job_certificate_id', values.job_certificate_id);
+          formData.append('job_certificate', values.job_certificate);
           if (supplier !== null) formData.append('supplier', supplier);
           if (introducer !== null) formData.append('introducer', introducer);
           formData.append('id_card', values.id_card);
@@ -400,6 +402,7 @@ function IdentityInfoMobile(props) {
                     </InputLabel>
                     <img src={values?.id_card} width="320px" height="160px" />
                   </Box>
+                  <Divider />
                 </>
               )}
               {editable === true && (
@@ -416,6 +419,38 @@ function IdentityInfoMobile(props) {
                 >
                   <img src={IdCard} />
                   کارت ملی
+                  <input type="file" hidden multiple={false} />
+                </LinkIconButton>
+              )}
+
+              {editable === false && (
+                <>
+                  <Box sx={{ mt: 1, mb: 1 }}>
+                    <InputLabel style={{ color: '#A7A5A6' }}>
+                      مدرک فعالیت
+                    </InputLabel>
+                    <img
+                      src={values?.job_certificate}
+                      width="320px"
+                      height="160px"
+                    />
+                  </Box>
+                </>
+              )}
+              {editable === true && (
+                <LinkIconButton
+                  style={{
+                    marginTop: '20px',
+                    backgroundColor: '#DDF5F6',
+                    color: '#00AAB5'
+                  }}
+                  component="label"
+                  onChange={event => {
+                    setFieldValue('job_certificate', event.target.files[0]);
+                  }}
+                >
+                  <img src={IdCard} />
+                  مدرک فعالیت
                   <input type="file" hidden multiple={false} />
                 </LinkIconButton>
               )}

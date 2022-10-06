@@ -45,6 +45,7 @@ function IdentityInfoMobile(props) {
           supplier_data: data?.supplier_data,
           introducer_data: data?.introducer_data,
           job_certificate_id: data?.job_certificate_id,
+          job_certificate: data?.job_certificate,
           id_card: data?.id_card
         }}
         // validate={values => {
@@ -63,6 +64,7 @@ function IdentityInfoMobile(props) {
           formData.append('national_id', values.national_id);
           formData.append('birth_date', MomentEn(values.birth_date));
           formData.append('job_certificate_id', values.job_certificate_id);
+          formData.append('job_certificate', values.job_certificate);
           if (supplier !== null) formData.append('supplier', supplier);
           if (introducer !== null) formData.append('introducer', introducer);
           formData.append('id_card', values.id_card);
@@ -191,29 +193,6 @@ function IdentityInfoMobile(props) {
                     <Grid item xs={6}>
                       <Box sx={{ mt: 1, mb: 1 }}>
                         <InputLabel style={{ color: '#A7A5A6' }}>
-                          کد ملی
-                        </InputLabel>
-                        <TextField
-                          id="national_id"
-                          aria-describedby="my-helper-text"
-                          fullWidth
-                          placeholder="کد ملی"
-                          sx={{
-                            background: '#F2F2F2',
-                            borderRadius: '4px',
-                            margin: '3px'
-                          }}
-                          value={values.national_id}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                        />
-                      </Box>
-                    </Grid>
-                  </Grid>
-                  <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      <Box sx={{ mt: 1, mb: 1 }}>
-                        <InputLabel style={{ color: '#A7A5A6' }}>
                           تاریخ تولد
                         </InputLabel>
                         <LocalizationProvider dateAdapter={AdapterJalali}>
@@ -236,6 +215,47 @@ function IdentityInfoMobile(props) {
                           />
                         </LocalizationProvider>
                       </Box>
+                    </Grid>
+                  </Grid>
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <Box sx={{ mt: 1, mb: 1 }}>
+                        <InputLabel style={{ color: '#A7A5A6' }}>
+                          کد ملی
+                        </InputLabel>
+                        <TextField
+                          id="national_id"
+                          aria-describedby="my-helper-text"
+                          fullWidth
+                          placeholder="کد ملی"
+                          sx={{
+                            background: '#F2F2F2',
+                            borderRadius: '4px',
+                            margin: '3px'
+                          }}
+                          value={values.national_id}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                      </Box>
+                    </Grid>
+                    <Grid item xs={6} mt={3}>
+                      <LinkIconButton
+                        style={{
+                          marginTop: '12px',
+                          backgroundColor: '#DDF5F6',
+                          color: '#00AAB5',
+                          height: '56px'
+                        }}
+                        component="label"
+                        onChange={event => {
+                          setFieldValue('id_card', event.target.files[0]);
+                        }}
+                      >
+                        <img src={IdCard} />
+                        کارت ملی
+                        <input type="file" hidden multiple={false} />
+                      </LinkIconButton>
                     </Grid>
                   </Grid>
                   <Divider variant="middle" sx={{ margin: '10px 0px' }} />
@@ -288,6 +308,7 @@ function IdentityInfoMobile(props) {
                         </Box>
                       )}
                     </Grid>
+
                     <Grid item xs={6}>
                       <Box sx={{ mt: 1, mb: 1 }}>
                         <InputLabel style={{ color: '#A7A5A6' }}>
@@ -319,11 +340,14 @@ function IdentityInfoMobile(props) {
                         }}
                         component="label"
                         onChange={event => {
-                          setFieldValue('id_card', event.target.files[0]);
+                          setFieldValue(
+                            'job_certificate',
+                            event.target.files[0]
+                          );
                         }}
                       >
                         <img src={IdCard} />
-                        کارت ملی
+                        مدرک فعالیت
                         <input type="file" hidden multiple={false} />
                       </LinkIconButton>
                     </Grid>
@@ -420,6 +444,8 @@ function IdentityInfoMobile(props) {
                         </InputLabel>
                       </Box>
                     </Grid>
+                  </Grid>
+                  <Grid container spacing={2}>
                     <Grid item xs={6}>
                       <Box sx={{ mt: 1, mb: 1 }}>
                         <InputLabel style={{ color: '#A7A5A6' }}>
@@ -427,6 +453,18 @@ function IdentityInfoMobile(props) {
                         </InputLabel>
                         <img
                           src={values?.id_card}
+                          width="320px"
+                          height="160px"
+                        />
+                      </Box>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Box sx={{ mt: 1, mb: 1 }}>
+                        <InputLabel style={{ color: '#A7A5A6' }}>
+                          مدرک فعالیت
+                        </InputLabel>
+                        <img
+                          src={values?.job_certificate}
                           width="320px"
                           height="160px"
                         />

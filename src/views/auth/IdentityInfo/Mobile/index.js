@@ -17,7 +17,8 @@ function IdentityInfoMobile(props) {
       <Formik
         initialValues={{
           name: '',
-          family: ''
+          family: '',
+          introducer: ''
         }}
         validationSchema={Yup.object().shape({
           name: Yup.string().required('نام اجباری می باشد'),
@@ -26,12 +27,11 @@ function IdentityInfoMobile(props) {
         onSubmit={(values, { setErrors, setSubmitting }) => {
           setSubmitting(true);
           httpService
-            .patch(
-              `${API_BASE_URL}/api/users/${
-                JSON.parse(localStorage.getItem('user')).id
-              }/`,
-              { first_name: values.name, last_name: values.family }
-            )
+            .post(`${API_BASE_URL}/api/users/update_user/`, {
+              first_name: values.name,
+              last_name: values.family,
+              introducer: values.introducer
+            })
             .then(res => {
               if (res.status === 200) {
                 history.push('/location');
@@ -58,7 +58,7 @@ function IdentityInfoMobile(props) {
               flexDirection: 'column',
               justifyContent: 'space-between',
               padding: '0px',
-              gap: '159px',
+              gap: '109px',
               position: 'absolute',
               width: '90%',
               height: '90%',
@@ -103,6 +103,24 @@ function IdentityInfoMobile(props) {
                   onChange={handleChange}
                   error={Boolean(touched.family && errors.family)}
                   helperText={touched.family && errors.family}
+                />
+              </Box>
+              <Box sx={{ mt: 2 }}>
+                <InputLabel>معرف</InputLabel>
+                <TextField
+                  id="introducer"
+                  aria-describedby="my-helper-text"
+                  fullWidth
+                  placeholder="شناسه کاربری معرف"
+                  sx={{
+                    background: '#F2F2F2',
+                    borderRadius: '4px',
+                    margin: '6px 3px'
+                  }}
+                  value={values.introducer}
+                  onChange={handleChange}
+                  // error={Boolean(touched.family && errors.family)}
+                  // helperText={touched.family && errors.family}
                 />
               </Box>
             </Box>
