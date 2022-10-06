@@ -209,6 +209,7 @@ export default function ReceivedItemMobile(props) {
               bottom: '90px',
               width: '93%'
             }}
+            disabled={data.status.toLowerCase() !== 'valid'}
           >
             <img
               src={Received}
