@@ -6,6 +6,7 @@ import ReceivedItemDesktop from '../ReceivedItem/Desktop';
 
 export default function ReceivedDesktop() {
   const [selected, setSelected] = useState(null);
+  const [refresh, setRefresh] = useState(false);
 
   return (
     <div
@@ -28,7 +29,12 @@ export default function ReceivedDesktop() {
         }}
       >
         <Box sx={{ width: '100%' }}>
-          <ReceivedListDesktop selected={selected} setSelected={setSelected} />
+          <ReceivedListDesktop
+            selected={selected}
+            setSelected={setSelected}
+            refresh={refresh}
+            setRefresh={setRefresh}
+          />
         </Box>
       </Box>
       <Box
@@ -41,7 +47,7 @@ export default function ReceivedDesktop() {
       >
         {selected ? (
           // <GetCommentDesktop selected={selected} />
-          <ReceivedItemDesktop selected={selected} />
+          <ReceivedItemDesktop selected={selected} setRefresh={setRefresh} />
         ) : (
           <Box
             sx={{

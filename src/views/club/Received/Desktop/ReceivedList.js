@@ -12,7 +12,12 @@ import { API_BASE_URL } from 'src/utils/urls';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
 import { QrReader } from 'react-qr-reader';
 
-export default function ReceivedListDesktop({ selected, setSelected }) {
+export default function ReceivedListDesktop({
+  selected,
+  setSelected,
+  refresh,
+  setRefresh
+}) {
   const history = useHistory();
   const [received, setReceived] = useState(null);
   const [openScan, setOpenScan] = useState(null);
@@ -21,20 +26,27 @@ export default function ReceivedListDesktop({ selected, setSelected }) {
   const [filterSelected, setFilterSelected] = useState(1);
   const [scan, setScan] = useState(null);
 
-  useEffect(() => {
+  function getData() {
     httpService.get(`${API_BASE_URL}/api/club/user_gifts/`).then(res => {
       if (res.status === 200) {
         setReceived(res.data);
         setAll(res.data);
       }
     });
+  }
 
+  useEffect(() => {
     httpService.get(`${API_BASE_URL}/api/club/gift_type/`).then(res => {
       if (res.status === 200) {
         setFilters(res.data);
       }
     });
   }, []);
+
+  useEffect(() => {
+    getData();
+  }, [refresh]);
+
   function handleScan(data) {
     setScan(data);
   }
@@ -190,7 +202,8 @@ export default function ReceivedListDesktop({ selected, setSelected }) {
                         )
                         .then(res => {
                           if (res.status === 200) {
-                            alert('انتقال انجام شد');
+                            // alert('انتقال انجام شد');
+                            getData();
                           }
                         });
                     }

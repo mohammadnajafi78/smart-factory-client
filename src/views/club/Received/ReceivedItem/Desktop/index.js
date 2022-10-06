@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     minHeight: '40%'
   }
 }));
-export default function ReceivedItemDesktop({ selected }) {
+export default function ReceivedItemDesktop({ selected, setRefresh }) {
   const [open, setOpen] = useState(false);
   const [qr, setQr] = useState(null);
   const classes = useStyles();
@@ -136,6 +136,7 @@ export default function ReceivedItemDesktop({ selected }) {
         handleClose={() => {
           setOpen(false);
           setQr(null);
+          setRefresh(true);
         }}
         title={'انتقال جایزه'}
         content={

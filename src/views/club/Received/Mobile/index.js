@@ -29,14 +29,16 @@ export default function ReceivedMobile() {
   const [filterSelected, setFilterSelected] = useState(1);
   const classes = useStyles();
 
-  useEffect(() => {
+  function getData() {
     httpService.get(`${API_BASE_URL}/api/club/user_gifts/`).then(res => {
       if (res.status === 200) {
         setReceived(res.data);
         setAll(res.data);
       }
     });
-
+  }
+  useEffect(() => {
+    getData();
     httpService.get(`${API_BASE_URL}/api/club/gift_type/`).then(res => {
       if (res.status === 200) {
         setFilters(res.data);
@@ -159,7 +161,8 @@ export default function ReceivedMobile() {
                     )
                     .then(res => {
                       if (res.status === 200) {
-                        alert('انتقال انجام شد');
+                        // alert('انتقال انجام شد');
+                        getData();
                       }
                     });
                 }
