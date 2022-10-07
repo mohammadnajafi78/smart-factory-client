@@ -16,7 +16,7 @@ import { useHistory } from 'react-router-dom';
 import FaTOEn from 'src/utils/FaTOEn';
 
 let item = {};
-let itemSort = {};
+// let itemSort = {};
 const AllUsersTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
@@ -197,6 +197,7 @@ const AllUsersTable = props => {
         label: 'استان',
         options: {
           filter: true,
+          sort: false,
           filterType: 'custom',
           filterOptions: {
             logic: (orderStatus, filters) => {
@@ -246,6 +247,7 @@ const AllUsersTable = props => {
         label: 'شهر',
         options: {
           filter: true,
+          sort: false,
           filterType: 'custom',
           filterOptions: {
             display: (filterList, onChange, index, column) => {
@@ -293,7 +295,7 @@ const AllUsersTable = props => {
           },
           filter: true,
           filterType: 'custom',
-
+          sort: false,
           filterOptions: {
             display: (filterList, onChange, index, column) => {
               return (
@@ -585,6 +587,8 @@ const AllUsersTable = props => {
   }
 
   function onColumnSortChange(changedColumn, direction) {
+    let itemSort = {};
+
     switch (changedColumn) {
       case 'user.user_id':
         itemSort['user_id'] = direction;
@@ -611,13 +615,22 @@ const AllUsersTable = props => {
         itemSort = itemSort;
     }
 
+    // let temp = itemSort;
+    // let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
+
+    // let str = [];
+    // if (filterItems?.length > 0) {
+    //   filterItems.map((itm, index) => {
+    //     str.push(itm[1] === 'asc' ? itm[0] : `-${itm[0]}`);
+    //   });
+    // }
     let temp = itemSort;
     let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
 
-    let str = [];
+    let str = '';
     if (filterItems?.length > 0) {
       filterItems.map((itm, index) => {
-        str.push(itm[1] === 'asc' ? itm[0] : `-${itm[0]}`);
+        str = itm[1] === 'asc' ? itm[0] : `-${itm[0]}`;
       });
     }
     setSort(str);

@@ -41,7 +41,7 @@ function WorkMobile(props) {
   }, []);
 
   useEffect(() => {
-    if (provinceId !== null) {
+    if (provinceId) {
       httpService
         .get(`${API_BASE_URL}/api/utils/cities/?province__id=${provinceId}`)
         .then(res => {
@@ -75,7 +75,7 @@ function WorkMobile(props) {
       onSubmit={(values, { setErrors, setSubmitting }) => {
         setSubmitting(true);
         httpService
-          .patch(`${API_BASE_URL}/api/utils/companies/${data?.company?.id}/`, {
+          .post(`${API_BASE_URL}/api/utils/companies/company_update/`, {
             name: values.name,
             phone: values.phone,
             email: values.email,
@@ -380,6 +380,7 @@ function WorkMobile(props) {
                             setCityId(null);
                           } else {
                             setFieldValue('province', '');
+                            setProvinceId('');
                           }
                         }}
                         isOptionEqualToValue={(option, value) =>
@@ -414,6 +415,7 @@ function WorkMobile(props) {
                             setCityId(newValue.id);
                           } else {
                             setFieldValue('city', '');
+                            setCityId('');
                           }
                         }}
                         // isOptionEqualToValue={(option, value) =>

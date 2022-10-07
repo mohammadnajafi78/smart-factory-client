@@ -25,7 +25,7 @@ import * as Yup from 'yup';
 const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
 let item = {};
-let itemSort = {};
+// let itemSort = {};
 const ClubGradeTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
@@ -292,6 +292,8 @@ const ClubGradeTable = props => {
   }
 
   function onColumnSortChange(changedColumn, direction) {
+    let itemSort = {};
+
     switch (changedColumn) {
       case 'name':
         itemSort['name'] = direction;
@@ -306,13 +308,22 @@ const ClubGradeTable = props => {
         itemSort = itemSort;
     }
 
+    // let temp = itemSort;
+    // let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
+
+    // let str = [];
+    // if (filterItems?.length > 0) {
+    //   filterItems.map((itm, index) => {
+    //     str.push(itm[1] === 'asc' ? itm[0] : `-${itm[0]}`);
+    //   });
+    // }
     let temp = itemSort;
     let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
 
-    let str = [];
+    let str = '';
     if (filterItems?.length > 0) {
       filterItems.map((itm, index) => {
-        str.push(itm[1] === 'asc' ? itm[0] : `-${itm[0]}`);
+        str = itm[1] === 'asc' ? itm[0] : `-${itm[0]}`;
       });
     }
     setSort(str);

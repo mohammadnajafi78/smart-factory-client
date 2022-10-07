@@ -17,7 +17,7 @@ import { useHistory } from 'react-router-dom';
 import FaTOEn from 'src/utils/FaTOEn';
 
 let item = {};
-let itemSort = {};
+// let itemSort = {};
 const CommentTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
@@ -352,39 +352,41 @@ const CommentTable = props => {
   }
 
   function onColumnSortChange(changedColumn, direction) {
+    let itemSort = {};
+
     switch (changedColumn) {
-      case 'user.user_id':
-        itemSort['user_id'] = direction;
+      case 'suggestion_id':
+        itemSort['suggestion_id'] = direction;
         break;
-      case 'user.first_name':
-        itemSort['first_name'] = direction;
+      case 'subject':
+        itemSort['subject'] = direction;
         break;
-      case 'user.last_name':
-        itemSort['last_name'] = direction;
+      case 'topic_detail.name':
+        itemSort['topic_detail.name'] = direction;
         break;
-      case 'user.mobile':
-        itemSort['mobile'] = direction;
-        break;
-      case 'location.province_name':
-        itemSort['province_name'] = direction;
-        break;
-      case 'location.city_name':
-        itemSort['city_name'] = direction;
-        break;
-      case 'user.user_type_list':
-        itemSort['user_type_list'] = direction;
+      case 'status':
+        itemSort['status'] = direction;
         break;
       default:
         itemSort = itemSort;
     }
 
+    // let temp = itemSort;
+    // let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
+
+    // let str = [];
+    // if (filterItems?.length > 0) {
+    //   filterItems.map((itm, index) => {
+    //     str.push(itm[1] === 'asc' ? itm[0] : `-${itm[0]}`);
+    //   });
+    // }
     let temp = itemSort;
     let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
 
-    let str = [];
+    let str = '';
     if (filterItems?.length > 0) {
       filterItems.map((itm, index) => {
-        str.push(itm[1] === 'asc' ? itm[0] : `-${itm[0]}`);
+        str = itm[1] === 'asc' ? itm[0] : `-${itm[0]}`;
       });
     }
     setSort(str);

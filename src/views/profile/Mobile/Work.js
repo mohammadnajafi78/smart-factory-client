@@ -74,7 +74,7 @@ function WorkMobile(props) {
       onSubmit={(values, { setErrors, setSubmitting }) => {
         setSubmitting(true);
         httpService
-          .patch(`${API_BASE_URL}/api/utils/companies/${data?.company?.id}/`, {
+          .post(`${API_BASE_URL}/api/utils/companies/company_update/`, {
             name: values.name,
             phone: values.phone,
             email: values.email,

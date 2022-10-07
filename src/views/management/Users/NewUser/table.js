@@ -16,7 +16,7 @@ import { useHistory } from 'react-router-dom';
 import FaTOEn from 'src/utils/FaTOEn';
 
 let item = {};
-let itemSort = {};
+// let itemSort = {};
 const NewUserTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
@@ -199,6 +199,7 @@ const NewUserTable = props => {
         label: 'استان',
         options: {
           filter: true,
+          sort: false,
           filterType: 'custom',
           filterOptions: {
             logic: (orderStatus, filters) => {
@@ -252,6 +253,7 @@ const NewUserTable = props => {
         label: 'شهر',
         options: {
           filter: true,
+          sort: false,
           filterType: 'custom',
           filterOptions: {
             display: (filterList, onChange, index, column) => {
@@ -589,6 +591,8 @@ const NewUserTable = props => {
   }
 
   function onColumnSortChange(changedColumn, direction) {
+    let itemSort = {};
+
     switch (changedColumn) {
       case 'user.user_id':
         itemSort['user_id'] = direction;
@@ -603,10 +607,10 @@ const NewUserTable = props => {
         itemSort['mobile'] = direction;
         break;
       case 'location.province_name':
-        itemSort['province_name'] = direction;
+        itemSort['location_province'] = direction;
         break;
       case 'location.city_name':
-        itemSort['city_name'] = direction;
+        itemSort['location_city'] = direction;
         break;
       case 'user.user_type_list':
         itemSort['user_type_list'] = direction;
@@ -615,13 +619,22 @@ const NewUserTable = props => {
         itemSort = itemSort;
     }
 
+    // let temp = itemSort;
+    // let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
+
+    // let str = [];
+    // if (filterItems?.length > 0) {
+    //   filterItems.map((itm, index) => {
+    //     str.push(itm[1] === 'asc' ? itm[0] : `-${itm[0]}`);
+    //   });
+    // }
     let temp = itemSort;
     let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
 
-    let str = [];
+    let str = '';
     if (filterItems?.length > 0) {
       filterItems.map((itm, index) => {
-        str.push(itm[1] === 'asc' ? itm[0] : `-${itm[0]}`);
+        str = itm[1] === 'asc' ? itm[0] : `-${itm[0]}`;
       });
     }
     setSort(str);

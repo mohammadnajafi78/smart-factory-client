@@ -21,7 +21,7 @@ import Confirm from 'src/components/Desktop/Button/Confirm';
 import { Plus } from 'react-feather';
 
 let item = {};
-let itemSort = {};
+// let itemSort = {};
 const LotteryReceiverTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
@@ -375,6 +375,8 @@ const LotteryReceiverTable = props => {
   }
 
   function onColumnSortChange(changedColumn, direction) {
+    let itemSort = {};
+
     switch (changedColumn) {
       case 'user_info.user_id':
         itemSort['user_id'] = direction;
@@ -395,13 +397,22 @@ const LotteryReceiverTable = props => {
         itemSort = itemSort;
     }
 
+    // let temp = itemSort;
+    // let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
+
+    // let str = [];
+    // if (filterItems?.length > 0) {
+    //   filterItems.map((itm, index) => {
+    //     str.push(itm[1] === 'asc' ? itm[0] : `-${itm[0]}`);
+    //   });
+    // }
     let temp = itemSort;
     let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
 
-    let str = [];
+    let str = '';
     if (filterItems?.length > 0) {
       filterItems.map((itm, index) => {
-        str.push(itm[1] === 'asc' ? itm[0] : `-${itm[0]}`);
+        str = itm[1] === 'asc' ? itm[0] : `-${itm[0]}`;
       });
     }
     setSort(str);
