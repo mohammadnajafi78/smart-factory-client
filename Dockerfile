@@ -21,6 +21,7 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn config set cache-folder /.yarn-cache/
 RUN yarn install --frozen-lockfile  --network-timeout 1000000
+LABEL keep-cache="YES"
 
 # Rebuild the source code only when needed
 FROM node:14.17.1-alpine3.13 AS builder
@@ -31,6 +32,7 @@ COPY --from=deps /.yarn-cache /.yarn-cache
 RUN yarn config set cache-folder /.yarn-cache
 COPY . .
 RUN yarn build && yarn install --production --ignore-scripts --prefer-offline
+LABEL keep-cache="YES"
 
 # nginx serve
 FROM nginx:1.12-alpine
