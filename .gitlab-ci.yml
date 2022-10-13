@@ -11,7 +11,7 @@ Build:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - echo -e "$DEV_ENV" > .env
   script:
-    # - docker system  prune -a -f
+    - docker system  prune --filter="label!=keep-cache"
     - docker build -t git.bts-co.com:5050/root/bts-front-app:dev .
     # - docker build --pull -t git.bts-co.com:5050/root/bts-front-app:dev .
     - docker push git.bts-co.com:5050/root/bts-front-app:dev
@@ -49,7 +49,7 @@ Build-prod:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - echo -e "$PROD_ENV" > .env
   script:
-    # - docker system  prune -a -f
+    - docker system  prune --filter="label!=keep-cache"
     - docker build --pull -t git.bts-co.com:5050/root/bts-front-app:${CI_COMMIT_TAG} .
     - docker push git.bts-co.com:5050/root/bts-front-app:${CI_COMMIT_TAG}
   only:
