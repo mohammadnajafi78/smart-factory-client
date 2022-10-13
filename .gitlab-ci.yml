@@ -12,7 +12,8 @@ Build:
     - echo -e "$DEV_ENV" > .env
   script:
     # - docker system  prune -a -f
-    - docker build --pull -t git.bts-co.com:5050/root/bts-front-app:dev .
+    - docker build -t git.bts-co.com:5050/root/bts-front-app:dev .
+    # - docker build --pull -t git.bts-co.com:5050/root/bts-front-app:dev .
     - docker push git.bts-co.com:5050/root/bts-front-app:dev
   only:
     - main
