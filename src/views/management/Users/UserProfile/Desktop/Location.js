@@ -15,13 +15,11 @@ function LocationMobile(props) {
   const data = props?.data;
   const editable = props?.editable;
 
-  console.log('ppp', data?.user_location?.province);
+  console.log('ppp', data?.location?.province);
   const [provinces, setProvinces] = useState([]);
-  const [provinceId, setProvinceId] = useState(
-    props.data?.user_location?.province
-  );
+  const [provinceId, setProvinceId] = useState(props.data?.location?.province);
   const [cities, setCities] = useState([]);
-  const [cityId, setCityId] = useState(props.data?.user_location?.city);
+  const [cityId, setCityId] = useState(props.data?.location?.city);
   const history = useHistory();
 
   useEffect(() => {
@@ -49,12 +47,12 @@ function LocationMobile(props) {
   return (
     <Formik
       initialValues={{
-        province_name: data?.user_location?.province_name,
-        city_name: data?.user_location?.city_name,
-        postal_code: data?.user_location?.postal_code,
-        address: data?.user_location?.address,
-        provinceId: props.data?.user_location?.province,
-        cityId: props.data?.user_location?.city
+        province_name: data?.location?.province_name,
+        city_name: data?.location?.city_name,
+        postal_code: data?.location?.postal_code,
+        address: data?.location?.address,
+        provinceId: props.data?.location?.province,
+        cityId: props.data?.location?.city
       }}
       validationSchema={Yup.object().shape({
         cityId: Yup.string().required('شهر نباید خالی باشد'),
@@ -64,7 +62,7 @@ function LocationMobile(props) {
         setSubmitting(true);
         httpService
           .patch(
-            `${API_BASE_URL}/api/utils/locations/${data?.user_location?.id}/`,
+            `${API_BASE_URL}/api/management/utils/locations/${data?.location?.id}/`,
             {
               country_id: 25,
               province: provinceId,

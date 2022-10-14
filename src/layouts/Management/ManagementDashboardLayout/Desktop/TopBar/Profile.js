@@ -20,7 +20,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import { useDispatch, useSelector } from 'src/store';
 // import { getContacts } from 'src/slices/chat';
 // import OnlineIndicator from 'src/components/OnlineIndicator';
-import ProfileIcon from 'src/assets/img/icons/profile.svg';
+import ProfileIcon from 'src/assets/img/icons/profileMng.svg';
 import Icon from 'src/components/Mobile/Icon';
 
 const useStyles = makeStyles(theme => ({

@@ -642,10 +642,9 @@ const NewUserTable = props => {
 
   function onRowClick(rowData, rowState) {
     history.push({
-      pathname: '/management/user/newUser/details',
+      pathname: '/management/user/details',
       state: {
-        rowData,
-        rowState
+        user_id: data.filter(f => f.user.user_id === rowData[0])[0].user.user_id
       }
     });
   }

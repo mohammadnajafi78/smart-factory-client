@@ -276,10 +276,8 @@ const routes = [
       },
       {
         exact: true,
-        path: '/management/user/newUser/details',
-        component: lazy(() =>
-          import('src/views/management/Users/NewUser/Desktop/UserDetails')
-        )
+        path: '/management/user/details',
+        component: lazy(() => import('src/views/management/Users/UserProfile'))
       },
       {
         exact: true,

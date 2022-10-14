@@ -15,7 +15,6 @@ import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 import httpService from 'src/utils/httpService';
 import Autocomplete from '@mui/material/Autocomplete';
-import Text from 'src/components/Mobile/Text';
 
 function WorkMobile(props) {
   const history = useHistory();
@@ -131,8 +130,12 @@ function WorkMobile(props) {
             {editable === false && (
               <>
                 <Box sx={{ mt: 1, mb: 1 }}>
-                  <Text label={'نام شرکت'} value={values?.name} />
+                  <InputLabel style={{ color: '#A7A5A6' }}>نام شرکت</InputLabel>
+                  <InputLabel style={{ color: '#231F20' }}>
+                    {values?.name}
+                  </InputLabel>
                 </Box>
+                <Divider />
               </>
             )}
             {editable === true && (
@@ -157,8 +160,12 @@ function WorkMobile(props) {
             {editable === false && (
               <>
                 <Box sx={{ mt: 1, mb: 1 }}>
-                  <Text label={'تلفن'} value={values?.phone} />
+                  <InputLabel style={{ color: '#A7A5A6' }}>تلفن</InputLabel>
+                  <InputLabel style={{ color: '#231F20' }}>
+                    {values?.phone}
+                  </InputLabel>
                 </Box>
+                <Divider />
               </>
             )}
             {editable === true && (
@@ -183,8 +190,12 @@ function WorkMobile(props) {
             {editable === false && (
               <>
                 <Box sx={{ mt: 1, mb: 1 }}>
-                  <Text label={'ایمیل'} value={values?.email} />
+                  <InputLabel style={{ color: '#A7A5A6' }}>ایمیل</InputLabel>
+                  <InputLabel style={{ color: '#231F20' }}>
+                    {values?.email}
+                  </InputLabel>
                 </Box>
+                <Divider />
               </>
             )}
             {editable === true && (
@@ -209,8 +220,12 @@ function WorkMobile(props) {
             {editable === false && (
               <>
                 <Box sx={{ mt: 1, mb: 1 }}>
-                  <Text label={'وب سایت'} value={values?.website} />
+                  <InputLabel style={{ color: '#A7A5A6' }}>وب سایت</InputLabel>
+                  <InputLabel style={{ color: '#231F20' }}>
+                    {values?.website}
+                  </InputLabel>
                 </Box>
+                <Divider />
               </>
             )}
             {editable === true && (
@@ -235,8 +250,14 @@ function WorkMobile(props) {
             {editable === false && (
               <>
                 <Box sx={{ mt: 1, mb: 1 }}>
-                  <Text label={'شناسه ملی'} value={values?.national_id} />
+                  <InputLabel style={{ color: '#A7A5A6' }}>
+                    شناسه ملی
+                  </InputLabel>
+                  <InputLabel style={{ color: '#231F20' }}>
+                    {values?.national_id}
+                  </InputLabel>
                 </Box>
+                <Divider />
               </>
             )}
             {editable === true && (
@@ -261,8 +282,12 @@ function WorkMobile(props) {
             {editable === false && (
               <>
                 <Box sx={{ mt: 1, mb: 1 }}>
-                  <Text label={'استان'} value={values?.province_name} />
+                  <InputLabel style={{ color: '#A7A5A6' }}>استان</InputLabel>
+                  <InputLabel style={{ color: '#231F20' }}>
+                    {values?.province_name}
+                  </InputLabel>
                 </Box>
+                <Divider />
               </>
             )}
             {editable === true && (
@@ -302,8 +327,12 @@ function WorkMobile(props) {
             {editable === false && (
               <>
                 <Box sx={{ mt: 1, mb: 1 }}>
-                  <Text label={'شهر'} value={values?.city_name} />
+                  <InputLabel style={{ color: '#A7A5A6' }}>شهر</InputLabel>
+                  <InputLabel style={{ color: '#231F20' }}>
+                    {values?.city_name}
+                  </InputLabel>
                 </Box>
+                <Divider />
               </>
             )}
             {editable === true && (
@@ -343,8 +372,12 @@ function WorkMobile(props) {
             {editable === false && (
               <>
                 <Box sx={{ mt: 1, mb: 1 }}>
-                  <Text label={'کد پستی'} value={values?.postal_code} />
+                  <InputLabel style={{ color: '#A7A5A6' }}>کد پستی</InputLabel>
+                  <InputLabel style={{ color: '#231F20' }}>
+                    {values?.postal_code}
+                  </InputLabel>
                 </Box>
+                <Divider />
               </>
             )}
             {editable === true && (
@@ -368,7 +401,10 @@ function WorkMobile(props) {
             )}
             {editable === false && (
               <Box sx={{ mt: 1, mb: 1 }}>
-                <Text label={'آدرس'} value={values?.address} />
+                <InputLabel style={{ color: '#A7A5A6' }}>آدرس</InputLabel>
+                <InputLabel style={{ color: '#231F20' }}>
+                  {values?.address}
+                </InputLabel>
               </Box>
             )}
             {editable === true && (

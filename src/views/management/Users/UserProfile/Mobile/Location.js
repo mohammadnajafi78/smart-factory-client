@@ -9,7 +9,6 @@ import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 import * as Yup from 'yup';
-import Text from 'src/components/Mobile/Text';
 
 function LocationMobile(props) {
   const data = props?.data;
@@ -117,8 +116,12 @@ function LocationMobile(props) {
             {editable === false && (
               <>
                 <Box sx={{ mt: 1, mb: 1 }}>
-                  <Text label={'استان'} value={values?.province_name} />
+                  <InputLabel style={{ color: '#A7A5A6' }}>استان</InputLabel>
+                  <InputLabel style={{ color: '#231F20' }}>
+                    {values?.province_name}
+                  </InputLabel>
                 </Box>
+                <Divider />
               </>
             )}
             {editable === true && (
@@ -158,8 +161,12 @@ function LocationMobile(props) {
             {editable === false && (
               <>
                 <Box sx={{ mt: 1, mb: 1 }}>
-                  <Text label={'شهر'} value={values?.city_name} />
+                  <InputLabel style={{ color: '#A7A5A6' }}>شهر</InputLabel>
+                  <InputLabel style={{ color: '#231F20' }}>
+                    {values?.city_name}
+                  </InputLabel>
                 </Box>
+                <Divider />
               </>
             )}
             {editable === true && (
@@ -199,8 +206,12 @@ function LocationMobile(props) {
             {editable === false && (
               <>
                 <Box sx={{ mt: 1, mb: 1 }}>
-                  <Text label={'کد پستی'} value={values?.postal_code} />
+                  <InputLabel style={{ color: '#A7A5A6' }}>کد پستی</InputLabel>
+                  <InputLabel style={{ color: '#231F20' }}>
+                    {values?.postal_code}
+                  </InputLabel>
                 </Box>
+                <Divider />
               </>
             )}
             {editable === true && (
@@ -224,16 +235,10 @@ function LocationMobile(props) {
             )}
             {editable === false && (
               <Box sx={{ mt: 1, mb: 1 }}>
-                <div style={{ display: 'inline-flex' }}>
-                  <InputLabel
-                    style={{ color: '#00AAB5', width: '28%' }}
-                  >{`آدرس: `}</InputLabel>
-                  <InputLabel
-                    style={{ color: '#335D8A', whiteSpace: 'break-spaces' }}
-                  >
-                    {values?.address}
-                  </InputLabel>
-                </div>{' '}
+                <InputLabel style={{ color: '#A7A5A6' }}>آدرس</InputLabel>
+                <InputLabel style={{ color: '#231F20' }}>
+                  {values?.address}
+                </InputLabel>
               </Box>
             )}
             {editable === true && (

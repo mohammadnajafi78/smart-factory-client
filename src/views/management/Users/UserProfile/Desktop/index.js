@@ -36,14 +36,19 @@ export default function ProfileDesktop(props) {
   const { logout } = useAuth();
   const { setScore } = useScore();
   const [profileImage, setProfileImage] = useState(null);
+  console.log('props', props);
 
   function getData() {
     setData(null);
-    httpService.get(`${API_BASE_URL}/api/users/get_user_profile/`).then(res => {
-      if (res.status === 200) {
-        setData(res.data);
-      }
-    });
+    httpService
+      .get(
+        `${API_BASE_URL}/api/management/user/get_user_profile/?user_id=${props?.location.state.user_id}`
+      )
+      .then(res => {
+        if (res.status === 200) {
+          setData(res.data);
+        }
+      });
   }
 
   useEffect(() => {
@@ -55,7 +60,7 @@ export default function ProfileDesktop(props) {
       const formData = new FormData();
       formData.append('profile_image', profileImage);
       httpService
-        .post(`${API_BASE_URL}/api/users/update_user/`, formData)
+        .post(`${API_BASE_URL}/api/management/users/update_user/`, formData)
         .then(res => {
           if (res.status === 200) {
             setProfileImage(null);
@@ -76,7 +81,7 @@ export default function ProfileDesktop(props) {
         // alignItems: 'flex-start',
         justifyContent: 'flex-start',
         width: '100%',
-        margin: '100px 40px 40px 170px',
+        // margin: '100px 40px 40px 170px',
         backgroundColor: 'white',
         overflow: 'auto',
         height: '83vh'
@@ -96,8 +101,8 @@ export default function ProfileDesktop(props) {
         >
           <Box sx={{ position: 'relative' }}>
             <Avatar
-              alt={data?.first_name}
-              src={data?.user_profile_image}
+              alt={data?.user?.first_name}
+              src={data?.user?.user_profile_image}
               sx={{
                 width: 160,
                 height: 160
@@ -133,9 +138,11 @@ export default function ProfileDesktop(props) {
           </Box>
 
           <InputLabelHeader style={{ color: '#00346D' }}>
-            {data?.first_name + ' ' + data?.last_name}
+            {data?.user?.first_name + ' ' + data?.user?.last_name}
           </InputLabelHeader>
-          <InputLabel style={{ color: '#00346D' }}>{data?.user_id}</InputLabel>
+          <InputLabel style={{ color: '#00346D' }}>
+            {data?.user?.user_id}
+          </InputLabel>
           <Box
             sx={{
               display: 'flex',
@@ -151,7 +158,7 @@ export default function ProfileDesktop(props) {
           >
             <Star style={{ width: '27px', height: '18px', color: '#A7A5A6' }} />
             <InputLabel style={{ color: '#4F4C4D', fontSize: '' }}>
-              {data?.user_club?.grade_info?.name}
+              {data?.user?.user_club?.grade_info?.name}
             </InputLabel>
           </Box>
           {editable === false && (

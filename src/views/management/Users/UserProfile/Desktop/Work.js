@@ -93,7 +93,10 @@ function WorkMobile(props) {
         if (values.address !== null && values.address !== '')
           data['address'] = values.address;
         httpService
-          .post(`${API_BASE_URL}/api/utils/companies/company_update/`, data)
+          .post(
+            `${API_BASE_URL}/api/management/utils/companies/company_update/`,
+            data
+          )
           .then(res => {
             if (res.status === 200) {
               props.getData();

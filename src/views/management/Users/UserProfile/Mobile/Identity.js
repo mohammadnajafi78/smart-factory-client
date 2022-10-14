@@ -13,7 +13,6 @@ import LinkIconButton from 'src/components/Mobile/Button/LinkIcon';
 import IdCard from 'src/assets/img/icons/id_card.svg';
 import MomentEn from 'src/utils/MomentEn';
 import * as Yup from 'yup';
-import Text from 'src/components/Mobile/Text';
 
 function IdentityInfoMobile(props) {
   const history = useHistory();
@@ -172,12 +171,11 @@ function IdentityInfoMobile(props) {
               )}
               {editable === false && (
                 <Box sx={{ mt: 1, mb: 1 }}>
-                  {/* <InputLabel style={{ color: '#A7A5A6' }}>ایمیل</InputLabel>
+                  <InputLabel style={{ color: '#A7A5A6' }}>ایمیل</InputLabel>
                   <InputLabel style={{ color: '#231F20' }}>
                     {values?.email}
                   </InputLabel>
-                  <Divider /> */}
-                  <Text label={'ایمیل'} value={values?.email} />
+                  <Divider />
                 </Box>
               )}
               {editable === true && (
@@ -204,13 +202,12 @@ function IdentityInfoMobile(props) {
               {editable === false && (
                 <>
                   <Box sx={{ mt: 1, mb: 1 }}>
-                    {/* <InputLabel style={{ color: '#A7A5A6' }}>کد ملی</InputLabel>
+                    <InputLabel style={{ color: '#A7A5A6' }}>کد ملی</InputLabel>
                     <InputLabel style={{ color: '#231F20' }}>
                       {values?.national_id}
-                    </InputLabel> */}
-                    <Text label={'کد ملی'} value={values?.national_id} />
+                    </InputLabel>
                   </Box>
-                  {/* <Divider /> */}
+                  <Divider />
                 </>
               )}
               {editable === true && (
@@ -237,11 +234,14 @@ function IdentityInfoMobile(props) {
               {editable === false && (
                 <>
                   <Box sx={{ mt: 1, mb: 1 }}>
-                    <Text
-                      label={'تاریخ تولد'}
-                      value={values.birth_date && MomentFa(values.birth_date)}
-                    />
+                    <InputLabel style={{ color: '#A7A5A6' }}>
+                      تاریخ تولد
+                    </InputLabel>
+                    <InputLabel style={{ color: '#231F20' }}>
+                      {values.birth_date && MomentFa(values.birth_date)}
+                    </InputLabel>
                   </Box>
+                  <Divider />
                 </>
               )}
               {editable === true && (
@@ -277,20 +277,14 @@ function IdentityInfoMobile(props) {
               {editable === false && (
                 <>
                   <Box sx={{ mt: 1, mb: 1 }}>
-                    <div style={{ display: 'inline-flex' }}>
-                      <InputLabel
-                        style={{ color: '#00AAB5', width: '28%' }}
-                      >{`فعالیت: `}</InputLabel>
-                      <InputLabel
-                        style={{ color: '#335D8A', whiteSpace: 'break-spaces' }}
-                      >
-                        {values?.user_type_list
-                          ?.map(option => option.translate)
-                          .toString()}
-                      </InputLabel>
-                    </div>
+                    <InputLabel style={{ color: '#A7A5A6' }}>فعالیت</InputLabel>
+                    <InputLabel style={{ color: '#231F20' }}>
+                      {values?.user_type_list
+                        ?.map(option => option.translate)
+                        .toString()}
+                    </InputLabel>
                   </Box>
-                  {/* <Divider /> */}
+                  <Divider />
                 </>
               )}
               {/* {editable === true && (
@@ -325,18 +319,18 @@ function IdentityInfoMobile(props) {
               {editable === false && (
                 <>
                   <Box sx={{ mt: 1, mb: 1 }}>
-                    <Text
-                      label={'تامین کننده'}
-                      value={
-                        values?.supplier_data
-                          ? values?.supplier_data.first_name +
-                            ' ' +
-                            values?.supplier_data.last_name
-                          : ''
-                      }
-                    />
+                    <InputLabel style={{ color: '#A7A5A6' }}>
+                      تامین کننده
+                    </InputLabel>
+                    <InputLabel style={{ color: '#231F20' }}>
+                      {values?.supplier_data
+                        ? values?.supplier_data.first_name +
+                          ' ' +
+                          values?.supplier_data.last_name
+                        : ''}
+                    </InputLabel>
                   </Box>
-                  {/* <Divider /> */}
+                  <Divider />
                 </>
               )}
               {values.supplier_data === null && editable === true && (
@@ -365,17 +359,16 @@ function IdentityInfoMobile(props) {
               {editable === false && (
                 <>
                   <Box sx={{ mt: 1, mb: 1 }}>
-                    <Text
-                      label={'معرف'}
-                      value={
-                        values?.introducer_data
-                          ? values?.introducer_data.first_name +
-                            ' ' +
-                            values?.introducer_data.last_name
-                          : ''
-                      }
-                    />
+                    <InputLabel style={{ color: '#A7A5A6' }}>معرف</InputLabel>
+                    <InputLabel style={{ color: '#231F20' }}>
+                      {values?.introducer_data
+                        ? values?.introducer_data.first_name +
+                          ' ' +
+                          values?.introducer_data.last_name
+                        : ''}
+                    </InputLabel>
                   </Box>
+                  <Divider />
                 </>
               )}
               {values.introducer_data === null && editable === true && (
@@ -402,12 +395,14 @@ function IdentityInfoMobile(props) {
               {editable === false && (
                 <>
                   <Box sx={{ mt: 1, mb: 1 }}>
-                    <Text
-                      label={'شناسه مدرک فعالیت'}
-                      value={values?.job_certificate_id}
-                    />
+                    <InputLabel style={{ color: '#A7A5A6' }}>
+                      شناسه مدرک فعالیت
+                    </InputLabel>
+                    <InputLabel style={{ color: '#231F20' }}>
+                      {values?.job_certificate_id}
+                    </InputLabel>
                   </Box>
-                  {/* <Divider /> */}
+                  <Divider />
                 </>
               )}
               {editable === true && (
@@ -439,24 +434,13 @@ function IdentityInfoMobile(props) {
               )}
               {editable === false && (
                 <>
-                  <Box
-                    sx={{
-                      mt: 1,
-                      mb: 1,
-                      padding: '16px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      alignItems: 'flex-start',
-                      borderRadius: '8px',
-                      background: '#DDF5F6'
-                    }}
-                  >
-                    <InputLabel style={{ color: '#00346D' }}>
+                  <Box sx={{ mt: 1, mb: 1 }}>
+                    <InputLabel style={{ color: '#A7A5A6' }}>
                       کارت ملی
                     </InputLabel>
-                    <img src={values?.id_card} width="100%" height="160px" />
+                    <img src={values?.id_card} width="320px" height="160px" />
                   </Box>
+                  <Divider />
                 </>
               )}
               {editable === true && (
@@ -496,25 +480,13 @@ function IdentityInfoMobile(props) {
 
               {editable === false && (
                 <>
-                  <Box
-                    sx={{
-                      mt: 1,
-                      mb: 1,
-                      padding: '16px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      alignItems: 'flex-start',
-                      borderRadius: '8px',
-                      background: '#DDF5F6'
-                    }}
-                  >
-                    <InputLabel style={{ color: '#00346D' }}>
+                  <Box sx={{ mt: 1, mb: 1 }}>
+                    <InputLabel style={{ color: '#A7A5A6' }}>
                       مدرک فعالیت
                     </InputLabel>
                     <img
                       src={values?.job_certificate}
-                      width="100%"
+                      width="320px"
                       height="160px"
                     />
                   </Box>

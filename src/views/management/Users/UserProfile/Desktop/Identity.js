@@ -20,6 +20,7 @@ function IdentityInfoMobile(props) {
   const data = props?.data;
   const editable = props?.editable;
   const [works, setWorks] = useState([]);
+
   // const [supplier, setSupplier] = useState(null);
   // const [introducer, setIntroducer] = useState(null);
 
@@ -37,20 +38,20 @@ function IdentityInfoMobile(props) {
     <>
       <Formik
         initialValues={{
-          name: data?.first_name,
-          family: data?.last_name,
+          name: data?.user?.first_name,
+          family: data?.user?.last_name,
           // mobile: data?.mobile,
-          email: data?.email,
-          national_id: data?.national_id,
-          birth_date: data?.birth_date,
-          user_type_list: data?.user_type_list,
-          supplier_data: data?.supplier_data,
-          introducer_data: data?.introducer_data,
-          job_certificate_id: data?.job_certificate_id,
-          job_certificate: data?.job_certificate,
-          id_card: data?.id_card,
-          introducer: data?.introducer_data?.user_id,
-          supplier: data?.supplier_data?.user_id
+          email: data?.user?.email,
+          national_id: data?.user?.national_id,
+          birth_date: data?.user?.birth_date,
+          user_type_list: data?.user?.user_type_list,
+          supplier_data: data?.user?.supplier_data,
+          introducer_data: data?.user?.introducer_data,
+          job_certificate_id: data?.user?.job_certificate_id,
+          job_certificate: data?.user?.job_certificate,
+          id_card: data?.user?.id_card,
+          introducer: data?.user?.introducer_data?.user_id,
+          supplier: data?.user?.supplier_data?.user_id
         }}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('عبارت وارد شده باید به فرمت ایمیل باشد')
@@ -87,7 +88,7 @@ function IdentityInfoMobile(props) {
 
           setSubmitting(true);
           httpService
-            .post(`${API_BASE_URL}/api/users/update_user/`, formData)
+            .post(`${API_BASE_URL}/api/management/user/update_user/`, formData)
             .then(res => {
               if (res.status === 200) {
                 // history.push('/location');
@@ -459,12 +460,21 @@ function IdentityInfoMobile(props) {
                     </Grid>
                     <Grid item xs={6}>
                       <Box sx={{ mt: 1, mb: 1 }}>
-                        <Text
-                          label={'فعالیت'}
-                          value={values?.user_type_list
-                            ?.map(option => option.translate)
-                            .toString()}
-                        />
+                        <div style={{ display: 'inline-flex' }}>
+                          <InputLabel
+                            style={{ color: '#00AAB5', width: '28%' }}
+                          >{`فعالیت: `}</InputLabel>
+                          <InputLabel
+                            style={{
+                              color: '#335D8A',
+                              whiteSpace: 'break-spaces'
+                            }}
+                          >
+                            {values?.user_type_list
+                              ?.map(option => option.translate)
+                              .toString()}
+                          </InputLabel>
+                        </div>
                       </Box>
                     </Grid>
                   </Grid>
@@ -528,7 +538,7 @@ function IdentityInfoMobile(props) {
                         </InputLabel>
                         <img
                           src={values?.id_card}
-                          width="320px"
+                          width="100%"
                           height="160px"
                         />
                       </Box>
@@ -552,7 +562,7 @@ function IdentityInfoMobile(props) {
                         </InputLabel>
                         <img
                           src={values?.job_certificate}
-                          width="320px"
+                          width="100%"
                           height="160px"
                         />
                       </Box>

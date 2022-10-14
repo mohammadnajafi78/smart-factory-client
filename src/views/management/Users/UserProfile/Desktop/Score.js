@@ -25,7 +25,9 @@ const CssTextField = styled(TextField)({
     textAlign: 'center'
   }
 });
-export default function Score({ data }) {
+export default function Score(props) {
+  const data = props?.data;
+
   const [openTransfer, setOpenTransfer] = useState(false);
   const [count, setCount] = useState(0);
   const [userId, setUserId] = useState();
@@ -37,14 +39,17 @@ export default function Score({ data }) {
       <Box sx={{ mt: 1, mb: 1 }}>
         <Text
           label={'امتیاز من'}
-          value={`${data?.user_club?.spent_credit} از ${data?.user_club?.total_credit}`}
+          value={`${data?.user?.user_club?.spent_credit} از ${data?.user?.user_club?.total_credit}`}
         />
       </Box>
 
       <Box sx={{ mt: 1, mb: 1 }}>
-        <Text label={'سطح من'} value={data?.user_club?.grade_info?.name} />
+        <Text
+          label={'سطح من'}
+          value={data?.user?.user_club?.grade_info?.name}
+        />
       </Box>
-
+      {/* 
       <Button
         color="primary"
         fullWidth
@@ -72,7 +77,7 @@ export default function Score({ data }) {
       >
         انتقال امتیاز
         <ArrowBack color="#00346D" height="13px" width="13px" />
-      </Button>
+      </Button> */}
 
       {/* <Drawer
         anchor={'bottom'}

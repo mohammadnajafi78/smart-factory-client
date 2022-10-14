@@ -451,17 +451,16 @@ const GiftBoxReceiverTable = props => {
     // console.log('rowsSelected', rowsSelected);
   }
   function customToolbarSelect(selectedRows, displayData, setSelectedRows) {
-    const userIds = [];
+    const giftIds = [];
     selectedRows.data.map((item, index) => {
-      userIds.push(data[item.index].user_info.user_id);
+      giftIds.push(data[item.index].id);
     });
     return (
       <IconButton
         onClick={() => {
           httpService
             .post(`${API_BASE_URL}/api/management/club/user_gifts/use_gift/`, {
-              user_ids: userIds,
-              gift_id: props.data.gift_id
+              gift_ids: giftIds
             })
             .then(res => {
               if (res.status === 200) {
@@ -473,7 +472,7 @@ const GiftBoxReceiverTable = props => {
       >
         <Plus style={{ color: 'white', cursor: 'pointer' }} />
         <InputLabel style={{ color: 'white', fontSize: '16px' }}>
-          انتقال جایزه
+          استفاده جایزه
         </InputLabel>
       </IconButton>
     );
@@ -508,9 +507,9 @@ const GiftBoxReceiverTable = props => {
       onColumnSortChange={(changedColumn, direction) =>
         onColumnSortChange(changedColumn, direction)
       }
-      customToolbarSelect={(selectedRows, displayData, setSelectedRows) =>
-        customToolbarSelect(selectedRows, displayData, setSelectedRows)
-      }
+      // customToolbarSelect={(selectedRows, displayData, setSelectedRows) =>
+      //   customToolbarSelect(selectedRows, displayData, setSelectedRows)
+      // }
       customToolbarSelectActive={true}
     />
   );

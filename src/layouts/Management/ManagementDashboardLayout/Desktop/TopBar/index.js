@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { AppBar, Toolbar } from '@mui/material';
@@ -36,11 +36,18 @@ const TopBar = ({
   ...rest
 }) => {
   const classes = useStyles();
+  const history = useHistory();
 
   return (
     <AppBar position="fixed" className={classes.root}>
       <Toolbar className={classes.toolbar}>
-        <img src={LogoBTS} width="50px" height={'20px'} />
+        <img
+          src={LogoBTS}
+          width="50px"
+          height={'20px'}
+          style={{ cursor: 'pointer' }}
+          onClick={() => history.push('/home')}
+        />
         <Profile />
       </Toolbar>
     </AppBar>
