@@ -36,7 +36,7 @@ deploy:
   only:
     - main
   tags:
-    - dev-server-deployment
+    - bts-dev-deploy
 
 
 Build-prod:
