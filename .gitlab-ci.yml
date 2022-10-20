@@ -18,7 +18,7 @@ Build:
   only:
     - main
   tags:
-    - build-runner2
+    - bts-runner1
 
 deploy:
   stage: deploy
@@ -55,7 +55,7 @@ Build-prod:
   only:
     - tags
   tags:
-    - build-runner2
+    - bts-runner1
 
 deploy-prod:
   stage: deploy-prod
