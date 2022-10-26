@@ -12,9 +12,9 @@ Build:
     - echo -e "$DEV_ENV" > .env
   script:
     - docker system  prune --filter="label!=keep-cache" -f
-    - docker build -t git.bts-co.com:5050/root/bts-front-app:dev .
-    # - docker build --pull -t git.bts-co.com:5050/root/bts-front-app:dev .
-    - docker push git.bts-co.com:5050/root/bts-front-app:dev
+    - docker build -t $REGISTRY/bts/bts-front-app:dev .
+    # - docker build --pull -t $REGISTRY/bts/bts-front-app:dev .
+    - docker push $REGISTRY/bts/bts-front-app:dev
   only:
     - main
   tags:
@@ -30,8 +30,8 @@ deploy:
     - docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD $REGISTRY
   script:
     - docker image prune -f
-    - docker pull git.bts-co.com:5050/root/bts-front-app:dev
-    - docker service update --force --image git.bts-co.com:5050/root/bts-front-app:dev bts_Ui-dev --with-registry-auth
+    - docker pull $REGISTRY/bts/bts-front-app:dev
+    - docker service update --force --image $REGISTRY/bts/bts-front-app:dev bts_Ui-dev --with-registry-auth
     
   only:
     - main
@@ -50,8 +50,8 @@ Build-prod:
     - echo -e "$PROD_ENV" > .env
   script:
     - docker system  prune --filter="label!=keep-cache" -f
-    - docker build --pull -t git.bts-co.com:5050/root/bts-front-app:${CI_COMMIT_TAG} .
-    - docker push git.bts-co.com:5050/root/bts-front-app:${CI_COMMIT_TAG}
+    - docker build --pull -t $REGISTRY/bts/bts-front-app:${CI_COMMIT_TAG} .
+    - docker push $REGISTRY/bts/bts-front-app:${CI_COMMIT_TAG}
   only:
     - tags
   tags:
@@ -67,8 +67,8 @@ deploy-prod:
     - docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD $REGISTRY
   script:
     - docker image prune -f
-    - docker pull git.bts-co.com:5050/root/bts-front-app:${CI_COMMIT_TAG}
-    - docker service update --force --image git.bts-co.com:5050/root/bts-front-app:${CI_COMMIT_TAG} bts_Ui-prod --with-registry-auth
+    - docker pull $REGISTRY/bts/bts-front-app:${CI_COMMIT_TAG}
+    - docker service update --force --image $REGISTRY/bts/bts-front-app:${CI_COMMIT_TAG} bts_Ui-prod --with-registry-auth
     
   only:
     - tags
