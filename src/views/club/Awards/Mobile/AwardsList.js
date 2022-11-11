@@ -52,12 +52,12 @@ export default function AwardsList() {
               <FilterButton
                 key={index}
                 onClick={() => {
-                  if (awards && awards.length > 0) {
-                    if (item.name === 'All') setAwards(all);
-                    else if (item.name !== 'Lottery' && item.name !== 'All')
-                      setAwards(all.filter(f => f.gift_type === item.id));
-                    else setAwards(all.filter(f => !f.gift_type));
-                  }
+                  // if (awards && awards.length > 0) {
+                  if (item.name === 'All') setAwards(all);
+                  else if (item.name !== 'Lottery' && item.name !== 'All')
+                    setAwards(all.filter(f => f.gift_type === item.id));
+                  else setAwards(all.filter(f => !f.gift_type));
+                  // }
                 }}
                 style={{ fontWeight: 300, fontSize: '12px', minWidth: 'auto' }}
               >

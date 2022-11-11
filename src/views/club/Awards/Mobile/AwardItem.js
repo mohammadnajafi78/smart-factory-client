@@ -95,7 +95,7 @@ export default function AwardItem({ data }) {
             }}
           >
             <InputLabel style={{ color: '#00AAB5' }}>
-              {data.gift_grade ? data.gift_grade : data.gift_detail.gift_grade}
+              {data.credit ? data.credit : data.gift_detail.credit}
             </InputLabel>
             <Star style={{ width: '27px', height: '18px' }} />
           </Box>
