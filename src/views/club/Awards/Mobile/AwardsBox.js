@@ -71,7 +71,12 @@ export default function AwardsBox() {
         }}
       >
         <InputLabel
-          style={{ fontSize: '18px', fontWeight: 500, paddingRight: '15px' }}
+          style={{
+            fontSize: '18px',
+            fontWeight: 500,
+            paddingRight: '15px',
+            color: 'white'
+          }}
         >
           جوایز
         </InputLabel>

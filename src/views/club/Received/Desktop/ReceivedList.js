@@ -63,7 +63,7 @@ export default function ReceivedListDesktop({
           flexDirection: 'column',
           // alignItems: 'center',
           padding: '12px 12px 0px',
-          gap: '20px',
+          gap: '10px',
           width: '100%',
           padding: '40px 30px 0px',
           paddingBottom: '40px'
@@ -83,7 +83,9 @@ export default function ReceivedListDesktop({
             gap: '10px',
             width: '100%',
             height: '57px',
-            zIndex: 100
+            zIndex: 100,
+            overflow: 'auto',
+            minHeight: '70px'
           }}
         >
           {filters &&
@@ -102,7 +104,8 @@ export default function ReceivedListDesktop({
                   }}
                   style={{
                     backgroundColor:
-                      filterSelected === item.id && 'rgba(0, 170, 181, 0.04)'
+                      filterSelected === item.id && 'rgba(0, 170, 181, 0.04)',
+                    minWidth: 'auto'
                   }}
                 >
                   {item.translate}

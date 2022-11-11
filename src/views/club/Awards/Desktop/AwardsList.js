@@ -39,7 +39,9 @@ export default function AwardsList({ selected, setSelected }) {
           gap: '10px',
           width: '100%',
           height: '57px',
-          zIndex: 100
+          zIndex: 100,
+          overflow: 'auto',
+          minHeight: '80px'
         }}
       >
         {filters &&
@@ -58,7 +60,8 @@ export default function AwardsList({ selected, setSelected }) {
                 }}
                 style={{
                   backgroundColor:
-                    filterSelected === item.name && 'rgba(0, 170, 181, 0.04)'
+                    filterSelected === item.name && 'rgba(0, 170, 181, 0.04)',
+                  minWidth: 'auto'
                 }}
               >
                 {item.translate}

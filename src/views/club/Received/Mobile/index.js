@@ -70,7 +70,9 @@ export default function ReceivedMobile() {
           width: '100%',
           height: '57px',
           backgroundColor: '#E5E5E5',
-          zIndex: 100
+          zIndex: 100,
+          overflow: 'auto',
+          minHeight: '70px'
         }}
       >
         {filters &&
@@ -87,7 +89,7 @@ export default function ReceivedMobile() {
                     );
                   else setReceived(all.filter(f => !f?.gift_data?.gift_type));
                 }}
-                style={{ fontWeight: 300, fontSize: '12px' }}
+                style={{ fontWeight: 300, fontSize: '12px', minWidth: 'auto' }}
               >
                 {item.translate}
               </FilterButton>

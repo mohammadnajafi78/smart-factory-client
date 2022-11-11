@@ -38,10 +38,12 @@ export default function AwardsList() {
           position: 'sticky',
           top: '58px',
           // width: '385px',
-          width: '100%',
+          width: '96%',
           height: '57px',
           backgroundColor: '#E5E5E5',
-          zIndex: 100
+          zIndex: 100,
+          overflow: 'auto',
+          minHeight: '70px'
         }}
       >
         {filters &&
@@ -57,7 +59,7 @@ export default function AwardsList() {
                     else setAwards(all.filter(f => !f.gift_type));
                   }
                 }}
-                style={{ fontWeight: 300, fontSize: '12px' }}
+                style={{ fontWeight: 300, fontSize: '12px', minWidth: 'auto' }}
               >
                 {item.translate}
               </FilterButton>
