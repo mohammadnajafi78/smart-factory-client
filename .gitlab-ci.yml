@@ -73,6 +73,6 @@ deploy-prod:
   only:
     - tags
   tags:
-    - prod-server-deployment
+    - bts-prod-deploy
 
 
