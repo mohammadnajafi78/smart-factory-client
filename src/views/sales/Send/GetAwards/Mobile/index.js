@@ -138,7 +138,7 @@ export default function GetAwardMobile(props) {
                   }}
                 >
                   <InputLabel style={{ color: '#00AAB5' }}>
-                    {data.credit}
+                    {data.gift_grade}
                   </InputLabel>
                   <Star style={{ width: '27px', height: '18px' }} />
                 </Box>

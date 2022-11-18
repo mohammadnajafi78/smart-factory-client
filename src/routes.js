@@ -9,6 +9,7 @@ import ClubDashboardLayoutBackNoBottom from 'src/layouts/Club/ClubDashboardLayou
 import ManagementDashboardLayout from 'src/layouts/Management/ManagementDashboardLayout';
 import HomeDashboardLayout from 'src/layouts/Home';
 import FormsDashboardLayout from './layouts/Forms';
+import SaleDashboardLayout from './layouts/Sales/SalesDashboardLayout';
 
 export const renderRoutes = (routes = []) => (
   <Suspense fallback={<LoadingScreen />}>
@@ -254,7 +255,45 @@ const routes = [
         )
       },
       {
-        component: () => <Redirect to="/club/awards" />
+        component: () => <Redirect to="/club/competition" />
+      }
+    ]
+  },
+  {
+    path: '/sale',
+    // guard: GuestGuard,
+    guard: AuthGuard,
+    layout: SaleDashboardLayout,
+    routes: [
+      {
+        exact: true,
+        path: '/sale/products',
+        component: lazy(() => import('src/views/sales/Products'))
+      },
+      {
+        exact: true,
+        path: '/sale/send',
+        component: lazy(() => import('src/views/sales/Send'))
+      },
+      {
+        exact: true,
+        path: '/sale/received',
+        component: lazy(() => import('src/views/sales/Received'))
+      },
+      {
+        exact: true,
+        path: '/sale/tripartite',
+        component: lazy(() => import('src/views/sales/Tripartite'))
+      },
+      // {
+      //   exact: true,
+      //   path: '/club/getAwards',
+      //   layout: ClubDashboardLayoutBack,
+      //   component: lazy(() => import('src/views/club/Awards/GetAwards'))
+      // },
+
+      {
+        component: () => <Redirect to="/sale/products" />
       }
     ]
   },

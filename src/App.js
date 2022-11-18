@@ -28,6 +28,7 @@ import rtlPlugin from 'stylis-plugin-rtl';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { ScoreProvider } from './contexts/ScoreContext';
+import { SaleSearchProvider } from './contexts/SalesSearchContext';
 
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 const history = createBrowserHistory();
@@ -60,12 +61,14 @@ const App = () => {
               <BrowserRouter history={history}>
                 <AuthProvider>
                   <ScoreProvider>
-                    <GlobalStyles />
-                    <ScrollReset />
-                    {/* <GoogleAnalytics /> */}
-                    {/* <CookiesNotification /> */}
-                    {/* <SettingsNotification /> */}
-                    {renderRoutes(routes)}
+                    <SaleSearchProvider>
+                      <GlobalStyles />
+                      <ScrollReset />
+                      {/* <GoogleAnalytics /> */}
+                      {/* <CookiesNotification /> */}
+                      {/* <SettingsNotification /> */}
+                      {renderRoutes(routes)}
+                    </SaleSearchProvider>
                   </ScoreProvider>
                 </AuthProvider>
               </BrowserRouter>
