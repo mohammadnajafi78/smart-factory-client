@@ -15,8 +15,10 @@ Build:
     - docker build -t $REGISTRY/bts/bts-front-app:dev .
     # - docker build --pull -t $REGISTRY/bts/bts-front-app:dev .
     - docker push $REGISTRY/bts/bts-front-app:dev
-  only:
-    - main
+  
+  rules:
+      - if: $CI_COMMIT_TAG =~ /^v?[0-9]+[.][0-9]+([.][0-9]+)-alpha[0-9]+?$/
+      
   tags:
     - bts-runner1
 
@@ -33,8 +35,8 @@ deploy:
     - docker pull $REGISTRY/bts/bts-front-app:dev
     - docker service update --force --image $REGISTRY/bts/bts-front-app:dev bts_Ui-dev --with-registry-auth
     
-  only:
-    - main
+  rules:
+      - if: $CI_COMMIT_TAG =~ /^v?[0-9]+[.][0-9]+([.][0-9]+)-alpha[0-9]+?$/
   tags:
     - bts-dev-deploy
 
