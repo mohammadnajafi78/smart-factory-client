@@ -116,6 +116,7 @@
     "redux-thunk": "^2.3.0",
     "stylis": "^4.1.0",
     "stylis-plugin-rtl": "^2.1.1",
+    "swiper": "^8.4.6",
     "uuid": "^7.0.3",
     "webpack": "^5.65.0",
     "yup": "^0.28.5"

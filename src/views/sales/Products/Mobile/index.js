@@ -13,17 +13,16 @@ import useSaleSearch from 'src/hooks/useSaleSearch';
 export default function ProductsMobile() {
   const [openCategory, setOpenCategory] = useState();
   const [category, setCategory] = useState();
-  const [products, setProducts] = useState(null);
-  const { result, searched } = useSaleSearch();
+  // const [products, setProducts] = useState(null);
+  const { products, searched, getProducts } = useSaleSearch();
 
   useEffect(() => {
-    httpService
-      .get(`${API_BASE_URL}/api/products/product/get_products?ref=shop`)
-      .then(res => {
-        if (res.status === 200) {
-          setProducts(res.data);
-        }
-      });
+    // httpService.get(`${API_BASE_URL}/api/products/type/?ref=shop`).then(res => {
+    //   if (res.status === 200) {
+    //     setProducts(res.data);
+    //   }
+    // });
+    getProducts();
     httpService
       .get(`${API_BASE_URL}/api/products/category/get_category_list?ref=shop`)
       .then(res => {
@@ -59,10 +58,16 @@ export default function ProductsMobile() {
         </CategoryButton>
       </Box>
 
-      {(products || searched) && (
+      {/* {(products || searched) && (
         <ProductsList
           products={searched ? result : products}
           setProducts={setProducts}
+        />
+      )} */}
+      {products && (
+        <ProductsList
+          products={searched ? result : products}
+          // setProducts={setProducts}
         />
       )}
 
@@ -71,7 +76,7 @@ export default function ProductsMobile() {
           openCategory={openCategory}
           setOpenCategory={setOpenCategory}
           data={category}
-          setProducts={setProducts}
+          // setProducts={setProducts}
         />
       )}
       {/* {subCategory && (

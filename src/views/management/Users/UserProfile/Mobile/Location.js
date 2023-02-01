@@ -4,11 +4,11 @@ import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 import Autocomplete from '@mui/material/Autocomplete';
 import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
-import * as Yup from 'yup';
 
 function LocationMobile(props) {
   const data = props?.data;

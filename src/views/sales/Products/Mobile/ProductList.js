@@ -17,6 +17,7 @@ export default function ProductsList({ products }) {
         }}
       >
         {products &&
+          products.length > 0 &&
           products.map((item, index) => {
             return <ProductItem data={item} key={index} />;
           })}

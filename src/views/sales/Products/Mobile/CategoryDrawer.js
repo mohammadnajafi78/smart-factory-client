@@ -7,6 +7,7 @@ import { API_BASE_URL } from 'src/utils/urls';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import DoubleBox from 'src/components/Mobile/DoubleBox';
 import { ChevronLeft, Star } from 'react-feather';
+import useSaleSearch from 'src/hooks/useSaleSearch';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -20,8 +21,7 @@ const useStyles = makeStyles(theme => ({
 export default function CategoryDrawer({
   openCategory,
   setOpenCategory,
-  data,
-  setProducts
+  data
 }) {
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [selected, setSelected] = useState(null);
@@ -29,10 +29,12 @@ export default function CategoryDrawer({
   const [showSubCategory, setShowSubCategory] = useState(false);
   const [subCategorySelected, setSubCategorySelected] = useState(null);
   const classes = useStyles();
+  const { setFilterProducts, getProducts } = useSaleSearch();
 
   useEffect(() => {
     if (showSubCategory === false) {
-      const counts = data.map(item => item.category.count);
+      console.log('data', data);
+      const counts = data.map(item => item.count);
       let sum = (prev, cur) => {
         return prev + cur;
       };
@@ -107,14 +109,14 @@ export default function CategoryDrawer({
                     }}
                   >
                     <InputLabel style={{ color: '#335D8A' }}>
-                      {item?.category?.translate_detail?.item_fa}
+                      {item?.translate_detail?.item_fa}
                     </InputLabel>
                     <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
                       <DoubleBox
                         isSelected={index === selectedIndex ? true : false}
                       >
                         <InputLabel style={{ color: '#335D8A' }}>
-                          {item?.category?.count}
+                          {item?.count}
                         </InputLabel>
                         <InputLabel style={{ color: '#335D8A' }}>
                           کالا
@@ -227,35 +229,11 @@ export default function CategoryDrawer({
             }}
             onClick={() => {
               if (subCategorySelected) {
-                httpService
-                  .get(
-                    `${API_BASE_URL}/api/products/type?ref=shop&subcat_id=${subCategorySelected.id}`
-                  )
-                  .then(res => {
-                    if (res.status === 200) {
-                      setProducts(res.data);
-                    }
-                  });
+                setFilterProducts([], [subCategorySelected.id]);
               } else if (selected) {
-                httpService
-                  .get(
-                    `${API_BASE_URL}/api/products/type?ref=shop&cat_id=${selected.category.id}`
-                  )
-                  .then(res => {
-                    if (res.status === 200) {
-                      setProducts(res.data);
-                    }
-                  });
+                setFilterProducts([selected.id], []);
               } else {
-                httpService
-                  .get(
-                    `${API_BASE_URL}/api/products/product/get_products?ref=shop`
-                  )
-                  .then(res => {
-                    if (res.status === 200) {
-                      setProducts(res.data);
-                    }
-                  });
+                getProducts();
               }
               setOpenCategory(false);
               setSelected(null);
@@ -270,7 +248,7 @@ export default function CategoryDrawer({
                 {subCategorySelected
                   ? subCategorySelected?.count
                   : selected
-                  ? selected.category.count
+                  ? selected.count
                   : categoryCount}
               </InputLabel>
               <InputLabel style={{ color: '#335D8A' }}>کالا</InputLabel>

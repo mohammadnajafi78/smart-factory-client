@@ -425,7 +425,8 @@ const Table = props => {
 
   const tableOptions = {
     filter: true,
-    selectableRows: true,
+    selectableRows:
+      props.selectableRows !== undefined ? props.selectableRows : true,
     fixedHeader: true,
     fixedSelectColumn: true,
     tableBodyHeight: '56vh',

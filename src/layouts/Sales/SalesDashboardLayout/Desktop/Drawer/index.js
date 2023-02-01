@@ -8,50 +8,50 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { Box } from '@mui/material';
-import Competition from 'src/assets/img/icons/competition.svg';
-import CompetitionSelected from 'src/assets/img/icons/competition-selected.svg';
-import Present from 'src/assets/img/icons/present.svg';
-import PresentsSelected from 'src/assets/img/icons/presents-selected.svg';
-import Comment from 'src/assets/img/icons/comment.svg';
-import CommentSelected from 'src/assets/img/icons/comment-selected.svg';
-import Received from 'src/assets/img/icons/received.svg';
-import ReceivedSelected from 'src/assets/img/icons/received-selected.svg';
+import SendSale from 'src/assets/img/sendSales.svg';
+import SendSaleSelected from 'src/assets/img/sendSaleSelected.svg';
+import Products from 'src/assets/img/products.svg';
+import ProductsSelected from 'src/assets/img/productSelected.svg';
+import ReceivedSale from 'src/assets/img/receivedSale.svg';
+import ReceivedSaleSelected from 'src/assets/img/receivedSaleSelected.svg';
+import Tripartite from 'src/assets/img/tripartiteSale.svg';
+import TripartiteSelected from 'src/assets/img/tripartiteSelected.svg';
 import Vector from 'src/assets/img/icons/Vector.svg';
 import { useHistory } from 'react-router-dom';
 
 export default function DrawerComp(props) {
   const history = useHistory();
   let data = [
-    { name: 'competition', title: 'مسابقه', path: '/club/competition' },
-    { name: 'awards', title: 'جوایز', path: '/club/awards' },
-    { name: 'comments', title: 'نظرات', path: '/club/comments' },
-    { name: 'received', title: 'دریافتی ها', path: '/club/received' }
+    { name: 'send', title: 'ارسالی', path: '/sale/send' },
+    { name: 'products', title: 'محصولات', path: '/sale/products' },
+    { name: 'received', title: 'دریافتی', path: '/sale/received' },
+    { name: 'tripartite', title: 'سه جانبه', path: '/sale/tripartite' }
   ];
   let path = history.location.pathname.split('/')[2];
   const [selected, setSelected] = useState(
-    ['competition', 'awards', 'comments', 'received'].includes(path)
+    ['send', 'products', 'received', 'tripartite'].includes(path)
       ? path
-      : path === 'receivedItem'
-      ? 'received'
-      : path === 'newComment'
-      ? 'comments'
-      : path === 'newCompetition' || path === 'competitionDetails'
-      ? 'competition'
-      : 'awards'
+      : // : path === 'receivedItem'
+        // ? 'received'
+        // : path === 'newComment'
+        // ? 'comments'
+        // : path === 'newCompetition' || path === 'competitionDetails'
+        // ? 'competition'
+        'products'
   );
 
   useEffect(() => {
     path = history.location.pathname.split('/')[2];
     setSelected(
-      ['competition', 'awards', 'comments', 'received'].includes(path)
+      ['send', 'products', 'received', 'tripartite'].includes(path)
         ? path
-        : path === 'receivedItem'
-        ? 'received'
-        : path === 'newComment'
-        ? 'comments'
-        : path === 'newCompetition' || path === 'competitionDetails'
-        ? 'competition'
-        : 'awards'
+        : // : path === 'receivedItem'
+          // ? 'received'
+          // : path === 'newComment'
+          // ? 'comments'
+          // : path === 'newCompetition' || path === 'competitionDetails'
+          // ? 'competition'
+          'products'
     );
   }, [props]);
 
@@ -109,7 +109,7 @@ export default function DrawerComp(props) {
                           alignItems: 'center'
                         }}
                       >
-                        <img src={Competition} width="44px" height={'32px'} />
+                        <img src={SendSale} width="44px" height={'32px'} />
                       </Box>
                     ) : (
                       <Box
@@ -125,7 +125,7 @@ export default function DrawerComp(props) {
                         }}
                       >
                         <img
-                          src={CompetitionSelected}
+                          src={SendSaleSelected}
                           width="44px"
                           height={'32px'}
                         />
@@ -142,7 +142,7 @@ export default function DrawerComp(props) {
                           alignItems: 'center'
                         }}
                       >
-                        <img src={Present} width="44px" height={'32px'} />
+                        <img src={Products} width="44px" height={'32px'} />
                       </Box>
                     ) : (
                       <Box
@@ -158,7 +158,7 @@ export default function DrawerComp(props) {
                         }}
                       >
                         <img
-                          src={PresentsSelected}
+                          src={ProductsSelected}
                           width="44px"
                           height={'32px'}
                         />
@@ -175,7 +175,7 @@ export default function DrawerComp(props) {
                           alignItems: 'center'
                         }}
                       >
-                        <img src={Comment} width="44px" height={'32px'} />
+                        <img src={ReceivedSale} width="44px" height={'32px'} />
                       </Box>
                     ) : (
                       <Box
@@ -191,7 +191,7 @@ export default function DrawerComp(props) {
                         }}
                       >
                         <img
-                          src={CommentSelected}
+                          src={ReceivedSaleSelected}
                           width="44px"
                           height={'32px'}
                         />
@@ -208,7 +208,7 @@ export default function DrawerComp(props) {
                           alignItems: 'center'
                         }}
                       >
-                        <img src={Received} width="44px" height={'32px'} />
+                        <img src={Tripartite} width="44px" height={'32px'} />
                       </Box>
                     ) : (
                       <Box
@@ -225,7 +225,7 @@ export default function DrawerComp(props) {
                         }}
                       >
                         <img
-                          src={ReceivedSelected}
+                          src={TripartiteSelected}
                           width="44px"
                           height={'32px'}
                         />

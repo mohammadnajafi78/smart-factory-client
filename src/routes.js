@@ -10,6 +10,8 @@ import ManagementDashboardLayout from 'src/layouts/Management/ManagementDashboar
 import HomeDashboardLayout from 'src/layouts/Home';
 import FormsDashboardLayout from './layouts/Forms';
 import SaleDashboardLayout from './layouts/Sales/SalesDashboardLayout';
+import SalesDashboardLayoutBack from './layouts/Sales/SalesDashboardLayoutBack';
+import SalesDashboardLayoutForm from './layouts/Sales/SalesDashboardLayoutForm';
 
 export const renderRoutes = (routes = []) => (
   <Suspense fallback={<LoadingScreen />}>
@@ -258,6 +260,32 @@ const routes = [
         component: () => <Redirect to="/club/competition" />
       }
     ]
+  },
+  {
+    exact: true,
+    path: '/sale/products/detail',
+    layout: SalesDashboardLayoutBack,
+    component: lazy(() => import('src/views/sales/Products/ProductDetail'))
+  },
+  {
+    exact: true,
+    path: '/sale/received/detail',
+    layout: SalesDashboardLayoutBack,
+    component: lazy(() => import('src/views/sales/Received/ReceivedDetail'))
+  },
+  {
+    exact: false,
+    path: '/sale/received/confirm',
+    layout: SalesDashboardLayoutForm,
+    component: lazy(() =>
+      import('src/views/sales/Received/ReceivedDetail/Mobile/AcceptConfirm')
+    )
+  },
+  {
+    exact: false,
+    path: '/sale/products/order',
+    layout: SalesDashboardLayoutForm,
+    component: lazy(() => import('src/views/sales/Products/Order'))
   },
   {
     path: '/sale',

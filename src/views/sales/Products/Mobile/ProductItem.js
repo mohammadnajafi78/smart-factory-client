@@ -49,8 +49,8 @@ export default function ProductItem({ data }) {
           }}
         >
           <img
-            src={data?.type_detail?.images[0]?.file}
-            alt={data?.name}
+            src={data?.images[0]?.url}
+            // alt={}
             style={{ width: '44px', height: '60px' }}
           />
         </Box>
@@ -87,7 +87,7 @@ export default function ProductItem({ data }) {
                 lineHeight: '17px'
               }}
             >
-              {data?.type_detail?.name_translate?.item_fa}
+              {data?.name_translate?.item_fa}
             </InputLabel>
           </Box>
           <Box
@@ -169,7 +169,7 @@ export default function ProductItem({ data }) {
               lineHeight: '17px'
             }}
           >
-            {`${data?.type_detail?.count} اندازه`}
+            {`${data?.count} اندازه`}
           </InputLabel>
         )}
         <Box
@@ -177,6 +177,12 @@ export default function ProductItem({ data }) {
             display: 'inline-flex',
             flexDirection: 'row',
             alignItems: 'center'
+          }}
+          onClick={() => {
+            history.push({
+              pathname: '/sale/products/detail',
+              state: data
+            });
           }}
         >
           <InputLabel

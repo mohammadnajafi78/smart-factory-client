@@ -1,28 +1,42 @@
+import { result } from 'lodash';
 import React, { createContext, useEffect, useReducer } from 'react';
 import { useHistory } from 'react-router-dom';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 
 const initialSaleSearchState = {
-  result: null,
-  searched: false
+  products: null,
+  searched: false,
+  filtered: false
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
-    // case 'SET_SALE_SEARCH': {
-    //   const { search } = action.payload;
-    //   return {
-    //     ...state,
-    //     search
-    //   };
-    // }
     case 'SET_SALE_SEARCH_RESULT': {
-      const { result, searched } = action.payload;
+      const { products, searched, filtered } = action.payload;
       return {
         ...state,
-        result,
-        searched
+        products,
+        searched,
+        filtered
+      };
+    }
+    case 'GET_PRODUCTS': {
+      const { products, searched, filtered } = action.payload;
+      return {
+        ...state,
+        products,
+        searched,
+        filtered
+      };
+    }
+    case 'SET_FILTER_PRODUCTS': {
+      const { products, searched, filtered } = action.payload;
+      return {
+        ...state,
+        products,
+        searched,
+        filtered
       };
     }
 
@@ -35,14 +49,16 @@ const reducer = (state, action) => {
 const SaleSearchContext = createContext({
   ...initialSaleSearchState,
   // setSaleSearch: () => Promise.resolve(),
-  setSaleSearchResult: () => {}
+  setSaleSearchResult: () => {},
+  getProducts: () => {},
+  setFilterProducts: () => {}
 });
 
 export const SaleSearchProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialSaleSearchState);
 
   // useEffect(() => {
-  //   if (localStorage.getItem('user')) {
+  //   if (localStorage/api/products/type/get_product/Item('user')) {
   //     // httpService.get(`${API_BASE_URL}/api/users/refresh_user`).then(result => {
   //     //   if (result.status === 200) {
   //     //     localStorage.setItem('user', JSON.stringify(result.data));
@@ -63,15 +79,15 @@ export const SaleSearchProvider = ({ children }) => {
   const setSaleSearchResult = search => {
     if (search.length > 0) {
       httpService
-        .get(
-          `${API_BASE_URL}/api/products/product/get_products?ref=shop&search=${search}`
+        .post(
+          `${API_BASE_URL}/api/products/type/get_product/?ref=shop&search=${search}`
         )
         .then(result => {
           if (result.status === 200) {
             dispatch({
               type: 'SET_SALE_SEARCH_RESULT',
               payload: {
-                result: result.data,
+                products: result.data,
                 searched: true
               }
             });
@@ -79,20 +95,73 @@ export const SaleSearchProvider = ({ children }) => {
             dispatch({
               type: 'SET_SALE_SEARCH_RESULT',
               payload: {
-                result: null,
+                products: null,
                 searched: true
               }
             });
           }
         });
     } else {
-      dispatch({
-        type: 'SET_SALE_SEARCH_RESULT',
-        payload: {
-          result: null,
-          searched: false
+      getProducts();
+    }
+  };
+
+  const getProducts = () => {
+    httpService
+      .post(`${API_BASE_URL}/api/products/type/get_product/?ref=shop`)
+      .then(result => {
+        if (result.status === 200) {
+          dispatch({
+            type: 'GET_PRODUCTS',
+            payload: {
+              products: result.data,
+              searched: false,
+              filtered: false
+            }
+          });
+        } else {
+          dispatch({
+            type: 'GET_PRODUCTS',
+            payload: {
+              products: null,
+              searched: false,
+              filtered: false
+            }
+          });
         }
       });
+  };
+
+  const setFilterProducts = (cat, subCat) => {
+    if (cat.length > 0 || subCat.length > 0) {
+      httpService
+        .post(`${API_BASE_URL}/api/products/type/get_product/?ref=shop`, {
+          cat_id: cat,
+          subcat_id: subCat
+        })
+        .then(result => {
+          if (result.status === 200) {
+            dispatch({
+              type: 'SET_FILTER_PRODUCTS',
+              payload: {
+                products: result.data,
+                searched: false,
+                filtered: true
+              }
+            });
+          } else {
+            dispatch({
+              type: 'SET_SALE_SEARCH_RESULT',
+              payload: {
+                products: null,
+                searched: false,
+                filtered: true
+              }
+            });
+          }
+        });
+    } else {
+      getProducts();
     }
   };
 
@@ -114,7 +183,9 @@ export const SaleSearchProvider = ({ children }) => {
       value={{
         ...state,
         // setSaleSearch,
-        setSaleSearchResult
+        setSaleSearchResult,
+        getProducts,
+        setFilterProducts
       }}
     >
       {children}

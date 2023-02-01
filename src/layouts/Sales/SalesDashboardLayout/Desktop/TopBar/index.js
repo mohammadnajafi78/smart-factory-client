@@ -18,6 +18,7 @@ import Score from './Score';
 import Message from './Message';
 import Profile from './Profile';
 import { Close } from '@mui/icons-material';
+import Search from '../../Mobile/TopBar/Search';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -110,7 +111,8 @@ const TopBar = ({
           </IconButton>
         )} */}
 
-        <Score />
+        {/* <Score /> */}
+        <Search />
         <Box sx={{ display: 'flex', gap: '10px' }}>
           <Message />
           <Profile />

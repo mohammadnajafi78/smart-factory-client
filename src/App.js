@@ -29,6 +29,7 @@ import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { ScoreProvider } from './contexts/ScoreContext';
 import { SaleSearchProvider } from './contexts/SalesSearchContext';
+import { SaleOrderProvider } from './contexts/SaleOrderContext';
 
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 const history = createBrowserHistory();
@@ -62,12 +63,14 @@ const App = () => {
                 <AuthProvider>
                   <ScoreProvider>
                     <SaleSearchProvider>
-                      <GlobalStyles />
-                      <ScrollReset />
-                      {/* <GoogleAnalytics /> */}
-                      {/* <CookiesNotification /> */}
-                      {/* <SettingsNotification /> */}
-                      {renderRoutes(routes)}
+                      <SaleOrderProvider>
+                        <GlobalStyles />
+                        <ScrollReset />
+                        {/* <GoogleAnalytics /> */}
+                        {/* <CookiesNotification /> */}
+                        {/* <SettingsNotification /> */}
+                        {renderRoutes(routes)}
+                      </SaleOrderProvider>
                     </SaleSearchProvider>
                   </ScoreProvider>
                 </AuthProvider>
