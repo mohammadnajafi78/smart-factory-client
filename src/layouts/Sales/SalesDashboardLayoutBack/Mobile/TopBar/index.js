@@ -54,7 +54,7 @@ const TopBar = ({ className, onMobileNavOpen, location, ...rest }) => {
   const list = [
     { key: 'products', path: '/sale/products', name: 'همه محصولات' },
     { key: 'received', path: '/sale/received', name: 'لیست دریافتی ها' },
-    { key: 'sale', path: '/sale/send', name: 'لیست ارسالی ها' },
+    { key: 'send', path: '/sale/send', name: 'لیست ارسالی ها' },
     { key: 'tripartite', path: '/sale/tripartite', name: 'سه جانبه' }
   ];
   useEffect(() => {

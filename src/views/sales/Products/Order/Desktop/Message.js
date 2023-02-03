@@ -70,7 +70,7 @@ export default function Message(props) {
                   marginTop: '30px'
                 }}
               >
-                {`${order.total_price} ریال`}
+                {`${order.final_price} ریال`}
               </InputLabelHeader>
               <Box sx={{ width: '100%', mt: '40px' }}>
                 <Box

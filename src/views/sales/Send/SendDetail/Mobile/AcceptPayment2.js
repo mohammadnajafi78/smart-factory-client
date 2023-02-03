@@ -208,39 +208,41 @@ export default function AcceptPayment(props) {
                               {item?.payment_state.label}
                             </InputLabel>
                           </Box>
-                          <Box
-                            sx={{
-                              display: 'inline-flex',
-                              color: '#335D8A'
-                            }}
-                            onClick={() => {
-                              httpService
-                                .get(
-                                  `${API_BASE_URL}/api/orders/payment/get_payment?payment_num=${item.payment_num}`
-                                )
-                                .then(res => {
-                                  if (res.status === 200) {
-                                    history.push({
-                                      pathname: '/sale/received/payment/add',
-                                      state: item
-                                    });
-                                  }
-                                });
-                            }}
-                          >
-                            <InputLabel
-                              style={{
-                                color: '#335D8A',
-                                padding: 0,
-                                fontSize: '12px'
+                          {item.payment_state.name === 'REJECTED' && (
+                            <Box
+                              sx={{
+                                display: 'inline-flex',
+                                color: '#335D8A'
+                              }}
+                              onClick={() => {
+                                httpService
+                                  .get(
+                                    `${API_BASE_URL}/api/orders/payment/get_payment?payment_num=${item.payment_num}`
+                                  )
+                                  .then(res => {
+                                    if (res.status === 200) {
+                                      history.push({
+                                        pathname: '/sale/send/payment/edit2',
+                                        state: item
+                                      });
+                                    }
+                                  });
                               }}
                             >
-                              مشاهده و تایید
-                            </InputLabel>
-                            <ChevronLeft
-                              style={{ marginTop: '2px', color: '#335D8A' }}
-                            />
-                          </Box>
+                              <InputLabel
+                                style={{
+                                  color: '#335D8A',
+                                  padding: 0,
+                                  fontSize: '12px'
+                                }}
+                              >
+                                ویرایش
+                              </InputLabel>
+                              <ChevronLeft
+                                style={{ marginTop: '2px', color: '#335D8A' }}
+                              />
+                            </Box>
+                          )}
                         </Box>
                       </Box>
                     );
@@ -277,15 +279,17 @@ export default function AcceptPayment(props) {
                       'order_num',
                       props.location.state.order_num
                     );
+                    formData.append('order_action', 'Approve');
+                    formData.append('state', 'Payment');
 
                     httpService
                       .post(
-                        `${API_BASE_URL}/api/orders/payment/update_order_payment/`,
+                        `${API_BASE_URL}/api/orders/update_order_state/`,
                         formData
                       )
                       .then(res => {
                         if (res.status === 200) {
-                          history.push('/sale/received');
+                          history.push('/sale/send');
                         }
                       });
                   }}

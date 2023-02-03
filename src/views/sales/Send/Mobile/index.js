@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import useSaleSearch from 'src/hooks/useSaleSearch';
-import SaleList from './SaleList';
+import SendList from './SendList';
 
 export default function ProductsMobile() {
   const [openCategory, setOpenCategory] = useState();
@@ -21,7 +21,7 @@ export default function ProductsMobile() {
 
   return (
     <Box sx={{ padding: '12px', display: 'flex', flexDirection: 'column' }}>
-      {products && <SaleList products={products} setProducts={setProducts} />}
+      {products && <SendList products={products} setProducts={setProducts} />}
     </Box>
   );
 }

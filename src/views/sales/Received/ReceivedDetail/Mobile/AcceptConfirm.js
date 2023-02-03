@@ -15,6 +15,7 @@ export default function AcceptConfirm(props) {
   const [file, setFile] = useState();
   const [comment, setComment] = useState(null);
   const history = useHistory();
+  console.log('order_num', props);
 
   return (
     <>
@@ -55,7 +56,7 @@ export default function AcceptConfirm(props) {
                   gap: '30px',
                   width: '100%',
                   height: '150px',
-                  border: '2px dashed #99DDE1',
+                  border: '2px dashed #66CCD3',
                   borderRadius: '4px',
                   color: '#4F4C4D',
                   fontFamily: 'IRANSans',
@@ -105,6 +106,7 @@ export default function AcceptConfirm(props) {
             variant="outlined"
             onClick={() => {
               //   history.push('/sale/products/order/1');
+              history.goBack();
             }}
             type={'button'}
           >
@@ -113,7 +115,7 @@ export default function AcceptConfirm(props) {
           <ConfirmButton
             onClick={() => {
               const formData = new FormData();
-              formData.append('order_num', props.data.order_num);
+              formData.append('order_num', props.location.state.order_num);
               formData.append('order_action', 'Approve');
               formData.append('state', 'PI');
               formData.append('comment', comment);

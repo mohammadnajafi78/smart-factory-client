@@ -17,7 +17,7 @@ import MomentFa from 'src/utils/MomentFa';
 import UserClub from 'src/utils/userClub';
 import useScore from 'src/hooks/useScore';
 import ErrorImg from 'src/assets/img/icons/error.svg';
-import Confirmation from './Cofirmation';
+import Actions from './Actions';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -36,5 +36,20 @@ export default function ReceivedDetailMobile(props) {
     setPath(path);
   }, []);
 
-  return <>{<Confirmation {...props} data={data} />}</>;
+  return (
+    <>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '60px 0px',
+          justifyContent: 'space-between',
+          height: 'inherit',
+          backgroundColor: 'white'
+        }}
+      >
+        {<Actions {...props} data={data} />}
+      </Box>
+    </>
+  );
 }

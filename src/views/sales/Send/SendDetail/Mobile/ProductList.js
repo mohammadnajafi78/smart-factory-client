@@ -14,21 +14,8 @@ import { useHistory } from 'react-router-dom';
 import MomentFa from 'src/utils/MomentFa';
 
 export default function ProductList({ data }) {
-  const [product, setProduct] = useState(data);
-
-  useEffect(() => {
-    if (data.current_state.name === 'INCOMPLETE_DELIVERY') {
-      httpService
-        .get(
-          `${API_BASE_URL}/api/orders/get_incomplete_delivery?order_num=${data.order_num}`
-        )
-        .then(res => {
-          if (res.status === 200) {
-            setProduct(res.data);
-          }
-        });
-    }
-  }, []);
+  const product = data;
+  console.log('inja', data);
 
   return (
     <Box style={{ position: 'relative' }}>
@@ -140,25 +127,23 @@ export default function ProductList({ data }) {
           </Box>
 
           <Divider />
-          {data.current_state.name !== 'INCOMPLETE_DELIVERY' && (
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                mt: 2
-              }}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              mt: 2
+            }}
+          >
+            <InputLabel
+              style={{ color: '#335D8A', fontSize: '14px', fontWeight: 400 }}
             >
-              <InputLabel
-                style={{ color: '#335D8A', fontSize: '14px', fontWeight: 400 }}
-              >
-                مجموع
-              </InputLabel>
-              <InputLabel
-                style={{ color: '#335D8A', fontSize: '16px', fontWeight: 700 }}
-              >{`${product.final_price} ریال`}</InputLabel>
-            </Box>
-          )}
+              مجموع
+            </InputLabel>
+            <InputLabel
+              style={{ color: '#335D8A', fontSize: '16px', fontWeight: 700 }}
+            >{`${product.final_price} ریال`}</InputLabel>
+          </Box>
         </Box>
       )}
       <a

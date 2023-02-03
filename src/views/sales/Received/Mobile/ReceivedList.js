@@ -10,7 +10,7 @@ export default function ReceivedList({ products }) {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          padding: '12px 0px 12px',
+          // padding: '12px 0px 12px',
           gap: '14px',
           // height: '1000px',
           overflowY: 'auto'

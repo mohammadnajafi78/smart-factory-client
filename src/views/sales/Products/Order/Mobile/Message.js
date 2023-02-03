@@ -11,6 +11,7 @@ import OrderOK from 'src/assets/img/orderOk.svg';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import { useHistory } from 'react-router-dom';
 import MomentFa from 'src/utils/MomentFa';
+import { ArrowRight } from 'react-feather';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -36,6 +37,17 @@ export default function Message(props) {
           height: 'inherit'
         }}
       >
+        <Box
+          sx={{ display: 'inline-flex' }}
+          onClick={() => {
+            history.push('/sale/products');
+          }}
+        >
+          <ArrowRight color="#335D8A" width={'15px'} />
+          <InputLabel style={{ color: '#335D8A', fontSize: '14px' }}>
+            بازگشت
+          </InputLabel>
+        </Box>
         {order && (
           <Box
             sx={{
@@ -58,7 +70,7 @@ export default function Message(props) {
                 marginTop: '30px'
               }}
             >
-              {`${order.total_price} ریال`}
+              {`${order.final_price} ریال`}
             </InputLabelHeader>
             <Box sx={{ width: '100%', mt: '40px' }}>
               <Box

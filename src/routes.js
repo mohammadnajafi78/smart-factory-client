@@ -274,11 +274,81 @@ const routes = [
     component: lazy(() => import('src/views/sales/Received/ReceivedDetail'))
   },
   {
+    exact: true,
+    path: '/sale/send/detail',
+    layout: SalesDashboardLayoutBack,
+    component: lazy(() => import('src/views/sales/Send/SendDetail'))
+  },
+  {
     exact: false,
     path: '/sale/received/confirm',
     layout: SalesDashboardLayoutForm,
     component: lazy(() =>
       import('src/views/sales/Received/ReceivedDetail/Mobile/AcceptConfirm')
+    )
+  },
+  {
+    exact: true,
+    path: '/sale/send/payment',
+    layout: SalesDashboardLayoutForm,
+    component: lazy(() =>
+      import('src/views/sales/Send/SendDetail/Mobile/AcceptPayment')
+    )
+  },
+  {
+    exact: true,
+    path: '/sale/send/payment/edit',
+    layout: SalesDashboardLayoutForm,
+    component: lazy(() =>
+      import('src/views/sales/Send/SendDetail/Mobile/AcceptPayment2')
+    )
+  },
+  {
+    exact: true,
+    path: '/sale/send/payment/edit2',
+    layout: SalesDashboardLayoutForm,
+    component: lazy(() =>
+      import('src/views/sales/Send/SendDetail/Mobile/AddPayment2')
+    )
+  },
+  {
+    exact: true,
+    path: '/sale/send/payment/add',
+    layout: SalesDashboardLayoutForm,
+    component: lazy(() =>
+      import('src/views/sales/Send/SendDetail/Mobile/AddPayment')
+    )
+  },
+  {
+    exact: true,
+    path: '/sale/received/payment',
+    layout: SalesDashboardLayoutForm,
+    component: lazy(() =>
+      import('src/views/sales/Received/ReceivedDetail/Mobile/AcceptPayment')
+    )
+  },
+  {
+    exact: true,
+    path: '/sale/received/payment/add',
+    layout: SalesDashboardLayoutForm,
+    component: lazy(() =>
+      import('src/views/sales/Received/ReceivedDetail/Mobile/AddPayment')
+    )
+  },
+  {
+    exact: true,
+    path: '/sale/received/delivery',
+    layout: SalesDashboardLayoutForm,
+    component: lazy(() =>
+      import('src/views/sales/Received/ReceivedDetail/Mobile/DeliveryInfo')
+    )
+  },
+  {
+    exact: true,
+    path: '/sale/send/delivery',
+    layout: SalesDashboardLayoutForm,
+    component: lazy(() =>
+      import('src/views/sales/Send/SendDetail/Mobile/DeliveryConfirm')
     )
   },
   {

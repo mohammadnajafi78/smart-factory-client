@@ -148,18 +148,24 @@ export default function ProductList({ data }) {
           </Box>
         </Box>
       )}
-      <ConfirmButton
-        style={{
-          color: '#00AAB5',
-          backgroundColor: '#DDF5F6',
-          position: 'relative',
-          bottom: 0,
-          marginTop: '30px'
-        }}
+      <a
+        href={data?.files.filter(f => f.subject === 'BL')[0].url}
+        download
+        style={{ textDecoration: 'none', width: '100%' }}
       >
-        <Download />
-        دانلود فایل درخواست
-      </ConfirmButton>
+        <ConfirmButton
+          style={{
+            color: '#00AAB5',
+            backgroundColor: '#DDF5F6',
+            position: 'relative',
+            bottom: 0,
+            marginTop: '30px'
+          }}
+        >
+          <Download />
+          دانلود فایل درخواست
+        </ConfirmButton>
+      </a>
     </Box>
   );
 }

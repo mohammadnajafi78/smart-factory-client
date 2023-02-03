@@ -51,7 +51,10 @@ export default function ReceivedItem({ data }) {
           <img
             src={data?.user_info?.user_profile_image}
             // alt={}
-            style={{ width: '44px', height: '60px' }}
+            style={{
+              width: '44px'
+              // , height: '60px'
+            }}
           />
         </Box>
         <Box
@@ -83,8 +86,8 @@ export default function ReceivedItem({ data }) {
               style={{
                 fontWeight: 500,
                 fontSize: '16px',
-                color: '#00346D',
-                lineHeight: '17px'
+                color: '#00346D'
+                // lineHeight: '17px'
               }}
             >
               {data?.user_info?.first_name + ' ' + data?.user_info?.last_name}
@@ -95,7 +98,7 @@ export default function ReceivedItem({ data }) {
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
-                padding: '3px 6px !important',
+                padding: '3px 4px !important',
                 background: '#CCEEF0',
                 borderRadius: '4px',
                 color: '#00AAB5',
@@ -106,8 +109,9 @@ export default function ReceivedItem({ data }) {
               <InputLabel
                 style={{
                   color: '#00AAB5',
-                  fontSize: '10px',
-                  textAlign: 'center'
+                  fontSize: '12px',
+                  textAlign: 'center',
+                  padding: 0
                 }}
               >
                 {data?.current_state?.label}
@@ -126,7 +130,7 @@ export default function ReceivedItem({ data }) {
               color: '#335D8A',
               width: '100%',
               // height: '25px',
-              padding: '3px 6px',
+              padding: '0px 6px',
               borderRadius: '4px'
             }}
           >
