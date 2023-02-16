@@ -79,10 +79,7 @@ export default function AddPayment(props) {
               // cityId: Yup.string().required('شهر نباید خالی باشد'),
               // provinceId: Yup.string().required('استان نباید خالی باشد')
             })}
-            onSubmit={(values, { setErrors, setSubmitting }) => {
-              // console.log('vvalueees1', JSON.stringify(values.file));
-              // console.log('vvalueees2', new Blob(JSON.stringify(values.file)));
-
+            onSubmit={(values, { setErrors, setSubmitting, resetForm }) => {
               setSubmitting(true);
               const formData = new FormData();
               formData.append('payment_num', props.location.state.payment_num);
@@ -108,6 +105,7 @@ export default function AddPayment(props) {
                   if (res.status === 200) {
                     // getData();
                     setSubmitting(false);
+                    resetForm();
                     // props.setEditable(false);
                     // setOpen(false);
                     history.push({

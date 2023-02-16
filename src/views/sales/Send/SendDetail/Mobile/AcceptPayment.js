@@ -108,7 +108,7 @@ export default function AcceptPayment(props) {
                               display: 'flex',
                               flexDirection: 'column',
                               justifyContent: 'center',
-                              alignItems: 'center'
+                              alignItems: 'flex-start'
                             }}
                           >
                             <Box
@@ -119,12 +119,17 @@ export default function AcceptPayment(props) {
                                 alignItems: 'flex-end',
                                 padding: '0px',
                                 gap: '3px',
-                                width: '95px',
+                                // width: '95px',
                                 // height: '51px',
                                 borderRadius: '8px'
                               }}
                             >
-                              <Box sx={{ display: 'inline-flex' }}>
+                              <Box
+                                sx={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center'
+                                }}
+                              >
                                 <InputLabel
                                   style={{
                                     fontStyle: 'normal',
@@ -211,9 +216,11 @@ export default function AcceptPayment(props) {
                         mt: 2
                       }}
                       onClick={() => {
+                        console.log('neeeeeeew');
                         history.push({
                           pathname: '/sale/send/payment/add',
-                          state: props.location.state
+                          state: props.location.state,
+                          new: true
                         });
                       }}
                     >

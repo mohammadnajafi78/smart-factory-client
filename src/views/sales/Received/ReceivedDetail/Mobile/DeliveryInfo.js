@@ -182,7 +182,7 @@ export default function DeliveryInfo(props) {
                         renderInput={params => (
                           <TextField
                             {...params}
-                            placeholder="نحوه ی پرداخت"
+                            placeholder="نحوه ی ارسال"
                             fullWidth
                             id="type"
                             error={Boolean(touched.type && errors.type)}

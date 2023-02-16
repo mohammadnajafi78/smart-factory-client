@@ -70,6 +70,11 @@ export default function Products(props) {
                     <Box
                       sx={{ display: 'flex', justifyContent: 'space-between' }}
                     >
+                      <img
+                        src={item.product_detail.type_detail.images[0].url}
+                        width="26px"
+                        height="26px"
+                      />
                       <Box sx={{ display: 'inline-flex' }}>
                         {/* <img src={}/> */}
                         <InputLabel
@@ -93,7 +98,7 @@ export default function Products(props) {
                       <InputLabel
                         style={{
                           color: '#00346D',
-                          fontSize: '14px',
+                          fontSize: '12px',
                           fontWeight: 400
                         }}
                       >
@@ -108,7 +113,7 @@ export default function Products(props) {
                         <InputLabel
                           style={{
                             color: '#00346D',
-                            fontSize: '14px',
+                            fontSize: '11px',
                             fontWeight: 400
                           }}
                         >
@@ -143,7 +148,7 @@ export default function Products(props) {
                       <InputLabel
                         style={{
                           color: '#335D8A',
-                          fontSize: '14px',
+                          fontSize: '11px',
                           fontWeight: 400
                         }}
                       >

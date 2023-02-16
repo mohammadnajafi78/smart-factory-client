@@ -19,6 +19,7 @@ export default function AddPayment(props) {
   const [paymentTypes, setPaymentTypes] = useState([]);
   const history = useHistory();
   const data = props.location.state;
+  const newData = props.location.new;
 
   useEffect(() => {
     httpService
@@ -67,18 +68,15 @@ export default function AddPayment(props) {
           </Box>
           <Formik
             initialValues={{
-              type: data?.payment_type?.name,
-              date: new Date(data?.payment_date),
-              number: data?.bill_number,
-              code: data?.track_number,
-              price: data?.payment_amount,
-              file: ''
+              type: newData ? '' : data?.payment_type?.name,
+              date: newData ? '' : new Date(data?.payment_date),
+              number: newData ? '' : data?.bill_number,
+              code: newData ? '' : data?.track_number,
+              price: newData ? '' : data?.payment_amount,
+              file: newData ? '' : data?.file
             }}
-            validationSchema={Yup.object().shape({
-              // cityId: Yup.string().required('شهر نباید خالی باشد'),
-              // provinceId: Yup.string().required('استان نباید خالی باشد')
-            })}
-            onSubmit={(values, { setErrors, setSubmitting }) => {
+            validationSchema={Yup.object().shape({})}
+            onSubmit={(values, { setErrors, setSubmitting, resetForm }) => {
               setSubmitting(true);
               const formData = new FormData();
               formData.append('order_num', props.location.state.order_num);
@@ -98,6 +96,7 @@ export default function AddPayment(props) {
                   if (res.status === 200) {
                     // getData();
                     setSubmitting(false);
+                    resetForm();
                     // props.setEditable(false);
                     // setOpen(false);
                     history.push({

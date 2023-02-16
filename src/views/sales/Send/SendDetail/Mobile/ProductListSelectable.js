@@ -314,7 +314,7 @@ export default function ProductListSelectable(props) {
                           ? selected &&
                             selected.product_detail.small_plural_package_qty >
                               0 &&
-                            selected.small_plural_package_detail
+                            selected.product_detail.small_plural_package_detail
                               .translate_detail.item_fa
                           : selected &&
                             selected.product_detail.large_plural_package_qty >

@@ -97,7 +97,7 @@ export default function AcceptPayment(props) {
                           justifyContent: 'space-between',
                           alignItems: 'center',
                           padding: '8px 12px',
-                          gap: '80px',
+                          gap: '40px',
                           background: '#E6EBF0',
                           borderRadius: '8px'
                         }}
@@ -107,7 +107,7 @@ export default function AcceptPayment(props) {
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'center',
-                            alignItems: 'center'
+                            alignItems: 'flex-start'
                           }}
                         >
                           <Box
@@ -118,7 +118,7 @@ export default function AcceptPayment(props) {
                               alignItems: 'flex-end',
                               padding: '0px',
                               gap: '3px',
-                              width: '95px',
+                              // width: '95px',
                               // height: '51px',
                               borderRadius: '8px'
                             }}

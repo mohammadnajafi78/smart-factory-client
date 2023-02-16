@@ -238,9 +238,9 @@ export default function AddPayment(props) {
                   {data.track_number}
                 </InputLabel>
               </Box>
-              {data.file && data.file.length > 0 && (
+              {data.file && (
                 <a
-                  href={data?.file[0]?.url}
+                  href={data?.file?.url}
                   download
                   style={{ textDecoration: 'none', width: '100%' }}
                 >
