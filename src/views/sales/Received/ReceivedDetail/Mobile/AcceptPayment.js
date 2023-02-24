@@ -77,7 +77,7 @@ export default function AcceptPayment(props) {
           </Box>
           {payment !== null && (
             <Box>
-              <Box>
+              <Box sx={{ paddingBottom: '100px' }}>
                 <Box
                   sx={{
                     display: 'flex',
@@ -220,10 +220,12 @@ export default function AcceptPayment(props) {
                                 )
                                 .then(res => {
                                   if (res.status === 200) {
-                                    history.push({
-                                      pathname: '/sale/received/payment/add',
-                                      state: item
-                                    });
+                                    // history.push({
+                                    //   pathname: '/sale/received/payment/add',
+                                    //   state: item
+                                    // });
+                                    props.setPayment(false);
+                                    props.setAddPayment(true);
                                   }
                                 });
                             }}
@@ -257,7 +259,8 @@ export default function AcceptPayment(props) {
                   bottom: 0,
                   left: 0,
                   width: '100%',
-                  padding: '10px'
+                  padding: '10px',
+                  backgroundColor: 'white'
                 }}
               >
                 <ConfirmButton
@@ -271,6 +274,10 @@ export default function AcceptPayment(props) {
                   {'لغو'}
                 </ConfirmButton>
                 <ConfirmButton
+                  disabled={
+                    payment.filter(f => f.payment_state.name === 'INITIAL')
+                      .length > 0
+                  }
                   onClick={() => {
                     const formData = new FormData();
                     formData.append(

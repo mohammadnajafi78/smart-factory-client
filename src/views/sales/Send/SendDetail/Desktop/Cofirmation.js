@@ -42,7 +42,6 @@ export default function Confirmation(props) {
           display: 'flex',
           flexDirection: 'column',
           padding: '15px 20px 20px 20px',
-          // justifyContent: 'space-between',
           height: 'inherit',
           backgroundColor: 'white',
           height: '70vh',
@@ -128,7 +127,7 @@ export default function Confirmation(props) {
                     color: '#00AAB5'
                   }}
                 >
-                  <InputLabel style={{ color: '#00AAB5' }}>
+                  <InputLabel style={{ color: '#00AAB5', fontSize: '12px' }}>
                     {data?.current_state?.label}
                   </InputLabel>
                 </Box>

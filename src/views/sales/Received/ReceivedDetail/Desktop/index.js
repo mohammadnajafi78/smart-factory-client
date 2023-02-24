@@ -10,6 +10,7 @@ import { ChevronRight } from 'react-feather';
 import { useHistory } from 'react-router-dom';
 import ProductList from './ProductList';
 import Confirmation from './Cofirmation';
+import Actions from './Actions';
 
 export default function OrderMobile(props) {
   const [path, setPath] = useState(props.location.pathname.split('/')[4]);
@@ -18,7 +19,10 @@ export default function OrderMobile(props) {
 
   useEffect(() => {
     setPath(props.location.pathname.split('/')[4]);
+    setData(props.location.state.data);
   });
+
+  console.log('Data2', data);
 
   return (
     <>
@@ -62,7 +66,8 @@ export default function OrderMobile(props) {
               </Box>
               {/* <Box>{data == 3 ? <Delivery /> : <Location />}</Box> */}
               <Box>
-                <Confirmation {...props} data={data[0]} />
+                {/* <Confirmation {...props} data={data[0]} /> */}
+                <Actions {...props} data={data[0]} />
               </Box>
             </Grid>
             <Grid item xs={4}>

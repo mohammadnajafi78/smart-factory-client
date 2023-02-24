@@ -179,6 +179,7 @@ const routes = [
   },
   {
     exact: true,
+    guard: AuthGuard,
     path: '/message/messageItem',
     layout: FormsDashboardLayout,
     component: lazy(() => import('src/views/message/MessageItem'))
@@ -263,24 +264,28 @@ const routes = [
   },
   {
     exact: true,
+    guard: AuthGuard,
     path: '/sale/products/detail',
     layout: SalesDashboardLayoutBack,
     component: lazy(() => import('src/views/sales/Products/ProductDetail'))
   },
   {
     exact: true,
+    guard: AuthGuard,
     path: '/sale/received/detail',
     layout: SalesDashboardLayoutBack,
     component: lazy(() => import('src/views/sales/Received/ReceivedDetail'))
   },
   {
     exact: true,
+    guard: AuthGuard,
     path: '/sale/send/detail',
     layout: SalesDashboardLayoutBack,
     component: lazy(() => import('src/views/sales/Send/SendDetail'))
   },
   {
     exact: false,
+    guard: AuthGuard,
     path: '/sale/received/confirm',
     layout: SalesDashboardLayoutForm,
     component: lazy(() =>
@@ -289,6 +294,7 @@ const routes = [
   },
   {
     exact: true,
+    guard: AuthGuard,
     path: '/sale/send/payment',
     layout: SalesDashboardLayoutForm,
     component: lazy(() =>
@@ -297,6 +303,7 @@ const routes = [
   },
   {
     exact: true,
+    guard: AuthGuard,
     path: '/sale/send/payment/edit',
     layout: SalesDashboardLayoutForm,
     component: lazy(() =>
@@ -305,6 +312,7 @@ const routes = [
   },
   {
     exact: true,
+    guard: AuthGuard,
     path: '/sale/send/payment/edit2',
     layout: SalesDashboardLayoutForm,
     component: lazy(() =>
@@ -313,6 +321,7 @@ const routes = [
   },
   {
     exact: true,
+    guard: AuthGuard,
     path: '/sale/send/payment/add',
     layout: SalesDashboardLayoutForm,
     component: lazy(() =>
@@ -321,6 +330,7 @@ const routes = [
   },
   {
     exact: true,
+    guard: AuthGuard,
     path: '/sale/received/payment',
     layout: SalesDashboardLayoutForm,
     component: lazy(() =>
@@ -329,6 +339,7 @@ const routes = [
   },
   {
     exact: true,
+    guard: AuthGuard,
     path: '/sale/received/payment/add',
     layout: SalesDashboardLayoutForm,
     component: lazy(() =>
@@ -337,6 +348,7 @@ const routes = [
   },
   {
     exact: true,
+    guard: AuthGuard,
     path: '/sale/received/delivery',
     layout: SalesDashboardLayoutForm,
     component: lazy(() =>
@@ -345,6 +357,7 @@ const routes = [
   },
   {
     exact: true,
+    guard: AuthGuard,
     path: '/sale/send/delivery',
     layout: SalesDashboardLayoutForm,
     component: lazy(() =>
@@ -353,13 +366,13 @@ const routes = [
   },
   {
     exact: false,
+    guard: AuthGuard,
     path: '/sale/products/order',
     layout: SalesDashboardLayoutForm,
     component: lazy(() => import('src/views/sales/Products/Order'))
   },
   {
     path: '/sale',
-    // guard: GuestGuard,
     guard: AuthGuard,
     layout: SaleDashboardLayout,
     routes: [
@@ -391,7 +404,9 @@ const routes = [
       // },
 
       {
-        component: () => <Redirect to="/sale/products" />
+        component: lazy(() =>
+          import('src/views/sales/Send/SendDetail/Desktop/index')
+        )
       }
     ]
   },

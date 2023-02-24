@@ -58,7 +58,13 @@ export default function HomeMobile() {
                   cursor: 'pointer'
                 }}
                 key={item?.id}
-                onClick={() => history.push(item?.form_url)}
+                onClick={() => {
+                  history.push(
+                    item?.form_url === '/sale/'
+                      ? item?.form_url + 'products'
+                      : item?.form_url
+                  );
+                }}
               >
                 {item?.name}
               </Box>

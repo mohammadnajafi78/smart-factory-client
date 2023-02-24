@@ -121,87 +121,88 @@ export default function Actions(props) {
           </Box>
         </Box>
       )}
-      {data.current_state.name === 'PAYMENT_APPROVED' && (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            padding: '20px 20px 14px',
-            gap: '10px',
-            background: '#E6EBF0'
-          }}
-        >
-          <Box
-            sx={{
-              display: 'inline-flex'
-            }}
-          >
-            <img
-              src={LocalShipping}
-              style={{
-                marginBottom: '20px',
-                marginLeft: '5px'
-              }}
-            />
-            <InputLabel
-              style={{
-                fontWeight: 400,
-                fontSize: '14px',
-                lineHeight: '20px',
-                color: '#00346D'
-              }}
-            >
-              اطلاعات ارسال را وارد و بارنامه را ضمیمه کنید:
-            </InputLabel>
-          </Box>
+      {data.current_state.name === 'PAYMENT_APPROVED' &&
+        data.supply_by !== 'SALE_OFFICE' && (
           <Box
             sx={{
               display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-              width: '100%',
-              gap: '6px'
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              padding: '20px 20px 14px',
+              gap: '10px',
+              background: '#E6EBF0'
             }}
           >
-            <Button
+            <Box
+              sx={{
+                display: 'inline-flex'
+              }}
+            >
+              <img
+                src={LocalShipping}
+                style={{
+                  marginBottom: '20px',
+                  marginLeft: '5px'
+                }}
+              />
+              <InputLabel
+                style={{
+                  fontWeight: 400,
+                  fontSize: '14px',
+                  lineHeight: '20px',
+                  color: '#00346D'
+                }}
+              >
+                اطلاعات ارسال را وارد و بارنامه را ضمیمه کنید:
+              </InputLabel>
+            </Box>
+            <Box
               sx={{
                 display: 'flex',
                 flexDirection: 'row',
-                alignItems: 'center',
-                padding: '6px 8px',
-                // gap: '6px',
-                height: '32px',
-                background: '#335D8A',
-                borderRadius: '4px',
-                '&:hover': {
-                  background: '#00346D',
-                  color: 'white'
-                }
-              }}
-              onClick={() => {
-                // setOpenPIApprove(true);
-                const temp = data.user_type_info.filter(
-                  f => f.user_type === 'Representer'
-                );
-                if (temp.length >= 0) {
-                  setOpenSupplier(true);
-                } else
-                  history.push({
-                    pathname: '/sale/received/delivery',
-                    order_num: data.order_num,
-                    state: data.current_state.name
-                  });
+                justifyContent: 'flex-end',
+                width: '100%',
+                gap: '6px'
               }}
             >
-              <InputLabel style={{ color: 'white', padding: 0 }}>
-                اطلاعات ارسال
-              </InputLabel>
-              <ChevronLeft color="white" />
-            </Button>
+              <Button
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  padding: '6px 8px',
+                  // gap: '6px',
+                  height: '32px',
+                  background: '#335D8A',
+                  borderRadius: '4px',
+                  '&:hover': {
+                    background: '#00346D',
+                    color: 'white'
+                  }
+                }}
+                onClick={() => {
+                  // setOpenPIApprove(true);
+                  const temp = data.user_type_info.filter(
+                    f => f.user_type === 'Representer'
+                  );
+                  if (temp.length >= 0) {
+                    setOpenSupplier(true);
+                  } else
+                    history.push({
+                      pathname: '/sale/received/delivery',
+                      order_num: data.order_num,
+                      state: data.current_state.name
+                    });
+                }}
+              >
+                <InputLabel style={{ color: 'white', padding: 0 }}>
+                  اطلاعات ارسال
+                </InputLabel>
+                <ChevronLeft color="white" />
+              </Button>
+            </Box>
           </Box>
-        </Box>
-      )}
+        )}
       {data.current_state.name === 'INCOMPLETE_DELIVERY' && (
         <Box
           sx={{
@@ -430,6 +431,35 @@ export default function Actions(props) {
                   {`ثبت: ${MomentFa(data?.create_date)}`}
                 </InputLabel>
               </Box>
+              {data.current_state.name === 'CANCELED' && (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'start',
+                    alignItems: 'center',
+                    padding: '0px',
+                    gap: '4px',
+                    // backgroundColor: '#DDF5F6',
+                    color: '#335D8A',
+                    width: '100%',
+                    // height: '25px',
+                    padding: '3px 6px',
+                    borderRadius: '4px'
+                  }}
+                >
+                  <InputLabel
+                    style={{
+                      fontWeight: 400,
+                      fontSize: '12px',
+                      color: '#335D8A',
+                      lineHeight: '16px'
+                    }}
+                  >
+                    {`علت عدم تایید: ${data?.flow_action.comment}`}
+                  </InputLabel>
+                </Box>
+              )}
             </Box>
           </Box>
           <Divider sx={{ m: 2 }} />
@@ -675,7 +705,7 @@ export default function Actions(props) {
                 variant="outlined"
                 style={{ width: '150px' }}
                 onClick={() => {
-                  setOpen(false);
+                  setOpenSupplier(false);
                 }}
                 type={'button'}
               >

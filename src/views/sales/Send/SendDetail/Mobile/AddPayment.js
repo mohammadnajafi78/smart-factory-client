@@ -68,12 +68,12 @@ export default function AddPayment(props) {
           </Box>
           <Formik
             initialValues={{
-              type: newData ? '' : data?.payment_type?.name,
-              date: newData ? '' : new Date(data?.payment_date),
-              number: newData ? '' : data?.bill_number,
-              code: newData ? '' : data?.track_number,
-              price: newData ? '' : data?.payment_amount,
-              file: newData ? '' : data?.file
+              type: '',
+              date: '',
+              number: '',
+              code: '',
+              price: '',
+              file: ''
             }}
             validationSchema={Yup.object().shape({})}
             onSubmit={(values, { setErrors, setSubmitting, resetForm }) => {
@@ -140,6 +140,7 @@ export default function AddPayment(props) {
               >
                 <Box sx={{ mb: '60px' }}>
                   <InputLabel>اطلاعات واریز خود را وارد کنید:</InputLabel>
+
                   <Box sx={{ mt: 1, mb: 1 }}>
                     <InputLabel style={{ color: '#A7A5A6' }}>
                       نحوه پرداخت
@@ -304,7 +305,7 @@ export default function AddPayment(props) {
                     position: 'fixed',
                     bottom: 0,
                     left: 0,
-                    background: 'white',
+                    backgroundColor: 'white',
                     padding: '10px'
                     // mb: 4
                   }}

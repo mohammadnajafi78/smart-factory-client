@@ -1,20 +1,20 @@
 import React from 'react';
 import { useMediaQuery, useTheme } from '@mui/material';
-import ReceivedDetailMobile from './Mobile';
-import ReceivedDetailDesktop from './Desktop';
+import SendDetailMobile from './Mobile';
+import SendDetailDesktop from './Desktop';
 
-function ReceivedDetail(props) {
+function SendDetail(props) {
   const theme = useTheme();
   const mobileDevice = useMediaQuery(theme.breakpoints.down('md'));
   return (
     <>
       {mobileDevice ? (
-        <ReceivedDetailMobile {...props} />
+        <SendDetailMobile {...props} />
       ) : (
-        <ReceivedDetailDesktop {...props} />
+        <SendDetailDesktop {...props} />
       )}
     </>
   );
 }
 
-export default ReceivedDetail;
+export default SendDetail;

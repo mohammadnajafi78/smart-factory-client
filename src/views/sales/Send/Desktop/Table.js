@@ -362,7 +362,6 @@ const SendTable = props => {
   }, [state]);
 
   function getData(page, rowsPerPage, search) {
-    console.log('filer', filter);
     httpService
       .post(
         `${API_BASE_URL}/api/orders/get_orders/?limit=${rowsPerPage}&offset=${page}${
@@ -502,12 +501,12 @@ const SendTable = props => {
   }
 
   function onRowClick(rowData, rowState) {
-    // history.push({
-    //   pathname: '/sale/received/detail',
-    //   state: {
-    //     data: data.filter(f => f.order_num === rowData[0])
-    //   }
-    // });
+    history.push({
+      pathname: '/sale/send/detail',
+      state: {
+        data: data.filter(f => f.order_num === rowData[0])
+      }
+    });
   }
 
   function onRowsDelete(rowsDeleted, newData) {
@@ -535,7 +534,7 @@ const SendTable = props => {
 
   return (
     <Table
-      title={'سفارشات دریافتی'}
+      title={'سفارشات ارسالی'}
       data={data}
       columns={columns}
       rowsPerPage={rowsPerPage}

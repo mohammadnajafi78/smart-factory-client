@@ -14,7 +14,6 @@ import { useHistory } from 'react-router-dom';
 import MomentFa from 'src/utils/MomentFa';
 
 export default function ProductList({ data }) {
-  console.log('data222', data);
   const product = data;
 
   return (
@@ -148,24 +147,26 @@ export default function ProductList({ data }) {
           </Box>
         </Box>
       )}
-      <a
-        href={data?.files.filter(f => f.subject === 'BL')[0].url}
-        download
-        style={{ textDecoration: 'none', width: '100%' }}
-      >
-        <ConfirmButton
-          style={{
-            color: '#00AAB5',
-            backgroundColor: '#DDF5F6',
-            position: 'relative',
-            bottom: 0,
-            marginTop: '30px'
-          }}
+      {data.files && data?.files.filter(f => f.subject === 'BL').length > 0 && (
+        <a
+          href={data?.files.filter(f => f.subject === 'BL')[0].url}
+          download
+          style={{ textDecoration: 'none', width: '100%' }}
         >
-          <Download />
-          دانلود فایل درخواست
-        </ConfirmButton>
-      </a>
+          <ConfirmButton
+            style={{
+              color: '#00AAB5',
+              backgroundColor: '#DDF5F6',
+              position: 'relative',
+              bottom: 0,
+              marginTop: '30px'
+            }}
+          >
+            <Download />
+            دانلود فایل درخواست
+          </ConfirmButton>
+        </a>
+      )}
     </Box>
   );
 }

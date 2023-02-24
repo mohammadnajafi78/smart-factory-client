@@ -19,7 +19,6 @@ export default function SendDetailMobile(props) {
             padding: '65px 0px 14px',
             display: 'flex',
             flexDirection: 'column',
-            // justifyContent: 'space-between',
             height: 'inherit',
             backgroundColor: 'white'
           }}

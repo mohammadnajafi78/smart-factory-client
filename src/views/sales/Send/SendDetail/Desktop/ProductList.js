@@ -14,7 +14,6 @@ import { useHistory } from 'react-router-dom';
 import MomentFa from 'src/utils/MomentFa';
 
 export default function ProductList({ data }) {
-  console.log('data222', data);
   const product = data;
 
   return (
@@ -149,7 +148,7 @@ export default function ProductList({ data }) {
         </Box>
       )}
       <a
-        href={data?.files.filter(f => f.subject === 'BL')[0].url}
+        href={data?.files.filter(f => f.subject === 'PI')[0].url}
         download
         style={{ textDecoration: 'none', width: '100%' }}
       >

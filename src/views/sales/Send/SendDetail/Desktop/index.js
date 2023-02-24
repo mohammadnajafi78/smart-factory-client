@@ -9,20 +9,18 @@ import InputLabel from 'src/components/Desktop/InputLabel';
 import { ChevronRight } from 'react-feather';
 import { useHistory } from 'react-router-dom';
 import ProductList from './ProductList';
-import Confirmation from './Cofirmation';
+import Actions from './Actions';
 
 export default function OrderMobile(props) {
-  const [path, setPath] = useState(props.location.pathname.split('/')[4]);
   const [data, setData] = useState(props.location.state.data);
   const history = useHistory();
 
   useEffect(() => {
-    setPath(props.location.pathname.split('/')[4]);
+    setData(props.location.state.data);
   });
 
   return (
     <>
-      {/* {data == 2 || data == 3 || data == undefined ? ( */}
       <Box
         sx={{
           display: 'flex',
@@ -46,7 +44,7 @@ export default function OrderMobile(props) {
               <Box
                 sx={{ display: 'inline-flex', cursor: 'pointer' }}
                 onClick={() => {
-                  history.push('/sale/received');
+                  history.push('/sale/send');
                 }}
               >
                 <ChevronRight color="#335D8A" />
@@ -57,33 +55,19 @@ export default function OrderMobile(props) {
                     fontSize: '16px'
                   }}
                 >
-                  دریافتی ها
+                  ارسالی ها
                 </InputLabel>
               </Box>
-              {/* <Box>{data == 3 ? <Delivery /> : <Location />}</Box> */}
               <Box>
-                <Confirmation {...props} data={data[0]} />
+                <Actions data={data.length > 0 ? data[0] : data} {...props} />
               </Box>
             </Grid>
             <Grid item xs={4}>
-              <ProductList data={data[0]} />
+              <ProductList data={data.length > 0 ? data[0] : data} />
             </Grid>
           </Grid>
         </Box>
       </Box>
-      {/* ) : (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            marginTop: '70px',
-            padding: '20px',
-            marginLeft: '140px'
-          }}
-        >
-          <Message />
-        </Box>
-      )} */}
     </>
   );
 }

@@ -338,7 +338,6 @@ const LotteryTable = props => {
   }, [state]);
 
   function getData(page, rowsPerPage, search) {
-    console.log('filer', filter);
     httpService
       .post(
         `${API_BASE_URL}/api/management/club/lottery/lottery_list/?limit=${rowsPerPage}&offset=${page}${

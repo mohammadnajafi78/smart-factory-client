@@ -16,6 +16,7 @@ import { useHistory } from 'react-router-dom';
 import MomentFa from 'src/utils/MomentFa';
 import ProductList from './ProductList';
 import { da } from 'date-fns/locale';
+import AddPayment from './AddPayment';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -36,8 +37,6 @@ export default function Actions(props) {
   const [comment, setComment] = useState(null);
   const history = useHistory();
   const user_id = JSON.parse(localStorage.getItem('user')).user_id;
-
-  console.log('dataaaa2', data);
 
   return (
     <>
@@ -508,6 +507,35 @@ export default function Actions(props) {
                   {`ثبت: ${MomentFa(data?.create_date)}`}
                 </InputLabel>
               </Box>
+              {data.current_state.name === 'CANCELED' && (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'start',
+                    alignItems: 'center',
+                    padding: '0px',
+                    gap: '4px',
+                    // backgroundColor: '#DDF5F6',
+                    color: '#335D8A',
+                    width: '100%',
+                    // height: '25px',
+                    padding: '3px 6px',
+                    borderRadius: '4px'
+                  }}
+                >
+                  <InputLabel
+                    style={{
+                      fontWeight: 400,
+                      fontSize: '12px',
+                      color: '#335D8A',
+                      lineHeight: '16px'
+                    }}
+                  >
+                    {`علت عدم تایید: ${data?.flow_action.comment}`}
+                  </InputLabel>
+                </Box>
+              )}
             </Box>
           </Box>
           <Divider sx={{ m: 2 }} />

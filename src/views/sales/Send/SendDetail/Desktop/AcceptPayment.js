@@ -39,10 +39,12 @@ export default function AcceptPayment(props) {
   const history = useHistory();
   const classes = useStyles();
 
+  console.log('props data', props);
+
   useEffect(() => {
     httpService
       .get(
-        `${API_BASE_URL}/api/orders/payment/get_order_payments/?order_num=${props.location.state.order_num}`
+        `${API_BASE_URL}/api/orders/payment/get_order_payments/?order_num=${props.data.order_num}`
       )
       .then(res => {
         if (res.status === 200) {
@@ -57,13 +59,17 @@ export default function AcceptPayment(props) {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          padding: '16px 20px',
+          padding: '10px',
           justifyContent: 'space-between',
-          height: 'inherit',
-          gap: '10px'
+          alignItems: 'center',
+          // height: '250px',
+          height: '37vh',
+          overflow: 'auto',
+          gap: '10px',
+          width: '100%'
         }}
       >
-        <Box sx={{ paddingBottom: '100px' }}>
+        <Box sx={{ width: '100%' }}>
           <Box
             sx={{ display: 'inline-flex' }}
             onClick={() => {
@@ -83,7 +89,8 @@ export default function AcceptPayment(props) {
                     sx={{
                       display: 'flex',
                       gap: '10px',
-                      flexDirection: 'column'
+                      flexDirection: 'column',
+                      padding: '10px'
                     }}
                   >
                     <InputLabel style={{ fontSize: '14px' }}>
@@ -173,7 +180,8 @@ export default function AcceptPayment(props) {
                           <Box
                             sx={{
                               display: 'inline-flex',
-                              color: '#335D8A'
+                              color: '#335D8A',
+                              cursor: 'pointer'
                             }}
                             onClick={() => {
                               httpService
@@ -182,16 +190,25 @@ export default function AcceptPayment(props) {
                                 )
                                 .then(res => {
                                   if (res.status === 200) {
+                                    console.log('item', item);
                                     history.push({
-                                      pathname: '/sale/send/payment/edit2',
-                                      state: item
+                                      pathname:
+                                        '/sale/send/detail/payment/edit2',
+                                      state: {
+                                        data: props.data,
+                                        dataPayment: item
+                                      }
                                     });
                                   }
                                 });
                             }}
                           >
                             <InputLabel
-                              style={{ color: '#335D8A', padding: 0 }}
+                              style={{
+                                color: '#335D8A',
+                                padding: 0,
+                                cursor: 'pointer'
+                              }}
                             >
                               ویرایش
                             </InputLabel>
@@ -217,9 +234,8 @@ export default function AcceptPayment(props) {
                       }}
                       onClick={() => {
                         history.push({
-                          pathname: '/sale/send/payment/add',
-                          state: props.location.state,
-                          new: true
+                          pathname: '/sale/send/detail/payment/add',
+                          state: { data: props.data, new: true }
                         });
                       }}
                     >
@@ -235,8 +251,8 @@ export default function AcceptPayment(props) {
                   sx={{
                     display: 'flex',
                     justifyContent: 'center',
-                    alignItems: 'center',
-                    height: '70vh'
+                    alignItems: 'center'
+                    // height: '70vh'
                   }}
                 >
                   <Box
@@ -275,8 +291,8 @@ export default function AcceptPayment(props) {
                       }}
                       onClick={() => {
                         history.push({
-                          pathname: '/sale/send/payment/add',
-                          state: props.location.state
+                          pathname: '/sale/send/detail/payment/add',
+                          state: { data: props.data }
                         });
                       }}
                     >
@@ -294,12 +310,11 @@ export default function AcceptPayment(props) {
                     display: 'inline-flex',
                     justifyContent: 'center',
                     gap: 2,
-                    position: 'fixed',
-                    bottom: 0,
-                    left: 0,
+                    // position: 'fixed',
+                    // bottom: 0,
+                    // left: 0,
                     width: '100%',
-                    padding: '10px',
-                    backgroundColor: 'white'
+                    padding: '10px'
                   }}
                 >
                   <ConfirmButton
@@ -314,16 +329,13 @@ export default function AcceptPayment(props) {
                     {'لغو'}
                   </ConfirmButton>
                   <ConfirmButton
-                    disabled={
-                      payment.filter(f => f.payment_state.name === 'INITIAL')
-                        .length > 0
-                    }
+                    // disabled={
+                    //   payment.filter(f => f.payment_state.name === 'INITIAL')
+                    //     .length > 0
+                    // }
                     onClick={() => {
                       const formData = new FormData();
-                      formData.append(
-                        'order_num',
-                        props.location.state.order_num
-                      );
+                      formData.append('order_num', props.data.order_num);
                       formData.append('order_action', 'Approve');
                       formData.append('state', 'Payment');
 

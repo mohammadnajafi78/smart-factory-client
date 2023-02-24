@@ -403,7 +403,6 @@ const CompetitionTable = props => {
   }, [state]);
 
   function getData(page, rowsPerPage, search) {
-    console.log('filer', filter);
     httpService
       .post(
         `${API_BASE_URL}/api/management/club/matches/match_list/?limit=${rowsPerPage}&offset=${page}${

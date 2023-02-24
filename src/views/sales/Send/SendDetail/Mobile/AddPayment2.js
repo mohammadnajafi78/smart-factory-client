@@ -88,7 +88,6 @@ export default function AddPayment(props) {
               formData.append('bill_number', values.number);
               formData.append('track_number', values.code);
               formData.append('payment_amount', values.price);
-              // formData.append('file', values.file);
               formData.append(
                 'file',
                 new Blob([JSON.stringify(values.file)], {

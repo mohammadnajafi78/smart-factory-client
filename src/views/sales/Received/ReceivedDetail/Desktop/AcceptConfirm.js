@@ -43,15 +43,18 @@ export default function AcceptConfirm(props) {
           // height: 'inherit',
           gap: '10px',
           background: '#E6EBF0',
-          margin: '20px 0px',
-          borderRadius: '8px'
+          height: '50vh',
+          overflow: 'auto'
+          // margin: '20px 0px'
+          // borderRadius: '8px'
         }}
       >
         <Box
           sx={{ display: 'inline-flex' }}
           onClick={() => {
             // history.goBack();
-            props.setSteps(0);
+            // props.setSteps(0);
+            props.setAcceptConfirm(false);
           }}
         >
           <ArrowRight color="#335D8A" width={'15px'} />
@@ -73,7 +76,7 @@ export default function AcceptConfirm(props) {
                 padding: '40px 0px',
                 gap: '30px',
                 width: '100%',
-                height: '150px',
+                height: '110px',
                 border: '2px dashed #99DDE1',
                 borderRadius: '4px',
                 color: '#4F4C4D',
@@ -122,7 +125,7 @@ export default function AcceptConfirm(props) {
                 aria-describedby="my-helper-text"
                 fullWidth
                 placeholder="...بنویسید"
-                rows={4}
+                rows={2}
                 multiline
                 sx={{
                   backgroundColor: 'white',
