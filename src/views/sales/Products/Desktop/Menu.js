@@ -5,15 +5,6 @@ import Box from '@mui/material/Box';
 import TreeView from '@mui/lab/TreeView';
 import TreeItem, { treeItemClasses } from '@mui/lab/TreeItem';
 import Typography from '@mui/material/Typography';
-import MailIcon from '@mui/icons-material/Mail';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Label from '@mui/icons-material/Label';
-import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
-import InfoIcon from '@mui/icons-material/Info';
-import ForumIcon from '@mui/icons-material/Forum';
-import LocalOfferIcon from '@mui/icons-material/LocalOffer';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { Checkbox, Divider, FormControlLabel, FormGroup } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -73,8 +64,6 @@ function Menu(props) {
   } = props;
   const { setFilterProducts } = useSaleSearch();
 
-  // console.log('subCatIdsss', subCatIds);
-
   return (
     <MenuRoot
       label={
@@ -83,7 +72,6 @@ function Menu(props) {
           {isChild ? (
             <FormGroup>
               <FormControlLabel
-                //   disabled
                 control={
                   <Checkbox
                     size="small"
@@ -113,7 +101,6 @@ function Menu(props) {
                       fontSize: '13px',
                       fontWeight: 300,
                       color: '#00346D'
-                      //   lineHeight: '25px'
                     }}
                   >
                     {labelText}

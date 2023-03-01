@@ -7,7 +7,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import { Box } from '@mui/material';
+import { Box, Collapse } from '@mui/material';
 import Competition from 'src/assets/img/icons/competition.svg';
 import CompetitionSelected from 'src/assets/img/icons/competition-selected.svg';
 import Present from 'src/assets/img/icons/present.svg';
@@ -22,6 +22,7 @@ import TopBar from '../TopBar';
 import { styled, useTheme } from '@mui/material/styles';
 import userMng from 'src/assets/img/icons/userMng.svg';
 import clubMng from 'src/assets/img/icons/clubMng.svg';
+import saleMng from 'src/assets/img/local_mall_mng.svg';
 import HomeMng from 'src/assets/img/icons/homeMng.js';
 import NewUserMng from 'src/assets/img/icons/newUserMng.js';
 import AllUserMng from 'src/assets/img/icons/allUserMng.js';
@@ -30,6 +31,7 @@ import LotteryMng from 'src/assets/img/icons/lotteryMng.js';
 import AwardsMng from 'src/assets/img/icons/awardsMng.js';
 import CommentMng from 'src/assets/img/icons/commentMng.js';
 import SettingMng from 'src/assets/img/icons/settingMng.js';
+import Inventory2Mng from 'src/assets/img/icons/Inventory2Mng.js';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -64,6 +66,7 @@ const NewDrawer = styled(Drawer)(({ theme }) => ({
 
 export default function DrawerComp(props) {
   const [selected, setSelected] = useState(-1);
+  const [open, setOpen] = useState(false);
   const history = useHistory();
   let menu = [
     {
@@ -94,13 +97,6 @@ export default function DrawerComp(props) {
           image1: <AllUserMng fill="#335D8A" />,
           image2: <AllUserMng fill="#00AAB5" />
         }
-        // {
-        //   name: 'settings',
-        //   title: 'تنظیمات',
-        //   path: '/management/user/setting',
-        //   image1: <SettingMng fill="#335D8A" />,
-        //   image2: <SettingMng fill="#00AAB5" />
-        // }
       ]
     },
     {
@@ -146,27 +142,66 @@ export default function DrawerComp(props) {
           image2: <SettingMng fill="#00AAB5" />
         }
       ]
+    },
+    {
+      id: 2,
+      name: 'sale',
+      title: 'فروش',
+      path: '/management/sale/home',
+      image: saleMng,
+      children: [
+        {
+          name: 'home',
+          title: 'خانه',
+          path: '/management/sale/home',
+          image1: <HomeMng fill="#335D8A" />,
+          image2: <HomeMng fill="#00AAB5" />
+        },
+        {
+          name: 'received',
+          title: 'سفارشات دریافتی',
+          path: '/management/sale/received',
+          image1: <Inventory2Mng fill="#335D8A" />,
+          image2: <Inventory2Mng fill="#00AAB5" />
+        },
+        {
+          name: 'settings',
+          title: 'تنظیمات',
+          path: '/management/sale/setting/products',
+          image1: <SettingMng fill="#335D8A" />,
+          image2: <SettingMng fill="#00AAB5" />,
+          children: [
+            {
+              name: 'products',
+              title: 'محصولات',
+              path: '/management/sale/setting/products'
+              // image1: <SettingMng fill="#335D8A" />,
+              // image2: <SettingMng fill="#00AAB5" />
+            },
+            {
+              name: 'price',
+              title: 'جدول قیمت',
+              path: '/management/sale/setting/price'
+              // image1: <SettingMng fill="#335D8A" />,
+              // image2: <SettingMng fill="#00AAB5" />
+            }
+          ]
+        }
+      ]
     }
   ];
 
   useEffect(() => {
     let path = history.location.pathname.split('/')[2];
-    if (path === 'user') setSelected(0);
-    else setSelected(1);
+    setSelected(menu.filter(f => f.name === path)[0].id);
   });
 
   useEffect(() => {
     let path2 = history.location.pathname.split('/')[3];
     if (selected !== -1) {
-      if (selected === 0) {
-        props.setSelected(
-          menu[0].children.filter(f => f.path.includes(path2))[0]
-        );
-      } else {
-        props.setSelected(
-          menu[1].children.filter(f => f.path.includes(path2))[0]
-        );
-      }
+      props.setSelected(
+        menu[selected].children.filter(f => f.path.includes(path2))[0]
+      );
     }
   }, [selected]);
 
@@ -216,6 +251,10 @@ export default function DrawerComp(props) {
               <ListItem
                 key={index}
                 onClick={() => {
+                  console.log(
+                    'item',
+                    menu.filter(f => f.id === selected)
+                  );
                   history.push(item.path);
                   setSelected(item.id);
                   props.setSelected(menu[item.id].children[0]);
@@ -259,47 +298,86 @@ export default function DrawerComp(props) {
         >
           <List sx={{ padding: '0xp' }}>
             {menu[selected]?.children.map((item, index) => (
-              <ListItem
-                key={index}
-                onClick={() => {
-                  history.push(item.path);
-                  props.setSelected(item);
-                }}
-                sx={{
-                  margin: '0px',
-                  padding: '0px',
-                  width: '180px'
-                }}
-              >
-                <ListItemButton
-                  sx={{ flexDirection: 'row', padding: '12px 8px' }}
+              <>
+                <ListItem
+                  key={index}
+                  onClick={() => {
+                    history.push(item.path);
+                    props.setSelected(item);
+                  }}
+                  sx={{
+                    margin: '0px',
+                    padding: '0px',
+                    width: '180px'
+                  }}
                 >
-                  <ListItemIcon>
-                    <Box
-                      sx={{
-                        width: '25px',
-                        height: '25px',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
-                    >
-                      {item.name === props.selected.name
-                        ? item.image2
-                        : item.image1}
-                    </Box>
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={item.title}
-                    style={{
-                      color:
-                        props.selected.name === item.name
-                          ? '#00AAB5'
-                          : '#335D8A'
+                  <ListItemButton
+                    sx={{ flexDirection: 'row', padding: '12px 8px' }}
+                    onClick={() => {
+                      if (item.children && item.children.length > 0) {
+                        setOpen(!open);
+                      }
                     }}
-                  />
-                </ListItemButton>
-              </ListItem>
+                  >
+                    <ListItemIcon>
+                      <Box
+                        sx={{
+                          width: '25px',
+                          height: '25px',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center'
+                        }}
+                      >
+                        {item.name === props.selected.name
+                          ? item.image2
+                          : item.image1}
+                      </Box>
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={item.title}
+                      style={{
+                        color:
+                          props.selected.name === item.name
+                            ? '#00AAB5'
+                            : '#335D8A'
+                      }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+                <Collapse in={open} timeout="auto" unmountOnExit>
+                  {item.children &&
+                    item.children.length > 0 &&
+                    item.children.map((child, key) => (
+                      <ListItem
+                        key={key}
+                        onClick={() => {
+                          history.push(child.path);
+                          props.setSelected(child);
+                        }}
+                        sx={{
+                          margin: '0px',
+                          padding: '0px',
+                          width: '180px'
+                        }}
+                      >
+                        <ListItemButton
+                          sx={{ flexDirection: 'row', padding: '12px 40px' }}
+                        >
+                          <ListItemText
+                            primary={child.title}
+                            style={{
+                              color:
+                                props.selected.name === child.name
+                                  ? '#00AAB5'
+                                  : '#335D8A'
+                            }}
+                          />
+                        </ListItemButton>
+                      </ListItem>
+                    ))}
+                </Collapse>
+              </>
             ))}
           </List>
         </Box>

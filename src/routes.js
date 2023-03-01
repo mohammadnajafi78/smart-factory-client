@@ -531,6 +531,30 @@ const routes = [
         component: lazy(() => import('src/views/management/Club/Setting'))
       },
       {
+        exact: true,
+        path: '/management/sale/home',
+        component: lazy(() => import('src/views/management/Sale/Home'))
+      },
+      {
+        exact: true,
+        path: '/management/sale/received',
+        component: lazy(() => import('src/views/management/Sale/Received'))
+      },
+      {
+        exact: true,
+        path: '/management/sale/setting/products',
+        component: lazy(() =>
+          import('src/views/management/Sale/Setting/Products')
+        )
+      },
+      {
+        exact: true,
+        path: '/management/sale/setting/price',
+        component: lazy(() =>
+          import('src/views/management/Sale/Setting/Prices')
+        )
+      },
+      {
         component: () => <Redirect to="/management/user/home" />
       }
     ]
