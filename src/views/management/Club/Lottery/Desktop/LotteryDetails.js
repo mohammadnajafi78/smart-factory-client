@@ -199,7 +199,6 @@ export default function LotteryDetails(props) {
           </Box>
         </Grid>
       </Grid>
-      .
     </>
   );
 }

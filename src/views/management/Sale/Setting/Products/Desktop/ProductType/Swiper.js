@@ -20,9 +20,9 @@ export default function SwiperImg(props) {
 
   return (
     <>
-      {props.data.images.length === 1 ? (
+      {props.images.length === 1 ? (
         <SwiperSlide>
-          <img src={props.data.images[0].url} />
+          <img src={props.images[0].url} />
         </SwiperSlide>
       ) : (
         <>
@@ -38,7 +38,7 @@ export default function SwiperImg(props) {
             modules={[FreeMode, Navigation, Thumbs]}
             className="mySwiper2"
           >
-            {props.data.images.map((item, key) => {
+            {props.images.map((item, key) => {
               return (
                 <SwiperSlide>
                   <img src={item.url} />
@@ -46,7 +46,7 @@ export default function SwiperImg(props) {
               );
             })}
           </Swiper>
-          {props.data.images >= 2 && (
+          {props.images >= 2 && (
             <Swiper
               onSwiper={setThumbsSwiper}
               loop={true}
@@ -57,7 +57,7 @@ export default function SwiperImg(props) {
               modules={[FreeMode, Navigation, Thumbs]}
               className="mySwiper"
             >
-              {props.data.images.map((item, key) => {
+              {props.images.map((item, key) => {
                 return (
                   <SwiperSlide>
                     <img src={item.url} />

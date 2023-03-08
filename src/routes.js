@@ -549,6 +549,33 @@ const routes = [
       },
       {
         exact: true,
+        path: '/management/sale/setting/products/category',
+        component: lazy(() =>
+          import(
+            'src/views/management/Sale/Setting/Products/Desktop/ProductCategory/ProductCategoryDetail'
+          )
+        )
+      },
+      {
+        exact: true,
+        path: '/management/sale/setting/products/subCategory',
+        component: lazy(() =>
+          import(
+            'src/views/management/Sale/Setting/Products/Desktop/ProductSubCategory/ProductSubCategoryDetail'
+          )
+        )
+      },
+      {
+        exact: true,
+        path: '/management/sale/setting/products/type',
+        component: lazy(() =>
+          import(
+            'src/views/management/Sale/Setting/Products/Desktop/ProductType/ProductTypeDetail'
+          )
+        )
+      },
+      {
+        exact: true,
         path: '/management/sale/setting/price',
         component: lazy(() =>
           import('src/views/management/Sale/Setting/Prices')

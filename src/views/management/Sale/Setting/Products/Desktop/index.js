@@ -9,6 +9,10 @@ import { useTheme } from '@mui/material/styles';
 // import UserProfile from './UserProfile';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import ProductCategory from './ProductCategory';
+import ProductType from './ProductType';
+import ProductSubCategory from './ProductSubCategory';
+import Products from './Products';
 // import ClubGrade from './clubGrade';
 // import GiftTypes from './giftTypes';
 // import SuggestionType from './suggestionType';
@@ -116,20 +120,16 @@ export default function ProductsDesktop(props) {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          {/* <ClubGrade /> */}
-          test
+          <ProductCategory />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          {/* <GiftTypes /> */}
-          test
+          <ProductSubCategory />
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          {/* <SuggestionType /> */}
-          test
+          <ProductType />
         </TabPanel>
         <TabPanel value={value} index={3} dir={theme.direction}>
-          {/* <SuggestionTopic /> */}
-          test
+          <Products />
         </TabPanel>
       </SwipeableViews>
     </Box>
