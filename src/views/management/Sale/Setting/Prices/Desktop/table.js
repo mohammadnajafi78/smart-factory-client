@@ -18,6 +18,12 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { Plus } from 'react-feather';
 import NewPrice from './NewPrice';
+import MomentFa from 'src/utils/MomentFa';
+// import Datepicker from 'src/components/Desktop/Datepicker';
+import AdapterJalali from '@date-io/date-fns-jalali';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import moment from 'jalali-moment';
 
 let item = {};
 // let itemSort = {};
@@ -32,7 +38,7 @@ const PriceListTable = props => {
   const [cityId, setCityId] = useState(null);
   const [works, setWorks] = useState([]);
   const [columns, setColumns] = useState([]);
-  const [activeCatalogue, setActiveCatalogue] = useState(null);
+  const [isActive, setIsActive] = useState(null);
   const [activeShop, setActiveShop] = useState(null);
   const [sort, setSort] = useState('');
   const [filter, setFilter] = useState('');
@@ -64,8 +70,8 @@ const PriceListTable = props => {
         }
       },
       {
-        name: 'type_detail.name_translate.item_fa',
-        label: 'نوع',
+        name: 'list_name',
+        label: 'عنوان',
         options: {
           filter: true,
           filterType: 'custom',
@@ -99,8 +105,8 @@ const PriceListTable = props => {
         }
       },
       {
-        name: 'code',
-        label: 'کد',
+        name: 'create_date',
+        label: 'تاریخ ایجاد',
         options: {
           filter: true,
           filterType: 'custom',
@@ -109,24 +115,48 @@ const PriceListTable = props => {
               return (
                 <FormControl>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    کد
+                    تاریخ ایجاد
                   </InputLabel>
-                  <TextField
-                    id="name"
-                    aria-describedby="my-helper-text"
-                    fullWidth
-                    placeholder="دسته"
-                    value={filterList[index]}
-                    onChange={event => {
-                      if (event.target.value) {
-                        filterList[index][0] = event.target.value;
-                        onChange(filterList[index], index, column);
-                      } else {
-                        filterList[index] = [];
-                        onChange(filterList[index], index, column);
+                  <LocalizationProvider dateAdapter={AdapterJalali}>
+                    <DatePicker
+                      mask="____/__/__"
+                      value={
+                        filterList[index].length > 0
+                          ? moment
+                              .from(
+                                p2e(
+                                  moment(filterList[index][0]).format(
+                                    'YYYY/MM/DD'
+                                  )
+                                ),
+                                'fa',
+                                'YYYY/MM/DD'
+                              )
+                              .locale('en')
+                          : new Date()
                       }
-                    }}
-                  />
+                      onChange={newValue => {
+                        if (newValue) {
+                          setStartDate(moment(newValue).format('YYYY-MM-DD'));
+                          filterList[index][0] = MomentFa(newValue);
+                          onChange(filterList[index], index, column);
+                        } else {
+                          filterList[index] = [];
+                          onChange(filterList[index], index, column);
+                        }
+                      }}
+                      renderInput={params => (
+                        <TextField
+                          {...params}
+                          sx={{
+                            background: '#F2F2F2'
+                          }}
+                        />
+                      )}
+                      // leftArrowIcon={<ArrowBack />}
+                      // rightArrowIcon={<ArrowRight />}
+                    />
+                  </LocalizationProvider>
                 </FormControl>
               );
             }
@@ -134,111 +164,8 @@ const PriceListTable = props => {
         }
       },
       {
-        name: 'erp_code',
-        label: 'کد ERP',
-        options: {
-          filter: true,
-          filterType: 'custom',
-          filterOptions: {
-            display: (filterList, onChange, index, column) => {
-              return (
-                <FormControl>
-                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    کد ERP
-                  </InputLabel>
-                  <TextField
-                    id="name_translate.item_en"
-                    aria-describedby="my-helper-text"
-                    fullWidth
-                    placeholder="کد ERP"
-                    value={filterList[index]}
-                    onChange={event => {
-                      if (event.target.value) {
-                        filterList[index][0] = event.target.value;
-                        onChange(filterList[index], index, column);
-                      } else {
-                        filterList[index] = [];
-                        onChange(filterList[index], index, column);
-                      }
-                    }}
-                  />
-                </FormControl>
-              );
-            }
-          }
-        }
-      },
-      {
-        name: 'size',
-        label: 'سایز',
-        options: {
-          filter: false
-          // filterType: 'custom',
-          // filterOptions: {
-          //   display: (filterList, onChange, index, column) => {
-          //     return (
-          //       <FormControl>
-          //         <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-          //           سایز
-          //         </InputLabel>
-          //         <TextField
-          //           id="name_translate.item_fa"
-          //           aria-describedby="my-helper-text"
-          //           fullWidth
-          //           value={filterList[index]}
-          //           onChange={event => {
-          //             if (event.target.value) {
-          //               filterList[index][0] = event.target.value;
-          //               onChange(filterList[index], index, column);
-          //             } else {
-          //               filterList[index] = [];
-          //               onChange(filterList[index], index, column);
-          //             }
-          //           }}
-          //         />
-          //       </FormControl>
-          //     );
-          //   }
-          // }
-        }
-      },
-      {
-        name: 'order',
-        label: 'ترتیب',
-        options: {
-          filter: false
-          // filterType: 'custom',
-          // filterOptions: {
-          //   display: (filterList, onChange, index, column) => {
-          //     return (
-          //       <FormControl>
-          //         <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-          //           ترتیب
-          //         </InputLabel>
-          //         <TextField
-          //           id="name_translate.item_ar"
-          //           aria-describedby="my-helper-text"
-          //           fullWidth
-          //           value={filterList[index]}
-          //           onChange={event => {
-          //             if (event.target.value) {
-          //               filterList[index][0] = event.target.value;
-          //               onChange(filterList[index], index, column);
-          //             } else {
-          //               filterList[index] = [];
-          //               onChange(filterList[index], index, column);
-          //             }
-          //           }}
-          //         />
-          //       </FormControl>
-          //     );
-          //   }
-          // }
-        }
-      },
-      {
-        name: 'active_in_catalogue',
-        label: 'در کاتالوگ',
+        name: 'is_active',
+        label: 'وضعیت',
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
             return value === true ? 'فعال' : 'غیر فعال';
@@ -250,75 +177,15 @@ const PriceListTable = props => {
               return (
                 <FormControl sx={{ marginTop: '10px' }}>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    در کاتالوگ
+                    وضعیت
                   </InputLabel>
                   <ToggleButtonGroup
                     color="primary"
-                    value={activeCatalogue}
+                    value={isActive}
                     exclusive
                     onChange={(event, newValue) => {
                       // setCompleted(newValue);
-                      setActiveCatalogue(newValue);
-
-                      if (newValue === 'true') filterList[index][0] = 'فعال';
-                      else if (newValue?.toLowerCase() === 'false')
-                        filterList[index][0] = 'غیرفعال';
-                      else filterList[index] = [];
-                      onChange(filterList[index], index, column);
-                    }}
-                    sx={{
-                      marginTop: '5px',
-                      direction: 'ltr',
-                      justifyContent: 'flex-end'
-                    }}
-                  >
-                    <ToggleButton
-                      value="true"
-                      sx={{
-                        fontFamily: 'IRANSans'
-                      }}
-                    >
-                      فعال
-                    </ToggleButton>
-                    <ToggleButton
-                      value="false"
-                      sx={{
-                        fontFamily: 'IRANSans'
-                        // borderLeft: '1px solid rgba(0,0,0, 0.12) !important'
-                      }}
-                    >
-                      غیر فعال
-                    </ToggleButton>
-                  </ToggleButtonGroup>
-                </FormControl>
-              );
-            }
-          }
-        }
-      },
-      {
-        name: 'active_in_shop',
-        label: 'در فروشگاه',
-        options: {
-          customBodyRender: (value, tableMeta, updateValue) => {
-            return value === true ? 'فعال' : 'غیر فعال';
-          },
-          filter: true,
-          filterType: 'custom',
-          filterOptions: {
-            display: (filterList, onChange, index, column) => {
-              return (
-                <FormControl sx={{ marginTop: '10px' }}>
-                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    در فروشگاه
-                  </InputLabel>
-                  <ToggleButtonGroup
-                    color="primary"
-                    value={activeShop}
-                    exclusive
-                    onChange={(event, newValue) => {
-                      // setCompleted(newValue);
-                      setActiveShop(newValue);
+                      setIsActive(newValue);
 
                       if (newValue === 'true') filterList[index][0] = 'فعال';
                       else if (newValue?.toLowerCase() === 'false')
@@ -357,12 +224,12 @@ const PriceListTable = props => {
         }
       }
     ]);
-  }, [provinces, cities, works, activeCatalogue, activeShop]);
+  }, [provinces, cities, works, isActive, activeShop]);
 
   function getData(page, rowsPerPage, search) {
     httpService
       .post(
-        `${API_BASE_URL}/api/management/product/product/product_list/?limit=${rowsPerPage}&offset=${page}${
+        `${API_BASE_URL}/api/management/product/price_list/get_price_list/?limit=${rowsPerPage}&offset=${page}${
           filter !== '' ? `&${filter}` : ''
         }`,
         {
@@ -381,49 +248,29 @@ const PriceListTable = props => {
   function onFilterChange(column, filterList, type) {
     let filterType = '';
     switch (column) {
-      case 'type_detail.name_translate.item_fa':
+      case 'list_name':
         if (filterList[1][0]) {
-          item['product_type__translate__item_fa'] = filterList[1][0];
+          item['list_name'] = filterList[1][0];
           filterType = '__icontains';
         } else {
-          delete item['product_type__translate__item_fa'];
+          delete item['list_name'];
         }
         break;
-      case 'code':
+      case 'create_date':
         if (filterList[2][0]) {
-          item['code'] = filterList[2][0];
+          item['create_date'] = filterList[2][0];
           filterType = '__icontains';
         } else {
-          delete item['code'];
+          delete item['create_date'];
         }
         break;
-      case 'erp_code':
+      case 'is_active':
         if (filterList[3][0]) {
-          item['erp_code'] = filterList[3][0];
-          filterType = '__contains';
-        } else {
-          delete item['erp_code'];
-        }
-        break;
-
-      case 'active_in_catalogue':
-        if (filterList[6][0]) {
-          item['active_in_catalogue'] =
-            filterList[6][0] == 'فعال' ? 'True' : 'False';
+          item['is_active'] = filterList[3][0] == 'فعال' ? 'True' : 'False';
           filterType = '';
         } else {
-          delete item['active_in_catalogue'];
-          setActiveCatalogue(null);
-        }
-        break;
-      case 'active_in_shop':
-        if (filterList[7][0]) {
-          item['active_in_shop'] =
-            filterList[7][0] == 'فعال' ? 'True' : 'False';
-          filterType = '';
-        } else {
-          delete item['active_in_shop'];
-          setActiveShop(null);
+          delete item['is_active'];
+          setIsActive(null);
         }
         break;
       default:
@@ -505,7 +352,7 @@ const PriceListTable = props => {
     });
 
     httpService
-      .post(`${API_BASE_URL}/api/management/product/product/product_delete/`, {
+      .post(`${API_BASE_URL}/api/management/product/price_list/`, {
         product_ids: productIds
       })
       .then(res => {

@@ -15,6 +15,7 @@ import MomentEn from 'src/utils/MomentEn';
 import MomentFa from 'src/utils/MomentFa';
 import FileDownload from 'src/assets/img/icons/fileDownload.svg';
 import makeStyles from '@mui/styles/makeStyles';
+import CustomizedDialogs from 'src/components/Desktop/Dialog';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -64,11 +65,15 @@ export default function AddPayment(props) {
           <Box
             sx={{ display: 'inline-flex' }}
             onClick={() => {
-              history.goBack();
+              // history.goBack();
+              props.setPayment(true);
+              props.setAddPayment(false);
             }}
           >
             <ArrowRight color="#335D8A" width={'15px'} />
-            <InputLabel style={{ color: '#335D8A', fontSize: '12px' }}>
+            <InputLabel
+              style={{ color: '#335D8A', fontSize: '12px', cursor: 'pointer' }}
+            >
               بازگشت
             </InputLabel>
           </Box>
@@ -316,102 +321,107 @@ export default function AddPayment(props) {
           </Box>
         </Box>
       </Box>
-      <Drawer
-        anchor={'bottom'}
+      <CustomizedDialogs
         open={open}
-        onClose={() => setOpen(false)}
-        classes={{
-          paper: classes.paper
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            padding: '16px 20px',
-            justifyContent: 'space-between',
-            // height: 'inherit',
-            gap: '10px',
-            margin: '20px 0px',
-            borderRadius: '8px'
-          }}
-        >
-          <Box>
-            <Box sx={{ display: 'flex', gap: '10px', flexDirection: 'column' }}>
-              <InputLabel style={{ fontSize: '12px' }}>
-                علت عدم تایید واریز را وارد کنید:
-              </InputLabel>
-
-              <Box sx={{ mt: 1, width: '100%' }}>
-                <InputLabel style={{ color: '#A7A5A6', width: '105px' }}>
-                  توضیحات
+        handleClose={() => setOpen(false)}
+        title="عدم تایید"
+        content={
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              padding: '16px 20px',
+              justifyContent: 'space-between',
+              // height: 'inherit',
+              gap: '10px',
+              // margin: '20px 0px',
+              borderRadius: '8px'
+            }}
+          >
+            <Box>
+              <Box
+                sx={{ display: 'flex', gap: '10px', flexDirection: 'column' }}
+              >
+                <InputLabel style={{ fontSize: '12px' }}>
+                  علت عدم تایید واریز را وارد کنید:
                 </InputLabel>
-                <TextField
-                  id="name"
-                  aria-describedby="my-helper-text"
-                  fullWidth
-                  placeholder="...بنویسید"
-                  rows={4}
-                  multiline
-                  sx={{
-                    backgroundColor: 'white',
-                    borderRadius: '4px',
-                    margin: '3px 3px'
+
+                <Box sx={{ mt: 1, width: '100%' }}>
+                  <InputLabel style={{ color: '#A7A5A6', width: '105px' }}>
+                    توضیحات
+                  </InputLabel>
+                  <TextField
+                    id="name"
+                    aria-describedby="my-helper-text"
+                    fullWidth
+                    placeholder="...بنویسید"
+                    rows={4}
+                    multiline
+                    sx={{
+                      backgroundColor: 'white',
+                      borderRadius: '4px',
+                      margin: '3px 3px'
+                    }}
+                    value={comment}
+                    onChange={event => setComment(event.target.value)}
+                  />
+                </Box>
+              </Box>
+            </Box>
+            <Divider />
+            <Box
+              sx={{
+                display: 'flex',
+                width: '100%',
+                justifyContent: 'flex-end'
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'inline-flex',
+                  justifyContent: 'flex-end',
+                  gap: 2
+                }}
+              >
+                <ConfirmButton
+                  disabled={false}
+                  variant="outlined"
+                  style={{ width: '150px' }}
+                  onClick={() => {
+                    setOpen(false);
                   }}
-                  value={comment}
-                  onChange={event => setComment(event.target.value)}
-                />
+                  type={'button'}
+                >
+                  {'لغو'}
+                </ConfirmButton>
+                <ConfirmButton
+                  style={{ width: '150px' }}
+                  disabled={comment == null}
+                  onClick={() => {
+                    httpService
+                      .post(
+                        `${API_BASE_URL}/api/orders/payment/update_payment_status/`,
+                        {
+                          payment_num: data.payment_num,
+                          action: 'REJECTED',
+                          comment: comment
+                        }
+                      )
+                      .then(res => {
+                        if (res.status === 200) {
+                          props.setPayment(true);
+                          props.setAddPayment(false);
+                        }
+                      });
+                  }}
+                >
+                  {'ثبت'}
+                </ConfirmButton>
               </Box>
             </Box>
           </Box>
-          <Divider />
-          <Box
-            sx={{ display: 'flex', width: '100%', justifyContent: 'flex-end' }}
-          >
-            <Box
-              sx={{
-                display: 'inline-flex',
-                justifyContent: 'flex-end',
-                gap: 2
-              }}
-            >
-              <ConfirmButton
-                disabled={false}
-                variant="outlined"
-                style={{ width: '150px' }}
-                onClick={() => {
-                  setOpen(false);
-                }}
-                type={'button'}
-              >
-                {'لغو'}
-              </ConfirmButton>
-              <ConfirmButton
-                style={{ width: '150px' }}
-                disabled={comment == null}
-                onClick={() => {
-                  httpService
-                    .post(
-                      `${API_BASE_URL}/api/orders/payment/update_payment_status/`,
-                      {
-                        payment_num: data.payment_num,
-                        action: 'REJECTED',
-                        comment: comment
-                      }
-                    )
-                    .then(res => {
-                      if (res.status === 200) {
-                        history.goBack();
-                      }
-                    });
-                }}
-              >
-                {'ثبت'}
-              </ConfirmButton>
-            </Box>
-          </Box>
-        </Box>
-      </Drawer>
+        }
+      />
     </>
   );
 }

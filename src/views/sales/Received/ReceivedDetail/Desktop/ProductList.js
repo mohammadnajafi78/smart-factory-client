@@ -13,22 +13,40 @@ import { Download, Plus } from 'react-feather';
 import { useHistory } from 'react-router-dom';
 import MomentFa from 'src/utils/MomentFa';
 
-export default function ProductList({ data }) {
-  const product = data;
+export default function ProductList({ data, incomplete }) {
+  const [product, setProduct] = useState();
+
+  useEffect(() => {
+    if (incomplete === true) {
+      httpService
+        .get(
+          `${API_BASE_URL}/api/orders/get_incomplete_delivery?order_num=${data.order_num}`
+        )
+        .then(res => {
+          if (res.status === 200) {
+            setProduct(res.data);
+          }
+        });
+    } else {
+      setProduct(data);
+    }
+  }, []);
 
   return (
     <Box style={{ position: 'relative' }}>
       {product && (
-        <Box>
-          <InputLabelHeader
-            style={{
-              color: '#231F20',
-              fontSize: '18px',
-              marginBottom: '20px'
-            }}
-          >
-            لیست سفارشات
-          </InputLabelHeader>
+        <Box sx={{ mt: incomplete === true ? '20px' : '0px' }}>
+          {incomplete !== true && (
+            <InputLabelHeader
+              style={{
+                color: '#231F20',
+                fontSize: '18px',
+                marginBottom: '20px'
+              }}
+            >
+              لیست سفارشات
+            </InputLabelHeader>
+          )}
           <Box>
             {product.products.map((item, key) => {
               return (
@@ -43,7 +61,6 @@ export default function ProductList({ data }) {
                     sx={{ display: 'flex', justifyContent: 'space-between' }}
                   >
                     <Box sx={{ display: 'inline-flex' }}>
-                      {/* <img src={}/> */}
                       <InputLabel
                         style={{
                           color: '#00346D',
@@ -127,46 +144,60 @@ export default function ProductList({ data }) {
             })}
           </Box>
 
-          <Divider />
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              mt: 2
-            }}
-          >
-            <InputLabel
-              style={{ color: '#335D8A', fontSize: '14px', fontWeight: 400 }}
-            >
-              مجموع
-            </InputLabel>
-            <InputLabel
-              style={{ color: '#335D8A', fontSize: '16px', fontWeight: 700 }}
-            >{`${product.final_price} ریال`}</InputLabel>
-          </Box>
+          {incomplete !== true && (
+            <>
+              <Divider />
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  mt: 2
+                }}
+              >
+                <InputLabel
+                  style={{
+                    color: '#335D8A',
+                    fontSize: '14px',
+                    fontWeight: 400
+                  }}
+                >
+                  مجموع
+                </InputLabel>
+                <InputLabel
+                  style={{
+                    color: '#335D8A',
+                    fontSize: '16px',
+                    fontWeight: 700
+                  }}
+                >{`${product.final_price} ریال`}</InputLabel>
+              </Box>
+            </>
+          )}
         </Box>
       )}
-      {data.files && data?.files.filter(f => f.subject === 'BL').length > 0 && (
-        <a
-          href={data?.files.filter(f => f.subject === 'BL')[0].url}
-          download
-          style={{ textDecoration: 'none', width: '100%' }}
-        >
-          <ConfirmButton
-            style={{
-              color: '#00AAB5',
-              backgroundColor: '#DDF5F6',
-              position: 'relative',
-              bottom: 0,
-              marginTop: '30px'
-            }}
+      {data &&
+        data.files &&
+        data?.files.filter(f => f.subject === 'BL').length > 0 && (
+          <a
+            href={data?.files.filter(f => f.subject === 'BL')[0].url}
+            download
+            style={{ textDecoration: 'none', width: '100%' }}
           >
-            <Download />
-            دانلود فایل درخواست
-          </ConfirmButton>
-        </a>
-      )}
+            <ConfirmButton
+              style={{
+                color: '#00AAB5',
+                backgroundColor: '#DDF5F6',
+                position: 'relative',
+                bottom: 0,
+                marginTop: '30px'
+              }}
+            >
+              <Download />
+              دانلود فایل درخواست
+            </ConfirmButton>
+          </a>
+        )}
     </Box>
   );
 }

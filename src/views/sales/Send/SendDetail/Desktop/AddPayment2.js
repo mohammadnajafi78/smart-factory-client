@@ -31,17 +31,6 @@ export default function AddPayment(props) {
           setPaymentTypes(res.data);
         }
       });
-    // if (props.location.state.payment_num) {
-    //   httpService
-    //     .get(
-    //       `${API_BASE_URL}/api/orders/payment/get_payment?payment_num=${props.location.state.payment_num}`
-    //     )
-    //     .then(res => {
-    //       if (res.status === 200) {
-    //         setPayment(res.data);
-    //       }
-    //     });
-    // }
   }, []);
 
   return (
@@ -54,7 +43,8 @@ export default function AddPayment(props) {
           justifyContent: 'space-between',
           height: 'inherit',
           gap: '10px',
-          width: '100%'
+          width: '100%',
+          background: 'white'
         }}
       >
         <Box>
@@ -86,7 +76,6 @@ export default function AddPayment(props) {
               setSubmitting(true);
               const formData = new FormData();
 
-              console.log('file', values.file);
               formData.append('payment_num', data.payment_num);
               formData.append('payment_type', values.type);
               formData.append('payment_date', MomentEn(values.date));
@@ -323,14 +312,16 @@ export default function AddPayment(props) {
 
                 <Box
                   sx={{
-                    display: 'inline-flex',
-                    justifyContent: 'space-between',
+                    // display: 'inline-flex',
+                    // justifyContent: 'space-between',
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(2, 1fr)',
                     gap: 2,
                     width: '100%',
                     // position: 'fixed',
                     // bottom: 0,
                     // left: 0,
-                    background: 'white',
+                    // background: 'white',
                     padding: '10px'
                     // mb: 4
                   }}

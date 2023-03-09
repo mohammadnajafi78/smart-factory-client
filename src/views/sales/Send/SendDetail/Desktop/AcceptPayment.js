@@ -66,7 +66,8 @@ export default function AcceptPayment(props) {
           height: '37vh',
           overflow: 'auto',
           gap: '10px',
-          width: '100%'
+          width: '100%',
+          background: 'white'
         }}
       >
         <Box sx={{ width: '100%' }}>

@@ -20,6 +20,7 @@ import CustomizedDialogs from 'src/components/Desktop/Dialog';
 import AddPayment from './AddPayment';
 import AddPayment2 from './AddPayment2';
 import AcceptPayment from './AcceptPayment';
+import AcceptPayment2 from './AcceptPayment2';
 import DeliveryConfirm from './DeliveryConfirm';
 
 const useStyles = makeStyles(theme => ({
@@ -472,8 +473,8 @@ export default function Actions(props) {
               }}
               onClick={() =>
                 history.push({
-                  pathname: '/sale/send/payment/edit',
-                  state: data
+                  pathname: '/sale/send/detail/payment/edit',
+                  state: { data }
                 })
               }
             >
@@ -483,6 +484,22 @@ export default function Actions(props) {
               <ChevronLeft color="white" />
             </Button>
           </Box>
+          {location.split('/')[4] === 'payment' &&
+            location.split('/')[5] === undefined && (
+              <AcceptPayment data={data} {...props} />
+            )}
+          {location.split('/')[4] === 'payment' &&
+            location.split('/')[5] === 'add' && (
+              <AddPayment data={data} {...props} />
+            )}
+          {location.split('/')[4] === 'payment' &&
+            location.split('/')[5] === 'edit2' && (
+              <AddPayment2 data={data} {...props} />
+            )}
+          {location.split('/')[4] === 'payment' &&
+            location.split('/')[5] === 'edit' && (
+              <AcceptPayment2 data={data} {...props} />
+            )}
         </Box>
       )}
       {(data.current_state.name === 'WAITING_FOR_DELIVERY_APPROVE' ||

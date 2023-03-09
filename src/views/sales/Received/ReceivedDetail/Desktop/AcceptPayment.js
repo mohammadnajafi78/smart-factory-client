@@ -59,9 +59,10 @@ export default function AcceptPayment(props) {
           flexDirection: 'column',
           padding: '0px 20px',
           justifyContent: 'space-between',
-          height: 'inherit',
+          height: '43vh',
           gap: '10px',
-          width: '100%'
+          width: '100%',
+          overflow: 'auto'
         }}
       >
         <Box>

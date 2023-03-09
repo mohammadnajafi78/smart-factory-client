@@ -31,39 +31,6 @@ export default function NewPrice({
   type,
   ...props
 }) {
-  const [file, setFile] = useState(null);
-  const [types, setTypes] = useState([]);
-  const [singulars, setSingulars] = useState([]);
-  const [plural, setPlural] = useState([]);
-
-  useEffect(() => {
-    httpService
-      .get(`${API_BASE_URL}/api/management/product/type/type_title_list/`)
-      .then(res => {
-        if (res.status === 200) {
-          setTypes(res.data);
-        }
-      });
-  }, []);
-  useEffect(() => {
-    httpService
-      .get(`${API_BASE_URL}/api/management/product/package/?type=singular`)
-      .then(res => {
-        if (res.status === 200) {
-          setSingulars(res.data);
-        }
-      });
-  }, []);
-  useEffect(() => {
-    httpService
-      .get(`${API_BASE_URL}/api/management/product/package/?type=plural`)
-      .then(res => {
-        if (res.status === 200) {
-          setPlural(res.data);
-        }
-      });
-  }, []);
-
   return (
     <>
       <CustomizedDialogs
@@ -74,24 +41,7 @@ export default function NewPrice({
           <Formik
             initialValues={{
               type_id: type === 'edit' ? data.type_detail.id : '',
-              code: type === 'edit' ? data.code : '',
-              erp_code: type === 'edit' ? data.erp_code : '',
-              size: type === 'edit' ? data.size : '',
-              order: type === 'edit' ? data.order : '',
-              singular_package_id:
-                type === 'edit' ? data.singular_package_detail.id : '',
-              small_plural_package_id:
-                type === 'edit' ? data.small_plural_package_detail.id : '',
-              small_plural_package_qty:
-                type === 'edit' ? data.small_plural_package_qty : '',
-              large_plural_package_id:
-                type === 'edit' ? data.large_plural_package_detail.id : '',
-              large_plural_package_qty:
-                type === 'edit' ? data.large_plural_package_qty : '',
-              active_in_catalogue:
-                type === 'edit' ? data.active_in_catalogue : true,
-              active_in_shop: type === 'edit' ? data.active_in_shop : false,
-              active_in_order: type === 'edit' ? data.active_in_order : true
+              code: type === 'edit' ? data.code : ''
             }}
             validationSchema={Yup.object().shape({
               // province: Yup.string().required('استان اجباری می باشد'),
@@ -104,38 +54,6 @@ export default function NewPrice({
 
               formData.append('type_id', values.type_id);
               formData.append('code', values.code);
-              formData.append('erp_code', values.erp_code);
-              formData.append('size', values.size);
-              formData.append('order', values.order);
-              formData.append(
-                'singular_package_id',
-                values.singular_package_id
-              );
-              formData.append(
-                'small_plural_package_id',
-                values.small_plural_package_id
-              );
-              formData.append(
-                'small_plural_package_qty',
-                values.small_plural_package_qty
-              );
-              formData.append(
-                'large_plural_package_id',
-                values.large_plural_package_id
-              );
-              formData.append(
-                'large_plural_package_qty',
-                values.large_plural_package_qty
-              );
-              formData.append(
-                'active_in_catalogue',
-                values.active_in_catalogue === true ? 'True' : 'False'
-              );
-              formData.append(
-                'active_in_shop',
-                values.active_in_shop === true ? 'True' : 'False'
-              );
-              formData.append('active_in_order', 'True');
 
               if (type === 'new') {
                 httpService

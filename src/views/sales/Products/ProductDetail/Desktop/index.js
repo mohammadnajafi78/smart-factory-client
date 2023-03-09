@@ -71,11 +71,11 @@ export default function GetAwardDesktop(props) {
     }
   }, [order]);
 
-  // useEffect(() => {
-  //   if (open === false) {
-  //     setUnitSelected('SINGULAR');
-  //   }
-  // }, [open]);
+  useEffect(() => {
+    if (open === true) {
+      setUnitSelected('SINGULAR');
+    }
+  }, [open]);
 
   return (
     <>

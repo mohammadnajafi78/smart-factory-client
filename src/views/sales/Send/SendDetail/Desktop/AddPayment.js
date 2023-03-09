@@ -31,17 +31,6 @@ export default function AddPayment(props) {
           setPaymentTypes(res.data);
         }
       });
-    // if (props.location.state.payment_num) {
-    //   httpService
-    //     .get(
-    //       `${API_BASE_URL}/api/orders/payment/get_payment?payment_num=${props.location.state.payment_num}`
-    //     )
-    //     .then(res => {
-    //       if (res.status === 200) {
-    //         setPayment(res.data);
-    //       }
-    //     });
-    // }
   }, []);
 
   return (

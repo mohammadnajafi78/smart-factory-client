@@ -500,6 +500,7 @@ export default function Actions(props) {
                   <ChevronLeft color="white" />
                 </Button>
               </Box>
+              <ProductList incomplete={true} data={data} />
             </div>
           ) : (
             <DeliveryInfo

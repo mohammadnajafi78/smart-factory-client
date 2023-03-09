@@ -473,7 +473,12 @@ export default function Actions(props) {
               sx={{
                 display: 'inline-flex',
                 justifyContent: 'center',
-                gap: 2
+                gap: 2,
+                position: 'fixed',
+                bottom: 0,
+                left: 0,
+                width: '100%',
+                padding: '10px'
               }}
             >
               <ConfirmButton

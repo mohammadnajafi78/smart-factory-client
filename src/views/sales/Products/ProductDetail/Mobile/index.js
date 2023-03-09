@@ -64,11 +64,11 @@ export default function ProductDetailMobile(props) {
     }
   }, [order]);
 
-  // useEffect(() => {
-  //   if (open === false) {
-  //     setUnitSelected('SINGULAR');
-  //   }
-  // }, [open]);
+  useEffect(() => {
+    if (open === true) {
+      setUnitSelected('SINGULAR');
+    }
+  }, [open]);
 
   return (
     <>

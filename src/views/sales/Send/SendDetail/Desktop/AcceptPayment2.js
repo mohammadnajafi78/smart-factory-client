@@ -42,7 +42,7 @@ export default function AcceptPayment(props) {
   useEffect(() => {
     httpService
       .get(
-        `${API_BASE_URL}/api/orders/payment/get_order_payments/?order_num=${props.location.state.order_num}`
+        `${API_BASE_URL}/api/orders/payment/get_order_payments/?order_num=${props.location.state.data.order_num}`
       )
       .then(res => {
         if (res.status === 200) {
@@ -59,8 +59,10 @@ export default function AcceptPayment(props) {
           flexDirection: 'column',
           padding: '16px 20px',
           justifyContent: 'space-between',
-          height: 'inherit',
-          gap: '10px'
+          height: '35vh',
+          gap: '10px',
+          width: '100%',
+          overflow: 'auto'
         }}
       >
         <Box>
@@ -97,8 +99,8 @@ export default function AcceptPayment(props) {
                           justifyContent: 'space-between',
                           alignItems: 'center',
                           padding: '8px 12px',
-                          gap: '80px',
-                          background: '#E6EBF0',
+                          gap: '20px',
+                          background: 'white',
                           borderRadius: '8px'
                         }}
                       >
@@ -118,12 +120,17 @@ export default function AcceptPayment(props) {
                               alignItems: 'flex-end',
                               padding: '0px',
                               gap: '3px',
-                              width: '95px',
+                              // width: '95px',
                               // height: '51px',
                               borderRadius: '8px'
                             }}
                           >
-                            <Box sx={{ display: 'inline-flex' }}>
+                            <Box
+                              sx={{
+                                display: 'inline-flex',
+                                alignItems: 'center'
+                              }}
+                            >
                               <InputLabel
                                 style={{
                                   fontStyle: 'normal',
@@ -222,8 +229,12 @@ export default function AcceptPayment(props) {
                                   .then(res => {
                                     if (res.status === 200) {
                                       history.push({
-                                        pathname: '/sale/send/payment/edit2',
-                                        state: item
+                                        pathname:
+                                          '/sale/send/detail/payment/edit2',
+                                        state: {
+                                          data: props.location.state.data,
+                                          dataPayment: item
+                                        }
                                       });
                                     }
                                   });
@@ -233,7 +244,8 @@ export default function AcceptPayment(props) {
                                 style={{
                                   color: '#335D8A',
                                   padding: 0,
-                                  fontSize: '12px'
+                                  fontSize: '12px',
+                                  cursor: 'pointer'
                                 }}
                               >
                                 ویرایش
@@ -253,17 +265,19 @@ export default function AcceptPayment(props) {
               <Box
                 sx={{
                   display: 'inline-flex',
-                  justifyContent: 'center',
+                  justifyContent: 'flex-end',
                   gap: 2,
-                  position: 'fixed',
-                  bottom: 0,
-                  left: 0,
+                  // position: 'fixed',
+                  // bottom: 0,
+                  // left: 0,
                   width: '100%',
-                  padding: '10px'
+                  padding: '10px',
+                  marginTop: '20px'
                 }}
               >
                 <ConfirmButton
                   disabled={false}
+                  style={{ width: '150px' }}
                   variant="outlined"
                   onClick={() => {
                     history.goBack();
@@ -273,11 +287,12 @@ export default function AcceptPayment(props) {
                   {'لغو'}
                 </ConfirmButton>
                 <ConfirmButton
+                  style={{ width: '150px' }}
                   onClick={() => {
                     const formData = new FormData();
                     formData.append(
                       'order_num',
-                      props.location.state.order_num
+                      props.location.state.data.order_num
                     );
                     formData.append('order_action', 'Approve');
                     formData.append('state', 'Payment');
