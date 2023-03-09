@@ -314,10 +314,10 @@ export default function AcceptPayment(props) {
                     {'لغو'}
                   </ConfirmButton>
                   <ConfirmButton
-                    disabled={
-                      payment.filter(f => f.payment_state.name === 'INITIAL')
-                        .length > 0
-                    }
+                    // disabled={
+                    //   payment.filter(f => f.payment_state.name === 'INITIAL')
+                    //     .length > 0
+                    // }
                     onClick={() => {
                       const formData = new FormData();
                       formData.append(

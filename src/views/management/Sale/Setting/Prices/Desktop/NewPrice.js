@@ -23,7 +23,7 @@ import { AttachFile } from '@mui/icons-material';
 import { API_BASE_URL } from 'src/utils/urls';
 import httpService from 'src/utils/httpService';
 
-export default function NewProductType({
+export default function NewPrice({
   open,
   handleClose,
   data,

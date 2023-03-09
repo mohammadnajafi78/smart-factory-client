@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box } from '@mui/material';
-import FilterButton from 'src/components/Desktop/Button/Filter';
-import AwardItem from './ProductItem';
-import httpService from 'src/utils/httpService';
-import { API_BASE_URL } from 'src/utils/urls';
-import { resolveConfig } from 'prettier';
+import { Box, Grid } from '@mui/material';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import ShopProducts from 'src/assets/img/shopProducts.svg';
@@ -23,11 +18,6 @@ export default function ProductsList({ selected, setSelected }) {
 
   useEffect(() => {
     getOrder();
-    // httpService.get(`${API_BASE_URL}/api/products/type/?ref=shop`).then(res => {
-    //   if (res.status === 200) {
-    //     setAll(res.data);
-    //   }
-    // });
     getProducts();
   }, []);
 
@@ -75,29 +65,22 @@ export default function ProductsList({ selected, setSelected }) {
       </Box>
       <Box
         sx={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gridColumnGap: '15px',
-          gridRowGap: '15px',
           width: '100%',
-          // padding: '0px 20px',
           overflow: 'auto',
-          height: '70vh',
-          marginTop: '20px'
+          height: '73vh',
+          marginTop: '10px'
         }}
       >
-        {/* {searched
-          ? result.map((item, key) => {
-              return <ProductItem data={item} />;
-            })
-          : all &&
-            all.map((item, key) => {
-              return <ProductItem data={item} />;
-            })} */}
-        {products &&
-          products.map((item, key) => {
-            return <ProductItem data={item} />;
-          })}
+        <Grid container spacing={2}>
+          {products &&
+            products.map((item, key) => {
+              return (
+                <Grid item xs={4}>
+                  <ProductItem data={item} />
+                </Grid>
+              );
+            })}
+        </Grid>
       </Box>
     </Box>
   );

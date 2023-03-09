@@ -17,11 +17,11 @@ import FaTOEn from 'src/utils/FaTOEn';
 import InputLabelHeader from 'src/components/Desktop/InputLabel';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { Plus } from 'react-feather';
-import NewProductType from './NewProduct';
+import NewPrice from './NewPrice';
 
 let item = {};
 // let itemSort = {};
-const ProductTable = props => {
+const PriceListTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(15);
@@ -542,7 +542,7 @@ const ProductTable = props => {
               }}
             >
               <Plus />
-              <di>محصول جدید</di>
+              <di>لیست قیمت جدید</di>
             </ConfirmButton>
           </>
         }
@@ -573,10 +573,10 @@ const ProductTable = props => {
         }
       />
       {openNew && (
-        <NewProductType
+        <NewPrice
           open={openNew}
           handleClose={() => setOpenNew(false)}
-          title={'ایجاد محصول جدید'}
+          title={'لیست قیمت جدید'}
           type="new"
           reloadData={() => getData(page, rowsPerPage, '')}
         />
@@ -585,4 +585,4 @@ const ProductTable = props => {
   );
 };
 
-export default ProductTable;
+export default PriceListTable;

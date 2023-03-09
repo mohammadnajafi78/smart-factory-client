@@ -98,7 +98,7 @@ export default function AcceptPayment(props) {
                           justifyContent: 'space-between',
                           alignItems: 'center',
                           padding: '8px 12px',
-                          gap: '40px',
+                          gap: '20px',
                           // background: '#E6EBF0',
                           background: 'white',
                           borderRadius: '8px'

@@ -12,9 +12,6 @@ export default function ProductItem({ data }) {
   const { searched } = useSaleSearch();
   const history = useHistory();
 
-  console.log('data', data);
-  console.log('injaaa');
-
   return (
     <Box
       sx={{
@@ -22,11 +19,10 @@ export default function ProductItem({ data }) {
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        padding: '40px 12px 12px',
-        gap: '20px',
+        padding: '20px 12px 12px',
+        gap: '10px',
 
-        // width: '294px';
-        height: '360px',
+        height: '300px',
         background: '#FFFFFF',
         boxShadow: '0px 0px 8px rgba(146, 146, 146, 0.25)',
         borderRadius: '9px'
@@ -40,7 +36,7 @@ export default function ProductItem({ data }) {
           justifyContent: 'flex-start',
           alignItems: 'flex-start',
           width: '100%',
-          gap: '12px'
+          gap: '8px'
         }}
       >
         <InputLabelHeader
@@ -54,11 +50,8 @@ export default function ProductItem({ data }) {
             flexDirection: 'row',
             justifyContent: 'start',
             alignItems: 'center',
-            // gap: '2px',
             backgroundColor: '#DDF5F6',
             color: '#335D8A',
-            // width: '100%',
-            // height: '25px',
             padding: '3px 6px',
             borderRadius: '4px',
             minHeight: '40px'
@@ -101,23 +94,6 @@ export default function ProductItem({ data }) {
             borderRadius: '4px'
           }}
         >
-          {/* {searched ? (
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: '3px 6px !important',
-                background: 'white',
-                borderRadius: '4px'
-                // color: '#00AAB5'
-              }}
-            >
-              <InputLabel style={{ color: '#00346D' }}>{'کد'}</InputLabel>
-              <InputLabel style={{ color: '#00346D' }}>{data?.code}</InputLabel>
-            </Box>
-          ) : ( */}
           <InputLabel
             style={{
               fontWeight: 400,
@@ -128,7 +104,6 @@ export default function ProductItem({ data }) {
           >
             {`${data?.count} اندازه`}
           </InputLabel>
-          {/* )} */}
           <Box
             sx={{
               display: 'inline-flex',
@@ -150,7 +125,6 @@ export default function ProductItem({ data }) {
                 color: '#00346D',
                 paddingLeft: '0px',
                 cursor: 'pointer'
-                // lineHeight: '17px'
               }}
             >
               انتخاب

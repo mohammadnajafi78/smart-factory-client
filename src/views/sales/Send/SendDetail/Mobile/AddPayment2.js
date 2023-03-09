@@ -108,7 +108,7 @@ export default function AddPayment(props) {
                     // props.setEditable(false);
                     // setOpen(false);
                     history.push({
-                      pathname: '/sale/send/payment/edit',
+                      pathname: '/sale/send/payment',
                       state: res.data
                     });
                   } else {

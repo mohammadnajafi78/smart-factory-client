@@ -220,12 +220,12 @@ export default function AcceptPayment(props) {
                                 )
                                 .then(res => {
                                   if (res.status === 200) {
-                                    // history.push({
-                                    //   pathname: '/sale/received/payment/add',
-                                    //   state: item
-                                    // });
-                                    props.setPayment(false);
-                                    props.setAddPayment(true);
+                                    history.push({
+                                      pathname: '/sale/received/payment/add',
+                                      state: item
+                                    });
+                                    // props.setPayment(false);
+                                    // props.setAddPayment(true);
                                   }
                                 });
                             }}

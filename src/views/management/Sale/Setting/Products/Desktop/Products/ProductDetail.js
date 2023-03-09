@@ -21,7 +21,7 @@ export default function ProductTypeDetail(props) {
   return (
     <>
       <Grid container spacing={2}>
-        <Grid item xs={8}>
+        <Grid item xs={12}>
           <Box
             sx={{
               display: 'flex',
@@ -60,7 +60,7 @@ export default function ProductTypeDetail(props) {
                 }}
               >
                 <img src={EditNote} />
-                ویرایش نوع محصول
+                ویرایش محصول
               </ConfirmButton>
             </Box>
 
@@ -80,9 +80,105 @@ export default function ProductTypeDetail(props) {
                     marginBottom: 10
                   }}
                 >
-                  <InputLabel style={{ color: '#00AAB5' }}>نام:</InputLabel>
+                  <InputLabel style={{ color: '#00AAB5' }}>نوع:</InputLabel>
                   <InputLabel style={{ color: '#335D8A' }}>
-                    {data?.name}
+                    {data?.type_detail.name_translate.item_fa}
+                  </InputLabel>
+                </div>
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    width: '100%',
+                    marginBottom: 10
+                  }}
+                >
+                  <InputLabel style={{ color: '#00AAB5' }}>سایز:</InputLabel>
+                  <InputLabel style={{ color: '#335D8A' }}>
+                    {data?.size}
+                  </InputLabel>
+                </div>
+              </div>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(2, 1fr)',
+                  width: '100%',
+                  marginBottom: 10
+                }}
+              >
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    width: '100%',
+                    marginBottom: 10
+                  }}
+                >
+                  <InputLabel style={{ color: '#00AAB5' }}>کد:</InputLabel>
+                  <InputLabel style={{ color: '#335D8A' }}>
+                    {data?.code}
+                  </InputLabel>
+                </div>
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    width: '100%',
+                    marginBottom: 10
+                  }}
+                >
+                  <InputLabel style={{ color: '#00AAB5' }}>کد ERP:</InputLabel>
+                  <InputLabel style={{ color: '#335D8A' }}>
+                    {data?.erp_code}
+                  </InputLabel>
+                </div>
+              </div>
+              <div
+                style={{
+                  display: 'inline-flex',
+                  width: '100%',
+                  marginBottom: 10
+                }}
+              >
+                <InputLabel style={{ color: '#00AAB5' }}>
+                  واحد منفرد:
+                </InputLabel>
+                <InputLabel style={{ color: '#335D8A' }}>
+                  {data?.singular_package_detail.translate_detail.item_fa}
+                </InputLabel>
+              </div>
+              <div
+                style={{
+                  display: 'inline-flex',
+                  width: '100%',
+                  marginBottom: 10
+                }}
+              >
+                <InputLabel style={{ color: '#00AAB5' }}>توضیحات:</InputLabel>
+                <InputLabel style={{ color: '#335D8A' }}>
+                  {data?.detail}
+                </InputLabel>
+              </div>
+
+              <Divider sx={{ marginBottom: '20px' }} />
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(2, 1fr)',
+                  width: '100%',
+                  marginBottom: 10
+                }}
+              >
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    width: '100%',
+                    marginBottom: 10
+                  }}
+                >
+                  <InputLabel style={{ color: '#00AAB5' }}>
+                    بسته بندی کوچک:
+                  </InputLabel>
+                  <InputLabel style={{ color: '#335D8A' }}>
+                    {data?.small_plural_package_detail.translate_detail.item_fa}
                   </InputLabel>
                 </div>
                 <div
@@ -93,123 +189,49 @@ export default function ProductTypeDetail(props) {
                   }}
                 >
                   <InputLabel style={{ color: '#00AAB5' }}>
-                    زیر دسته:
+                    تعداد در بسته بندی کوچک:
                   </InputLabel>
                   <InputLabel style={{ color: '#335D8A' }}>
-                    {data?.subcategory_detail.translate_detail.item_fa}
+                    {data?.small_plural_package_qty}
                   </InputLabel>
                 </div>
               </div>
               <div
                 style={{
-                  display: 'inline-flex',
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(2, 1fr)',
                   width: '100%',
                   marginBottom: 10
                 }}
               >
-                <InputLabel style={{ color: '#00AAB5' }}>
-                  ترجمه انگلیسی:
-                </InputLabel>
-                <InputLabel style={{ color: '#335D8A' }}>
-                  {data?.name_translate?.item_en}
-                </InputLabel>
-              </div>
-              <div
-                style={{
-                  display: 'inline-flex',
-                  width: '100%',
-                  marginBottom: 10
-                }}
-              >
-                <InputLabel style={{ color: '#00AAB5' }}>
-                  ترجمه فارسی:
-                </InputLabel>
-                <InputLabel style={{ color: '#335D8A' }}>
-                  {data?.name_translate?.item_fa}
-                </InputLabel>
-              </div>
-              <div
-                style={{
-                  display: 'inline-flex',
-                  width: '100%',
-                  marginBottom: 10
-                }}
-              >
-                <InputLabel style={{ color: '#00AAB5' }}>
-                  ترجمه عربی:
-                </InputLabel>
-                <InputLabel style={{ color: '#335D8A' }}>
-                  {data?.name_translate?.item_ar}
-                </InputLabel>
-              </div>
-              <div
-                style={{
-                  display: 'inline-flex',
-                  width: '100%',
-                  marginBottom: 10
-                }}
-              >
-                <InputLabel style={{ color: '#00AAB5' }}>
-                  ترجمه روسی:
-                </InputLabel>
-                <InputLabel style={{ color: '#335D8A' }}>
-                  {data?.name_translate?.item_ru}
-                </InputLabel>
-              </div>
-              <Divider sx={{ marginBottom: '20px' }} />
-              <div
-                style={{
-                  display: 'inline-flex',
-                  width: '100%',
-                  marginBottom: 10
-                }}
-              >
-                <InputLabel style={{ color: '#00AAB5' }}>توضیحات:</InputLabel>
-                <InputLabel style={{ color: '#335D8A' }}>
-                  {data?.detail_translate.item_fa}
-                </InputLabel>
-              </div>
-              <div
-                style={{
-                  display: 'inline-flex',
-                  width: '100%',
-                  marginBottom: 10
-                }}
-              >
-                <InputLabel style={{ color: '#00AAB5' }}>
-                  توضیحات انگلیسی
-                </InputLabel>
-                <InputLabel style={{ color: '#335D8A' }}>
-                  {data?.detail_translate.item_en}
-                </InputLabel>
-              </div>
-              <div
-                style={{
-                  display: 'inline-flex',
-                  width: '100%',
-                  marginBottom: 10
-                }}
-              >
-                <InputLabel style={{ color: '#00AAB5' }}>
-                  توضیحات عربی:
-                </InputLabel>
-                <InputLabel style={{ color: '#335D8A' }}>
-                  {data?.detail_translate.item_ar}
-                </InputLabel>
-              </div>
-              <div
-                style={{
-                  display: 'inline-flex',
-                  width: '100%',
-                  marginBottom: 10
-                }}
-              >
-                <InputLabel style={{ color: '#00AAB5' }}>
-                  توضیحات روسی:
-                </InputLabel>
-                <InputLabel style={{ color: '#335D8A' }}>
-                  {data?.detail_translate.item_ru}
-                </InputLabel>
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    width: '100%',
+                    marginBottom: 10
+                  }}
+                >
+                  <InputLabel style={{ color: '#00AAB5' }}>
+                    بسته بندی بزرگ:
+                  </InputLabel>
+                  <InputLabel style={{ color: '#335D8A' }}>
+                    {data?.large_plural_package_detail.translate_detail.item_fa}
+                  </InputLabel>
+                </div>
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    width: '100%',
+                    marginBottom: 10
+                  }}
+                >
+                  <InputLabel style={{ color: '#00AAB5' }}>
+                    تعداد در بسته بندی بزرگ:
+                  </InputLabel>
+                  <InputLabel style={{ color: '#335D8A' }}>
+                    {data?.large_plural_package_qty}
+                  </InputLabel>
+                </div>
               </div>
               <Divider sx={{ marginBottom: '20px' }} />
               <div
@@ -259,76 +281,7 @@ export default function ProductTypeDetail(props) {
                     {data?.order}
                   </InputLabel>
                 </div>
-                <div
-                  style={{
-                    display: 'inline-flex',
-                    width: '100%',
-                    marginBottom: 20
-                  }}
-                >
-                  <InputLabel style={{ color: '#00AAB5' }}>سایز:</InputLabel>
-                  <InputLabel style={{ color: '#335D8A', direction: 'ltr' }}>
-                    {data?.size}
-                  </InputLabel>
-                </div>
               </div>
-            </Box>
-          </Box>
-        </Grid>
-        <Grid item xs={4}>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'flex-start',
-              alignItems: 'flex-start',
-              padding: '16px 10px',
-              gap: '13.26px',
-              borderRadius: '8px',
-              backgroundColor: 'white',
-              width: '100%'
-              //   height: '290px'
-            }}
-          >
-            <InputLabelHeader style={{ color: '#00346D' }}>
-              عکس دسته
-            </InputLabelHeader>
-            <InputLabel style={{ color: '#00346D' }}>
-              عکس دسته به صورت زیر می باشد:
-            </InputLabel>
-            <Box sx={{ width: '100%' }}>
-              {data.images.length < 0 ? (
-                <Box sx={{ mt: 3 }}>
-                  <Button
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: '30px 0px',
-                      gap: '30px',
-                      width: '100%',
-                      height: '150px',
-                      border: '2px dashed #99DDE1',
-                      borderRadius: '4px',
-                      color: '#4F4C4D',
-                      fontFamily: 'IRANSans',
-                      fontWeight: 400,
-                      fontSize: '16px'
-                    }}
-                    component="label"
-                    onChange={event => {
-                      setFile(event.target.files[0]);
-                    }}
-                  >
-                    <img src={Upload} with="33px" height="28px" />
-                    {'انتخاب فایل'}
-                    <input type="file" hidden />
-                  </Button>
-                </Box>
-              ) : (
-                <SwiperImg images={images} />
-              )}
             </Box>
           </Box>
         </Grid>
@@ -337,7 +290,7 @@ export default function ProductTypeDetail(props) {
         <NewProductType
           open={editMode}
           handleClose={() => setEditMode(false)}
-          title="ویرایش دسته "
+          title="ویرایش محصول "
           data={data}
           type="edit"
           setImages={setImages}

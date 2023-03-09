@@ -576,6 +576,15 @@ const routes = [
       },
       {
         exact: true,
+        path: '/management/sale/setting/products/product',
+        component: lazy(() =>
+          import(
+            'src/views/management/Sale/Setting/Products/Desktop/Products/ProductDetail'
+          )
+        )
+      },
+      {
+        exact: true,
         path: '/management/sale/setting/price',
         component: lazy(() =>
           import('src/views/management/Sale/Setting/Prices')

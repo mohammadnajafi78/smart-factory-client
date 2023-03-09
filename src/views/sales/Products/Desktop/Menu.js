@@ -179,7 +179,7 @@ export default function GmailTreeView() {
         padding: '20px',
         gap: '40px',
         // width: '300px',
-        height: '82vh',
+        height: '84vh',
         background: '#FFFFFF',
         boxShadow: '0px 0px 8px rgba(146, 146, 146, 0.25)',
         borderRadius: '8px'
