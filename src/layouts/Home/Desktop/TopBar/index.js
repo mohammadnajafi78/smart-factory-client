@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
     minHeight: 60,
     margin: 0,
     gap: 200,
-    padding: '0px 20px'
+    padding: '0px 40px'
   }
 }));
 
