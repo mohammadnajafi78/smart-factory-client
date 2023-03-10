@@ -65,7 +65,7 @@ const TopBar = ({
         margin: 0,
         padding: 0,
         boxShadow: 'none',
-        width: '90%',
+        width: '92%',
         backgroundColor: '#33BBC4',
         color: 'white'
       }}

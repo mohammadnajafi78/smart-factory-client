@@ -41,7 +41,7 @@ const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
 let item = {};
 // let itemSort = {};
-const ReceiveTable = props => {
+const OrdersTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(15);
@@ -71,15 +71,15 @@ const ReceiveTable = props => {
   useEffect(() => {
     setColumns([
       {
-        name: 'order_num',
-        label: 'شناسه',
+        name: 'product.code',
+        label: 'کد محصول',
         options: {
           filter: false
         }
       },
       {
-        name: 'user_info.first_name',
-        label: 'نام سفارش دهنده',
+        name: 'product.name',
+        label: 'نام محصول',
         options: {
           filter: true,
           filterType: 'custom',
@@ -113,8 +113,8 @@ const ReceiveTable = props => {
         }
       },
       {
-        name: 'user_info.last_name',
-        label: 'نام خانوادگی سفارش دهنده',
+        name: 'product.size',
+        label: 'سایز محصول',
         options: {
           filter: true,
           filterType: 'custom',
@@ -148,7 +148,43 @@ const ReceiveTable = props => {
         }
       },
       {
-        name: 'final_price',
+        name: 'product.size',
+        label: 'سایز محصول',
+        options: {
+          filter: true,
+          filterType: 'custom',
+          filterOptions: {
+            display: (filterList, onChange, index, column) => {
+              return (
+                <FormControl>
+                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
+                    نام
+                  </InputLabel>
+                  <TextField
+                    id="name"
+                    aria-describedby="my-helper-text"
+                    fullWidth
+                    placeholder="نام"
+                    value={filterList[index]}
+                    onChange={event => {
+                      if (event.target.value) {
+                        filterList[index][0] = event.target.value;
+                        onChange(filterList[index], index, column);
+                      } else {
+                        filterList[index] = [];
+                        onChange(filterList[index], index, column);
+                      }
+                    }}
+                  />
+                </FormControl>
+              );
+            }
+          }
+        }
+      },
+
+      {
+        name: 'order.final_price',
         label: 'قیمت',
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
@@ -187,7 +223,7 @@ const ReceiveTable = props => {
         }
       },
       {
-        name: 'create_date',
+        name: 'order.create_date',
         label: 'زمان ثبت',
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
@@ -250,7 +286,7 @@ const ReceiveTable = props => {
         }
       },
       {
-        name: 'current_state.label',
+        name: 'order.state',
         label: 'وضعیت',
         options: {
           customBodyRender: value => {
@@ -266,7 +302,8 @@ const ReceiveTable = props => {
                       padding: '3px 6px !important',
                       background: '#CCEEF0',
                       borderRadius: '4px',
-                      color: '#00AAB5'
+                      color: '#00AAB5',
+                      width: '150px'
                     }}
                   >
                     <InputLabel style={{ color: '#00AAB5', paddingLeft: 0 }}>
@@ -397,7 +434,7 @@ const ReceiveTable = props => {
   function getData(page, rowsPerPage, search) {
     httpService
       .post(
-        `${API_BASE_URL}/api/orders/get_received_orders/?limit=${rowsPerPage}&offset=${page}${
+        `${API_BASE_URL}/api/management/order/get_order_products/?limit=${rowsPerPage}&offset=${page}${
           filter !== '' ? `&${filter}` : ''
         }`,
         {
@@ -535,7 +572,7 @@ const ReceiveTable = props => {
 
   function onRowClick(rowData, rowState) {
     history.push({
-      pathname: '/management/sale/received/detail',
+      pathname: '/sale/received/detail',
       state: {
         data: data.filter(f => f.order_num === rowData[0])
       }
@@ -567,7 +604,7 @@ const ReceiveTable = props => {
 
   return (
     <Table
-      title={'سفارشات دریافتی'}
+      title={'لیست'}
       data={data}
       columns={columns}
       rowsPerPage={rowsPerPage}
@@ -598,4 +635,4 @@ const ReceiveTable = props => {
   );
 };
 
-export default ReceiveTable;
+export default OrdersTable;

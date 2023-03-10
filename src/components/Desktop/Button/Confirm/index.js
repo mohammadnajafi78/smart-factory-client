@@ -20,12 +20,12 @@ export default function Confirm({ children, ...rest }) {
         border: rest.disabled
           ? '1px solid #CCEEF0 !important'
           : '1px solid #00AAB5',
-        minHeight: '44px',
+        minHeight: '36px',
         borderRadius: '4px',
         fontStyle: 'normal',
         fontWeight: 400,
-        fontSize: '16px',
-        lineHeight: '24px',
+        fontSize: '14px',
+        lineHeight: '20px',
         fontFamily: 'IRANSans'
       }}
       loadingIndicator={<Loading />}

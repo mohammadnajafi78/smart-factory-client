@@ -44,6 +44,9 @@ const PriceListTable = props => {
   const [filter, setFilter] = useState('');
   const [reset, setReset] = useState(false);
   const [openNew, setOpenNew] = useState(false);
+  const [formType, setFormType] = useState('new');
+  const [title, setTitle] = useState('لیست قیمت جدید');
+  const [selectedData, setSelectedData] = useState({});
 
   const history = useHistory();
 
@@ -338,11 +341,15 @@ const PriceListTable = props => {
 
   function onRowClick(rowData, rowState) {
     history.push({
-      pathname: '/management/sale/setting/products/product',
+      pathname: '/management/sale/setting/price',
       state: {
         data: data.filter(f => f.id === rowData[0])
       }
     });
+    // setOpenNew(true);
+    // setFormType('edit');
+    // setTitle('ویرایش لیست قیمت');
+    // setSelectedData(data.filter(f => f.id === rowData[0])[0]);
   }
 
   function onRowsDelete(rowsDeleted, newData) {
@@ -386,6 +393,8 @@ const PriceListTable = props => {
               onClick={() => {
                 // history.push('/management/club/competition/new');
                 setOpenNew(true);
+                setFormType('new');
+                setTitle('لیست قیمت جدید');
               }}
             >
               <Plus />
@@ -423,9 +432,10 @@ const PriceListTable = props => {
         <NewPrice
           open={openNew}
           handleClose={() => setOpenNew(false)}
-          title={'لیست قیمت جدید'}
-          type="new"
+          title={title}
+          type={formType}
           reloadData={() => getData(page, rowsPerPage, '')}
+          data={formType === 'new' ? null : selectedData}
         />
       )}
     </>

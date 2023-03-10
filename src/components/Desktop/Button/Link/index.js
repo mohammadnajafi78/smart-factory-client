@@ -13,7 +13,7 @@ export default function Link({ children, variant, ...rest }) {
         color: variant === 'outlined' ? '#00AAB5' : 'white',
         height: '48px',
         borderRadius: '8px',
-        fontSize: '18px',
+        fontSize: '14px',
         display: 'flex',
         justifyContent: 'space-between',
         padding: '12px',

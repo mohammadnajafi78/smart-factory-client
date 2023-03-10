@@ -1,16 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Grid } from '@mui/material';
-import InputLabelHeader from 'src/components/Desktop/InputLabel';
-import InputLabel from 'src/components/Desktop/InputLabel';
-import httpService from 'src/utils/httpService';
-import { API_BASE_URL } from 'src/utils/urls';
-import MomentEn from 'src/utils/MomentEn';
+import React, { useState } from 'react';
+import { Box } from '@mui/material';
+// import GetReceived from '../GetReceived';
+// import Received from './ReceivedBox';
+// import ReceivedList from './ReceivedList';
+// import Present from 'src/assets/img/icons/present.svg';
 import ReceiveTable from './Table';
 
 export default function ReceivedDesktop() {
+  const [selected, setSelected] = useState(null);
+
   return (
-    <Box sx={{ width: '100%' }}>
-      <ReceiveTable />
-    </Box>
+    // <div
+    //   style={{
+    //     // marginTop: '80px',
+    //     // marginRight: '130px',
+    //     width: '100%',
+    //     padding: '10px 30px'
+    //   }}
+    // >
+    <ReceiveTable />
+    // </div>
   );
 }

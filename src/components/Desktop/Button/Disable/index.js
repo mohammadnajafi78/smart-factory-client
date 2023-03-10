@@ -11,13 +11,13 @@ export default function Disable({ children, ...rest }) {
       sx={{
         padding: '10px',
         color: '#4F4C4D',
-        minHeight: '44px',
+        minHeight: '36px',
         borderRadius: '4px',
         borderRadius: '4px',
         fontStyle: 'normal',
         fontWeight: 400,
-        fontSize: '16px',
-        lineHeight: '24px',
+        fontSize: '14px',
+        lineHeight: '20px',
         backgroundColor: '#DFDFDF',
         marginBottom: '10px',
         fontFamily: 'IRANSans'

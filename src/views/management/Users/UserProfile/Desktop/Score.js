@@ -1,7 +1,7 @@
 import { Box, Drawer, Button, TextField, Divider } from '@mui/material';
 import React, { useState } from 'react';
-import InputLabel from 'src/components/Mobile/InputLabel';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
+import InputLabel from 'src/components/Desktop/InputLabel';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { ArrowBack } from '@mui/icons-material';
 import makeStyles from '@mui/styles/makeStyles';
 import { styled } from '@mui/material/styles';
@@ -222,8 +222,8 @@ export default function Score(props) {
               flexDirection: 'column',
               justifyContent: 'flex-start',
               alignItems: 'flex-start',
-              padding: '15px 10px 0px',
-              gap: '20px',
+              // padding: '15px 10px 0px',
+              // gap: '20px',
               background: '#FFFFFF'
               // mb: 1
             }}

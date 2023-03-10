@@ -5,7 +5,9 @@ import {
   Grid,
   TextField,
   Autocomplete,
-  Button
+  Button,
+  ToggleButtonGroup,
+  ToggleButton
 } from '@mui/material';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
@@ -31,6 +33,7 @@ export default function NewPrice({
   type,
   ...props
 }) {
+  console.log('data', type);
   return (
     <>
       <CustomizedDialogs
@@ -40,8 +43,9 @@ export default function NewPrice({
         content={
           <Formik
             initialValues={{
-              type_id: type === 'edit' ? data.type_detail.id : '',
-              code: type === 'edit' ? data.code : ''
+              list_name: type === 'edit' ? data.list_name : '',
+              is_active: type === 'edit' ? data.is_active : '',
+              excel: type === 'edit' ? data.excel : ''
             }}
             validationSchema={Yup.object().shape({
               // province: Yup.string().required('استان اجباری می باشد'),
@@ -52,13 +56,17 @@ export default function NewPrice({
 
               const formData = new FormData();
 
-              formData.append('type_id', values.type_id);
-              formData.append('code', values.code);
+              formData.append('price_list', values.list_name);
+              formData.append(
+                'is_active',
+                values.is_active === true ? 'True' : 'False'
+              );
+              formData.append('excel', values.excel);
 
               if (type === 'new') {
                 httpService
                   .post(
-                    `${API_BASE_URL}/api/management/product/product/add_product/`,
+                    `${API_BASE_URL}/api/management/product/price/import_prices/`,
                     formData
                   )
                   .then(res => {
@@ -71,7 +79,7 @@ export default function NewPrice({
               } else {
                 httpService
                   .patch(
-                    `${API_BASE_URL}/api/management/product/product/${data.id}/`,
+                    `${API_BASE_URL}/api/management/product/list_name/${data.id}/`,
                     formData
                   )
                   .then(res => {
@@ -108,40 +116,12 @@ export default function NewPrice({
                 }}
               >
                 <Grid container spacing={2}>
-                  <Grid xs={6} item>
-                    <InputLabel
-                      style={{ color: '#A7A5A6', marginBottom: '6px' }}
-                    >
-                      نوع
+                  <Grid xs={12} item>
+                    <InputLabel style={{ color: '#A7A5A6' }}>
+                      عنوان لیست
                     </InputLabel>
-                    {types.length > 0 && (
-                      <Autocomplete
-                        disablePortal
-                        fullWidth
-                        options={types}
-                        value={types.filter(f => f.id === values.type_id)[0]}
-                        getOptionLabel={option => option.name}
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            placeholder="نوع"
-                            fullWidth
-                            id="type"
-                            error={Boolean(touched.type && errors.type)}
-                            helperText={touched.type && errors.type}
-                          />
-                        )}
-                        onChange={(event, newValue) => {
-                          if (newValue) setFieldValue('type_id', newValue.id);
-                        }}
-                        noOptionsText={'موردی یافت نشد'}
-                      />
-                    )}
-                  </Grid>
-                  <Grid xs={6} item>
-                    <InputLabel style={{ color: '#A7A5A6' }}>سایز</InputLabel>
                     <TextField
-                      id="size"
+                      id="list_name"
                       aria-describedby="my-helper-text"
                       fullWidth
                       // placeholder="رمز عبور"
@@ -150,356 +130,75 @@ export default function NewPrice({
                         borderRadius: '4px',
                         margin: '6px 3px'
                       }}
-                      value={values.size}
+                      value={values.list_name}
                       onChange={handleChange}
-                      error={Boolean(touched.size && errors.size)}
-                      helperText={touched.size && errors.size}
+                      error={Boolean(touched.list_name && errors.list_name)}
+                      helperText={touched.list_name && errors.list_name}
                     />
                   </Grid>
-                  <Grid xs={6} item>
-                    <InputLabel style={{ color: '#A7A5A6' }}>کد</InputLabel>
-                    <TextField
-                      id="code"
-                      aria-describedby="my-helper-text"
-                      fullWidth
-                      sx={{
-                        background: '#F2F2F2',
-                        borderRadius: '4px',
-                        margin: '6px 3px'
-                      }}
-                      value={values.code}
-                      onChange={handleChange}
-                      error={Boolean(touched.code && errors.code)}
-                      helperText={touched.code && errors.code}
-                    />
-                  </Grid>
-                  <Grid xs={6} item>
-                    <InputLabel style={{ color: '#A7A5A6' }}>کد ERP</InputLabel>
-                    <TextField
-                      id="erp_code"
-                      aria-describedby="my-helper-text"
-                      fullWidth
-                      // placeholder="رمز عبور"
-                      sx={{
-                        background: '#F2F2F2',
-                        borderRadius: '4px',
-                        margin: '6px 3px'
-                      }}
-                      value={values.erp_code}
-                      onChange={handleChange}
-                      error={Boolean(touched.erp_code && errors.erp_code)}
-                      helperText={touched.erp_code && errors.erp_code}
-                    />
-                  </Grid>
-                  <Grid xs={6} item>
-                    <InputLabel
-                      style={{ color: '#A7A5A6', marginBottom: '6px' }}
-                    >
-                      واحد منفرد
-                    </InputLabel>
-                    {singulars.length > 0 && (
-                      <Autocomplete
-                        disablePortal
-                        fullWidth
-                        options={singulars}
-                        value={
-                          singulars.filter(
-                            f => f.id === values.singular_package_id
-                          )[0]
-                        }
-                        getOptionLabel={option =>
-                          option.translate_detail.item_fa
-                        }
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            placeholder="واحد منفرد"
-                            fullWidth
-                            id="singular_package_id"
-                            error={Boolean(
-                              touched.singular_package_id &&
-                                errors.singular_package_id
-                            )}
-                            helperText={
-                              touched.singular_package_id &&
-                              errors.singular_package_id
-                            }
-                          />
-                        )}
-                        onChange={(event, newValue) => {
-                          if (newValue)
-                            setFieldValue('singular_package_id', newValue.id);
-                        }}
-                        // isOptionEqualToValue={(option, value) =>
-                        //   option.id === value.id
-                        // }
-                        noOptionsText={'موردی یافت نشد'}
-                      />
-                    )}
-                  </Grid>
-                  <Grid xs={6} item>
-                    <InputLabel style={{ color: '#A7A5A6' }}>
-                      ترتیب نمایش
-                    </InputLabel>
-                    <TextField
-                      id="order"
-                      aria-describedby="my-helper-text"
-                      fullWidth
-                      // placeholder="رمز عبور"
-                      sx={{
-                        background: '#F2F2F2',
-                        borderRadius: '4px',
-                        margin: '6px 3px'
-                      }}
-                      value={values.order}
-                      onChange={handleChange}
-                      error={Boolean(touched.order && errors.order)}
-                      helperText={touched.order && errors.order}
-                      type={'number'}
-                    />
-                  </Grid>
-
-                  <Divider sx={{ marginBottom: '20px' }} />
-                  <Grid xs={6} item>
-                    <InputLabel style={{ color: '#A7A5A6' }}>
-                      بسته بندی کوچک
-                    </InputLabel>
-                    {plural.length > 0 && (
-                      <Autocomplete
-                        disablePortal
-                        fullWidth
-                        options={plural}
-                        value={
-                          plural.filter(
-                            f => f.id === values.small_plural_package_id
-                          )[0]
-                        }
-                        getOptionLabel={option =>
-                          option.translate_detail.item_fa
-                        }
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            placeholder="بسته بندی کوچک"
-                            fullWidth
-                            id="small_plural_package_id"
-                            error={Boolean(
-                              touched.small_plural_package_id &&
-                                errors.small_plural_package_id
-                            )}
-                            helperText={
-                              touched.small_plural_package_id &&
-                              errors.small_plural_package_id
-                            }
-                          />
-                        )}
-                        onChange={(event, newValue) => {
-                          if (newValue)
-                            setFieldValue(
-                              'small_plural_package_id',
-                              newValue.id
-                            );
-                        }}
-                        // isOptionEqualToValue={(option, value) =>
-                        //   option.id === value.id
-                        // }
-                        noOptionsText={'موردی یافت نشد'}
-                      />
-                    )}
-                  </Grid>
-                  <Grid xs={6} item>
-                    <InputLabel style={{ color: '#A7A5A6' }}>
-                      تعداد در بسته بندی کوچک
-                    </InputLabel>
-                    <TextField
-                      id="small_plural_package_qty"
-                      aria-describedby="my-helper-text"
-                      fullWidth
-                      sx={{
-                        background: '#F2F2F2',
-                        borderRadius: '4px',
-                        margin: '6px 3px'
-                      }}
-                      value={values.small_plural_package_qty}
-                      onChange={handleChange}
-                      error={Boolean(
-                        touched.small_plural_package_qty &&
-                          errors.small_plural_package_qty
-                      )}
-                      helperText={
-                        touched.small_plural_package_qty &&
-                        errors.small_plural_package_qty
-                      }
-                    />
-                  </Grid>
-                  <Grid xs={6} item>
-                    <InputLabel style={{ color: '#A7A5A6' }}>
-                      بسته بندی بزرگ
-                    </InputLabel>
-                    {plural.length > 0 && (
-                      <Autocomplete
-                        disablePortal
-                        fullWidth
-                        options={plural}
-                        value={
-                          plural.filter(
-                            f => f.id === values.large_plural_package_id
-                          )[0]
-                        }
-                        getOptionLabel={option =>
-                          option.translate_detail.item_fa
-                        }
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            placeholder="بسته بندی بزرگ"
-                            fullWidth
-                            id="large_plural_package_id"
-                            error={Boolean(
-                              touched.large_plural_package_id &&
-                                errors.large_plural_package_id
-                            )}
-                            helperText={
-                              touched.large_plural_package_id &&
-                              errors.large_plural_package_id
-                            }
-                          />
-                        )}
-                        onChange={(event, newValue) => {
-                          if (newValue)
-                            setFieldValue(
-                              'large_plural_package_id',
-                              newValue.id
-                            );
-                        }}
-                        // isOptionEqualToValue={(option, value) =>
-                        //   option.id === value.id
-                        // }
-                        noOptionsText={'موردی یافت نشد'}
-                      />
-                    )}
-                  </Grid>
-                  <Grid xs={6} item>
-                    <InputLabel style={{ color: '#A7A5A6' }}>
-                      تعداد در بسته بندی بزرگ
-                    </InputLabel>
-                    <TextField
-                      id="large_plural_package_qty"
-                      aria-describedby="my-helper-text"
-                      fullWidth
-                      sx={{
-                        background: '#F2F2F2',
-                        borderRadius: '4px',
-                        margin: '6px 3px'
-                      }}
-                      value={values.large_plural_package_qty}
-                      onChange={handleChange}
-                      error={Boolean(
-                        touched.large_plural_package_qty &&
-                          errors.large_plural_package_qty
-                      )}
-                      helperText={
-                        touched.large_plural_package_qty &&
-                        errors.large_plural_package_qty
-                      }
-                    />
-                  </Grid>
-                  <Divider sx={{ marginBottom: '20px' }} />
-                  <Grid xs={6} item>
-                    <InputLabel style={{ color: '#A7A5A6' }}>
-                      در کاتالوگ
-                    </InputLabel>
-                    <Autocomplete
-                      disablePortal
-                      fullWidth
-                      options={[
-                        { key: false, label: 'غیر فعال' },
-                        { key: true, label: 'فعال' }
-                      ]}
-                      value={
-                        [
-                          { key: false, label: 'غیر فعال' },
-                          { key: true, label: 'فعال' }
-                        ].filter(f => f.key == values.active_in_catalogue)[0]
-                      }
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          placeholder="در کاتالوگ"
-                          fullWidth
-                          id="active_in_catalogue"
-                          error={Boolean(
-                            touched.active_in_catalogue &&
-                              errors.active_in_catalogue
-                          )}
-                          helperText={
-                            touched.active_in_catalogue &&
-                            errors.active_in_catalogue
-                          }
-                        />
-                      )}
+                  <Grid xs={12} item>
+                    <InputLabel style={{ color: '#A7A5A6' }}>وضعیت</InputLabel>
+                    <ToggleButtonGroup
+                      color="primary"
+                      id="is_active"
+                      value={values.is_active}
+                      exclusive
                       onChange={(event, newValue) => {
-                        if (newValue)
-                          setFieldValue('active_in_catalogue', newValue.key);
+                        setFieldValue('is_active', newValue);
                       }}
-                      // isOptionEqualToValue={(option, value) =>
-                      //   option.label === value.label
-                      // }
-                      noOptionsText={'موردی یافت نشد'}
-                    />
+                      sx={{
+                        marginTop: '5px',
+                        direction: 'ltr',
+                        justifyContent: 'flex-end'
+                      }}
+                    >
+                      <ToggleButton
+                        value="true"
+                        sx={{
+                          fontFamily: 'IRANSans'
+                        }}
+                      >
+                        فعال
+                      </ToggleButton>
+                      <ToggleButton
+                        value="false"
+                        sx={{
+                          fontFamily: 'IRANSans'
+                          // borderLeft: '1px solid rgba(0,0,0, 0.12) !important'
+                        }}
+                      >
+                        غیر فعال
+                      </ToggleButton>
+                    </ToggleButtonGroup>
                   </Grid>
-                  <Grid xs={6} item>
+                  <Grid xs={12} item>
                     <InputLabel style={{ color: '#A7A5A6' }}>
-                      در فروشگاه
+                      آپلود فایل اکسل
                     </InputLabel>
-                    <Autocomplete
-                      disablePortal
-                      fullWidth
-                      options={[
-                        { key: false, label: 'غیر فعال' },
-                        { key: true, label: 'فعال' }
-                      ]}
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          placeholder="در فروشگاه"
-                          fullWidth
-                          id="active_in_shop"
-                          error={Boolean(
-                            touched.active_in_shop && errors.active_in_shop
-                          )}
-                          helperText={
-                            touched.active_in_shop && errors.active_in_shop
-                          }
-                        />
-                      )}
-                      value={
-                        [
-                          { key: false, label: 'غیر فعال' },
-                          { key: true, label: 'فعال' }
-                        ].filter(f => f.key == values.active_in_shop)[0]
-                      }
-                      onChange={(event, newValue) => {
-                        if (newValue)
-                          setFieldValue('active_in_shop', newValue.key);
+                    <ConfirmButton
+                      disabled={false}
+                      variant="outlined"
+                      component="label"
+                      onChange={event => {
+                        setFieldValue('excel', event.target.files[0]);
                       }}
-                      // isOptionEqualToValue={(option, value) =>
-                      //   option.label === value.label
-                      // }
-                      noOptionsText={'موردی یافت نشد'}
-                    />
+                    >
+                      <AttachFile />
+                      {'آپلود فایل'}
+                      <input type="file" hidden />
+                    </ConfirmButton>
                   </Grid>
                 </Grid>
 
-                <Divider sx={{ m: 2 }} />
                 <Box
                   sx={{
                     display: 'inline-flex',
-                    justifyContent: 'center',
+                    justifyContent: 'flex-end',
                     gap: 2,
                     padding: '0px',
                     margin: 0,
-                    width: '100%'
+                    width: '100%',
+                    mt: 5
                   }}
                 >
                   <ConfirmButton
@@ -509,14 +208,14 @@ export default function NewPrice({
                       handleClose();
                     }}
                     type={'button'}
-                    style={{ width: '150px' }}
+                    style={{ width: '130px' }}
                   >
                     {'لغو'}
                   </ConfirmButton>
                   <ConfirmButton
                     disabled={isSubmitting}
                     loading={isSubmitting}
-                    style={{ width: '150px' }}
+                    style={{ width: '130px' }}
                   >
                     {'ذخیره اطلاعات'}
                   </ConfirmButton>

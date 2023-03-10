@@ -32,6 +32,13 @@ import AwardsMng from 'src/assets/img/icons/awardsMng.js';
 import CommentMng from 'src/assets/img/icons/commentMng.js';
 import SettingMng from 'src/assets/img/icons/settingMng.js';
 import Inventory2Mng from 'src/assets/img/icons/Inventory2Mng.js';
+import { ArrowDown } from 'react-feather';
+import {
+  ArrowUpwardOutlined,
+  ArrowUpwardRounded,
+  KeyboardArrowDown,
+  KeyboardArrowUp
+} from '@mui/icons-material';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -67,6 +74,7 @@ const NewDrawer = styled(Drawer)(({ theme }) => ({
 export default function DrawerComp(props) {
   const [selected, setSelected] = useState(-1);
   const [open, setOpen] = useState(false);
+  const [menuId, setMenuId] = useState(-1);
   const history = useHistory();
   let menu = [
     {
@@ -77,6 +85,7 @@ export default function DrawerComp(props) {
       image: userMng,
       children: [
         {
+          id: 101,
           name: 'home',
           title: 'خانه',
           path: '/management/user/home',
@@ -84,6 +93,7 @@ export default function DrawerComp(props) {
           image2: <HomeMng fill="#00AAB5" />
         },
         {
+          id: 102,
           name: 'newUser',
           title: 'کاربران جدید',
           path: '/management/user/newUser',
@@ -91,6 +101,7 @@ export default function DrawerComp(props) {
           image2: <NewUserMng fill="#00AAB5" />
         },
         {
+          id: 103,
           name: 'allUsers',
           title: 'همه کاربران',
           path: '/management/user/allUsers',
@@ -107,6 +118,7 @@ export default function DrawerComp(props) {
       image: clubMng,
       children: [
         {
+          id: 110,
           name: 'competition',
           title: 'مسابقات',
           path: '/management/club/competition',
@@ -114,6 +126,7 @@ export default function DrawerComp(props) {
           image2: <CompetitionMng fill="#00AAB5" />
         },
         {
+          id: 111,
           name: 'lottery',
           title: 'قرعه کشی',
           path: '/management/club/lottery',
@@ -121,6 +134,7 @@ export default function DrawerComp(props) {
           image2: <LotteryMng fill="#00AAB5" />
         },
         {
+          id: 112,
           name: 'awards',
           title: 'جوایز',
           path: '/management/club/gifts',
@@ -128,6 +142,7 @@ export default function DrawerComp(props) {
           image2: <AwardsMng fill="#00AAB5" />
         },
         {
+          id: 113,
           name: 'comments',
           title: 'نظرات',
           path: '/management/club/comment',
@@ -135,6 +150,7 @@ export default function DrawerComp(props) {
           image2: <CommentMng fill="#00AAB5" />
         },
         {
+          id: 114,
           name: 'settings',
           title: 'تنظیمات',
           path: '/management/club/setting',
@@ -151,6 +167,7 @@ export default function DrawerComp(props) {
       image: saleMng,
       children: [
         {
+          id: 200,
           name: 'home',
           title: 'خانه',
           path: '/management/sale/home',
@@ -158,6 +175,7 @@ export default function DrawerComp(props) {
           image2: <HomeMng fill="#00AAB5" />
         },
         {
+          id: 201,
           name: 'received',
           title: 'سفارشات دریافتی',
           path: '/management/sale/received',
@@ -165,6 +183,33 @@ export default function DrawerComp(props) {
           image2: <Inventory2Mng fill="#00AAB5" />
         },
         {
+          id: 202,
+          name: 'reports',
+          title: 'گزارشات',
+          path: '/management/sale/report/orders',
+          image1: <SettingMng fill="#335D8A" />,
+          image2: <SettingMng fill="#00AAB5" />,
+          children: [
+            {
+              id: 203,
+              name: 'orders',
+              title: 'لیست کلیه سفارشات',
+              path: '/management/sale/report/orders'
+              // image1: <SettingMng fill="#335D8A" />,
+              // image2: <SettingMng fill="#00AAB5" />
+            },
+            {
+              id: 204,
+              name: 'product',
+              title: 'لیست اقلام سفارش',
+              path: '/management/sale/report/product'
+              // image1: <SettingMng fill="#335D8A" />,
+              // image2: <SettingMng fill="#00AAB5" />
+            }
+          ]
+        },
+        {
+          id: 205,
           name: 'settings',
           title: 'تنظیمات',
           path: '/management/sale/setting/products',
@@ -172,6 +217,7 @@ export default function DrawerComp(props) {
           image2: <SettingMng fill="#00AAB5" />,
           children: [
             {
+              id: 206,
               name: 'products',
               title: 'محصولات',
               path: '/management/sale/setting/products'
@@ -179,9 +225,10 @@ export default function DrawerComp(props) {
               // image2: <SettingMng fill="#00AAB5" />
             },
             {
+              id: 207,
               name: 'price',
               title: 'جدول قیمت',
-              path: '/management/sale/setting/price'
+              path: '/management/sale/setting/priceList'
               // image1: <SettingMng fill="#335D8A" />,
               // image2: <SettingMng fill="#00AAB5" />
             }
@@ -212,7 +259,7 @@ export default function DrawerComp(props) {
           // width: '100px',
           flexShrink: 0,
           '& .MuiDrawer-paper': {
-            width: '95px',
+            // width: '95px',
             boxSizing: 'border-box',
             display: 'flex',
             flexDirection: 'column',
@@ -308,7 +355,9 @@ export default function DrawerComp(props) {
                   sx={{
                     margin: '0px',
                     padding: '0px',
-                    width: '180px'
+                    width: '180px',
+                    display: 'flex',
+                    justifyContent: 'space-between'
                   }}
                 >
                   <ListItemButton
@@ -316,6 +365,9 @@ export default function DrawerComp(props) {
                     onClick={() => {
                       if (item.children && item.children.length > 0) {
                         setOpen(!open);
+                        if (open === true) {
+                          setMenuId(-1);
+                        } else setMenuId(item.id);
                       }
                     }}
                   >
@@ -344,8 +396,38 @@ export default function DrawerComp(props) {
                       }}
                     />
                   </ListItemButton>
+                  {// open == true &&
+                  item.id == menuId &&
+                  item.children &&
+                  item.children.length > 0 ? (
+                    <KeyboardArrowUp
+                      style={{
+                        fontSize: '22px',
+                        color:
+                          props.selected.name === item.name
+                            ? '#00AAB5'
+                            : '#335D8A'
+                      }}
+                    />
+                  ) : // open == false &&
+                  // item.id === menuId &&
+                  item.children && item.children.length > 0 ? (
+                    <KeyboardArrowDown
+                      style={{
+                        fontSize: '22px',
+                        color:
+                          props.selected.name === item.name
+                            ? '#00AAB5'
+                            : '#335D8A'
+                      }}
+                    />
+                  ) : null}
                 </ListItem>
-                <Collapse in={open} timeout="auto" unmountOnExit>
+                <Collapse
+                  in={item.id === menuId ? open : false}
+                  timeout="auto"
+                  unmountOnExit
+                >
                   {item.children &&
                     item.children.length > 0 &&
                     item.children.map((child, key) => (
@@ -362,7 +444,7 @@ export default function DrawerComp(props) {
                         }}
                       >
                         <ListItemButton
-                          sx={{ flexDirection: 'row', padding: '12px 40px' }}
+                          sx={{ flexDirection: 'row', padding: '12px 30px' }}
                         >
                           <ListItemText
                             primary={child.title}

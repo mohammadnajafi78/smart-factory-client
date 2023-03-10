@@ -14,7 +14,7 @@ export default function Link({ children, variant, ...rest }) {
         background: '#00346D',
         height: '48px',
         borderRadius: '8px',
-        fontSize: '18px',
+        fontSize: '14px',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',

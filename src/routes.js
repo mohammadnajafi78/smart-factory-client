@@ -279,6 +279,15 @@ const routes = [
   {
     exact: true,
     guard: AuthGuard,
+    path: '/management/sale/received/detail',
+    layout: SalesDashboardLayoutBack,
+    component: lazy(() =>
+      import('src/views/management/Sale/Received/ReceivedDetail')
+    )
+  },
+  {
+    exact: true,
+    guard: AuthGuard,
     path: '/sale/send/detail',
     layout: SalesDashboardLayoutBack,
     component: lazy(() => import('src/views/sales/Send/SendDetail'))
@@ -290,6 +299,17 @@ const routes = [
     layout: SalesDashboardLayoutForm,
     component: lazy(() =>
       import('src/views/sales/Received/ReceivedDetail/Mobile/AcceptConfirm')
+    )
+  },
+  {
+    exact: false,
+    guard: AuthGuard,
+    path: '/management/sale/received/confirm',
+    layout: SalesDashboardLayoutForm,
+    component: lazy(() =>
+      import(
+        'src/views/management/Sale/Received/ReceivedDetail/Mobile/AcceptConfirm'
+      )
     )
   },
   {
@@ -340,6 +360,17 @@ const routes = [
   {
     exact: true,
     guard: AuthGuard,
+    path: '/management/sale/received/payment',
+    layout: SalesDashboardLayoutForm,
+    component: lazy(() =>
+      import(
+        'src/views/management/Sale/Received/ReceivedDetail/Mobile/AcceptPayment'
+      )
+    )
+  },
+  {
+    exact: true,
+    guard: AuthGuard,
     path: '/sale/received/payment/add',
     layout: SalesDashboardLayoutForm,
     component: lazy(() =>
@@ -349,10 +380,32 @@ const routes = [
   {
     exact: true,
     guard: AuthGuard,
+    path: '/management/sale/received/payment/add',
+    layout: SalesDashboardLayoutForm,
+    component: lazy(() =>
+      import(
+        'src/views/management/Sale/Received/ReceivedDetail/Mobile/AddPayment'
+      )
+    )
+  },
+  {
+    exact: true,
+    guard: AuthGuard,
     path: '/sale/received/delivery',
     layout: SalesDashboardLayoutForm,
     component: lazy(() =>
       import('src/views/sales/Received/ReceivedDetail/Mobile/DeliveryInfo')
+    )
+  },
+  {
+    exact: true,
+    guard: AuthGuard,
+    path: '/management/sale/received/delivery',
+    layout: SalesDashboardLayoutForm,
+    component: lazy(() =>
+      import(
+        'src/views/management/Sale/Received/ReceivedDetail/Mobile/DeliveryInfo'
+      )
     )
   },
   {
@@ -390,6 +443,11 @@ const routes = [
         exact: true,
         path: '/sale/received',
         component: lazy(() => import('src/views/sales/Received'))
+      },
+      {
+        exact: true,
+        path: '/management/sale/received',
+        component: lazy(() => import('src/views/management/Sale/Received'))
       },
       {
         exact: true,
@@ -585,9 +643,28 @@ const routes = [
       },
       {
         exact: true,
-        path: '/management/sale/setting/price',
+        path: '/management/sale/setting/priceList',
         component: lazy(() =>
           import('src/views/management/Sale/Setting/Prices')
+        )
+      },
+      {
+        exact: true,
+        path: '/management/sale/setting/price',
+        component: lazy(() =>
+          import('src/views/management/Sale/Setting/Prices/Desktop/PriceTable')
+        )
+      },
+      {
+        exact: true,
+        path: '/management/sale/report/orders',
+        component: lazy(() => import('src/views/management/Sale/Report/Orders'))
+      },
+      {
+        exact: true,
+        path: '/management/sale/report/product',
+        component: lazy(() =>
+          import('src/views/management/Sale/Report/Product')
         )
       },
       {

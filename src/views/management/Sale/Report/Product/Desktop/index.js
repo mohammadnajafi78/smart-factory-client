@@ -5,12 +5,12 @@ import InputLabel from 'src/components/Desktop/InputLabel';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import MomentEn from 'src/utils/MomentEn';
-import PriceListTable from './PriceListTable';
+import Table from './Table';
 
 export default function ProductsDesktop() {
   return (
     <Box sx={{ width: '100%' }}>
-      <PriceListTable />
+      <Table />
     </Box>
   );
 }
