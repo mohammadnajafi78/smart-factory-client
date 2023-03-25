@@ -3,6 +3,7 @@ import jwtDecode from 'jwt-decode';
 import SplashScreen from 'src/components/SplashScreen';
 import axios from 'src/utils/axios';
 import { useHistory } from 'react-router-dom';
+import { askForPermissionToReceiveNotifications } from 'src/push-notification';
 
 const initialAuthState = {
   isAuthenticated: false,
@@ -24,6 +25,7 @@ const isValidToken = accessToken => {
 const setSession = accessToken => {
   if (accessToken) {
     localStorage.setItem('token', accessToken);
+    // askForPermissionToReceiveNotifications();
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
   } else {
     localStorage.removeItem('token');

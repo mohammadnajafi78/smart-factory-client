@@ -455,7 +455,11 @@ function IdentityInfoMobile(props) {
                     <InputLabel style={{ color: '#00346D' }}>
                       کارت ملی
                     </InputLabel>
-                    <img src={values?.id_card} width="100%" height="160px" />
+                    <img
+                      src={values?.id_card}
+                      width="100%"
+                      // height="160px"
+                    />
                   </Box>
                 </>
               )}
@@ -515,7 +519,7 @@ function IdentityInfoMobile(props) {
                     <img
                       src={values?.job_certificate}
                       width="100%"
-                      height="160px"
+                      // height="160px"
                     />
                   </Box>
                 </>

@@ -13,6 +13,7 @@ import useAuth from 'src/hooks/useAuth';
 import bcrypt from 'bcryptjs';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import useScore from 'src/hooks/useScore';
+import { askForPermissionToReceiveNotifications } from 'src/push-notification';
 
 const TEST_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
 function LoginPassMobile(props) {
@@ -67,6 +68,7 @@ function LoginPassMobile(props) {
               if (res.status === 200) {
                 setSubmitting(false);
                 localStorage.setItem('token', res.headers['x-auth-token']);
+                askForPermissionToReceiveNotifications();
                 axios.defaults.headers.common.Authorization = `Bearer ${res.headers['x-auth-token']}`;
                 registry(res.headers['x-auth-token']);
                 localStorage.setItem('user', JSON.stringify(res.data));

@@ -22,13 +22,13 @@ export default function ProductItem({ data }) {
         padding: '20px 12px 12px',
         gap: '10px',
 
-        height: '300px',
+        height: '280px',
         background: '#FFFFFF',
         boxShadow: '0px 0px 8px rgba(146, 146, 146, 0.25)',
         borderRadius: '9px'
       }}
     >
-      <img src={data?.images[0]?.url} width="140px" height="140px" />
+      <img src={data?.images[0]?.url} width="130px" height="130px" />
       <Box
         sx={{
           display: 'flex',
@@ -54,7 +54,7 @@ export default function ProductItem({ data }) {
             color: '#335D8A',
             padding: '3px 6px',
             borderRadius: '4px',
-            minHeight: '40px'
+            minHeight: '36px'
           }}
         >
           <InputLabel
@@ -86,7 +86,7 @@ export default function ProductItem({ data }) {
             justifyContent: 'space-between',
             padding: '8px 10px',
             gap: '4px',
-            height: '36px',
+            height: '34px',
             width: '100%',
             margin: '6px 0px',
 

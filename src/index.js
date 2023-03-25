@@ -21,6 +21,7 @@ import App from 'src/App';
 import { createRoot } from 'react-dom/client';
 import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
+import { initializeFirebase } from './push-notification';
 
 enableES5();
 
@@ -54,6 +55,8 @@ if (process.env.NODE_ENV === 'production') {
     tracesSampleRate: 1.0
   });
 }
+
+initializeFirebase();
 
 root.render(
   <Provider store={store}>

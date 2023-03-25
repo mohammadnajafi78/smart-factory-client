@@ -67,7 +67,7 @@ export default function ProductsList({ selected, setSelected }) {
         sx={{
           width: '100%',
           overflow: 'auto',
-          height: '73vh',
+          height: '75vh',
           marginTop: '10px'
         }}
       >

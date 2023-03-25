@@ -86,27 +86,67 @@ const OrdersTable = props => {
           filterOptions: {
             display: (filterList, onChange, index, column) => {
               return (
-                <FormControl>
-                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    نام
-                  </InputLabel>
-                  <TextField
-                    id="name"
-                    aria-describedby="my-helper-text"
-                    fullWidth
-                    placeholder="نام"
-                    value={filterList[index]}
-                    onChange={event => {
-                      if (event.target.value) {
-                        filterList[index][0] = event.target.value;
-                        onChange(filterList[index], index, column);
-                      } else {
-                        filterList[index] = [];
-                        onChange(filterList[index], index, column);
-                      }
-                    }}
-                  />
-                </FormControl>
+                <>
+                  <FormControl>
+                    <InputLabel sx={{ transform: 'none', position: 'initial' }}>
+                      نام سفارش دهنده
+                    </InputLabel>
+                    <TextField
+                      id="user__first_name"
+                      aria-describedby="my-helper-text"
+                      fullWidth
+                      placeholder="نام"
+                      value={filterList[index]}
+                      onChange={event => {
+                        if (event.target.value) {
+                          filterList[index][0] = event.target.value;
+                          onChange(filterList[index], index, column);
+                        } else {
+                          filterList[index] = [];
+                          onChange(filterList[index], index, column);
+                        }
+                      }}
+                    />
+                  </FormControl>
+                </>
+              );
+            }
+          }
+        }
+      },
+      {
+        name: 'order.last_name',
+        label: 'سفارش دهنده',
+        options: {
+          filter: true,
+          display: false,
+          filterType: 'custom',
+          filterOptions: {
+            display: (filterList, onChange, index, column) => {
+              return (
+                <>
+                  <FormControl>
+                    <InputLabel sx={{ transform: 'none', position: 'initial' }}>
+                      نام خانوادگی سفارش دهنده
+                    </InputLabel>
+                    <TextField
+                      id="user__last_name"
+                      aria-describedby="my-helper-text"
+                      fullWidth
+                      placeholder="نام خانوادگی"
+                      value={filterList[index]}
+                      onChange={event => {
+                        if (event.target.value) {
+                          filterList[index][0] = event.target.value;
+                          onChange(filterList[index], index, column);
+                        } else {
+                          filterList[index] = [];
+                          onChange(filterList[index], index, column);
+                        }
+                      }}
+                    />
+                  </FormControl>
+                </>
               );
             }
           }
@@ -121,27 +161,67 @@ const OrdersTable = props => {
           filterOptions: {
             display: (filterList, onChange, index, column) => {
               return (
-                <FormControl>
-                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    نام
-                  </InputLabel>
-                  <TextField
-                    id="name"
-                    aria-describedby="my-helper-text"
-                    fullWidth
-                    placeholder="نام"
-                    value={filterList[index]}
-                    onChange={event => {
-                      if (event.target.value) {
-                        filterList[index][0] = event.target.value;
-                        onChange(filterList[index], index, column);
-                      } else {
-                        filterList[index] = [];
-                        onChange(filterList[index], index, column);
-                      }
-                    }}
-                  />
-                </FormControl>
+                <>
+                  <FormControl>
+                    <InputLabel sx={{ transform: 'none', position: 'initial' }}>
+                      نام تامین کننده
+                    </InputLabel>
+                    <TextField
+                      id="name"
+                      aria-describedby="my-helper-text"
+                      fullWidth
+                      placeholder="نام"
+                      value={filterList[index]}
+                      onChange={event => {
+                        if (event.target.value) {
+                          filterList[index][0] = event.target.value;
+                          onChange(filterList[index], index, column);
+                        } else {
+                          filterList[index] = [];
+                          onChange(filterList[index], index, column);
+                        }
+                      }}
+                    />
+                  </FormControl>
+                </>
+              );
+            }
+          }
+        }
+      },
+      {
+        name: 'order.supplier_family',
+        label: 'تامین کننده',
+        options: {
+          display: false,
+          filter: true,
+          filterType: 'custom',
+          filterOptions: {
+            display: (filterList, onChange, index, column) => {
+              return (
+                <>
+                  <FormControl>
+                    <InputLabel sx={{ transform: 'none', position: 'initial' }}>
+                      نام خانوادگی تامین کننده
+                    </InputLabel>
+                    <TextField
+                      id="name"
+                      aria-describedby="my-helper-text"
+                      fullWidth
+                      placeholder="نام"
+                      value={filterList[index]}
+                      onChange={event => {
+                        if (event.target.value) {
+                          filterList[index][0] = event.target.value;
+                          onChange(filterList[index], index, column);
+                        } else {
+                          filterList[index] = [];
+                          onChange(filterList[index], index, column);
+                        }
+                      }}
+                    />
+                  </FormControl>
+                </>
               );
             }
           }
@@ -155,7 +235,7 @@ const OrdersTable = props => {
           customBodyRender: (value, tableMeta, updateValue) => {
             return `${value} تومان`;
           },
-          filter: true,
+          filter: false,
           filterType: 'custom',
           filterOptions: {
             display: (filterList, onChange, index, column) => {
@@ -331,7 +411,7 @@ const OrdersTable = props => {
               </>
             );
           },
-          filter: true,
+          filter: false,
           filterType: 'custom',
           filterOptions: {
             display: (filterList, onChange, index, column) => {
@@ -419,39 +499,51 @@ const OrdersTable = props => {
 
   function onFilterChange(column, filterList, type) {
     let filterType = '';
+    console.log('filter', filterList);
+    console.log('column', column);
 
     switch (column) {
-      case 'name':
+      case 'order.user':
         if (filterList[1][0]) {
-          item['name'] = filterList[1][0];
+          item['user__first_name'] = filterList[1][0];
           filterType = '__contains';
         } else {
-          delete item['name'];
+          delete item['user__first_name'];
         }
         break;
-      case 'participant_count':
+      case 'order.last_name':
         if (filterList[2][0]) {
-          item['participant_count'] = filterList[2][0];
-          filterType = '';
+          item['user__last_name'] = filterList[2][0];
+          filterType = '__contains';
         } else {
-          delete item['participant_count'];
+          delete item['user__last_name'];
         }
-      case 'start_date':
+        break;
+      case 'order.supplier':
         if (filterList[3][0]) {
-          item['start_date'] = startDate;
-          filterType = '';
+          item['supplier__first_name'] = filterList[3][0];
+          filterType = '__contains';
         } else {
-          delete item['start_date'];
+          delete item['supplier__first_name'];
         }
         break;
-      case 'end_date':
+      case 'order.supplier_family':
         if (filterList[4][0]) {
-          item['end_date'] = endDate;
-          filterType = '';
+          item['supplier__last_name'] = filterList[4][0];
+          filterType = '__contains';
         } else {
-          delete item['end_date'];
+          delete item['supplier__last_name'];
         }
         break;
+      case 'order.create_date':
+        if (filterList[6][0]) {
+          item['create_date'] = startDate;
+          filterType = '';
+        } else {
+          delete item['create_date'];
+        }
+        break;
+
       case 'status':
         if (filterList[5][0]) {
           console.log('filterlist', filterList[5][0]);
@@ -501,15 +593,15 @@ const OrdersTable = props => {
       case 'start_date':
         itemSort['start_date'] = direction;
         break;
-      case 'end_date':
-        itemSort['end_date'] = direction;
-        break;
-      case 'participant_count':
-        itemSort['participant_count'] = direction;
-        break;
-      case 'status':
-        itemSort['status'] = direction;
-        break;
+      // case 'end_date':
+      //   itemSort['end_date'] = direction;
+      //   break;
+      // case 'participant_count':
+      //   itemSort['participant_count'] = direction;
+      //   break;
+      // case 'status':
+      //   itemSort['status'] = direction;
+      //   break;
       default:
         itemSort = itemSort;
     }

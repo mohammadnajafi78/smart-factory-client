@@ -19,6 +19,7 @@ import useAuth from 'src/hooks/useAuth';
 import bcrypt from 'bcryptjs';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import useScore from 'src/hooks/useScore';
+import { askForPermissionToReceiveNotifications } from 'src/push-notification';
 
 function LoginPassDesktop(props) {
   const [showPassword, setShowPassword] = useState(false);
@@ -73,6 +74,7 @@ function LoginPassDesktop(props) {
                 if (res.status === 200) {
                   setSubmitting(false);
                   localStorage.setItem('token', res.headers['x-auth-token']);
+                  askForPermissionToReceiveNotifications();
                   axios.defaults.headers.common.Authorization = `Bearer ${res.headers['x-auth-token']}`;
                   registry(res.headers['x-auth-token']);
                   localStorage.setItem('user', JSON.stringify(res.data));

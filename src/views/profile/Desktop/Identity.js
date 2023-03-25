@@ -529,7 +529,7 @@ function IdentityInfoMobile(props) {
                         <img
                           src={values?.id_card}
                           width="320px"
-                          height="160px"
+                          // height="160px"
                         />
                       </Box>
                     </Grid>
@@ -553,7 +553,7 @@ function IdentityInfoMobile(props) {
                         <img
                           src={values?.job_certificate}
                           width="320px"
-                          height="160px"
+                          // height="160px"
                         />
                       </Box>
                     </Grid>

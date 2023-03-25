@@ -17,6 +17,7 @@ import { TextCenterTextField } from 'src/components/Desktop/TextField/TextCenter
 import useScore from 'src/hooks/useScore';
 import * as Yup from 'yup';
 import p2e from 'src/utils/P2E';
+import { askForPermissionToReceiveNotifications } from 'src/push-notification';
 
 function LoginOTPDesktop(props) {
   const history = useHistory();
@@ -100,6 +101,7 @@ function LoginOTPDesktop(props) {
                 .then(res => {
                   if (res.status === 200) {
                     localStorage.setItem('token', res.headers['x-auth-token']);
+                    askForPermissionToReceiveNotifications();
                     axios.defaults.headers.common.Authorization = `Bearer ${res.headers['x-auth-token']}`;
                     registry(res.headers['x-auth-token']);
                     localStorage.setItem('user', JSON.stringify(res.data));
