@@ -293,6 +293,13 @@ const routes = [
     component: lazy(() => import('src/views/sales/Send/SendDetail'))
   },
   {
+    exact: true,
+    guard: AuthGuard,
+    path: '/sale/tripartite/detail',
+    layout: SalesDashboardLayoutBack,
+    component: lazy(() => import('src/views/sales/Tripartite/TripartiteDetail'))
+  },
+  {
     exact: false,
     guard: AuthGuard,
     path: '/sale/received/confirm',

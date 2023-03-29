@@ -1,20 +1,20 @@
 import React from 'react';
 import { useMediaQuery, useTheme } from '@mui/material';
-import GetAwardsMobile from './Mobile';
-import GetAwardsDesktop from './Desktop';
+import ReceivedDetailMobile from './Mobile';
+import ReceivedDetailDesktop from './Desktop';
 
-function GetAwards(props) {
+function ReceivedDetail(props) {
   const theme = useTheme();
   const mobileDevice = useMediaQuery(theme.breakpoints.down('md'));
   return (
     <>
       {mobileDevice ? (
-        <GetAwardsMobile {...props} />
+        <ReceivedDetailMobile {...props} />
       ) : (
-        <GetAwardsDesktop {...props} />
+        <ReceivedDetailDesktop {...props} />
       )}
     </>
   );
 }
 
-export default GetAwards;
+export default ReceivedDetail;

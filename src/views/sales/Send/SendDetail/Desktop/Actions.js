@@ -47,6 +47,8 @@ export default function Actions(props) {
   const [delivery, setDelivery] = useState(false);
   const location = props.location.pathname;
 
+  console.log('Data', data);
+
   return (
     <>
       <Box
@@ -734,24 +736,26 @@ export default function Actions(props) {
                     {data.flow_action.comment}
                   </InputLabel>
                 </Box>
-                <a
-                  href={data?.files.filter(f => f.subject === 'PI')[0].url}
-                  download
-                  style={{ textDecoration: 'none', width: '100%' }}
-                >
-                  <ConfirmButton
-                    variant="contained"
-                    style={{
-                      background: '#DDF5F6',
-                      border: '1px solid #00AAB5',
-                      color: '#00AAB5'
-                    }}
-                    // onClick={() => history.push('/sale/products/order/2')}
+                {data?.files && data?.files.length > 0 && (
+                  <a
+                    href={data?.files.filter(f => f.subject === 'PI')[0].url}
+                    download
+                    style={{ textDecoration: 'none', width: '100%' }}
                   >
-                    <Download style={{ marginLeft: '3px' }} />
-                    {'دانلود پیش فاکتور'}
-                  </ConfirmButton>
-                </a>
+                    <ConfirmButton
+                      variant="contained"
+                      style={{
+                        background: '#DDF5F6',
+                        border: '1px solid #00AAB5',
+                        color: '#00AAB5'
+                      }}
+                      // onClick={() => history.push('/sale/products/order/2')}
+                    >
+                      <Download style={{ marginLeft: '3px' }} />
+                      {'دانلود پیش فاکتور'}
+                    </ConfirmButton>
+                  </a>
+                )}
               </Box>
             </Box>
             <Divider />
