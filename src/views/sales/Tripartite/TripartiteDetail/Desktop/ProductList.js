@@ -480,7 +480,7 @@ export default function ProductList({ data }) {
                         order_num: order.order_num,
                         products: [
                           {
-                            code: selected.code,
+                            code: selected.product_detail.code,
                             quantity: all ? selected.quantity : count,
                             package: all ? selected.package_type : unitSelected
                           }
@@ -499,7 +499,7 @@ export default function ProductList({ data }) {
                       .post(`${API_BASE_URL}/api/orders/`, {
                         products: [
                           {
-                            code: selected.code,
+                            code: selected.product_detail.code,
                             quantity: all ? selected.quantity : count,
                             package: all ? selected.package_type : unitSelected
                           }
