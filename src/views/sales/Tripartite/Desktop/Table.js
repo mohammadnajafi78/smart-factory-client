@@ -265,15 +265,24 @@ const ReceiveTable = props => {
                       justifyContent: 'center',
                       alignItems: 'center',
                       padding: '3px 6px !important',
-                      background: '#CCEEF0',
+                      background:
+                        value.toLowerCase() === 'completed'
+                          ? '#CCEEF0'
+                          : '#FFF5D4',
                       borderRadius: '4px',
                       color: '#00AAB5',
                       width: '200px'
                     }}
                   >
-                    <InputLabel style={{ color: '#00AAB5', paddingLeft: 0 }}>
-                      {value}
-                    </InputLabel>
+                    {value.toLowerCase() === 'completed' ? (
+                      <InputLabel style={{ color: '#00AAB5', paddingLeft: 0 }}>
+                        تکمیل شده
+                      </InputLabel>
+                    ) : (
+                      <InputLabel style={{ color: '#335D8A', paddingLeft: 0 }}>
+                        تکمیل نشده
+                      </InputLabel>
+                    )}
                   </Box>
                 }
                 {/* {value.toLowerCase() === 'submit' ? (

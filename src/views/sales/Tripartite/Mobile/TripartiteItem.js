@@ -99,23 +99,39 @@ export default function TripartiteItem({ data }) {
                 justifyContent: 'center',
                 alignItems: 'center',
                 padding: '3px 4px !important',
-                background: '#CCEEF0',
+                background:
+                  data?.order?.state.toLowerCase() === 'completed'
+                    ? '#CCEEF0'
+                    : '#FFF5D4',
                 borderRadius: '4px',
                 color: '#00AAB5',
                 width: '100px',
                 mt: 1
               }}
             >
-              <InputLabel
-                style={{
-                  color: '#00AAB5',
-                  fontSize: '12px',
-                  textAlign: 'center',
-                  padding: 0
-                }}
-              >
-                {data?.order?.state}
-              </InputLabel>
+              {data?.order?.state.toLowerCase() === 'completed' ? (
+                <InputLabel
+                  style={{
+                    color: '#00AAB5',
+                    padding: 0,
+                    fontSize: '12px',
+                    textAlign: 'center'
+                  }}
+                >
+                  تکمیل شده
+                </InputLabel>
+              ) : (
+                <InputLabel
+                  style={{
+                    color: '#335D8A',
+                    padding: 0,
+                    fontSize: '12px',
+                    textAlign: 'center'
+                  }}
+                >
+                  تکمیل نشده
+                </InputLabel>
+              )}
             </Box>
           </Box>
           <Box

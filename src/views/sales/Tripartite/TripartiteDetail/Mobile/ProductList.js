@@ -149,6 +149,7 @@ export default function ProductList({ data }) {
                             setOpen(true);
                             setSelected(item);
                           }}
+                          disabled={item.supplier_order_remain === 0}
                         >
                           انتخاب
                         </ConfirmButton>
