@@ -39,6 +39,7 @@ export default function ProductList({ data }) {
   const classes = useStyles();
 
   useEffect(() => {
+    getOrder();
     setUnitSelected('SINGULAR');
   }, []);
   useEffect(() => {
