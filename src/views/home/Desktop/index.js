@@ -13,11 +13,15 @@ export default function HomeDesktop() {
   // { name: 'management', path: '/management/user/allUsers', text: 'مدیریت' }
 
   useEffect(() => {
-    httpService.get(`${API_BASE_URL}/api/utils/menu_items/`).then(res => {
-      if (res.status === 200) {
-        setPrograms(res.data.filter(f => f.level === 1));
-      }
-    });
+    httpService
+      .get(
+        `${API_BASE_URL}/api/management/util/menu_items/?menu_app=Application`
+      )
+      .then(res => {
+        if (res.status === 200) {
+          setPrograms(res.data);
+        }
+      });
   }, []);
   return (
     <Box
@@ -57,13 +61,13 @@ export default function HomeDesktop() {
                 key={item?.id}
                 onClick={() => {
                   history.push(
-                    item?.form_url === '/sale/'
-                      ? item?.form_url + 'products'
-                      : item?.form_url
+                    item?.path['fa'] === '/sale/'
+                      ? item?.path['fa'] + 'products'
+                      : item?.path['fa']
                   );
                 }}
               >
-                {item?.name}
+                {item.title['fa']}
               </Box>
             );
           })}

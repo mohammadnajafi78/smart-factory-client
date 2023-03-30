@@ -260,7 +260,7 @@ export default function DrawerComp(props) {
         menu
           .filter(filter => filter.name === 'Management')[0]
           .children.filter(filter => filter.id === selected)[0]
-          .children.filter(f => f.path.includes(path2))[0]
+          .children.filter(f => f.path['fa'].includes(path2))[0]
       );
     }
   }, [selected]);
@@ -324,7 +324,7 @@ export default function DrawerComp(props) {
                   <ListItem
                     key={item.id}
                     onClick={() => {
-                      history.push(item.path);
+                      history.push(item.path['fa']);
                       setSelected(item.id);
                       props.setSelected(item.children[0]);
                     }}
@@ -381,7 +381,7 @@ export default function DrawerComp(props) {
                       <ListItem
                         key={item.id}
                         onClick={() => {
-                          history.push(item.path);
+                          history.push(item.path['fa']);
                           props.setSelected(item);
                         }}
                         sx={{
@@ -424,7 +424,7 @@ export default function DrawerComp(props) {
                             </Box>
                           </ListItemIcon>
                           <ListItemText
-                            primary={item.title}
+                            primary={item.title['fa']}
                             style={{
                               color:
                                 props?.selected?.id === item?.id
@@ -471,7 +471,7 @@ export default function DrawerComp(props) {
                             <ListItem
                               key={child.id}
                               onClick={() => {
-                                history.push(child.path);
+                                history.push(child.path['fa']);
                                 props.setSelected(child);
                               }}
                               sx={{
@@ -507,7 +507,7 @@ export default function DrawerComp(props) {
                                   </Box>
                                 </ListItemIcon>
                                 <ListItemText
-                                  primary={child.title}
+                                  primary={child.title['fa']}
                                   style={{
                                     color:
                                       props.selected.id === child.id

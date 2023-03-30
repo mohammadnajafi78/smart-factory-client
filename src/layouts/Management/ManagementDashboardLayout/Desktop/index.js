@@ -63,11 +63,13 @@ export default function ManagementDashboardLayoutDesktop(props) {
               justifyContent: 'flex-start'
             }}
           >
-            <InputLabelHeader
-              style={{ color: '#00346D', fontWeight: 700, fontSize: '18px' }}
-            >
-              {selected?.title}
-            </InputLabelHeader>
+            {selected.length > 0 && (
+              <InputLabelHeader
+                style={{ color: '#00346D', fontWeight: 700, fontSize: '18px' }}
+              >
+                {selected?.title['fa']}
+              </InputLabelHeader>
+            )}
           </Box>
           <Box sx={{ p: '20px', overflow: 'auto' }}>{props.children}</Box>
         </Box>
