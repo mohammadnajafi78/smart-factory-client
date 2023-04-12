@@ -355,7 +355,10 @@ const GiftTable = props => {
                     getOptionLabel={option => option.name}
                     sx={{
                       background: '#F2F2F2',
-                      borderRadius: '4px'
+                      borderRadius: '4px',
+                      '.MuiOutlinedInput-root': {
+                        padding: '5px'
+                      }
                     }}
                     noOptionsText={'موردی یافت نشد'}
                   />
@@ -399,7 +402,10 @@ const GiftTable = props => {
                     }
                     sx={{
                       background: '#F2F2F2',
-                      borderRadius: '4px'
+                      borderRadius: '4px',
+                      '.MuiOutlinedInput-root': {
+                        padding: '5px'
+                      }
                     }}
                     noOptionsText={'موردی یافت نشد'}
                   />
@@ -415,9 +421,8 @@ const GiftTable = props => {
   function getData(page, rowsPerPage, search) {
     httpService
       .post(
-        `${API_BASE_URL}/api/management/club/gifts/gift_list/?limit=${rowsPerPage}&offset=${page}${
-          filter !== '' ? `&${filter}` : ''
-        }`,
+        `${API_BASE_URL}/api/management/club/gifts/gift_list/?limit=${rowsPerPage}&offset=${page *
+          rowsPerPage}${filter !== '' ? `&${filter}` : ''}`,
         {
           order: sort,
           search: search

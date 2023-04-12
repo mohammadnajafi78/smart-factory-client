@@ -296,7 +296,7 @@ const LotteryReceiverTable = props => {
       .post(
         `${API_BASE_URL}/api/management/club/lottery_participant/lottery_list/?lottery_id=${
           props.location.state.data[0].id
-        }&limit=${rowsPerPage}&offset=${page}${
+        }&limit=${rowsPerPage}&offset=${page * rowsPerPage}${
           filter !== '' ? `&${filter}` : ''
         }`,
         {

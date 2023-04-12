@@ -292,7 +292,10 @@ export default function ProfileDesktop(props) {
                           option.label === value.label
                         }
                         sx={{
-                          width: '94%'
+                          width: '94%',
+                          '.MuiOutlinedInput-root': {
+                            padding: '5px'
+                          }
                         }}
                         noOptionsText={'موردی یافت نشد'}
                       />
@@ -314,7 +317,10 @@ export default function ProfileDesktop(props) {
                           option.label === value.label
                         }
                         sx={{
-                          width: '94%'
+                          width: '94%',
+                          '.MuiOutlinedInput-root': {
+                            padding: '5px'
+                          }
                         }}
                         noOptionsText={'موردی یافت نشد'}
                       />
@@ -396,7 +402,10 @@ export default function ProfileDesktop(props) {
                           option.translate === value.translate
                         }
                         sx={{
-                          width: '94%'
+                          width: '94%',
+                          '.MuiOutlinedInput-root': {
+                            padding: '5px'
+                          }
                         }}
                         noOptionsText={'موردی یافت نشد'}
                       />

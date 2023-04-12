@@ -228,6 +228,11 @@ export default function NewCompetition() {
                         option.id === value.id
                       }
                       noOptionsText={'موردی یافت نشد'}
+                      sx={{
+                        '.MuiOutlinedInput-root': {
+                          padding: '5px'
+                        }
+                      }}
                     />
                   </Box>
                 </Grid>

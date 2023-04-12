@@ -144,6 +144,11 @@ export default function CommentsList() {
                 option.suggestion_type + ' ' + option.name
               }
               noOptionsText={'موردی یافت نشد'}
+              sx={{
+                '.MuiOutlinedInput-root': {
+                  padding: '5px'
+                }
+              }}
             />
           </Box>
         </Box>

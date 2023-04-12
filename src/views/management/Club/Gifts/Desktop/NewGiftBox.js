@@ -215,6 +215,11 @@ export default function NewGiftBox() {
                           option.name === value.name
                         }
                         noOptionsText={'موردی یافت نشد'}
+                        sx={{
+                          '.MuiOutlinedInput-root': {
+                            padding: '5px'
+                          }
+                        }}
                       />
                     </Box>
                   </Grid>
@@ -273,6 +278,11 @@ export default function NewGiftBox() {
                         option.id === value.id
                       }
                       noOptionsText={'موردی یافت نشد'}
+                      sx={{
+                        '.MuiOutlinedInput-root': {
+                          padding: '5px'
+                        }
+                      }}
                     />
                   </Box>
                 </Grid>

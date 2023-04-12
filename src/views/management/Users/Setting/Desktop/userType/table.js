@@ -240,7 +240,7 @@ const UserTypeTable = props => {
   function getData(page, rowsPerPage, search) {
     httpService
       .post(
-        `${API_BASE_URL}/api/management/user/user_type/user_type_list/?limit=${rowsPerPage}&offset=${page}${
+        `${API_BASE_URL}/api/management/user/user_type/user_type_list/?limit=${rowsPerPage}&offset=${page *rowsPerPage}${
           filter !== '' ? `&${filter}` : ''
         }`,
         {

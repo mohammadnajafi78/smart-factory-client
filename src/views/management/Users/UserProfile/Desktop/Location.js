@@ -184,9 +184,11 @@ function LocationMobile(props) {
                             setFieldValue('provinceId', '');
                           }
                         }}
-                        // isOptionEqualToValue={(option, value) =>
-                        //   option.label === value.label
-                        // }
+                        sx={{
+                          '.MuiOutlinedInput-root': {
+                            padding: '5px'
+                          }
+                        }}
                         noOptionsText={'موردی یافت نشد'}
                       />
                     </Box>
@@ -220,9 +222,11 @@ function LocationMobile(props) {
                             setFieldValue('cityId', '');
                           }
                         }}
-                        // isOptionEqualToValue={(option, value) =>
-                        //   option.label === value.label
-                        // }
+                        sx={{
+                          '.MuiOutlinedInput-root': {
+                            padding: '5px'
+                          }
+                        }}
                         noOptionsText={'موردی یافت نشد'}
                       />
                     </Box>

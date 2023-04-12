@@ -320,6 +320,11 @@ function WorkMobile(props) {
                   isOptionEqualToValue={(option, value) =>
                     option.label === value.label
                   }
+                  sx={{
+                    '.MuiOutlinedInput-root': {
+                      padding: '5px'
+                    }
+                  }}
                   noOptionsText={'موردی یافت نشد'}
                 />
               </Box>
@@ -362,9 +367,11 @@ function WorkMobile(props) {
                       setFieldValue('city', '');
                     }
                   }}
-                  // isOptionEqualToValue={(option, value) =>
-                  //   option.label === value.label
-                  // }
+                  sx={{
+                    '.MuiOutlinedInput-root': {
+                      padding: '5px'
+                    }
+                  }}
                   noOptionsText={'موردی یافت نشد'}
                 />
               </Box>

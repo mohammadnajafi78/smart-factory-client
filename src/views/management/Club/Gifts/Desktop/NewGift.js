@@ -241,6 +241,11 @@ export default function NewCompetition() {
                           option.translate === value.translate
                         }
                         noOptionsText={'موردی یافت نشد'}
+                        sx={{
+                          '.MuiOutlinedInput-root': {
+                            padding: '5px'
+                          }
+                        }}
                       />
                     </Box>
                   </Grid>
@@ -266,6 +271,11 @@ export default function NewCompetition() {
                           option.name === value.name
                         }
                         noOptionsText={'موردی یافت نشد'}
+                        sx={{
+                          '.MuiOutlinedInput-root': {
+                            padding: '5px'
+                          }
+                        }}
                       />
                     </Box>
                   </Grid>

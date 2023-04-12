@@ -76,7 +76,36 @@ const SendTable = props => {
         name: 'order_num',
         label: 'شناسه',
         options: {
-          filter: false
+          filter: true,
+          filterType: 'custom',
+          filterOptions: {
+            display: (filterList, onChange, index, column) => {
+              return (
+                <FormControl>
+                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
+                    شناسه
+                  </InputLabel>
+                  <TextField
+                    id="name"
+                    aria-describedby="my-helper-text"
+                    fullWidth
+                    placeholder="شناسه"
+                    value={filterList[index]}
+                    variant="outlined"
+                    onChange={event => {
+                      if (event.target.value) {
+                        filterList[index][0] = event.target.value;
+                        onChange(filterList[index], index, column);
+                      } else {
+                        filterList[index] = [];
+                        onChange(filterList[index], index, column);
+                      }
+                    }}
+                  />
+                </FormControl>
+              );
+            }
+          }
         }
       },
       {
@@ -86,7 +115,7 @@ const SendTable = props => {
           customBodyRender: (value, tableMeta, updateValue) => {
             return `${value} تومان`;
           },
-          filter: true,
+          filter: false,
           filterType: 'custom',
           filterOptions: {
             display: (filterList, onChange, index, column) => {
@@ -132,7 +161,7 @@ const SendTable = props => {
               return (
                 <FormControl>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    تاریخ شروع
+                    زمان ثبت
                   </InputLabel>
 
                   <LocalizationProvider dateAdapter={AdapterJalali}>
@@ -262,7 +291,7 @@ const SendTable = props => {
               </>
             );
           },
-          filter: true,
+          filter: false,
           filterType: 'custom',
           filterOptions: {
             display: (filterList, onChange, index, column) => {
@@ -355,7 +384,7 @@ const SendTable = props => {
               </Box>
             );
           },
-          filter: true
+          filter: false
         }
       }
     ]);
@@ -364,9 +393,8 @@ const SendTable = props => {
   function getData(page, rowsPerPage, search) {
     httpService
       .post(
-        `${API_BASE_URL}/api/orders/get_orders/?limit=${rowsPerPage}&offset=${page}${
-          filter !== '' ? `&${filter}` : ''
-        }`,
+        `${API_BASE_URL}/api/orders/get_orders/?limit=${rowsPerPage}&offset=${page *
+          rowsPerPage}${filter !== '' ? `&${filter}` : ''}`,
         {
           order: sort,
           search: search
@@ -386,52 +414,60 @@ const SendTable = props => {
     let filterType = '';
 
     switch (column) {
-      case 'name':
+      case 'order_num':
         if (filterList[1][0]) {
-          item['name'] = filterList[1][0];
+          item['order_num'] = filterList[0][0];
           filterType = '__contains';
         } else {
-          delete item['name'];
+          delete item['order_num'];
         }
         break;
-      case 'participant_count':
+      // case 'name':
+      //   if (filterList[1][0]) {
+      //     item['name'] = filterList[1][0];
+      //     filterType = '__contains';
+      //   } else {
+      //     delete item['name'];
+      //   }
+      //   break;
+      // case 'participant_count':
+      //   if (filterList[2][0]) {
+      //     item['participant_count'] = filterList[2][0];
+      //     filterType = '';
+      //   } else {
+      //     delete item['participant_count'];
+      //   }
+      case 'create_date':
         if (filterList[2][0]) {
-          item['participant_count'] = filterList[2][0];
+          item['create_date'] = startDate;
           filterType = '';
         } else {
-          delete item['participant_count'];
-        }
-      case 'start_date':
-        if (filterList[3][0]) {
-          item['start_date'] = startDate;
-          filterType = '';
-        } else {
-          delete item['start_date'];
+          delete item['create_date'];
         }
         break;
-      case 'end_date':
-        if (filterList[4][0]) {
-          item['end_date'] = endDate;
-          filterType = '';
-        } else {
-          delete item['end_date'];
-        }
-        break;
-      case 'status':
-        if (filterList[5][0]) {
-          console.log('filterlist', filterList[5][0]);
-          item['status'] =
-            filterList[5][0] == 'در حال برگزاری'
-              ? 'PERFORMING'
-              : filterList[5][0] == 'برگزار شده'
-              ? 'FINISHED'
-              : 'PENDING';
-          filterType = '';
-        } else {
-          delete item['status'];
-          setState(null);
-        }
-        break;
+        // case 'end_date':
+        //   if (filterList[4][0]) {
+        //     item['end_date'] = endDate;
+        //     filterType = '';
+        //   } else {
+        //     delete item['end_date'];
+        //   }
+        //   break;
+        // case 'status':
+        //   if (filterList[5][0]) {
+        //     console.log('filterlist', filterList[5][0]);
+        //     item['status'] =
+        //       filterList[5][0] == 'در حال برگزاری'
+        //         ? 'PERFORMING'
+        //         : filterList[5][0] == 'برگزار شده'
+        //         ? 'FINISHED'
+        //         : 'PENDING';
+        //     filterType = '';
+        //   } else {
+        //     delete item['status'];
+        //     setState(null);
+        //   }
+        //   break;
 
         break;
       default:

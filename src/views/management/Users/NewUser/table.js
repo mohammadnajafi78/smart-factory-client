@@ -238,7 +238,10 @@ const NewUserTable = props => {
                     }}
                     sx={{
                       background: '#F2F2F2',
-                      borderRadius: '4px'
+                      borderRadius: '4px',
+                      '.MuiOutlinedInput-root': {
+                        padding: '5px'
+                      }
                     }}
                     noOptionsText={'موردی یافت نشد'}
                   />
@@ -282,7 +285,10 @@ const NewUserTable = props => {
                     }
                     sx={{
                       background: '#F2F2F2',
-                      borderRadius: '4px'
+                      borderRadius: '4px',
+                      '.MuiOutlinedInput-root': {
+                        padding: '5px'
+                      }
                     }}
                     noOptionsText={'موردی یافت نشد'}
                   />
@@ -334,7 +340,10 @@ const NewUserTable = props => {
                     }
                     sx={{
                       background: '#F2F2F2',
-                      borderRadius: '4px'
+                      borderRadius: '4px',
+                      '.MuiOutlinedInput-root': {
+                        padding: '5px'
+                      }
                     }}
                     noOptionsText={'موردی یافت نشد'}
                   />
@@ -479,9 +488,8 @@ const NewUserTable = props => {
   function getData(page, rowsPerPage, search) {
     httpService
       .post(
-        `${API_BASE_URL}/api/management/user/user_list/?limit=${rowsPerPage}&offset=${page}&is_verified=NA${
-          filter !== '' ? `&${filter}` : ''
-        }`,
+        `${API_BASE_URL}/api/management/user/user_list/?limit=${rowsPerPage}&offset=${page *
+          rowsPerPage}&is_verified=NA${filter !== '' ? `&${filter}` : ''}`,
         {
           order: sort,
           search: search

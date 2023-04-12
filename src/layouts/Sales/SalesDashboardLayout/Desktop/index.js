@@ -56,7 +56,6 @@ const useStyles = makeStyles(theme => ({
 
 export default function SaleDashboardLayoutDesktop(props) {
   const classes = useStyles();
-  console.log('desktopppp2');
 
   return (
     <div>

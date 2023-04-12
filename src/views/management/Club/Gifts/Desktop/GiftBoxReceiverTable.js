@@ -297,7 +297,7 @@ const GiftBoxReceiverTable = props => {
       .post(
         `${API_BASE_URL}/api/management/club/user_gift_box/receivers/?box__box_num=${
           props.location.state.data[0].box_num
-        }&limit=${rowsPerPage}&offset=${page}${
+        }&limit=${rowsPerPage}&offset=${page * rowsPerPage}${
           filter !== '' ? `&${filter}` : ''
         }`,
         {

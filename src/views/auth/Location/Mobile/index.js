@@ -135,6 +135,11 @@ function LocationMobile() {
                   option.label === value.label
                 }
                 noOptionsText={'موردی یافت نشد'}
+                sx={{
+                  '.MuiOutlinedInput-root': {
+                    padding: '5px'
+                  }
+                }}
               />
             </Box>
             <Box sx={{ mt: 2 }}>
@@ -166,6 +171,11 @@ function LocationMobile() {
                   option.label === value.label
                 }
                 noOptionsText={'موردی یافت نشد'}
+                sx={{
+                  '.MuiOutlinedInput-root': {
+                    padding: '5px'
+                  }
+                }}
               />
             </Box>
           </Box>

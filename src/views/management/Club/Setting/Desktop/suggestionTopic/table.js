@@ -214,7 +214,10 @@ const SuggestionTopicTable = props => {
                     }}
                     sx={{
                       background: '#F2F2F2',
-                      borderRadius: '4px'
+                      borderRadius: '4px',
+                      '.MuiOutlinedInput-root': {
+                        padding: '5px'
+                      }
                     }}
                     noOptionsText={'موردی یافت نشد'}
                   />
@@ -230,9 +233,8 @@ const SuggestionTopicTable = props => {
   function getData(page, rowsPerPage, search) {
     httpService
       .post(
-        `${API_BASE_URL}/api/management/club/suggestion_topic/suggestion_topic_list/?limit=${rowsPerPage}&offset=${page}${
-          filter !== '' ? `&${filter}` : ''
-        }`,
+        `${API_BASE_URL}/api/management/club/suggestion_topic/suggestion_topic_list/?limit=${rowsPerPage}&offset=${page *
+          rowsPerPage}${filter !== '' ? `&${filter}` : ''}`,
         {
           order: sort,
           search: search
@@ -513,6 +515,11 @@ const SuggestionTopicTable = props => {
                             option.name === value.name
                           }
                           noOptionsText={'موردی یافت نشد'}
+                          sx={{
+                            '.MuiOutlinedInput-root': {
+                              padding: '5px'
+                            }
+                          }}
                         />
                       </Box>
                     </Box>

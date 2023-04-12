@@ -297,7 +297,7 @@ const GiftReceiverTable = props => {
       .post(
         `${API_BASE_URL}/api/management/club/user_gifts/user_gift_list/?gift__gift_id=${
           props.data.gift_id
-        }&limit=${rowsPerPage}&offset=${page}${
+        }&limit=${rowsPerPage}&offset=${page * rowsPerPage}${
           filter !== '' ? `&${filter}` : ''
         }`,
         {

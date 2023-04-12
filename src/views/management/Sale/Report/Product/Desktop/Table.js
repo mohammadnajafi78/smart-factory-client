@@ -434,9 +434,8 @@ const OrdersTable = props => {
   function getData(page, rowsPerPage, search) {
     httpService
       .post(
-        `${API_BASE_URL}/api/management/order/get_order_products/?limit=${rowsPerPage}&offset=${page}${
-          filter !== '' ? `&${filter}` : ''
-        }`,
+        `${API_BASE_URL}/api/management/order/get_order_products/?limit=${rowsPerPage}&offset=${page *
+          rowsPerPage}${filter !== '' ? `&${filter}` : ''}`,
         {
           order: sort,
           search: search

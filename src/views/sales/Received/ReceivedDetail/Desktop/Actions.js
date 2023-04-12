@@ -57,6 +57,8 @@ export default function Actions(props) {
   const history = useHistory();
   const user_id = JSON.parse(localStorage.getItem('user')).user_id;
 
+  console.log('current', data);
+
   return (
     <>
       <Box>

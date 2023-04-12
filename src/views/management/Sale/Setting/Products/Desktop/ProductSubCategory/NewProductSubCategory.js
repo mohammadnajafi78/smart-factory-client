@@ -200,9 +200,11 @@ export default function NewProductType({
                           console.log('newValue', newValue);
                           if (newValue) setFieldValue('category', newValue.id);
                         }}
-                        // isOptionEqualToValue={(option, value) =>
-                        //   option.id === value.id
-                        // }
+                        sx={{
+                          '.MuiOutlinedInput-root': {
+                            padding: '5px'
+                          }
+                        }}
                         noOptionsText={'موردی یافت نشد'}
                       />
                     )}
@@ -353,9 +355,11 @@ export default function NewProductType({
                         if (newValue)
                           setFieldValue('active_in_catalogue', newValue.key);
                       }}
-                      // isOptionEqualToValue={(option, value) =>
-                      //   option.label === value.label
-                      // }
+                      sx={{
+                        '.MuiOutlinedInput-root': {
+                          padding: '5px'
+                        }
+                      }}
                       noOptionsText={'موردی یافت نشد'}
                     />
                   </Grid>
@@ -394,9 +398,11 @@ export default function NewProductType({
                         if (newValue)
                           setFieldValue('active_in_shop', newValue.key);
                       }}
-                      // isOptionEqualToValue={(option, value) =>
-                      //   option.label === value.label
-                      // }
+                      sx={{
+                        '.MuiOutlinedInput-root': {
+                          padding: '5px'
+                        }
+                      }}
                       noOptionsText={'موردی یافت نشد'}
                     />
                   </Grid>

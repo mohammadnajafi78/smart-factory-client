@@ -21,6 +21,7 @@ import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import { Download, Plus } from 'react-feather';
 import { useHistory } from 'react-router-dom';
 import MomentFa from 'src/utils/MomentFa';
+import SmallSize from 'src/assets/img/smallSize.svg';
 
 const useStyles = makeStyles(theme => ({
   paper: {

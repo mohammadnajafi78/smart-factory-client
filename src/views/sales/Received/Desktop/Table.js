@@ -74,7 +74,35 @@ const ReceiveTable = props => {
         name: 'order_num',
         label: 'شناسه',
         options: {
-          filter: false
+          filter: true,
+          filterType: 'custom',
+          filterOptions: {
+            display: (filterList, onChange, index, column) => {
+              return (
+                <FormControl>
+                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
+                    شناسه
+                  </InputLabel>
+                  <TextField
+                    id="name"
+                    aria-describedby="my-helper-text"
+                    fullWidth
+                    placeholder="شناسه"
+                    value={filterList[index]}
+                    onChange={event => {
+                      if (event.target.value) {
+                        filterList[index][0] = event.target.value;
+                        onChange(filterList[index], index, column);
+                      } else {
+                        filterList[index] = [];
+                        onChange(filterList[index], index, column);
+                      }
+                    }}
+                  />
+                </FormControl>
+              );
+            }
+          }
         }
       },
       {
@@ -123,13 +151,13 @@ const ReceiveTable = props => {
               return (
                 <FormControl>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    نام
+                    نام خانوادگی
                   </InputLabel>
                   <TextField
                     id="name"
                     aria-describedby="my-helper-text"
                     fullWidth
-                    placeholder="نام"
+                    placeholder="نام خانوادگی"
                     value={filterList[index]}
                     onChange={event => {
                       if (event.target.value) {
@@ -154,7 +182,7 @@ const ReceiveTable = props => {
           customBodyRender: (value, tableMeta, updateValue) => {
             return `${value} تومان`;
           },
-          filter: true,
+          filter: false,
           filterType: 'custom',
           filterOptions: {
             display: (filterList, onChange, index, column) => {
@@ -200,7 +228,7 @@ const ReceiveTable = props => {
               return (
                 <FormControl>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    تاریخ شروع
+                    تاریخ ثبت
                   </InputLabel>
 
                   <LocalizationProvider dateAdapter={AdapterJalali}>
@@ -329,7 +357,7 @@ const ReceiveTable = props => {
               </>
             );
           },
-          filter: true,
+          filter: false,
           filterType: 'custom',
           filterOptions: {
             display: (filterList, onChange, index, column) => {
@@ -397,9 +425,8 @@ const ReceiveTable = props => {
   function getData(page, rowsPerPage, search) {
     httpService
       .post(
-        `${API_BASE_URL}/api/orders/get_received_orders/?limit=${rowsPerPage}&offset=${page}${
-          filter !== '' ? `&${filter}` : ''
-        }`,
+        `${API_BASE_URL}/api/orders/get_received_orders/?limit=${rowsPerPage}&offset=${page *
+          rowsPerPage}${filter !== '' ? `&${filter}` : ''}`,
         {
           order: sort,
           search: search
@@ -419,6 +446,14 @@ const ReceiveTable = props => {
     let filterType = '';
 
     switch (column) {
+      case 'order_num':
+        if (filterList[0][0]) {
+          item['order_num'] = filterList[0][0];
+          filterType = '__contains';
+        } else {
+          delete item['order_num'];
+        }
+        break;
       case 'name':
         if (filterList[1][0]) {
           item['name'] = filterList[1][0];

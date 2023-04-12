@@ -100,6 +100,7 @@
     "react-iframe": "^1.8.0",
     "react-markdown": "^4.3.1",
     "react-modal-image": "^2.5.0",
+    "react-number-format": "^5.1.4",
     "react-perfect-scrollbar": "^1.5.8",
     "react-qr-code": "^2.0.7",
     "react-qr-reader": "^3.0.0-beta-1",

@@ -24,6 +24,9 @@ const baseOptions = {
       root: {
         backgroundColor: '#F2F2F2',
         fontSize: '16px'
+      },
+      input: {
+        padding: '12px 10px'
       }
     },
     MuiToolbar: {

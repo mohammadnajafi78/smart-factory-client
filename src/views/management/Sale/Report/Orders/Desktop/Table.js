@@ -479,9 +479,8 @@ const OrdersTable = props => {
   function getData(page, rowsPerPage, search) {
     httpService
       .post(
-        `${API_BASE_URL}/api/management/order/get_orders/?limit=${rowsPerPage}&offset=${page}${
-          filter !== '' ? `&${filter}` : ''
-        }`,
+        `${API_BASE_URL}/api/management/order/get_orders/?limit=${rowsPerPage}&offset=${page *
+          rowsPerPage}${filter !== '' ? `&${filter}` : ''}`,
         {
           order: sort,
           search: search
@@ -631,7 +630,7 @@ const OrdersTable = props => {
     history.push({
       pathname: '/sale/received/detail',
       state: {
-        data: data.filter(f => f.order_num === rowData[0])
+        data: data.filter(f => f.order.order_num === rowData[0])
       }
     });
   }

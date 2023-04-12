@@ -362,6 +362,11 @@ function WorkMobile(props) {
                           option.label === value.label
                         }
                         noOptionsText={'موردی یافت نشد'}
+                        sx={{
+                          '.MuiOutlinedInput-root': {
+                            padding: '5px'
+                          }
+                        }}
                       />
                     </Box>
                   </Grid>
@@ -393,9 +398,11 @@ function WorkMobile(props) {
                             setCityId('');
                           }
                         }}
-                        // isOptionEqualToValue={(option, value) =>
-                        //   option.label === value.label
-                        // }
+                        sx={{
+                          '.MuiOutlinedInput-root': {
+                            padding: '5px'
+                          }
+                        }}
                         noOptionsText={'موردی یافت نشد'}
                       />
                     </Box>

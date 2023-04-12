@@ -43,6 +43,7 @@ const useStyles = makeStyles(theme => ({
 export default function ManagementDashboardLayoutDesktop(props) {
   const classes = useStyles();
   const [selected, setSelected] = useState([]);
+  console.log('Selected', selected);
 
   return (
     <div>
@@ -63,9 +64,13 @@ export default function ManagementDashboardLayoutDesktop(props) {
               justifyContent: 'flex-start'
             }}
           >
-            {selected.length > 0 && (
+            {selected && selected.title && (
               <InputLabelHeader
-                style={{ color: '#00346D', fontWeight: 700, fontSize: '18px' }}
+                style={{
+                  color: '#00346D',
+                  fontWeight: 700,
+                  fontSize: '18px'
+                }}
               >
                 {selected?.title['fa']}
               </InputLabelHeader>

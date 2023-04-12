@@ -46,7 +46,7 @@ const root = createRoot(container);
 
 if (process.env.NODE_ENV === 'production') {
   Sentry.init({
-    dsn: 'https://5f56610a4f514c4c917ad87f475e9022@sentry.hamravesh.com/376',
+    dsn: 'https://5349280788874c93af9c8323f751e3fb@sentry.hamravesh.com/5269',
     integrations: [new BrowserTracing()],
 
     // Set tracesSampleRate to 1.0 to capture 100%

@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Box, TextField, Drawer, Divider, Autocomplete } from '@mui/material';
+import {
+  Box,
+  TextField,
+  Drawer,
+  Divider,
+  Autocomplete,
+  Button
+} from '@mui/material';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import InputLabel from 'src/components/Mobile/InputLabel';
@@ -16,6 +23,8 @@ import MomentFa from 'src/utils/MomentFa';
 import FileDownload from 'src/assets/img/icons/fileDownload.svg';
 import makeStyles from '@mui/styles/makeStyles';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import Delete from 'src/assets/img/icons/delete.svg';
+import Attach from 'src/assets/img/icons/attach.svg';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -210,9 +219,11 @@ export default function DeliveryInfo(props) {
                               setFieldValue('type', '');
                             }
                           }}
-                          // isOptionEqualToValue={(option, value) =>
-                          //   option.label === value.label
-                          // }
+                          sx={{
+                            '.MuiOutlinedInput-root': {
+                              padding: '5px'
+                            }
+                          }}
                           noOptionsText={'موردی یافت نشد'}
                         />
                       )}
@@ -244,18 +255,86 @@ export default function DeliveryInfo(props) {
                       <InputLabel style={{ color: '#A7A5A6' }}>
                         بارنامه
                       </InputLabel>
-                      <ConfirmButton
-                        disabled={false}
-                        variant="outlined"
-                        component="label"
-                        onChange={event => {
-                          setFieldValue('file', event.target.files[0]);
-                        }}
-                      >
-                        <AttachFile />
-                        {'آپلود فایل'}
-                        <input type="file" hidden />
-                      </ConfirmButton>
+                      {!values.file ? (
+                        <ConfirmButton
+                          disabled={false}
+                          variant="outlined"
+                          component="label"
+                          onChange={event => {
+                            setFieldValue('file', event.target.files[0]);
+                          }}
+                        >
+                          <AttachFile />
+                          {'آپلود فایل'}
+                          <input type="file" hidden />
+                        </ConfirmButton>
+                      ) : (
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'flex-end',
+                            alignItems: 'center',
+                            padding: '20px 10px 5px',
+                            gap: '20px',
+                            // width: '480px',
+                            height: '320px',
+                            border: '2px dashed #99DDE1',
+                            borderRadius: '4px'
+                          }}
+                        >
+                          <img
+                            src={URL.createObjectURL(values.file)}
+                            width="300px"
+                            height="180px"
+                            style={{ borderRadius: '8px' }}
+                          />
+                          <InputLabel
+                            style={{ color: '#335D8A', fontSize: '11px' }}
+                          >
+                            {values.file.name}
+                          </InputLabel>
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              justifyContent: 'space-around',
+                              width: '100%'
+                            }}
+                          >
+                            <Button
+                              sx={{
+                                fontFamily: 'IRANSans',
+                                fontSize: '12px',
+                                fontWeight: 400
+                              }}
+                              onClick={() => {
+                                // setFile(null);
+                                setFieldValue('file', '');
+                              }}
+                            >
+                              <img src={Delete} width="13px" height="13px" />
+                              پاک کردن
+                            </Button>
+                            <Button
+                              sx={{
+                                fontFamily: 'IRANSans',
+                                fontSize: '12px',
+                                fontWeight: 400
+                              }}
+                              component="label"
+                              onChange={e => {
+                                // setFile(e.target.files[0]);
+                                setFieldValue('file', event.target.files[0]);
+                              }}
+                            >
+                              <img src={Attach} width="13px" height="20px" />
+                              تغییر فایل
+                              <input type="file" hidden multiple={false} />
+                            </Button>
+                          </Box>
+                        </Box>
+                      )}
                     </Box>
                   </Box>
                 </Box>

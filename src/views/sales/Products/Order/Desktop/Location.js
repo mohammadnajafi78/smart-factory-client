@@ -327,9 +327,11 @@ export default function Location(props) {
                               setFieldValue('provinceId', '');
                             }
                           }}
-                          // isOptionEqualToValue={(option, value) =>
-                          //   option.label === value.label
-                          // }
+                          sx={{
+                            '.MuiOutlinedInput-root': {
+                              padding: '5px'
+                            }
+                          }}
                           noOptionsText={'موردی یافت نشد'}
                         />
                       </Box>
@@ -364,9 +366,11 @@ export default function Location(props) {
                               setFieldValue('cityId', '');
                             }
                           }}
-                          // isOptionEqualToValue={(option, value) =>
-                          //   option.label === value.label
-                          // }
+                          sx={{
+                            '.MuiOutlinedInput-root': {
+                              padding: '5px'
+                            }
+                          }}
                           noOptionsText={'موردی یافت نشد'}
                         />
                       </Box>
