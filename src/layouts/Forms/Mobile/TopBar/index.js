@@ -10,6 +10,7 @@ import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader'
 import { useHistory } from 'react-router-dom';
 import ArrowRight from 'src/assets/img/icons/arrowRight.svg';
 import { propsToClassKey } from '@mui/styles';
+import Logout from 'src/assets/img/logout.svg';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -40,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 const TopBar = props => {
   const classes = useStyles();
   const history = useHistory();
-  console.log('res', props);
+  console.log('res', props.children.props.location.pathname.split('/')[1]);
 
   return (
     <AppBar
@@ -77,8 +78,8 @@ const TopBar = props => {
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'center',
-            width: '100%',
-            marginRight: '50px'
+            width: '100%'
+            // marginRight: '50px'
           }}
         >
           <InputLabelHeader
@@ -90,7 +91,33 @@ const TopBar = props => {
             {props.children.props.location.state.formName}
           </InputLabelHeader>
         </Box>
-        {/* <Message /> */}
+        {props.children.props.location.pathname.split('/')[1] === 'profile' && (
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: '10px 10px 0px 10px',
+              gap: '10px',
+              // margin: '5px',
+
+              width: '49px',
+              height: '44px',
+
+              background: '#FFFFFF',
+              boxShadow: '1px 1px 6px rgba(201, 201, 201, 0.25)',
+              borderRadius: '6px',
+              cursor: 'pointer'
+            }}
+            onClick={() => {
+              localStorage.clear();
+              window.location.href = '/login';
+            }}
+          >
+            <img src={Logout} />
+          </Box>
+        )}
       </Toolbar>
     </AppBar>
   );
