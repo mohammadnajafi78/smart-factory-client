@@ -39,11 +39,15 @@ function IdentityInfoDesktop(props) {
           initialValues={{
             name: '',
             family: '',
-            introducer: ''
+            introducer: '',
+            supplier: ''
           }}
           validationSchema={Yup.object().shape({
             name: Yup.string().required('نام اجباری می باشد'),
-            family: Yup.string().required('نام خانوادگی اجباری می باشد')
+            family: Yup.string().required('نام خانوادگی اجباری می باشد'),
+            supplier: Yup.string().required(
+              'شناسه کاربری تامین کنننده اجباری می باشد'
+            )
           })}
           onSubmit={(values, { setErrors, setSubmitting }) => {
             setSubmitting(true);
@@ -51,7 +55,8 @@ function IdentityInfoDesktop(props) {
               .post(`${API_BASE_URL}/api/users/update_user/`, {
                 first_name: values.name,
                 last_name: values.family,
-                introducer: values.introducer
+                introducer: values.introducer,
+                supplier: values.supplier
               })
               .then(res => {
                 if (res.status === 200) {
@@ -124,6 +129,24 @@ function IdentityInfoDesktop(props) {
                     onChange={handleChange}
                     error={Boolean(touched.family && errors.family)}
                     helperText={touched.family && errors.family}
+                  />
+                </Box>
+                <Box sx={{ mt: 2 }}>
+                  <InputLabel>تامین کننده</InputLabel>
+                  <TextField
+                    id="supplier"
+                    aria-describedby="my-helper-text"
+                    fullWidth
+                    placeholder="شناسه کاربری تامین کننده"
+                    sx={{
+                      background: '#F2F2F2',
+                      borderRadius: '4px',
+                      margin: '6px 3px'
+                    }}
+                    value={values.supplier}
+                    onChange={handleChange}
+                    // error={Boolean(touched.family && errors.family)}
+                    // helperText={touched.family && errors.family}
                   />
                 </Box>
                 <Box sx={{ mt: 2 }}>

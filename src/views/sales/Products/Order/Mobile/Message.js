@@ -26,6 +26,18 @@ export default function Message(props) {
   const history = useHistory();
   const order = props.location.state;
 
+  useEffect(() => {
+    httpService
+      .get(
+        `${API_BASE_URL}/api/orders/get_pi/?order_num=${props.location.state.order_num}`
+      )
+      .then(res => {
+        if (res.status === 200) {
+          setFactor(res.data.files.filter(f => f.subject === 'PI')[0]?.url);
+        }
+      });
+  }, []);
+
   return (
     <>
       <Box
@@ -199,12 +211,18 @@ export default function Message(props) {
           >
             {'اشتراک پیش فاکتور'}
           </ConfirmButton>
-          <ConfirmButton
-            variant="outlined"
-            onClick={() => history.push('/sale/products/order/2')}
+          <a
+            href={factor}
+            download
+            style={{ textDecoration: 'none', width: '100%' }}
           >
-            {'دانلود پیش فاکتور'}
-          </ConfirmButton>
+            <ConfirmButton
+              variant="outlined"
+              onClick={() => history.push('/sale/products/order/2')}
+            >
+              {'دانلود پیش فاکتور'}
+            </ConfirmButton>
+          </a>
         </Box>
       </Box>
     </>

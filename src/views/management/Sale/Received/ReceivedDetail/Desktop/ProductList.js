@@ -12,9 +12,12 @@ import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import { Download, Plus } from 'react-feather';
 import { useHistory } from 'react-router-dom';
 import MomentFa from 'src/utils/MomentFa';
+import PDF from 'src/assets/img/extensions/pdf.jpeg';
+import EXCEL from 'src/assets/img/extensions/excel.jpeg';
 
 export default function ProductList({ data, incomplete }) {
   const [product, setProduct] = useState();
+  console.log('Data in management', data);
 
   useEffect(() => {
     if (incomplete === true) {
@@ -178,9 +181,9 @@ export default function ProductList({ data, incomplete }) {
       )}
       {data &&
         data.files &&
-        data?.files.filter(f => f.subject === 'BL').length > 0 && (
+        data?.files.filter(f => f.subject === 'PI').length > 0 && (
           <a
-            href={data?.files.filter(f => f.subject === 'BL')[0].url}
+            href={data?.files.filter(f => f.subject === 'PI')[0].url}
             download
             style={{ textDecoration: 'none', width: '100%' }}
           >
@@ -193,11 +196,45 @@ export default function ProductList({ data, incomplete }) {
                 marginTop: '30px'
               }}
             >
-              <Download />
-              دانلود فایل درخواست
+              {/* <Download />
+              دانلود فایل درخواست */}
+              <img
+                src={PDF}
+                width={'30px'}
+                height={'30px'}
+                style={{ marginLeft: '5px' }}
+              />
+              دانلود فایل pdf
             </ConfirmButton>
           </a>
         )}
+      {data?.files.filter(f => f.subject === 'EXCEL').length > 0 && (
+        <a
+          href={data?.files.filter(f => f.subject === 'EXCEL')[0].url}
+          download
+          style={{ textDecoration: 'none', width: '100%' }}
+        >
+          <ConfirmButton
+            style={{
+              color: '#00AAB5',
+              backgroundColor: '#DDF5F6',
+              position: 'relative',
+              bottom: 0,
+              marginTop: '30px'
+            }}
+          >
+            {/* <Download />
+              دانلود فایل درخواست */}
+            <img
+              src={EXCEL}
+              width={'30px'}
+              height={'30px'}
+              style={{ marginLeft: '5px' }}
+            />
+            دانلود فایل excel
+          </ConfirmButton>
+        </a>
+      )}
     </Box>
   );
 }

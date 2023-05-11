@@ -20,19 +20,22 @@ function IdentityInfoMobile(props) {
   const data = props?.data;
   const editable = props?.editable;
   const [works, setWorks] = useState([]);
+  // const [workId, setWorkId] = useState();
 
   // const [supplier, setSupplier] = useState(null);
   // const [introducer, setIntroducer] = useState(null);
 
-  // useEffect(() => {
-  //   httpService
-  //     .get(`${API_BASE_URL}/api/users/user_type/activity_list`)
-  //     .then(res => {
-  //       if (res.status === 200) {
-  //         setWorks(res.data);
-  //       }
-  //     });
-  // }, []);
+  console.log('data profile', data);
+
+  useEffect(() => {
+    httpService
+      .get(`${API_BASE_URL}/api/users/user_type/activity_list`)
+      .then(res => {
+        if (res.status === 200) {
+          setWorks(res.data);
+        }
+      });
+  }, []);
 
   return (
     <>
@@ -91,10 +94,15 @@ function IdentityInfoMobile(props) {
             .post(`${API_BASE_URL}/api/management/user/update_user/`, formData)
             .then(res => {
               if (res.status === 200) {
-                // history.push('/location');
-                props.getData();
-                setSubmitting(false);
-                props.setEditable(false);
+                httpService
+                  .post(`${API_BASE_URL}/api/management/user/add_user_type/`, {
+                    user_type: values.user_type_list.map(item => item.id)
+                  })
+                  .then(res => {
+                    props.getData();
+                    setSubmitting(false);
+                    props.setEditable(false);
+                  });
               } else {
                 setSubmitting(false);
               }
@@ -246,6 +254,57 @@ function IdentityInfoMobile(props) {
                             )}
                           />
                         </LocalizationProvider>
+                      </Box>
+                    </Grid>
+                  </Grid>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <Box sx={{ mt: 1, mb: 1 }}>
+                        <InputLabel style={{ color: '#A7A5A6' }}>
+                          فعالیت
+                        </InputLabel>
+                        <Autocomplete
+                          disablePortal
+                          fullWidth
+                          multiple={true}
+                          options={works}
+                          value={values.user_type_list}
+                          renderInput={params => (
+                            <TextField
+                              {...params}
+                              placeholder="فعالیت"
+                              fullWidth
+                              id="user_type_list"
+                              error={Boolean(
+                                touched.user_type_list && errors.user_type_list
+                              )}
+                              helperText={
+                                touched.user_type_list && errors.user_type_list
+                              }
+                            />
+                          )}
+                          // onChange={(event, values) => {
+                          //   console.log('newValue', newValue);
+                          //   if (newValue) {
+                          //     setFieldValue('workId', newValue.id);
+                          //     // setProvinceId(newValue.id);
+                          //     // setCityId(null);
+                          //   } else {
+                          //     setFieldValue('workId', '');
+                          //   }
+                          // }}
+                          onChange={(event, values) => {
+                            console.log('values', values);
+                            setFieldValue('user_type_list', values);
+                          }}
+                          sx={{
+                            '.MuiOutlinedInput-root': {
+                              padding: '5px'
+                            }
+                          }}
+                          noOptionsText={'موردی یافت نشد'}
+                          getOptionLabel={option => option.translate}
+                        />
                       </Box>
                     </Grid>
                   </Grid>
