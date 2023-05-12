@@ -6,7 +6,9 @@ import { useHistory } from 'react-router-dom';
 // import { log } from "./logService";
 
 let token = null;
-let headers = {};
+let headers = {
+  'Cache-Control': 'no-cache'
+};
 token = localStorage.getItem('token');
 
 function ValidToken(accessToken) {
