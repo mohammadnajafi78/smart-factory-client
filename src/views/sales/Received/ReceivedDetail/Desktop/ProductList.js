@@ -182,6 +182,7 @@ export default function ProductList({ data, incomplete }) {
           <a
             href={data?.files.filter(f => f.subject === 'BL')[0].url}
             download
+            target="_blank"
             style={{ textDecoration: 'none', width: '100%' }}
           >
             <ConfirmButton

@@ -13,9 +13,9 @@ function InputLabelHeader({ children, ...rest }) {
         // minHeight: '26px',
         textAlign: 'start',
         color: '#000000',
-        whiteSpace: 'break-spaces'
-        // marginBottom: '15px'
-        // paddingRight: '8px'
+        whiteSpace: 'break-spaces',
+        textOverflow: 'inherit',
+        overflow: 'inherit'
       }}
       {...rest}
     >

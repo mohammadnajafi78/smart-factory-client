@@ -164,6 +164,7 @@ export default function ProductList({ data }) {
       <a
         href={data?.files.filter(f => f.subject === 'PI')[0].url}
         download
+        target="_blank"
         style={{ textDecoration: 'none', width: '100%' }}
       >
         <ConfirmButton

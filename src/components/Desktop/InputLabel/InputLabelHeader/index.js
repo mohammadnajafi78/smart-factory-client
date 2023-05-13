@@ -12,7 +12,10 @@ function InputLabelHeader({ children, ...rest }) {
         // height: '26px',
         textAlign: 'start',
         color: '#000000',
-        whiteSpace: 'break-spaces'
+        whiteSpace: 'break-spaces',
+        textOverflow: 'inherit',
+        overflow: 'inherit'
+
         // marginBottom: '26px'
       }}
       {...rest}

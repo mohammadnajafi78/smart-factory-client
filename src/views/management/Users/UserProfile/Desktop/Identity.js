@@ -20,16 +20,10 @@ function IdentityInfoMobile(props) {
   const data = props?.data;
   const editable = props?.editable;
   const [works, setWorks] = useState([]);
-  // const [workId, setWorkId] = useState();
-
-  // const [supplier, setSupplier] = useState(null);
-  // const [introducer, setIntroducer] = useState(null);
-
-  console.log('data profile', data);
 
   useEffect(() => {
     httpService
-      .get(`${API_BASE_URL}/api/users/user_type/activity_list`)
+      .get(`${API_BASE_URL}/api/management/user/user_type/type_list`)
       .then(res => {
         if (res.status === 200) {
           setWorks(res.data);
@@ -61,6 +55,7 @@ function IdentityInfoMobile(props) {
         })}
         onSubmit={(values, { setErrors, setSubmitting, setFieldError }) => {
           const formData = new FormData();
+          formData.append('user_id', data?.user?.user_id);
           if (values.name != null) formData.append('first_name', values.name);
           if (values.family != null)
             formData.append('last_name', values.family);
@@ -96,7 +91,8 @@ function IdentityInfoMobile(props) {
               if (res.status === 200) {
                 httpService
                   .post(`${API_BASE_URL}/api/management/user/add_user_type/`, {
-                    user_type: values.user_type_list.map(item => item.id)
+                    user_type: values.user_type_list.map(item => item.id),
+                    user_id: data?.user?.user_id
                   })
                   .then(res => {
                     props.getData();
@@ -294,7 +290,6 @@ function IdentityInfoMobile(props) {
                           //   }
                           // }}
                           onChange={(event, values) => {
-                            console.log('values', values);
                             setFieldValue('user_type_list', values);
                           }}
                           sx={{

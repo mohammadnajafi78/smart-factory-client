@@ -49,7 +49,7 @@ function IdentityInfoDesktop(props) {
               'شناسه کاربری تامین کنننده اجباری می باشد'
             )
           })}
-          onSubmit={(values, { setErrors, setSubmitting }) => {
+          onSubmit={(values, { setErrors, setSubmitting, setFieldError }) => {
             setSubmitting(true);
             axios
               .post(`${API_BASE_URL}/api/users/update_user/`, {
@@ -63,6 +63,12 @@ function IdentityInfoDesktop(props) {
                   history.push('/location');
                   setSubmitting(false);
                 }
+              })
+              .catch(err => {
+                err.response.data.map(e => {
+                  setFieldError(e.field, e.error);
+                });
+                setSubmitting(false);
               });
             setSubmitting(false);
           }}
@@ -90,10 +96,10 @@ function IdentityInfoDesktop(props) {
             >
               <Box sx={{ width: '100%' }}>
                 <InputLabelHeader>اطلاعات هویتی</InputLabelHeader>
-                <Box sx={{ mt: 2 }}>
+                <Box sx={{ mt: 0 }}>
                   <InputLabel>مشخصات خود را وارد کنید:</InputLabel>
                 </Box>
-                <Box sx={{ mt: 2 }}>
+                <Box sx={{ mt: 0 }}>
                   <InputLabel style={{ marginRight: '5px' }}>نام</InputLabel>
                   <TextField
                     id="name"
@@ -111,7 +117,7 @@ function IdentityInfoDesktop(props) {
                     helperText={touched.name && errors.name}
                   />
                 </Box>
-                <Box sx={{ mt: 2 }}>
+                <Box sx={{ mt: 0 }}>
                   <InputLabel style={{ marginRight: '5px' }}>
                     نام خانوادگی
                   </InputLabel>
@@ -131,7 +137,7 @@ function IdentityInfoDesktop(props) {
                     helperText={touched.family && errors.family}
                   />
                 </Box>
-                <Box sx={{ mt: 2 }}>
+                <Box sx={{ mt: 0 }}>
                   <InputLabel>تامین کننده</InputLabel>
                   <TextField
                     id="supplier"
@@ -145,11 +151,11 @@ function IdentityInfoDesktop(props) {
                     }}
                     value={values.supplier}
                     onChange={handleChange}
-                    // error={Boolean(touched.family && errors.family)}
-                    // helperText={touched.family && errors.family}
+                    error={Boolean(touched.supplier && errors.supplier)}
+                    helperText={touched.supplier && errors.supplier}
                   />
                 </Box>
-                <Box sx={{ mt: 2 }}>
+                <Box sx={{ mt: 0 }}>
                   <InputLabel>معرف</InputLabel>
                   <TextField
                     id="introducer"

@@ -28,7 +28,7 @@ function IdentityInfoMobile(props) {
             'شناسه کاربری تامین کنننده اجباری می باشد'
           )
         })}
-        onSubmit={(values, { setErrors, setSubmitting }) => {
+        onSubmit={(values, { setErrors, setSubmitting, setFieldError }) => {
           setSubmitting(true);
           httpService
             .post(`${API_BASE_URL}/api/users/update_user/`, {
@@ -42,8 +42,13 @@ function IdentityInfoMobile(props) {
                 history.push('/location');
                 setSubmitting(false);
               }
+            })
+            .catch(err => {
+              err.response.data.map(e => {
+                setFieldError(e.field, e.error);
+              });
+              setSubmitting(false);
             });
-          setSubmitting(false);
         }}
       >
         {({
@@ -74,7 +79,7 @@ function IdentityInfoMobile(props) {
             <Box>
               <InputLabelHeader>اطلاعات هویتی</InputLabelHeader>
               <InputLabel>مشخصات خود را وارد کنید:</InputLabel>
-              <Box sx={{ mt: 2 }}>
+              <Box sx={{ mt: 0 }}>
                 <InputLabel>نام</InputLabel>
                 <TextField
                   id="name"
@@ -92,7 +97,7 @@ function IdentityInfoMobile(props) {
                   helperText={touched.name && errors.name}
                 />
               </Box>
-              <Box sx={{ mt: 2 }}>
+              <Box sx={{ mt: 0 }}>
                 <InputLabel>نام خانوادگی</InputLabel>
                 <TextField
                   id="family"
@@ -110,7 +115,7 @@ function IdentityInfoMobile(props) {
                   helperText={touched.family && errors.family}
                 />
               </Box>
-              <Box sx={{ mt: 2 }}>
+              <Box sx={{ mt: 0 }}>
                 <InputLabel>تامین کننده</InputLabel>
                 <TextField
                   id="supplier"
@@ -124,11 +129,11 @@ function IdentityInfoMobile(props) {
                   }}
                   value={values.supplier}
                   onChange={handleChange}
-                  // error={Boolean(touched.family && errors.family)}
-                  // helperText={touched.family && errors.family}
+                  error={Boolean(touched.supplier && errors.supplier)}
+                  helperText={touched.supplier && errors.supplier}
                 />
               </Box>
-              <Box sx={{ mt: 2 }}>
+              <Box sx={{ mt: 0 }}>
                 <InputLabel>معرف</InputLabel>
                 <TextField
                   id="introducer"

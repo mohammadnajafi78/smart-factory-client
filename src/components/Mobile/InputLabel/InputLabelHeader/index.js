@@ -11,7 +11,9 @@ function InputLabelHeader({ children, ...rest }) {
         fontSize: '20px',
         textAlign: 'start',
         color: '#000000',
-        whiteSpace: 'break-spaces'
+        whiteSpace: 'break-spaces',
+        textOverflow: 'inherit',
+        overflow: 'inherit'
       }}
       {...rest}
     >

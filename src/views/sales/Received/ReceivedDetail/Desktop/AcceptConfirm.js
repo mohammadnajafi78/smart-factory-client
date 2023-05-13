@@ -204,7 +204,7 @@ export default function AcceptConfirm(props) {
                 formData.append('order_action', 'Approve');
                 formData.append('state', 'PI');
                 formData.append('comment', comment);
-                formData.append('PI', file);
+                formData.append('INVOICE', file);
 
                 httpService
                   .post(

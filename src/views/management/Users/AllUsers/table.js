@@ -645,10 +645,6 @@ const AllUsersTable = props => {
   }
 
   function onRowClick(rowData, rowState) {
-    console.log(
-      'rowData',
-      data.filter(f => f.user.user_id === rowData[0])
-    );
     history.push({
       pathname: '/management/user/details',
       state: {
