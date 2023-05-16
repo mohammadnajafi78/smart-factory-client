@@ -32,9 +32,9 @@ export default function OrderMobile(props) {
           display: 'flex',
           flexDirection: 'row',
           width: '100%',
-          marginTop: '70px',
-          padding: '20px',
-          marginLeft: '140px'
+          // marginTop: '70px',
+          padding: '20px'
+          // marginLeft: '140px'
         }}
       >
         <Box
