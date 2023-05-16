@@ -113,8 +113,8 @@ const OrdersTable = props => {
         }
       },
       {
-        name: 'product.size',
-        label: 'سایز محصول',
+        name: 'product.unit_quantity',
+        label: 'مقدار',
         options: {
           filter: true,
           filterType: 'custom',
@@ -123,7 +123,7 @@ const OrdersTable = props => {
               return (
                 <FormControl>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    نام
+                    مقدار
                   </InputLabel>
                   <TextField
                     id="name"
@@ -148,8 +148,8 @@ const OrdersTable = props => {
         }
       },
       {
-        name: 'product.size',
-        label: 'سایز محصول',
+        name: 'product.unit_box',
+        label: 'واحد',
         options: {
           filter: true,
           filterType: 'custom',
@@ -158,10 +158,10 @@ const OrdersTable = props => {
               return (
                 <FormControl>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    نام
+                    واحد
                   </InputLabel>
                   <TextField
-                    id="name"
+                    id="unit_box"
                     aria-describedby="my-helper-text"
                     fullWidth
                     placeholder="نام"
@@ -182,10 +182,9 @@ const OrdersTable = props => {
           }
         }
       },
-
       {
-        name: 'order.final_price',
-        label: 'قیمت',
+        name: 'product.unit_price',
+        label: 'قیمت واحد',
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
             return `${value} تومان`;
@@ -197,13 +196,13 @@ const OrdersTable = props => {
               return (
                 <FormControl>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    تعداد شرکت کنندگان
+                    قیمت واحد
                   </InputLabel>
                   <TextField
                     id="name"
                     aria-describedby="my-helper-text"
                     fullWidth
-                    placeholder="تعداد شرکت کنندگان"
+                    placeholder="قیمت واحد"
                     value={filterList[index]}
                     type={'number'}
                     onChange={event => {
@@ -223,11 +222,11 @@ const OrdersTable = props => {
         }
       },
       {
-        name: 'order.create_date',
-        label: 'زمان ثبت',
+        name: 'product.final_price',
+        label: 'مبلغ کل',
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return MomentFa(value);
+            return `${value} تومان`;
           },
           filter: true,
           filterType: 'custom',
@@ -236,192 +235,25 @@ const OrdersTable = props => {
               return (
                 <FormControl>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    تاریخ شروع
+                    مبلغ کل
                   </InputLabel>
-
-                  <LocalizationProvider dateAdapter={AdapterJalali}>
-                    <DatePicker
-                      mask="____/__/__"
-                      value={
-                        filterList[index].length > 0
-                          ? moment
-                              .from(
-                                p2e(
-                                  moment(filterList[index][0]).format(
-                                    'YYYY/MM/DD'
-                                  )
-                                ),
-                                'fa',
-                                'YYYY/MM/DD'
-                              )
-                              .locale('en')
-                          : new Date()
+                  <TextField
+                    id="name"
+                    aria-describedby="my-helper-text"
+                    fullWidth
+                    placeholder="مبلغ کل"
+                    value={filterList[index]}
+                    type={'number'}
+                    onChange={event => {
+                      if (event.target.value) {
+                        filterList[index][0] = event.target.value;
+                        onChange(filterList[index], index, column);
+                      } else {
+                        filterList[index] = [];
+                        onChange(filterList[index], index, column);
                       }
-                      onChange={newValue => {
-                        if (newValue) {
-                          setStartDate(moment(newValue).format('YYYY-MM-DD'));
-                          filterList[index][0] = MomentFa(newValue);
-                          onChange(filterList[index], index, column);
-                        } else {
-                          filterList[index] = [];
-                          onChange(filterList[index], index, column);
-                        }
-                      }}
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          sx={{
-                            background: '#F2F2F2'
-                          }}
-                        />
-                      )}
-                      // leftArrowIcon={<ArrowBack />}
-                      // rightArrowIcon={<ArrowRight />}
-                    />
-                  </LocalizationProvider>
-                </FormControl>
-              );
-            }
-          }
-        }
-      },
-      {
-        name: 'order.state',
-        label: 'وضعیت',
-        options: {
-          customBodyRender: value => {
-            return (
-              <>
-                {
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: '3px 6px !important',
-                      background: '#CCEEF0',
-                      borderRadius: '4px',
-                      color: '#00AAB5',
-                      width: '150px'
                     }}
-                  >
-                    <InputLabel style={{ color: '#00AAB5', paddingLeft: 0 }}>
-                      {value}
-                    </InputLabel>
-                  </Box>
-                }
-                {/* {value.toLowerCase() === 'submit' ? (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: '3px 6px !important',
-                      background: '#CCEEF0',
-                      borderRadius: '4px',
-                      color: '#00AAB5'
-                    }}
-                  >
-                    <InputLabel style={{ color: '#00AAB5', paddingLeft: 0 }}>
-                      ارسال شده
-                    </InputLabel>
-                  </Box>
-                ) : value.toLowerCase() === 'finished' ? (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: '3px 6px !important',
-                      background: '#FDE8E8',
-                      borderRadius: '4px',
-                      color: '#F4777C !important'
-                    }}
-                  >
-                    <InputLabel style={{ color: '#F4777C', paddingLeft: 0 }}>
-                      برگزار شده
-                    </InputLabel>
-                  </Box>
-                ) : (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: '3px 6px !important',
-                      background: '#F3F3F3',
-                      borderRadius: '4px'
-                      // color: '#F3F3F3 !important'
-                    }}
-                  >
-                    <InputLabel style={{ color: '#A7A5A6', paddingLeft: 0 }}>
-                      برگزار نشده
-                    </InputLabel>
-                  </Box>
-                )} */}
-              </>
-            );
-          },
-          filter: true,
-          filterType: 'custom',
-          filterOptions: {
-            display: (filterList, onChange, index, column) => {
-              return (
-                <FormControl sx={{ marginTop: '10px' }}>
-                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    وضعیت
-                  </InputLabel>
-                  <ToggleButtonGroup
-                    color="primary"
-                    value={state}
-                    exclusive
-                    onChange={(event, newValue) => {
-                      setState(newValue);
-
-                      if (newValue?.toLowerCase() === 'performing')
-                        filterList[index][0] = 'در حال برگزاری';
-                      else if (newValue?.toLowerCase() === 'pending')
-                        filterList[index][0] = 'برگزار نشده';
-                      else if (newValue?.toLowerCase() === 'finished')
-                        filterList[index][0] = 'برگزار شده';
-                      else filterList[index] = [];
-                      onChange(filterList[index], index, column);
-                    }}
-                    sx={{
-                      marginTop: '5px',
-                      direction: 'ltr',
-                      justifyContent: 'flex-end'
-                    }}
-                  >
-                    <ToggleButton
-                      value="PERFORMING"
-                      sx={{
-                        fontFamily: 'IRANSans'
-                      }}
-                    >
-                      در حال برگزاری
-                    </ToggleButton>
-                    <ToggleButton
-                      value="FINISHED"
-                      sx={{
-                        fontFamily: 'IRANSans'
-                      }}
-                    >
-                      برگزار شده
-                    </ToggleButton>
-                    <ToggleButton
-                      value="PENDING"
-                      sx={{
-                        fontFamily: 'IRANSans'
-                      }}
-                    >
-                      برگزار نشده
-                    </ToggleButton>
-                  </ToggleButtonGroup>
+                  />
                 </FormControl>
               );
             }

@@ -738,7 +738,9 @@ export default function Actions(props) {
                 </Box>
                 {data?.files && data?.files.length > 0 && (
                   <a
-                    href={data?.files.filter(f => f.subject === 'PI')[0].url}
+                    href={
+                      data?.files.filter(f => f.subject === 'INVOICE')[0].url
+                    }
                     download
                     style={{ textDecoration: 'none', width: '100%' }}
                   >

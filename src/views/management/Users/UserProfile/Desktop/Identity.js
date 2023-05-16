@@ -254,6 +254,64 @@ function IdentityInfoMobile(props) {
                     </Grid>
                   </Grid>
                   <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <Box sx={{ mt: 1, mb: 1 }}>
+                        <InputLabel style={{ color: '#A7A5A6' }}>
+                          ایمیل
+                        </InputLabel>
+                        <TextField
+                          id="email"
+                          aria-describedby="my-helper-text"
+                          fullWidth
+                          placeholder="ایمیل"
+                          sx={{
+                            background: '#F2F2F2',
+                            borderRadius: '4px',
+                            margin: '3px'
+                          }}
+                          value={values.email}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          error={Boolean(touched.email && errors.email)}
+                          helperText={touched.email && errors.email}
+                        />
+                      </Box>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Box sx={{ mt: 1, mb: 1 }}>
+                        <InputLabel style={{ color: '#A7A5A6' }}>
+                          تاریخ تولد
+                        </InputLabel>
+                        <LocalizationProvider dateAdapter={AdapterJalali}>
+                          <DatePicker
+                            id="birth_date"
+                            value={values.birth_date}
+                            onChange={newValue => {
+                              setFieldValue('birth_date', newValue);
+                            }}
+                            renderInput={params => (
+                              <TextField
+                                {...params}
+                                sx={{
+                                  background: '#F2F2F2',
+                                  margin: '3px'
+                                }}
+                                fullWidth
+                                error={Boolean(
+                                  touched.birth_date && errors.birth_date
+                                )}
+                                helperText={
+                                  touched.birth_date && errors.birth_date
+                                }
+                              />
+                            )}
+                          />
+                        </LocalizationProvider>
+                      </Box>
+                    </Grid>
+                  </Grid>
+
+                  <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <Box sx={{ mt: 1, mb: 1 }}>
                         <InputLabel style={{ color: '#A7A5A6' }}>
@@ -366,29 +424,29 @@ function IdentityInfoMobile(props) {
                   <Divider variant="middle" sx={{ margin: '10px 0px' }} />
                   <Grid container spacing={2}>
                     <Grid item xs={6}>
-                      {values.supplier_data === null && (
-                        <Box sx={{ mt: 1, mb: 1 }}>
-                          <InputLabel style={{ color: '#A7A5A6' }}>
-                            تامین کننده
-                          </InputLabel>
-                          <TextField
-                            id="supplier"
-                            aria-describedby="my-helper-text"
-                            fullWidth
-                            placeholder="تامین کننده"
-                            sx={{
-                              background: '#F2F2F2',
-                              borderRadius: '4px',
-                              margin: '3px'
-                            }}
-                            value={values.supplier}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={Boolean(touched.supplier && errors.supplier)}
-                            helperText={touched.supplier && errors.supplier}
-                          />
-                        </Box>
-                      )}
+                      {/* {values.supplier_data === null && ( */}
+                      <Box sx={{ mt: 1, mb: 1 }}>
+                        <InputLabel style={{ color: '#A7A5A6' }}>
+                          تامین کننده
+                        </InputLabel>
+                        <TextField
+                          id="supplier"
+                          aria-describedby="my-helper-text"
+                          fullWidth
+                          placeholder="تامین کننده"
+                          sx={{
+                            background: '#F2F2F2',
+                            borderRadius: '4px',
+                            margin: '3px'
+                          }}
+                          value={values.supplier}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          error={Boolean(touched.supplier && errors.supplier)}
+                          helperText={touched.supplier && errors.supplier}
+                        />
+                      </Box>
+                      {/* )} */}
                     </Grid>
                     <Grid item xs={6}>
                       {values.introducer_data === null && (
