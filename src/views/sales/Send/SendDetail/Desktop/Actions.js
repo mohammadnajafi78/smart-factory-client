@@ -739,9 +739,10 @@ export default function Actions(props) {
                 {data?.files && data?.files.length > 0 && (
                   <a
                     href={
-                      data?.files.filter(f => f.subject === 'INVOICE')[0].url
+                      data?.files.filter(f => f.subject === 'INVOICE')[0]?.url
                     }
                     download
+                    target="_blank"
                     style={{ textDecoration: 'none', width: '100%' }}
                   >
                     <ConfirmButton

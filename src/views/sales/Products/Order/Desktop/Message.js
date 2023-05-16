@@ -209,6 +209,7 @@ export default function Message(props) {
               href={factor}
               download
               style={{ textDecoration: 'none', width: '100%' }}
+              target="_blank"
             >
               <ConfirmButton variant="outlined">
                 {'دانلود پیش فاکتور'}

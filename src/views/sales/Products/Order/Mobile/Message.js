@@ -214,6 +214,7 @@ export default function Message(props) {
           <a
             href={factor}
             download
+            target="_blank"
             style={{ textDecoration: 'none', width: '100%' }}
           >
             <ConfirmButton

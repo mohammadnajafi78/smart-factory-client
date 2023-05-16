@@ -675,8 +675,9 @@ export default function Actions(props) {
                 </InputLabel>
               </Box>
               <a
-                href={data?.files.filter(f => f.subject === 'INVOICE')[0].url}
+                href={data?.files.filter(f => f.subject === 'INVOICE')[0]?.url}
                 download
+                target="_blank"
                 style={{ textDecoration: 'none', width: '100%' }}
               >
                 <ConfirmButton
