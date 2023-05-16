@@ -15,7 +15,6 @@ function LocationMobile(props) {
   const data = props?.data;
   const editable = props?.editable;
 
-  console.log('ppp', data?.location?.province);
   const [provinces, setProvinces] = useState([]);
   const [provinceId, setProvinceId] = useState(props.data?.location?.province);
   const [cities, setCities] = useState([]);
@@ -60,29 +59,53 @@ function LocationMobile(props) {
       })}
       onSubmit={(values, { setErrors, setSubmitting }) => {
         setSubmitting(true);
-        httpService
-          .patch(
-            `${API_BASE_URL}/api/management/utils/locations/${data?.location?.id}/`,
-            {
+        if (data.location.id) {
+          httpService
+            .patch(
+              `${API_BASE_URL}/api/management/utils/locations/${data?.location?.id}/`,
+              {
+                country_id: 25,
+                province: provinceId,
+                city: cityId,
+                address: values.address,
+                postal_code: values.postal_code
+              }
+            )
+            .then(res => {
+              if (res.status === 200) {
+                props.getData();
+                setSubmitting(false);
+                props.setEditable(false);
+              } else {
+                setSubmitting(false);
+              }
+            })
+            .catch(err => {
+              setSubmitting(false);
+            });
+        } else {
+          httpService
+            .post(`${API_BASE_URL}/api/management/util/locations/`, {
               country_id: 25,
-              province: provinceId,
-              city: cityId,
+              province_id: provinceId,
+              city_id: cityId,
               address: values.address,
-              postal_code: values.postal_code
-            }
-          )
-          .then(res => {
-            if (res.status === 200) {
-              props.getData();
+              postal_code: values.postal_code,
+              user_id: data?.user?.user_id
+            })
+            .then(res => {
+              if (res.status === 200) {
+                props.getData();
+                setSubmitting(false);
+                props.setEditable(false);
+              } else {
+                setSubmitting(false);
+              }
+            })
+            .catch(err => {
               setSubmitting(false);
-              props.setEditable(false);
-            } else {
-              setSubmitting(false);
-            }
-          })
-          .catch(err => {
-            setSubmitting(false);
-          });
+            });
+        }
       }}
     >
       {({

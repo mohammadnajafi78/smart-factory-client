@@ -92,9 +92,10 @@ function WorkMobile(props) {
           data['postal_code'] = values.postal_code;
         if (values.address !== null && values.address !== '')
           data['address'] = values.address;
+
         httpService
           .post(
-            `${API_BASE_URL}/api/management/utils/companies/company_update/`,
+            `${API_BASE_URL}/api/management/util/companies/company_update/`,
             data
           )
           .then(res => {

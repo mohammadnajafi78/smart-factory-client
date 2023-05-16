@@ -69,11 +69,7 @@ function IdentityInfoMobile(props) {
             formData.append('job_certificate_id', values.job_certificate_id);
           if (values.job_certificate != null)
             formData.append('job_certificate', values.job_certificate);
-          if (
-            values.supplier !== null &&
-            values.supplier !== undefined &&
-            data.supplier_data === null
-          )
+          if (values.supplier !== null)
             formData.append('supplier', values.supplier);
           if (
             values.introducer !== null &&
@@ -253,64 +249,6 @@ function IdentityInfoMobile(props) {
                       </Box>
                     </Grid>
                   </Grid>
-                  <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      <Box sx={{ mt: 1, mb: 1 }}>
-                        <InputLabel style={{ color: '#A7A5A6' }}>
-                          ایمیل
-                        </InputLabel>
-                        <TextField
-                          id="email"
-                          aria-describedby="my-helper-text"
-                          fullWidth
-                          placeholder="ایمیل"
-                          sx={{
-                            background: '#F2F2F2',
-                            borderRadius: '4px',
-                            margin: '3px'
-                          }}
-                          value={values.email}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          error={Boolean(touched.email && errors.email)}
-                          helperText={touched.email && errors.email}
-                        />
-                      </Box>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Box sx={{ mt: 1, mb: 1 }}>
-                        <InputLabel style={{ color: '#A7A5A6' }}>
-                          تاریخ تولد
-                        </InputLabel>
-                        <LocalizationProvider dateAdapter={AdapterJalali}>
-                          <DatePicker
-                            id="birth_date"
-                            value={values.birth_date}
-                            onChange={newValue => {
-                              setFieldValue('birth_date', newValue);
-                            }}
-                            renderInput={params => (
-                              <TextField
-                                {...params}
-                                sx={{
-                                  background: '#F2F2F2',
-                                  margin: '3px'
-                                }}
-                                fullWidth
-                                error={Boolean(
-                                  touched.birth_date && errors.birth_date
-                                )}
-                                helperText={
-                                  touched.birth_date && errors.birth_date
-                                }
-                              />
-                            )}
-                          />
-                        </LocalizationProvider>
-                      </Box>
-                    </Grid>
-                  </Grid>
-
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <Box sx={{ mt: 1, mb: 1 }}>
