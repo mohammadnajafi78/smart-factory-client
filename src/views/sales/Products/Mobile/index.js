@@ -9,20 +9,20 @@ import { API_BASE_URL } from 'src/utils/urls';
 import CategoryDrawer from './CategoryDrawer';
 import SubCategoryDrawer from './SubCategoryDrawer';
 import useSaleSearch from 'src/hooks/useSaleSearch';
+import { useHistory } from 'react-router';
+import useSaleOrder from 'src/hooks/useSaleOrder';
 
 export default function ProductsMobile() {
   const [openCategory, setOpenCategory] = useState();
   const [category, setCategory] = useState();
   // const [products, setProducts] = useState(null);
   const { products, searched, getProducts } = useSaleSearch();
+  const history = useHistory();
+  const { order, getOrder } = useSaleOrder();
 
   useEffect(() => {
-    // httpService.get(`${API_BASE_URL}/api/products/type/?ref=shop`).then(res => {
-    //   if (res.status === 200) {
-    //     setProducts(res.data);
-    //   }
-    // });
     getProducts();
+    getOrder();
     httpService
       .get(`${API_BASE_URL}/api/products/category/get_category_list?ref=shop`)
       .then(res => {
@@ -50,11 +50,27 @@ export default function ProductsMobile() {
             زیر دسته
           </CategoryButton> */}
         </Box>
-        <CategoryButton>
+        <CategoryButton onClick={() => history.push('/sale/products/order')}>
           <img
             src={BasketSale}
             style={{ width: '25px', height: '25px', margin: 0 }}
           />
+          {order && order.count > 0 && (
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: '10px',
+                margin: '0px 5px',
+                background: '#CCD6E2',
+                color: '#00346D',
+                padding: '2px 8px',
+                borderRadius: '4px'
+              }}
+            >
+              {order.count}
+            </Box>
+          )}
         </CategoryButton>
       </Box>
 
