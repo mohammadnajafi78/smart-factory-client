@@ -178,9 +178,9 @@ export default function ProductList({ data, incomplete }) {
       )}
       {data &&
         data.files &&
-        data?.files.filter(f => f.subject === 'BL').length > 0 && (
+        data?.files.filter(f => f.subject === 'PI').length > 0 && (
           <a
-            href={data?.files.filter(f => f.subject === 'BL')[0].url}
+            href={data?.files.filter(f => f.subject === 'PI')[0]?.url}
             download
             target="_blank"
             style={{ textDecoration: 'none', width: '100%' }}

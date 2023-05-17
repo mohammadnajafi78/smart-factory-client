@@ -91,7 +91,8 @@ function LocationMobile(props) {
               city_id: cityId,
               address: values.address,
               postal_code: values.postal_code,
-              user_id: data?.user?.user_id
+              user_id: data?.user?.user_id,
+              is_user: true
             })
             .then(res => {
               if (res.status === 200) {
