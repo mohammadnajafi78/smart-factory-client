@@ -627,12 +627,12 @@ const OrdersTable = props => {
   }
 
   function onRowClick(rowData, rowState) {
-    history.push({
-      pathname: '/sale/received/detail',
-      state: {
-        data: data.filter(f => f.order.order_num === rowData[0])
-      }
-    });
+    // history.push({
+    //   pathname: '/sale/management/received/detail',
+    //   state: {
+    //     data: data.filter(f => f.order.order_num === rowData[0])
+    //   }
+    // });
   }
 
   function onRowsDelete(rowsDeleted, newData) {
