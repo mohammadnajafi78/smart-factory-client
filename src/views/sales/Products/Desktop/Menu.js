@@ -88,7 +88,6 @@ function Menu(props) {
                       } else {
                         setSubCatIds([...subCatIds, id]);
                       }
-                      // }
                     }}
                   />
                 }
@@ -150,11 +149,15 @@ export default function GmailTreeView() {
 
   useEffect(() => {
     // if (subCatIds.length > 0) {
+    console.log('subCatIds', subCatIds);
     setFilterProducts([], subCatIds);
     // }
   }, [subCatIds]);
 
   useEffect(() => {
+    setCatIds([]);
+    setSubCatIds([]);
+
     httpService
       .get(`${API_BASE_URL}/api/products/category/get_category_list?ref=shop`)
       .then(res => {
@@ -212,12 +215,15 @@ export default function GmailTreeView() {
                   nodeId={key}
                   labelText={item?.translate_detail?.item_fa}
                   // labelIcon={Label}
-                  onClick={() => setCatIds([item.id])}
+                  onClick={() => {
+                    setCatIds([item.id]);
+                    setSubCatIds([]);
+                  }}
                 >
                   {item?.subcategories.map((subItem, subKey) => {
                     return (
                       <Menu
-                        nodeId={item.length + subKey}
+                        nodeId={subItem.id + subKey + 1000}
                         labelText={subItem?.translate_detail?.item_fa}
                         // labelIcon={SupervisorAccountIcon}
                         // labelInfo="90"

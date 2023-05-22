@@ -70,7 +70,22 @@ export const SaleOrderProvider = ({ children }) => {
               order: result.data
             }
           });
+        } else {
+          dispatch({
+            type: 'GET_ORDER',
+            payload: {
+              order: null
+            }
+          });
         }
+      })
+      .catch(err => {
+        dispatch({
+          type: 'GET_ORDER',
+          payload: {
+            order: null
+          }
+        });
       });
   };
 
