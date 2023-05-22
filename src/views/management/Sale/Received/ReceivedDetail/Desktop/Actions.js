@@ -55,7 +55,8 @@ export default function Actions(props) {
   const [delivery, setDelivery] = useState(false);
   const [selected, setSelected] = useState(null);
   const history = useHistory();
-  const user_id = JSON.parse(localStorage.getItem('user')).user_id;
+  const sale_office_id = JSON.parse(localStorage.getItem('user'))
+    .sale_office_id;
 
   return (
     <>
@@ -520,7 +521,7 @@ export default function Actions(props) {
           backgroundColor: 'white'
         }}
       >
-        {data.flow_info.state_user === user_id &&
+        {data.flow_info.state_user === sale_office_id &&
           data.current_state.name === 'SUBMIT' && (
             <Box
               sx={{
@@ -532,7 +533,7 @@ export default function Actions(props) {
                 // height: 'inherit'
               }}
             >
-              {acceptConfirm ? (
+              {acceptConfirm === true ? (
                 <AcceptConfirm
                   data={data}
                   setAcceptConfirm={setAcceptConfirm}
