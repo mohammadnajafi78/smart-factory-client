@@ -286,9 +286,7 @@ export default function AddPayment(props) {
                                 fontSize: '16px',
                                 fontWeight: 400
                               }}
-                            >
-                              ریال
-                            </InputLabel>
+                            ></InputLabel>
                           </InputAdornment>
                         )
                       }}

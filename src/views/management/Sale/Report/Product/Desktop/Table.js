@@ -187,7 +187,7 @@ const OrdersTable = props => {
         label: 'قیمت واحد',
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return `${value} تومان`;
+            return `${value} `;
           },
           filter: true,
           filterType: 'custom',
@@ -226,7 +226,7 @@ const OrdersTable = props => {
         label: 'مبلغ کل',
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return `${value} تومان`;
+            return `${value} `;
           },
           filter: true,
           filterType: 'custom',

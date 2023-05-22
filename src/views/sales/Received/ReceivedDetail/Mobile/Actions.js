@@ -78,7 +78,7 @@ export default function Actions(props) {
                 color: '#00346D'
               }}
             >
-              {`سفارش دهنده مبلغ ${data.final_price} ریال را برای این سفارش پرداخت کرده است`}
+              {`سفارش دهنده مبلغ ${data.final_price}  را برای این سفارش پرداخت کرده است`}
             </InputLabel>
           </Box>
           <Box

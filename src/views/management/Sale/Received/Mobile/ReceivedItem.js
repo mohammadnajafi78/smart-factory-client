@@ -186,7 +186,7 @@ export default function ReceivedItem({ data }) {
               lineHeight: '17px'
             }}
           >
-            {`${data?.final_price} ریال`}
+            {`${data?.final_price} `}
           </InputLabel>
         )}
         <Box

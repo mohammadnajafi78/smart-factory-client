@@ -161,7 +161,7 @@ export default function Actions(props) {
                 color: '#00346D'
               }}
             >
-              {`هزینه سفارش شما معادل ${data.final_price} ریال می باشد. جهت وارد کردن اطلاعات واریز کلیک کنید:`}
+              {`هزینه سفارش شما معادل ${data.final_price}  می باشد. جهت وارد کردن اطلاعات واریز کلیک کنید:`}
             </InputLabel>
           </Box>
           <Box
@@ -254,7 +254,7 @@ export default function Actions(props) {
                 color: '#00346D'
               }}
             >
-              {`هزینه سفارش شما معادل ${data.final_price} ریال می باشد. جهت وارد کردن اطلاعات واریز کلیک کنید:`}
+              {`هزینه سفارش شما معادل ${data.final_price}  می باشد. جهت وارد کردن اطلاعات واریز کلیک کنید:`}
             </InputLabel>
           </Box>
           <Box

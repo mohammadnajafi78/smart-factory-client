@@ -153,7 +153,7 @@ const ReceiveTable = props => {
         label: 'کل محصولات',
         options: {
           // customBodyRender: (value, tableMeta, updateValue) => {
-          //   return `${value} تومان`;
+          //   return `${value} `;
           // },
           filter: false,
           filterType: 'custom',

@@ -84,7 +84,7 @@ export default function SendItem({ data }) {
                   lineHeight: '17px'
                 }}
               >
-                {data?.final_price + ' ریال'}
+                {data?.final_price + ' '}
               </InputLabel> */}
             </Box>
             <Box
@@ -130,7 +130,7 @@ export default function SendItem({ data }) {
                 }}
               >
                 {MomentFa(data?.create_date)}
-                {/* {data.final_price + ' ریال'} */}
+                {/* {data.final_price + ' '} */}
               </InputLabel>
             </Box>
           </Box>
@@ -159,7 +159,7 @@ export default function SendItem({ data }) {
               }}
             >
               {/* {MomentFa(data?.create_date)} */}
-              {data.final_price + ' ریال'}
+              {data.final_price + ' '}
             </InputLabel>
           </Box>
         </Box>

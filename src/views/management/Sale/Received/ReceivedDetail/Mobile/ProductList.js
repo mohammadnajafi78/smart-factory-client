@@ -80,7 +80,7 @@ export default function ProductList({ data }) {
                           fontWeight: 400
                         }}
                       >
-                        {`${item.price} ریال`}
+                        {`${item.price} `}
                       </InputLabel>
                     </Box>
                     <Box
@@ -130,7 +130,7 @@ export default function ProductList({ data }) {
                           fontWeight: 400
                         }}
                       >
-                        {`${item.total_price} ریال`}
+                        {`${item.total_price} `}
                       </InputLabel>
                     </Box>
                   </Box>
@@ -156,7 +156,7 @@ export default function ProductList({ data }) {
               </InputLabel>
               <InputLabel
                 style={{ color: '#335D8A', fontSize: '16px', fontWeight: 700 }}
-              >{`${product.final_price} ریال`}</InputLabel>
+              >{`${product.final_price} `}</InputLabel>
             </Box>
           )}
         </Box>

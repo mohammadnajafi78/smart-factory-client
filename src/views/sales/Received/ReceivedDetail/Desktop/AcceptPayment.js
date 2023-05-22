@@ -150,7 +150,7 @@ export default function AcceptPayment(props) {
                                   color: '#6685A7'
                                 }}
                               >
-                                {'ریال'}
+                                {''}
                               </InputLabel>
                             </Box>
                           </Box>

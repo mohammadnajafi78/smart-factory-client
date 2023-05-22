@@ -82,7 +82,7 @@ export default function Message(props) {
                 marginTop: '30px'
               }}
             >
-              {`${order.final_price} ریال`}
+              {`${order.final_price} `}
             </InputLabelHeader>
             <Box sx={{ width: '100%', mt: '40px' }}>
               <Box

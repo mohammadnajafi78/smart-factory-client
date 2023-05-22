@@ -233,7 +233,7 @@ const OrdersTable = props => {
         label: 'قیمت',
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return `${value} تومان`;
+            return `${value} `;
           },
           filter: false,
           filterType: 'custom',

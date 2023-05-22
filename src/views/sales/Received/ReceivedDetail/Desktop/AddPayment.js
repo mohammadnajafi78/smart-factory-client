@@ -109,9 +109,7 @@ export default function AddPayment(props) {
                     fontWeight: 400,
                     fontSize: '10px'
                   }}
-                >
-                  ریال
-                </InputLabel>
+                ></InputLabel>
               </Box>
               <Box
                 sx={{
