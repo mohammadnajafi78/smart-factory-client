@@ -577,15 +577,18 @@ export default function Actions(props) {
                 disabled={comment == null}
                 onClick={() => {
                   httpService
-                    .post(`${API_BASE_URL}/api/orders/update_order_state/`, {
-                      order_num: data.order_num,
-                      order_action: 'Reject',
-                      comment: comment,
-                      state:
-                        data.current_state.name === 'INCOMPLETE_DELIVERY'
-                          ? 'Reject_Incomplete'
-                          : ''
-                    })
+                    .post(
+                      `${API_BASE_URL}/api/management/order/update_order_state/`,
+                      {
+                        order_num: data.order_num,
+                        order_action: 'Reject',
+                        comment: comment,
+                        state:
+                          data.current_state.name === 'INCOMPLETE_DELIVERY'
+                            ? 'Reject_Incomplete'
+                            : ''
+                      }
+                    )
                     .then(res => {
                       if (res.status === 200) {
                         history.push('/management/sale/received');
@@ -721,10 +724,13 @@ export default function Actions(props) {
                 disabled={selectedSupplier == null}
                 onClick={() => {
                   httpService
-                    .post(`${API_BASE_URL}/api/orders/set_supplier/`, {
-                      order_num: data.order_num,
-                      supply_by: selectedSupplier
-                    })
+                    .post(
+                      `${API_BASE_URL}/api/management/order/set_supplier/`,
+                      {
+                        order_num: data.order_num,
+                        supply_by: selectedSupplier
+                      }
+                    )
                     .then(res => {
                       if (res.status === 200) {
                         if (selectedSupplier === 'SUPPLIER') {

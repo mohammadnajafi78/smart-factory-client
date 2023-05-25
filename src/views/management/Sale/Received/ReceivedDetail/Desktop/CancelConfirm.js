@@ -116,11 +116,14 @@ export default function CancelConfirm(props) {
               disabled={comment == null}
               onClick={() => {
                 httpService
-                  .post(`${API_BASE_URL}/api/orders/update_order_state/`, {
-                    order_num: props.data.order_num,
-                    order_action: 'Reject',
-                    comment: comment
-                  })
+                  .post(
+                    `${API_BASE_URL}/api/management/order/update_order_state/`,
+                    {
+                      order_num: props.data.order_num,
+                      order_action: 'Reject',
+                      comment: comment
+                    }
+                  )
                   .then(res => {
                     if (res.status === 200) {
                       history.push('/management/sale/received');

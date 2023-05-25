@@ -207,7 +207,7 @@ export default function AcceptConfirm(props) {
 
                 httpService
                   .post(
-                    `${API_BASE_URL}/api/orders/update_order_state/`,
+                    `${API_BASE_URL}/api/management/order/update_order_state/`,
                     formData
                   )
                   .then(res => {

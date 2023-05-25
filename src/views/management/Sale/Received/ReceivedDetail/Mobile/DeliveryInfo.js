@@ -47,7 +47,7 @@ export default function DeliveryInfo(props) {
 
   useEffect(() => {
     httpService
-      .get(`${API_BASE_URL}/api/orders/delivery/get_delivery_type/`)
+      .get(`${API_BASE_URL}/api/management/order/delivery/get_delivery_type/`)
       .then(res => {
         if (res.status === 200) {
           setDeliveryTypes(res.data);
@@ -108,7 +108,7 @@ export default function DeliveryInfo(props) {
 
               httpService
                 .post(
-                  `${API_BASE_URL}/api/orders/update_order_state/`,
+                  `${API_BASE_URL}/api/management/order/update_order_state/`,
                   formData
                 )
                 .then(res => {

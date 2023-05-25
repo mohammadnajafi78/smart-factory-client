@@ -38,7 +38,7 @@ export default function AddPayment(props) {
 
   useEffect(() => {
     httpService
-      .get(`${API_BASE_URL}/api/orders/payment/get_payment_type/`)
+      .get(`${API_BASE_URL}/api/management/order/payment/get_payment_type/`)
       .then(res => {
         if (res.status === 200) {
           setPaymentTypes(res.data);
@@ -299,7 +299,7 @@ export default function AddPayment(props) {
               onClick={() => {
                 httpService
                   .post(
-                    `${API_BASE_URL}/api/orders/payment/update_payment_status/`,
+                    `${API_BASE_URL}/api/management/order/payment/update_payment_status/`,
                     {
                       payment_num: data.payment_num,
                       action: 'APPROVED'
@@ -398,7 +398,7 @@ export default function AddPayment(props) {
                   onClick={() => {
                     httpService
                       .post(
-                        `${API_BASE_URL}/api/orders/payment/update_payment_status/`,
+                        `${API_BASE_URL}/api/management/order/payment/update_payment_status/`,
                         {
                           payment_num: data.payment_num,
                           action: 'REJECTED',

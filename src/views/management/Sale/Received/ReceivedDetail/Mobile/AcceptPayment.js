@@ -42,7 +42,7 @@ export default function AcceptPayment(props) {
   useEffect(() => {
     httpService
       .get(
-        `${API_BASE_URL}/api/orders/payment/get_order_payments/?order_num=${props.location.state.order_num}`
+        `${API_BASE_URL}/api/management/order/payment/get_order_payments/?order_num=${props.location.state.order_num}`
       )
       .then(res => {
         if (res.status === 200) {
@@ -216,7 +216,7 @@ export default function AcceptPayment(props) {
                             onClick={() => {
                               httpService
                                 .get(
-                                  `${API_BASE_URL}/api/orders/payment/get_payment?payment_num=${item.payment_num}`
+                                  `${API_BASE_URL}/api/management/order/payment/get_payment?payment_num=${item.payment_num}`
                                 )
                                 .then(res => {
                                   if (res.status === 200) {
@@ -288,7 +288,7 @@ export default function AcceptPayment(props) {
 
                     httpService
                       .post(
-                        `${API_BASE_URL}/api/orders/payment/update_order_payment/`,
+                        `${API_BASE_URL}/api/management/order/payment/update_order_payment/`,
                         formData
                       )
                       .then(res => {

@@ -23,7 +23,7 @@ export default function ProductList({ data, incomplete }) {
     if (incomplete === true) {
       httpService
         .get(
-          `${API_BASE_URL}/api/orders/get_incomplete_delivery?order_num=${data.order_num}`
+          `${API_BASE_URL}/api/management/order/get_incomplete_delivery?order_num=${data.order_num}`
         )
         .then(res => {
           if (res.status === 200) {

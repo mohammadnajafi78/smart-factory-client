@@ -13,7 +13,7 @@ export default function ProductsMobile() {
 
   useEffect(() => {
     httpService
-      .post(`${API_BASE_URL}/api/orders/get_received_orders/`)
+      .post(`${API_BASE_URL}/api/management/order/get_received_orders/`)
       .then(res => {
         if (res.status === 200) {
           setProducts(res.data);
