@@ -37,9 +37,14 @@ export default function Search() {
         fullWidth
         placeholder="جستجو در محصولات"
         value={input}
+        autoFocus
         onChange={event => {
           setInput(event.target.value);
-          setSaleSearchResult(event.target.value);
+        }}
+        onKeyDown={event => {
+          if (event.key === 'Enter') {
+            setSaleSearchResult(event.target.value);
+          }
         }}
         InputProps={{
           startAdornment: (

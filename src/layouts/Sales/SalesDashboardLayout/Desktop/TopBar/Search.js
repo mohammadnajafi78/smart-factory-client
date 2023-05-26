@@ -39,8 +39,13 @@ export default function Search() {
         value={input}
         onChange={event => {
           setInput(event.target.value);
-          setSaleSearchResult(event.target.value);
         }}
+        onKeyDown={event => {
+          if (event.key === 'Enter') {
+            setSaleSearchResult(event.target.value);
+          }
+        }}
+        autoFocus
         InputProps={{
           startAdornment: (
             <InputAdornment position="start" tabIndex={-1}>
