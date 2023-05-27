@@ -5,7 +5,13 @@ import Box from '@mui/material/Box';
 import TreeView from '@mui/lab/TreeView';
 import TreeItem, { treeItemClasses } from '@mui/lab/TreeItem';
 import Typography from '@mui/material/Typography';
-import { Checkbox, Divider, FormControlLabel, FormGroup } from '@mui/material';
+import {
+  Checkbox,
+  Divider,
+  FormControlLabel,
+  FormGroup,
+  IconButton
+} from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import InputLabelHeader from 'src/components/Desktop/InputLabel';
@@ -14,6 +20,8 @@ import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import { useState } from 'react';
 import useSaleSearch from 'src/hooks/useSaleSearch';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
+import { FilterAlt, FilterAltOff } from '@mui/icons-material';
 
 const MenuRoot = styled(TreeItem)(({ theme }) => ({
   color: theme.palette.text.secondary,
@@ -60,6 +68,8 @@ function Menu(props) {
     id,
     subCatIds,
     setSubCatIds,
+    setCatIds,
+    catIds,
     ...other
   } = props;
   const { setFilterProducts } = useSaleSearch();
@@ -70,43 +80,46 @@ function Menu(props) {
         <Box sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0 }}>
           <Box component={LabelIcon} color="inherit" sx={{ mr: 1 }} />
           {isChild ? (
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    size="small"
-                    sx={{
-                      padding: '2px',
-                      margin: '0px 6px',
-                      color: '#99AEC5',
-                      width: '12px',
-                      fontSize: '14px'
-                    }}
-                    onClick={() => {
-                      if (subCatIds.includes(id)) {
-                        setSubCatIds(subCatIds.filter(item => item !== id));
-                      } else {
-                        setSubCatIds([...subCatIds, id]);
-                      }
-                    }}
-                  />
-                }
-                label={
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      fontWeight: 'inherit',
-                      flexGrow: 1,
-                      fontSize: '13px',
-                      fontWeight: 300,
-                      color: '#00346D'
-                    }}
-                  >
-                    {labelText}
-                  </Typography>
-                }
+            <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
+              <Checkbox
+                size="small"
+                sx={{
+                  padding: '2px',
+                  margin: '0px 6px',
+                  color: '#99AEC5',
+                  width: '12px',
+                  fontSize: '14px'
+                }}
+                checked={subCatIds.filter(item => item === id).length > 0}
+                onClick={() => {
+                  if (subCatIds.includes(id)) {
+                    if (subCatIds.filter(item => item !== id).length > 0)
+                      setFilterProducts(
+                        [],
+                        subCatIds.filter(item => item !== id)
+                      );
+                    else setFilterProducts(catIds, []);
+
+                    setSubCatIds(subCatIds.filter(item => item !== id));
+                  } else {
+                    setFilterProducts([], [...subCatIds, id]);
+                    setSubCatIds([...subCatIds, id]);
+                  }
+                }}
               />
-            </FormGroup>
+              <Typography
+                variant="body2"
+                sx={{
+                  fontWeight: 'inherit',
+                  flexGrow: 1,
+                  fontSize: '13px',
+                  fontWeight: 300,
+                  color: '#00346D'
+                }}
+              >
+                {labelText}
+              </Typography>
+            </Box>
           ) : (
             <Typography
               variant="body2"
@@ -143,16 +156,9 @@ Menu.propTypes = {
 
 export default function GmailTreeView() {
   const [data, setData] = useState(null);
-  const { setFilterProducts } = useSaleSearch();
+  const { setFilterProducts, getProducts } = useSaleSearch();
   const [catIds, setCatIds] = useState([]);
   const [subCatIds, setSubCatIds] = useState([]);
-
-  useEffect(() => {
-    // if (subCatIds.length > 0) {
-    console.log('subCatIds', subCatIds);
-    setFilterProducts([], subCatIds);
-    // }
-  }, [subCatIds]);
 
   useEffect(() => {
     setCatIds([]);
@@ -166,12 +172,6 @@ export default function GmailTreeView() {
         }
       });
   }, []);
-
-  useEffect(() => {
-    if (catIds.length > 0) {
-      setFilterProducts(catIds, []);
-    }
-  }, [catIds]);
 
   return (
     <Box
@@ -188,11 +188,33 @@ export default function GmailTreeView() {
         borderRadius: '8px'
       }}
     >
-      <InputLabelHeader
-        style={{ fontSize: '16px', fontWeight: 500, color: '#00346D' }}
+      <Box
+        sx={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          width: '100%',
+          justifyContent: 'space-between'
+        }}
       >
-        دسته محصولات
-      </InputLabelHeader>
+        <InputLabelHeader
+          style={{ fontSize: '16px', fontWeight: 500, color: '#00346D' }}
+        >
+          دسته محصولات
+        </InputLabelHeader>
+        {catIds.length > 0 || subCatIds.length > 0 ? (
+          <IconButton
+            onClick={() => {
+              setCatIds([]);
+              setSubCatIds([]);
+              getProducts();
+            }}
+          >
+            <FilterAlt sx={{ color: '#00AAB5' }} />
+          </IconButton>
+        ) : (
+          <FilterAltOff sx={{ color: '#00AAB5' }} />
+        )}
+      </Box>
       <TreeView
         aria-label="gmail"
         // defaultExpanded={['3']}
@@ -218,6 +240,7 @@ export default function GmailTreeView() {
                   onClick={() => {
                     setCatIds([item.id]);
                     setSubCatIds([]);
+                    setFilterProducts([item.id], []);
                   }}
                 >
                   {item?.subcategories.map((subItem, subKey) => {
@@ -233,6 +256,8 @@ export default function GmailTreeView() {
                         isChild
                         subCatIds={subCatIds}
                         setSubCatIds={setSubCatIds}
+                        catIds={catIds}
+                        setCatIds={setCatIds}
                       />
                     );
                   })}

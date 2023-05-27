@@ -161,6 +161,7 @@ export const SaleSearchProvider = ({ children }) => {
           }
         });
     } else {
+      console.log('khar');
       getProducts();
     }
   };
