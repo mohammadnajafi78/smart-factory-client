@@ -79,16 +79,28 @@ export default function ProductItem({ data }) {
               height: '25px'
             }}
           >
-            <InputLabel
-              style={{
-                fontWeight: 500,
-                fontSize: '16px',
-                color: '#00346D',
-                lineHeight: '17px'
-              }}
-            >
-              {data?.name_translate?.item_fa}
-            </InputLabel>
+            <Box>
+              <InputLabel
+                style={{
+                  fontWeight: 500,
+                  fontSize: '15px',
+                  color: '#00346D'
+                  // lineHeight: '17px'
+                }}
+              >
+                {data?.name_translate?.item_fa}
+              </InputLabel>
+              <InputLabel
+                style={{
+                  fontWeight: 500,
+                  fontSize: '15px',
+                  color: '#00346D'
+                  // lineHeight: '17px'
+                }}
+              >
+                {data.size ? ` - ${data.size}` : ''}
+              </InputLabel>
+            </Box>
           </Box>
           <Box
             sx={{

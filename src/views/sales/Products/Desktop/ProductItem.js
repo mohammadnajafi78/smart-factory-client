@@ -39,11 +39,28 @@ export default function ProductItem({ data }) {
           gap: '8px'
         }}
       >
-        <InputLabelHeader
-          style={{ color: '#00346D', fontWeight: 700, fontSize: '14px' }}
-        >
-          {data?.name_translate?.item_fa}
-        </InputLabelHeader>
+        <Box sx={{ display: 'inline-flex' }}>
+          <InputLabelHeader
+            style={{
+              color: '#00346D',
+              fontWeight: 700,
+              fontSize: '14px',
+              direction: 'rtl'
+            }}
+          >
+            {data?.name_translate?.item_fa}
+          </InputLabelHeader>
+          <InputLabelHeader
+            style={{
+              color: '#00346D',
+              fontWeight: 700,
+              fontSize: '14px',
+              direction: 'rtl'
+            }}
+          >
+            {data.size ? ` - ${data.size}` : ''}
+          </InputLabelHeader>
+        </Box>
         <Box
           sx={{
             display: 'flex',
