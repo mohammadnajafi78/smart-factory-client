@@ -119,7 +119,8 @@ export default function CancelConfirm(props) {
                   .post(`${API_BASE_URL}/api/orders/update_order_state/`, {
                     order_num: props.data.order_num,
                     order_action: 'Reject',
-                    comment: comment
+                    comment: comment,
+                    state: 'PI'
                   })
                   .then(res => {
                     if (res.status === 200) {

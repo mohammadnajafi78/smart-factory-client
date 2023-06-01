@@ -121,7 +121,8 @@ export default function CancelConfirm(props) {
                     {
                       order_num: props.data.order_num,
                       order_action: 'Reject',
-                      comment: comment
+                      comment: comment,
+                      state: 'PI'
                     }
                   )
                   .then(res => {

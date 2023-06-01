@@ -680,7 +680,8 @@ export default function Actions(props) {
                       .post(`${API_BASE_URL}/api/orders/update_order_state/`, {
                         order_num: data.order_num,
                         order_action: 'Reject',
-                        comment: comment
+                        comment: comment,
+                        state: 'Invoice'
                       })
                       .then(res => {
                         if (res.status === 200) {
