@@ -734,7 +734,7 @@ export default function Actions(props) {
                 <Box sx={{ display: 'inline-flex' }}>
                   <InputLabel style={{ color: '#6685A7' }}>توضیحات:</InputLabel>
                   <InputLabel style={{ color: '#6685A7' }}>
-                    {data.flow_action.comment}
+                    {data?.flow_action?.comment}
                   </InputLabel>
                 </Box>
                 {data?.files && data?.files.length > 0 && (

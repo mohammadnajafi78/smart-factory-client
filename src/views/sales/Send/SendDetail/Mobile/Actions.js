@@ -532,7 +532,7 @@ export default function Actions(props) {
                       lineHeight: '16px'
                     }}
                   >
-                    {`علت عدم تایید: ${data?.flow_action.comment}`}
+                    {`علت عدم تایید: ${data?.flow_action?.comment}`}
                   </InputLabel>
                 </Box>
               )}
@@ -672,7 +672,7 @@ export default function Actions(props) {
               <Box sx={{ display: 'inline-flex' }}>
                 <InputLabel style={{ color: '#6685A7' }}>توضیحات:</InputLabel>
                 <InputLabel style={{ color: '#6685A7' }}>
-                  {data.flow_action.comment}
+                  {data?.flow_action?.comment}
                 </InputLabel>
               </Box>
               <a
