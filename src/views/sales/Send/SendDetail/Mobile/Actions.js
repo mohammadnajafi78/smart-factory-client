@@ -676,7 +676,11 @@ export default function Actions(props) {
                 </InputLabel>
               </Box>
               <a
-                href={data?.files.filter(f => f.subject === 'INVOICE')[0]?.url}
+                href={
+                  data?.files.filter(f => f.subject === 'INVOICE')[
+                    data?.files.filter(f => f.subject === 'INVOICE').length - 1
+                  ]?.url
+                }
                 download
                 target="_blank"
                 style={{ textDecoration: 'none', width: '100%' }}
@@ -929,7 +933,7 @@ export default function Actions(props) {
                     data?.files.filter(f => f.subject === 'BL').length > 0 && (
                       <a
                         href={
-                          data?.files.filter(f => f.subject === 'BL')[0].url
+                          data?.files.filter(f => f.subject === 'BL')[0]?.url
                         }
                         download
                         style={{ textDecoration: 'none', width: '100%' }}

@@ -147,7 +147,7 @@ export default function ProductList({ data }) {
         </Box>
       )}
       <a
-        href={data?.files.filter(f => f.subject === 'PI')[0].url}
+        href={data?.files.filter(f => f.subject === 'PI')[0]?.url}
         download
         target="_blank"
         style={{ textDecoration: 'none', width: '100%' }}
