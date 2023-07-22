@@ -247,6 +247,7 @@ export default function Delivery(props) {
                       }
                     });
                 }}
+                disabled={order?.count <= 0 || selected === null}
               >
                 {'ارسال سفارش'}
               </ConfirmButton>

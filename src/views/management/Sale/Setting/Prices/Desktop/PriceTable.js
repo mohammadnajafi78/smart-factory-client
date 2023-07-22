@@ -31,7 +31,7 @@ const PriceTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
   const [data, setData] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState(15);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
   const [provinces, setProvinces] = useState([]);
   const [provinceId, setProvinceId] = useState(null);
   const [cities, setCities] = useState([]);

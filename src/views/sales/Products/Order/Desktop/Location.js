@@ -36,6 +36,7 @@ export default function Location(props) {
   const classes = useStyles();
   const [locations, setLocations] = useState([]);
   const [open, setOpen] = useState(false);
+  const [openCancel, setOpenCancel] = useState(false);
   const [selected, setSelected] = useState(null);
   const [provinces, setProvinces] = useState([]);
   const [provinceId, setProvinceId] = useState();
@@ -43,6 +44,8 @@ export default function Location(props) {
   const [cityId, setCityId] = useState();
   const history = useHistory();
   const { order, setOrder } = useSaleOrder();
+
+  console.log('ordeeeer', order);
 
   function getData() {
     httpService
@@ -173,6 +176,24 @@ export default function Location(props) {
               }}
             >
               <ConfirmButton
+                disabled={false}
+                // variant="outlined"
+                style={{
+                  background: '#FEEEEC',
+                  color: '#F4777C',
+                  border: '1px solid #FEEEEC',
+                  fontSize: '12px',
+                  width: '150px'
+                }}
+                onClick={() => {
+                  setOpenCancel(true);
+                }}
+              >
+                <img src={CancelImg} />
+                {'لغو سفارش'}
+              </ConfirmButton>
+              <ConfirmButton
+                style={{ width: '100px' }}
                 onClick={() => {
                   httpService
                     .post(
@@ -189,6 +210,7 @@ export default function Location(props) {
                       }
                     });
                 }}
+                disabled={order?.count <= 0 || selected === null}
               >
                 {'ادامه'}
               </ConfirmButton>
@@ -442,6 +464,80 @@ export default function Location(props) {
                   </form>
                 )}
               </Formik>
+            </Box>
+          </Box>
+        }
+      />
+      <CustomizedDialogs
+        open={openCancel}
+        title={'لغو درخواست'}
+        handleClose={() => setOpenCancel(false)}
+        content={
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              padding: '16px 20px',
+              justifyContent: 'space-between',
+              // height: 'inherit',
+              gap: '10px',
+              margin: '20px 0px',
+              borderRadius: '8px'
+            }}
+          >
+            <Box sx={{ width: '100%' }}>
+              <Box
+                sx={{ display: 'flex', gap: '10px', flexDirection: 'column' }}
+              >
+                <InputLabel style={{ fontSize: '14px' }}>
+                  آیا از لغو درخواست مطمئن هستید؟
+                </InputLabel>
+              </Box>
+            </Box>
+            {/* <Divider /> */}
+            <Box
+              sx={{
+                display: 'flex',
+                width: '100%',
+                justifyContent: 'flex-end'
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'inline-flex',
+                  justifyContent: 'flex-end',
+                  gap: 2
+                }}
+              >
+                <ConfirmButton
+                  disabled={false}
+                  variant="outlined"
+                  style={{ width: '150px' }}
+                  onClick={() => {
+                    setOpenCancel(false);
+                  }}
+                  type={'button'}
+                >
+                  {'خیر'}
+                </ConfirmButton>
+                <ConfirmButton
+                  style={{ width: '150px' }}
+                  // disabled={comment == null}
+                  onClick={() => {
+                    httpService
+                      .post(`${API_BASE_URL}/api/orders/cancel_order/`, {
+                        order_num: order.order_num
+                      })
+                      .then(res => {
+                        if (res.status === 200) {
+                          setOpenCancel(false);
+                        }
+                      });
+                  }}
+                >
+                  {'بله'}
+                </ConfirmButton>
+              </Box>
             </Box>
           </Box>
         }

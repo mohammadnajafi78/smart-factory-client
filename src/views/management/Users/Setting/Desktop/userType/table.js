@@ -30,7 +30,7 @@ const UserTypeTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
   const [data, setData] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState(15);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
   const [columns, setColumns] = useState([]);
   const [filter, setFilter] = useState('');
   const [sort, setSort] = useState('');
@@ -240,9 +240,8 @@ const UserTypeTable = props => {
   function getData(page, rowsPerPage, search) {
     httpService
       .post(
-        `${API_BASE_URL}/api/management/user/user_type/user_type_list/?limit=${rowsPerPage}&offset=${page *rowsPerPage}${
-          filter !== '' ? `&${filter}` : ''
-        }`,
+        `${API_BASE_URL}/api/management/user/user_type/user_type_list/?limit=${rowsPerPage}&offset=${page *
+          rowsPerPage}${filter !== '' ? `&${filter}` : ''}`,
         {
           order: sort,
           search: search

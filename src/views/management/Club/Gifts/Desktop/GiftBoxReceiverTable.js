@@ -25,7 +25,7 @@ let item = {};
 const GiftBoxReceiverTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(15);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [completed, setCompleted] = useState(null);

@@ -12,6 +12,7 @@ import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import { Download, Plus } from 'react-feather';
 import { useHistory } from 'react-router-dom';
 import MomentFa from 'src/utils/MomentFa';
+import FilesMenu from 'src/views/sales/FilesMenu';
 
 export default function ProductList({ data }) {
   const product = data;
@@ -21,6 +22,25 @@ export default function ProductList({ data }) {
     <Box style={{ position: 'relative' }}>
       {product && (
         <Box>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'baseline'
+            }}
+          >
+            <InputLabelHeader
+              style={{
+                color: '#231F20',
+                fontSize: '18px',
+                marginBottom: '20px'
+              }}
+            >
+              لیست سفارشات
+            </InputLabelHeader>
+            {data && <FilesMenu data={data?.files} />}
+          </Box>
           <Box>
             {product.products.map((item, key) => {
               return (
@@ -146,7 +166,7 @@ export default function ProductList({ data }) {
           </Box>
         </Box>
       )}
-      <a
+      {/* <a
         href={data?.files.filter(f => f.subject === 'PI')[0]?.url}
         download
         target="_blank"
@@ -164,7 +184,7 @@ export default function ProductList({ data }) {
           <Download />
           دانلود فایل درخواست
         </ConfirmButton>
-      </a>
+      </a> */}
     </Box>
   );
 }

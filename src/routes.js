@@ -12,6 +12,7 @@ import FormsDashboardLayout from './layouts/Forms';
 import SaleDashboardLayout from './layouts/Sales/SalesDashboardLayout';
 import SalesDashboardLayoutBack from './layouts/Sales/SalesDashboardLayoutBack';
 import SalesDashboardLayoutForm from './layouts/Sales/SalesDashboardLayoutForm';
+import ProjectDashboardLayout from './layouts/Projects/ProjectsDashboardLayout';
 
 export const renderRoutes = (routes = []) => (
   <Suspense fallback={<LoadingScreen />}>
@@ -424,6 +425,21 @@ const routes = [
         component: lazy(() =>
           import('src/views/sales/Send/SendDetail/Desktop/index')
         )
+      }
+    ]
+  },
+  {
+    path: '/projects',
+    guard: AuthGuard,
+    layout: ProjectDashboardLayout,
+    routes: [
+      {
+        exact: true,
+        path: '/projects/project',
+        component: lazy(() => import('src/views/projects/Project/index'))
+      },
+      {
+        component: lazy(() => import('src/views/projects/Project/index'))
       }
     ]
   },

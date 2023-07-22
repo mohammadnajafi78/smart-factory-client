@@ -44,7 +44,7 @@ let item = {};
 const ReceiveTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(15);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [filter, setFilter] = useState('');
@@ -53,6 +53,8 @@ const ReceiveTable = props => {
   const [endDate, setEndDate] = React.useState(new Date());
   const [reset, setReset] = useState(false);
   const [state, setState] = useState(null);
+  const [statusList, setStatusList] = useState([]);
+  const [statusId, setStatusId] = useState(null);
 
   const history = useHistory();
 
@@ -60,6 +62,16 @@ const ReceiveTable = props => {
     setFilter('');
     setSort('');
   }, [reset]);
+
+  useEffect(() => {
+    httpService
+      .get(`${API_BASE_URL}/api/management/order/get_order_states/`)
+      .then(res => {
+        if (res.status === 200) {
+          setStatusList(res.data);
+        }
+      });
+  }, []);
 
   useEffect(() => {
     if (filter.length === 0 && sort.length === 0 && reset === true) {
@@ -88,7 +100,7 @@ const ReceiveTable = props => {
               return (
                 <FormControl>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    نام
+                    نام سفارش دهنده
                   </InputLabel>
                   <TextField
                     id="name"
@@ -123,13 +135,13 @@ const ReceiveTable = props => {
               return (
                 <FormControl>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    نام
+                    نام خانوادگی
                   </InputLabel>
                   <TextField
                     id="name"
                     aria-describedby="my-helper-text"
                     fullWidth
-                    placeholder="نام"
+                    placeholder="نام خانوادگی"
                     value={filterList[index]}
                     onChange={event => {
                       if (event.target.value) {
@@ -154,36 +166,36 @@ const ReceiveTable = props => {
           customBodyRender: (value, tableMeta, updateValue) => {
             return `${value} `;
           },
-          filter: true,
-          filterType: 'custom',
-          filterOptions: {
-            display: (filterList, onChange, index, column) => {
-              return (
-                <FormControl>
-                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    تعداد شرکت کنندگان
-                  </InputLabel>
-                  <TextField
-                    id="name"
-                    aria-describedby="my-helper-text"
-                    fullWidth
-                    placeholder="تعداد شرکت کنندگان"
-                    value={filterList[index]}
-                    type={'number'}
-                    onChange={event => {
-                      if (event.target.value) {
-                        filterList[index][0] = event.target.value;
-                        onChange(filterList[index], index, column);
-                      } else {
-                        filterList[index] = [];
-                        onChange(filterList[index], index, column);
-                      }
-                    }}
-                  />
-                </FormControl>
-              );
-            }
-          }
+          filter: false,
+          filterType: 'custom'
+          // filterOptions: {
+          //   display: (filterList, onChange, index, column) => {
+          //     return (
+          //       <FormControl>
+          //         <InputLabel sx={{ transform: 'none', position: 'initial' }}>
+          //           تعداد شرکت کنندگان
+          //         </InputLabel>
+          //         <TextField
+          //           id="name"
+          //           aria-describedby="my-helper-text"
+          //           fullWidth
+          //           placeholder="تعداد شرکت کنندگان"
+          //           value={filterList[index]}
+          //           type={'number'}
+          //           onChange={event => {
+          //             if (event.target.value) {
+          //               filterList[index][0] = event.target.value;
+          //               onChange(filterList[index], index, column);
+          //             } else {
+          //               filterList[index] = [];
+          //               onChange(filterList[index], index, column);
+          //             }
+          //           }}
+          //         />
+          //       </FormControl>
+          //     );
+          //   }
+          // }
         }
       },
       {
@@ -200,7 +212,71 @@ const ReceiveTable = props => {
               return (
                 <FormControl>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    تاریخ شروع
+                    تاریخ ثبت
+                  </InputLabel>
+
+                  <LocalizationProvider dateAdapter={AdapterJalali}>
+                    <DatePicker
+                      mask="____/__/__"
+                      value={
+                        filterList[index].length > 0
+                          ? moment
+                              .from(
+                                p2e(
+                                  moment(filterList[index][0]).format(
+                                    'YYYY/MM/DD'
+                                  )
+                                ),
+                                'fa',
+                                'YYYY/MM/DD'
+                              )
+                              .locale('en')
+                          : new Date()
+                      }
+                      onChange={newValue => {
+                        if (newValue) {
+                          setStartDate(moment(newValue).format('YYYY-MM-DD'));
+                          filterList[index][0] = MomentFa(newValue);
+                          onChange(filterList[index], index, column);
+                        } else {
+                          filterList[index] = [];
+                          onChange(filterList[index], index, column);
+                        }
+                      }}
+                      renderInput={params => (
+                        <TextField
+                          {...params}
+                          sx={{
+                            background: '#F2F2F2'
+                          }}
+                        />
+                      )}
+                      // leftArrowIcon={<ArrowBack />}
+                      // rightArrowIcon={<ArrowRight />}
+                    />
+                  </LocalizationProvider>
+                </FormControl>
+              );
+            }
+          }
+        }
+      },
+      {
+        name: 'end_date',
+        label: 'زمان پایان',
+        display: false,
+        options: {
+          customBodyRender: (value, tableMeta, updateValue) => {
+            return MomentFa(value);
+          },
+          filter: true,
+          filterType: 'custom',
+          filterOptions: {
+            display: (filterList, onChange, index, column) => {
+              return (
+                <FormControl>
+                  <InputLabel sx={{ transform: 'none', position: 'initial' }}>
+                    تاریخ پایان
                   </InputLabel>
 
                   <LocalizationProvider dateAdapter={AdapterJalali}>
@@ -274,58 +350,6 @@ const ReceiveTable = props => {
                     </InputLabel>
                   </Box>
                 }
-                {/* {value.toLowerCase() === 'submit' ? (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: '3px 6px !important',
-                      background: '#CCEEF0',
-                      borderRadius: '4px',
-                      color: '#00AAB5'
-                    }}
-                  >
-                    <InputLabel style={{ color: '#00AAB5', paddingLeft: 0 }}>
-                      ارسال شده
-                    </InputLabel>
-                  </Box>
-                ) : value.toLowerCase() === 'finished' ? (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: '3px 6px !important',
-                      background: '#FDE8E8',
-                      borderRadius: '4px',
-                      color: '#F4777C !important'
-                    }}
-                  >
-                    <InputLabel style={{ color: '#F4777C', paddingLeft: 0 }}>
-                      برگزار شده
-                    </InputLabel>
-                  </Box>
-                ) : (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: '3px 6px !important',
-                      background: '#F3F3F3',
-                      borderRadius: '4px'
-                      // color: '#F3F3F3 !important'
-                    }}
-                  >
-                    <InputLabel style={{ color: '#A7A5A6', paddingLeft: 0 }}>
-                      برگزار نشده
-                    </InputLabel>
-                  </Box>
-                )} */}
               </>
             );
           },
@@ -334,57 +358,37 @@ const ReceiveTable = props => {
           filterOptions: {
             display: (filterList, onChange, index, column) => {
               return (
-                <FormControl sx={{ marginTop: '10px' }}>
+                <FormControl>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
                     وضعیت
                   </InputLabel>
-                  <ToggleButtonGroup
-                    color="primary"
-                    value={state}
-                    exclusive
-                    onChange={(event, newValue) => {
-                      setState(newValue);
-
-                      if (newValue?.toLowerCase() === 'performing')
-                        filterList[index][0] = 'در حال برگزاری';
-                      else if (newValue?.toLowerCase() === 'pending')
-                        filterList[index][0] = 'برگزار نشده';
-                      else if (newValue?.toLowerCase() === 'finished')
-                        filterList[index][0] = 'برگزار شده';
-                      else filterList[index] = [];
+                  <Autocomplete
+                    disablePortal
+                    id="status"
+                    options={statusList}
+                    renderInput={params => (
+                      <TextField {...params} placeholder="وضعیت" />
+                    )}
+                    // getOptionLabel={option => option.label}
+                    disableClearable
+                    value={filterList[index]}
+                    onChange={(event, values) => {
+                      setStatusId(values.id);
+                      filterList[index][0] = values.label;
                       onChange(filterList[index], index, column);
                     }}
+                    isOptionEqualToValue={(option, value) =>
+                      option.name === value.name
+                    }
                     sx={{
-                      marginTop: '5px',
-                      direction: 'ltr',
-                      justifyContent: 'flex-end'
+                      background: '#F2F2F2',
+                      borderRadius: '4px',
+                      '.MuiOutlinedInput-root': {
+                        padding: '5px'
+                      }
                     }}
-                  >
-                    <ToggleButton
-                      value="PERFORMING"
-                      sx={{
-                        fontFamily: 'IRANSans'
-                      }}
-                    >
-                      در حال برگزاری
-                    </ToggleButton>
-                    <ToggleButton
-                      value="FINISHED"
-                      sx={{
-                        fontFamily: 'IRANSans'
-                      }}
-                    >
-                      برگزار شده
-                    </ToggleButton>
-                    <ToggleButton
-                      value="PENDING"
-                      sx={{
-                        fontFamily: 'IRANSans'
-                      }}
-                    >
-                      برگزار نشده
-                    </ToggleButton>
-                  </ToggleButtonGroup>
+                    noOptionsText={'موردی یافت نشد'}
+                  />
                 </FormControl>
               );
             }
@@ -392,7 +396,7 @@ const ReceiveTable = props => {
         }
       }
     ]);
-  }, [state]);
+  }, [state, statusList]);
 
   function getData(page, rowsPerPage, search) {
     httpService
@@ -418,47 +422,46 @@ const ReceiveTable = props => {
     let filterType = '';
 
     switch (column) {
-      case 'name':
+      case 'user_info.first_name':
         if (filterList[1][0]) {
-          item['name'] = filterList[1][0];
+          item['user__first_name'] = filterList[1][0];
           filterType = '__contains';
         } else {
-          delete item['name'];
+          delete item['user__first_name'];
         }
         break;
-      case 'participant_count':
+      case 'user_info.last_name':
         if (filterList[2][0]) {
-          item['participant_count'] = filterList[2][0];
-          filterType = '';
+          item['user__last_name'] = filterList[2][0];
+          filterType = '__contains';
         } else {
-          delete item['participant_count'];
+          delete item['user__last_name'];
         }
-      case 'start_date':
-        if (filterList[3][0]) {
-          item['start_date'] = startDate;
-          filterType = '';
+        break;
+
+      case 'create_date':
+        if (filterList[4][0]) {
+          item['create_date'] = startDate;
+          filterType = '__gte';
         } else {
-          delete item['start_date'];
+          delete item['create_date'];
         }
         break;
       case 'end_date':
-        if (filterList[4][0]) {
-          item['end_date'] = endDate;
-          filterType = '';
+        if (filterList[5][0]) {
+          item['create_date'] = endDate;
+          filterType = '__lte';
         } else {
-          delete item['end_date'];
+          delete item['create_date'];
         }
         break;
-      case 'status':
-        if (filterList[5][0]) {
-          console.log('filterlist', filterList[5][0]);
-          item['status'] =
-            filterList[5][0] == 'در حال برگزاری'
-              ? 'PERFORMING'
-              : filterList[5][0] == 'برگزار شده'
-              ? 'FINISHED'
-              : 'PENDING';
-          filterType = '';
+      case 'current_state.label':
+        if (filterList[6][0]) {
+          console.log('filterlist', filterList);
+          item['order_state'] = statusList.filter(
+            f => f.label === filterList[6][0]
+          )[0].name;
+          filterType = '__icontains';
         } else {
           delete item['status'];
           setState(null);

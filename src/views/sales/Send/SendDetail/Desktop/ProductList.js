@@ -12,6 +12,7 @@ import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import { Download, Plus } from 'react-feather';
 import { useHistory } from 'react-router-dom';
 import MomentFa from 'src/utils/MomentFa';
+import FilesMenu from 'src/views/sales/FilesMenu';
 
 export default function ProductList({ data }) {
   const product = data;
@@ -20,16 +21,25 @@ export default function ProductList({ data }) {
     <Box style={{ position: 'relative' }}>
       {product && (
         <Box>
-          <InputLabelHeader
-            style={{
-              color: '#231F20',
-              fontSize: '18px',
-              marginBottom: '20px'
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between'
             }}
           >
-            لیست سفارشات
-          </InputLabelHeader>
-          <Box>
+            <InputLabelHeader
+              style={{
+                color: '#231F20',
+                fontSize: '18px',
+                marginBottom: '20px'
+              }}
+            >
+              لیست سفارشات
+            </InputLabelHeader>
+            {data && <FilesMenu data={data?.files} />}
+          </Box>
+          <Box sx={{ height: '300px', overflow: 'auto' }}>
             {product.products.map((item, key) => {
               return (
                 <Box
@@ -147,7 +157,7 @@ export default function ProductList({ data }) {
           </Box>
         </Box>
       )}
-      {data?.files && data.files.length > 0 && (
+      {/* {data?.files && data.files.length > 0 && (
         <a
           href={data?.files.filter(f => f.subject === 'PI')[0]?.url}
           download
@@ -167,7 +177,7 @@ export default function ProductList({ data }) {
             دانلود فایل درخواست
           </ConfirmButton>
         </a>
-      )}
+      )} */}
     </Box>
   );
 }

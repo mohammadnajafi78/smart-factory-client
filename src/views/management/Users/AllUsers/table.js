@@ -20,7 +20,7 @@ let item = {};
 const AllUsersTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(15);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
   const [data, setData] = useState([]);
   const [provinces, setProvinces] = useState([]);
   const [provinceId, setProvinceId] = useState(null);

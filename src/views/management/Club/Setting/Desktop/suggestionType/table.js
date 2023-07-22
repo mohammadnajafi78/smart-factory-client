@@ -30,7 +30,7 @@ const SuggestionTypeTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
   const [data, setData] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState(15);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
   const [columns, setColumns] = useState([]);
   const [filter, setFilter] = useState('');
   const [sort, setSort] = useState('');

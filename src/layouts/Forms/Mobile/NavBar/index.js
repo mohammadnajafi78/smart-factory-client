@@ -403,27 +403,6 @@ const NavBar = ({ onMobileClose, openMobile }) => {
 
   return (
     <>
-      {/* <Hidden lgUp>
-        <Drawer
-          anchor="left"
-          classes={{ paper: classes.mobileDrawer }}
-          onClose={onMobileClose}
-          open={openMobile}
-          variant="temporary"
-        >
-          {contentMobile}
-        </Drawer>
-      </Hidden>
-      <Hidden lgDown>
-        <Drawer
-          anchor="left"
-          classes={{ paper: classes.desktopDrawer }}
-          open
-          variant="persistent"
-        >
-          {content}
-        </Drawer>
-      </Hidden> */}
       <Menu
         anchorEl={anchorEl}
         id="account-menu"
@@ -467,13 +446,6 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
       >
-        {/* <MenuItem>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem>
-          <Avatar /> My account
-        </MenuItem>
-        <Divider /> */}
         <MenuItem color="#00346D">
           <ListItemIcon>
             <PersonAdd fontSize="small" />

@@ -12,9 +12,11 @@ import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import { Download, Plus } from 'react-feather';
 import { useHistory } from 'react-router-dom';
 import MomentFa from 'src/utils/MomentFa';
+import FilesMenu from 'src/views/sales/FilesMenu';
 
 export default function ProductList({ data, incomplete }) {
   const [product, setProduct] = useState();
+  const [isMobileNavOpen, setMobileNavOpen] = useState(true);
 
   useEffect(() => {
     if (incomplete === true) {
@@ -37,17 +39,26 @@ export default function ProductList({ data, incomplete }) {
       {product && (
         <Box sx={{ mt: incomplete === true ? '20px' : '0px' }}>
           {incomplete !== true && (
-            <InputLabelHeader
-              style={{
-                color: '#231F20',
-                fontSize: '18px',
-                marginBottom: '20px'
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between'
               }}
             >
-              لیست سفارشات
-            </InputLabelHeader>
+              <InputLabelHeader
+                style={{
+                  color: '#231F20',
+                  fontSize: '18px',
+                  marginBottom: '20px'
+                }}
+              >
+                لیست سفارشات
+              </InputLabelHeader>
+              {data && <FilesMenu data={data?.files} />}
+            </Box>
           )}
-          <Box>
+          <Box sx={{ height: '300px', overflow: 'auto' }}>
             {product.products.map((item, key) => {
               return (
                 <Box
@@ -176,7 +187,7 @@ export default function ProductList({ data, incomplete }) {
           )}
         </Box>
       )}
-      {data &&
+      {/* {data &&
         data.files &&
         data?.files.filter(f => f.subject === 'PI').length > 0 && (
           <a
@@ -198,7 +209,7 @@ export default function ProductList({ data, incomplete }) {
               دانلود فایل درخواست
             </ConfirmButton>
           </a>
-        )}
+        )} */}
     </Box>
   );
 }

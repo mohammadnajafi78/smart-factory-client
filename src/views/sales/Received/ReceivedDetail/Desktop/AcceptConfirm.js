@@ -22,9 +22,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function AcceptConfirm(props) {
-  const [file, setFile] = useState();
+  const [file, setFile] = useState(null);
   const [comment, setComment] = useState(null);
   const history = useHistory();
+
+  useEffect(() => {
+    console.log('file list', file);
+  }, [file]);
 
   return (
     <>
@@ -82,76 +86,86 @@ export default function AcceptConfirm(props) {
                 }}
                 component="label"
                 onChange={event => {
-                  console.log('file', event.target.files[0]);
-                  setFile(event.target.files[0]);
+                  // console.log('fileeeeee', event.target.files);
+                  setFile(Array.from(event.target.files));
                 }}
               >
                 <img src={Upload} with="33px" height="28px" />
                 {'انتخاب فایل'}
-                <input type="file" hidden multiple={false} />
+                <input type="file" hidden multiple={true} />
               </Button>
             ) : (
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-end',
-                  alignItems: 'center',
-                  padding: '20px 0px 5px',
-                  gap: '20px',
-                  // width: '480px',
-                  height: '320px',
-                  border: '2px dashed #99DDE1',
-                  borderRadius: '4px'
-                }}
-              >
-                <img
-                  src={URL.createObjectURL(file)}
-                  width="300px"
-                  height="180px"
-                  style={{ borderRadius: '8px' }}
-                />
-                <InputLabel style={{ color: '#335D8A' }}>
-                  {file.name}
-                </InputLabel>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-around',
-                    width: '100%'
-                  }}
-                >
-                  <Button
-                    sx={{
-                      fontFamily: 'IRANSans',
-                      fontSize: '16px',
-                      fontWeight: 400
-                    }}
-                    onClick={() => {
-                      setFile(null);
-                    }}
-                  >
-                    <img src={Delete} width="13px" height="13px" />
-                    پاک کردن
-                  </Button>
-                  <Button
-                    sx={{
-                      fontFamily: 'IRANSans',
-                      fontSize: '16px',
-                      fontWeight: 400
-                    }}
-                    component="label"
-                    onChange={e => {
-                      setFile(e.target.files[0]);
-                    }}
-                  >
-                    <img src={Attach} width="13px" height="20px" />
-                    تغییر فایل
-                    <input type="file" hidden multiple={false} />
-                  </Button>
-                </Box>
-              </Box>
+              <>
+                {file.map((item, index) => {
+                  return (
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        padding: '20px 0px 5px',
+                        gap: '20px',
+                        // width: '480px',
+                        height: '320px',
+                        border: '2px dashed #99DDE1',
+                        borderRadius: '4px'
+                      }}
+                    >
+                      <img
+                        src={URL.createObjectURL(item)}
+                        width="300px"
+                        height="180px"
+                        style={{ borderRadius: '8px' }}
+                      />
+                      <InputLabel style={{ color: '#335D8A' }}>
+                        {item.name}
+                      </InputLabel>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'space-around',
+                          width: '100%'
+                        }}
+                      >
+                        <Button
+                          sx={{
+                            fontFamily: 'IRANSans',
+                            fontSize: '16px',
+                            fontWeight: 400
+                          }}
+                          onClick={() => {
+                            if (
+                              file.filter(f => f.name !== item.name).length > 0
+                            )
+                              setFile(file.filter(f => f.name !== item.name));
+                            else setFile(null);
+                          }}
+                        >
+                          <img src={Delete} width="13px" height="13px" />
+                          پاک کردن
+                        </Button>
+                        <Button
+                          sx={{
+                            fontFamily: 'IRANSans',
+                            fontSize: '16px',
+                            fontWeight: 400
+                          }}
+                          component="label"
+                          onChange={e => {
+                            setFile(e.target.files);
+                          }}
+                        >
+                          <img src={Attach} width="13px" height="20px" />
+                          تغییر فایل
+                          <input type="file" hidden multiple={true} />
+                        </Button>
+                      </Box>
+                    </Box>
+                  );
+                })}
+              </>
             )}
 
             <Box sx={{ mt: 1, width: '100%' }}>
@@ -204,7 +218,9 @@ export default function AcceptConfirm(props) {
                 formData.append('order_action', 'Approve');
                 formData.append('state', 'PI');
                 formData.append('comment', comment);
-                formData.append('INVOICE', file);
+                for (let i = 0; i < file.length; i++) {
+                  formData.append('INVOICE' + i, file[i]);
+                }
 
                 httpService
                   .post(

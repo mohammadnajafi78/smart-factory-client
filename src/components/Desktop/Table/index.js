@@ -13,9 +13,12 @@ import {
   colors,
   ToggleButtonGroup,
   ToggleButton,
-  IconButton
+  IconButton,
+  TableRow,
+  TableCell
 } from '@mui/material';
 import MUIDataTable from 'mui-datatables';
+import TableFooter from '@mui/material/TableFooter';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { ThemeProvider } from '@mui/material/styles';
@@ -435,7 +438,7 @@ const Table = props => {
     count: props.count,
     serverSide: true,
     enableNestedDataAccess: '.',
-    //rowsPerPageOptions: rowsPerPageOptions,
+    rowsPerPageOptions: [25, 50, 75],
     print: false,
     search: props.search !== undefined ? props.search : true,
     responsive: 'vertical',
@@ -587,6 +590,7 @@ const Table = props => {
         }
       }
     }
+
     // onSearchClose: () => {
     //   setSearch()
     //   props.getData(props.page, props.rowsPerPage, '');

@@ -33,6 +33,7 @@ export default function Message(props) {
         `${API_BASE_URL}/api/orders/get_pi/?order_num=${props.location.state.order_num}`
       )
       .then(res => {
+        console.log('res', res);
         if (res.status === 200) {
           setFactor(res.data.files.filter(f => f.subject === 'PI')[0]?.url);
         }

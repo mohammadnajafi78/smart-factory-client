@@ -13,7 +13,9 @@ import {
   colors,
   ToggleButtonGroup,
   ToggleButton,
-  Tab
+  Tab,
+  TableRow,
+  TableCell
 } from '@mui/material';
 
 import { Link as RouterLink, useHistory } from 'react-router-dom';
@@ -36,6 +38,7 @@ import { Plus } from 'react-feather';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import Table from 'src/components/Desktop/Table';
 import { ArrowBack, ArrowRight } from '@mui/icons-material';
+import TableFooter from '@mui/material/TableFooter';
 
 const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
@@ -44,7 +47,7 @@ let item = {};
 const OrdersTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(15);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [filter, setFilter] = useState('');
