@@ -36,6 +36,7 @@ import { Plus } from 'react-feather';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import Table from 'src/components/Desktop/Table';
 import { ArrowBack, ArrowRight } from '@mui/icons-material';
+import { indexOf } from 'lodash';
 
 const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
@@ -264,8 +265,8 @@ const ReceiveTable = props => {
       {
         name: 'end_date',
         label: 'زمان پایان',
-        display: false,
         options: {
+          display: false,
           customBodyRender: (value, tableMeta, updateValue) => {
             return MomentFa(value);
           },
@@ -299,7 +300,7 @@ const ReceiveTable = props => {
                       }
                       onChange={newValue => {
                         if (newValue) {
-                          setStartDate(moment(newValue).format('YYYY-MM-DD'));
+                          setEndDate(moment(newValue).format('YYYY-MM-DD'));
                           filterList[index][0] = MomentFa(newValue);
                           onChange(filterList[index], index, column);
                         } else {
@@ -419,13 +420,30 @@ const ReceiveTable = props => {
   }
 
   function onFilterChange(column, filterList, type) {
-    let filterType = '';
+    let filterNames = [
+      'id',
+      'user_info.first_name',
+      'user_info.last_name',
+      '',
+      'create_date__gte',
+      'create_date__lte',
+      'current_state.label'
+    ];
+    let filterType = [
+      '',
+      '__contains',
+      '__contains',
+      '',
+      '',
+      '',
+      '__icontains'
+    ];
 
     switch (column) {
       case 'user_info.first_name':
         if (filterList[1][0]) {
           item['user__first_name'] = filterList[1][0];
-          filterType = '__contains';
+          // filterType = '__contains';
         } else {
           delete item['user__first_name'];
         }
@@ -433,7 +451,7 @@ const ReceiveTable = props => {
       case 'user_info.last_name':
         if (filterList[2][0]) {
           item['user__last_name'] = filterList[2][0];
-          filterType = '__contains';
+          // filterType = '__contains';
         } else {
           delete item['user__last_name'];
         }
@@ -441,33 +459,30 @@ const ReceiveTable = props => {
 
       case 'create_date':
         if (filterList[4][0]) {
-          item['create_date'] = startDate;
-          filterType = '__gte';
+          item['create_date__gte'] = startDate;
+          // filterType = '__gte';
         } else {
-          delete item['create_date'];
+          delete item['create_date__gte'];
         }
         break;
       case 'end_date':
         if (filterList[5][0]) {
-          item['create_date'] = endDate;
-          filterType = '__lte';
+          item['create_date__lte'] = endDate;
+          // filterType = '__lte';
         } else {
-          delete item['create_date'];
+          delete item['create_date__lte'];
         }
         break;
       case 'current_state.label':
         if (filterList[6][0]) {
-          console.log('filterlist', filterList);
           item['order_state'] = statusList.filter(
             f => f.label === filterList[6][0]
           )[0].name;
-          filterType = '__icontains';
+          // filterType = '__icontains';
         } else {
-          delete item['status'];
+          delete item['current_state.label'];
           setState(null);
         }
-        break;
-
         break;
       default:
         item = item;
@@ -476,12 +491,18 @@ const ReceiveTable = props => {
     let temp = item;
     let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
     console.log('filterItems', filterItems);
+    // console.log('filterType', filterType);
 
     let str = '';
     if (filterItems?.length > 0) {
       filterItems.map((itm, index) => {
         str =
-          str + itm[0] + filterType + '=' + decodeURIComponent(itm[1]) + '&';
+          str +
+          itm[0] +
+          filterType[filterNames.indexOf(itm[0])] +
+          '=' +
+          decodeURIComponent(itm[1]) +
+          '&';
       });
     }
     str.replace('&&', '&');
