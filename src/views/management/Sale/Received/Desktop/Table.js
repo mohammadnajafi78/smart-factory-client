@@ -420,40 +420,41 @@ const ReceiveTable = props => {
   }
 
   function onFilterChange(column, filterList, type) {
-    let filterNames = [
-      'id',
-      'user_info.first_name',
-      'user_info.last_name',
-      '',
-      'create_date__gte',
-      'create_date__lte',
-      'current_state.label'
-    ];
-    let filterType = [
-      '',
-      '__contains',
-      '__contains',
-      '',
-      '',
-      '',
-      '__icontains'
-    ];
+    // let filterNames = [
+    //   'id',
+    //   'user_info.first_name',
+    //   'user_info.last_name',
+    //   '',
+    //   'create_date__gte',
+    //   'create_date__lte',
+    //   'current_state.label'
+    // ];
+    // let filterType = [
+    //   '',
+    //   '__contains',
+    //   '__contains',
+    //   '',
+    //   '',
+    //   '',
+    //   '__icontains'
+    // ];
+    console.log('filterlist', filterList);
 
     switch (column) {
       case 'user_info.first_name':
         if (filterList[1][0]) {
-          item['user__first_name'] = filterList[1][0];
+          item['user__first_name__contains'] = filterList[1][0];
           // filterType = '__contains';
         } else {
-          delete item['user__first_name'];
+          delete item['user__first_name__contains'];
         }
         break;
       case 'user_info.last_name':
         if (filterList[2][0]) {
-          item['user__last_name'] = filterList[2][0];
+          item['user__last_name__contains'] = filterList[2][0];
           // filterType = '__contains';
         } else {
-          delete item['user__last_name'];
+          delete item['user__last_name__contains'];
         }
         break;
 
@@ -475,10 +476,10 @@ const ReceiveTable = props => {
         break;
       case 'current_state.label':
         if (filterList[6][0]) {
-          item['order_state'] = statusList.filter(
+          item['order_state__icontains'] = statusList.filter(
             f => f.label === filterList[6][0]
           )[0].name;
-          // filterType = '__icontains';
+          // filterType = '';
         } else {
           delete item['current_state.label'];
           setState(null);
@@ -499,7 +500,7 @@ const ReceiveTable = props => {
         str =
           str +
           itm[0] +
-          filterType[filterNames.indexOf(itm[0])] +
+          // filterType[filterNames.indexOf(itm[0])] +
           '=' +
           decodeURIComponent(itm[1]) +
           '&';
