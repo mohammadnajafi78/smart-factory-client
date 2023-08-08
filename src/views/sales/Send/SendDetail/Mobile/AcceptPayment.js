@@ -40,6 +40,7 @@ export default function AcceptPayment(props) {
   const classes = useStyles();
 
   useEffect(() => {
+    console.log(props, 'props')
     httpService
       .get(
         `${API_BASE_URL}/api/orders/payment/get_order_payments/?order_num=${props.location.state.order_num}`

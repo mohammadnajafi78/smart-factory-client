@@ -25,6 +25,7 @@ const useStyles = makeStyles(theme => ({
 export default function Message(props) {
   const history = useHistory();
   const order = props.location.state;
+  const [factor, setFactor] = useState(null);
 
   useEffect(() => {
     httpService
@@ -33,6 +34,7 @@ export default function Message(props) {
       )
       .then(res => {
         if (res.status === 200) {
+          console.log(res.data.files, 'files')
           setFactor(res.data.files.filter(f => f.subject === 'PI')[0]?.url);
         }
       });
@@ -219,7 +221,7 @@ export default function Message(props) {
           >
             <ConfirmButton
               variant="outlined"
-              onClick={() => history.push('/sale/products/order/2')}
+              // onClick={() => history.push('/sale/products/order/2')}
             >
               {'دانلود پیش فاکتور'}
             </ConfirmButton>

@@ -107,6 +107,7 @@ export default function AddPayment(props) {
                     resetForm();
                     // props.setEditable(false);
                     // setOpen(false);
+                    console.log(res, 'res')
                     history.push({
                       pathname: '/sale/send/payment',
                       state: res.data
