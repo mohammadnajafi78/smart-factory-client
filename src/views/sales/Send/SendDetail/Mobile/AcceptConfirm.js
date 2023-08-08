@@ -64,7 +64,6 @@ export default function AcceptConfirm(props) {
                   }}
                   component="label"
                   onChange={event => {
-                    console.log('file', event.target.files[0]);
                     setFile(event.target.files[0]);
                   }}
                 >

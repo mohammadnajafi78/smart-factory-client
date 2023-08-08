@@ -27,7 +27,6 @@ export default function AddPayment(props) {
   const [paymentTypes, setPaymentTypes] = useState([]);
   const history = useHistory();
   const data = props.location.state;
-  console.log('data inja', data);
 
   useEffect(() => {
     httpService
