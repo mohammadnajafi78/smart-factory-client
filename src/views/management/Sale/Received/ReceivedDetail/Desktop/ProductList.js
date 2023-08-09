@@ -41,18 +41,24 @@ export default function ProductList({ data, incomplete }) {
       {product && (
         <Box sx={{ mt: incomplete === true ? '20px' : '0px' }}>
           {incomplete !== true && (
-            <>
-            <InputLabelHeader
-              style={{
-                color: '#231F20',
-                fontSize: '18px',
-                marginBottom: '20px'
+            <Box 
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between'
               }}
             >
-              لیست سفارشات
-            </InputLabelHeader>
-            {data && <FilesMenu data={data?.files} />}
-            </>
+              <InputLabelHeader
+                style={{
+                  color: '#231F20',
+                  fontSize: '18px',
+                  marginBottom: '20px'
+                }}
+              >
+                لیست سفارشات
+              </InputLabelHeader>
+              {data && <FilesMenu data={data?.files} />}
+            </Box>
           )}
           <Box>
             {product.products.map((item, key) => {
