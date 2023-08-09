@@ -34,7 +34,6 @@ export default function Message(props) {
       )
       .then(res => {
         if (res.status === 200) {
-
           setFactor(res.data.files.filter(f => f.subject === 'PI')[0]?.url);
         }
       });

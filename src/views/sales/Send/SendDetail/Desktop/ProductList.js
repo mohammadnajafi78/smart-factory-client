@@ -37,10 +37,10 @@ export default function ProductList({ data }) {
             >
               لیست سفارشات
             </InputLabelHeader>
-            {data && <FilesMenu data={data?.files} />}
+            {data && <FilesMenu data={data?.files?.filter((item) => item.subject !== 'EXCEL')} />}
           </Box>
           <Box sx={{ height: '300px', overflow: 'auto' }}>
-            {product.products.map((item, key) => {
+            {product?.products?.map((item, key) => {
               return (
                 <Box
                   sx={{

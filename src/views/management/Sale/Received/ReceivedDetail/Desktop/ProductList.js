@@ -14,6 +14,7 @@ import { useHistory } from 'react-router-dom';
 import MomentFa from 'src/utils/MomentFa';
 import PDF from 'src/assets/img/extensions/pdf.jpeg';
 import EXCEL from 'src/assets/img/extensions/excel.jpeg';
+import FilesMenu from 'src/views/sales/FilesMenu';
 
 export default function ProductList({ data, incomplete }) {
   const [product, setProduct] = useState();
@@ -40,6 +41,7 @@ export default function ProductList({ data, incomplete }) {
       {product && (
         <Box sx={{ mt: incomplete === true ? '20px' : '0px' }}>
           {incomplete !== true && (
+            <>
             <InputLabelHeader
               style={{
                 color: '#231F20',
@@ -49,6 +51,8 @@ export default function ProductList({ data, incomplete }) {
             >
               لیست سفارشات
             </InputLabelHeader>
+            {data && <FilesMenu data={data?.files} />}
+            </>
           )}
           <Box>
             {product.products.map((item, key) => {
@@ -178,64 +182,6 @@ export default function ProductList({ data, incomplete }) {
             </>
           )}
         </Box>
-      )}
-      {data &&
-        data.files &&
-        data?.files.filter(f => f.subject === 'PI').length > 0 && (
-          <a
-            href={data?.files.filter(f => f.subject === 'PI')[0].url}
-            download
-            target="_blank"
-            style={{ textDecoration: 'none', width: '100%' }}
-          >
-            <ConfirmButton
-              style={{
-                color: '#00AAB5',
-                backgroundColor: '#DDF5F6',
-                position: 'relative',
-                bottom: 0,
-                marginTop: '30px'
-              }}
-            >
-              {/* <Download />
-              دانلود فایل درخواست */}
-              <img
-                src={PDF}
-                width={'30px'}
-                height={'30px'}
-                style={{ marginLeft: '5px' }}
-              />
-              دانلود فایل pdf
-            </ConfirmButton>
-          </a>
-        )}
-      {data?.files.filter(f => f.subject === 'EXCEL').length > 0 && (
-        <a
-          href={data?.files.filter(f => f.subject === 'EXCEL')[0].url}
-          download
-          target="_blank"
-          style={{ textDecoration: 'none', width: '100%' }}
-        >
-          <ConfirmButton
-            style={{
-              color: '#00AAB5',
-              backgroundColor: '#DDF5F6',
-              position: 'relative',
-              bottom: 0,
-              marginTop: '30px'
-            }}
-          >
-            {/* <Download />
-              دانلود فایل درخواست */}
-            <img
-              src={EXCEL}
-              width={'30px'}
-              height={'30px'}
-              style={{ marginLeft: '5px' }}
-            />
-            دانلود فایل excel
-          </ConfirmButton>
-        </a>
       )}
     </Box>
   );

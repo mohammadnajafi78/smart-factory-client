@@ -40,7 +40,7 @@ export default function Actions(props) {
 
   return (
     <>
-      {data.current_state.name === 'WAITING_FOR_PI_APPROVE' && (
+      {data?.current_state?.name === 'WAITING_FOR_PI_APPROVE' && (
         <Box
           sx={{
             display: 'flex',
@@ -130,7 +130,7 @@ export default function Actions(props) {
           </Box>
         </Box>
       )}
-      {data.current_state.name === 'WAITING_FOR_PAYMENT' && (
+      {data?.current_state?.name === 'WAITING_FOR_PAYMENT' && (
         <Box
           sx={{
             display: 'flex',
@@ -223,7 +223,7 @@ export default function Actions(props) {
           </Box>
         </Box>
       )}
-      {data.current_state.name === 'PAYMENT_REJECTED' && (
+      {data?.current_state?.name === 'PAYMENT_REJECTED' && (
         <Box
           sx={{
             display: 'flex',
@@ -316,9 +316,9 @@ export default function Actions(props) {
           </Box>
         </Box>
       )}
-      {(data.current_state.name === 'WAITING_FOR_DELIVERY_APPROVE' ||
-        data.current_state.name === 'SUPPLY_INCOMPLETE' ||
-        data.current_state.name === 'REJECT_INCOMPLETE') && (
+      {(data?.current_state?.name === 'WAITING_FOR_DELIVERY_APPROVE' ||
+        data?.current_state?.name === 'SUPPLY_INCOMPLETE' ||
+        data?.current_state?.name === 'REJECT_INCOMPLETE') && (
         <Box
           sx={{
             display: 'flex',
@@ -507,7 +507,7 @@ export default function Actions(props) {
                   {`ثبت: ${MomentFa(data?.create_date)}`}
                 </InputLabel>
               </Box>
-              {data.current_state.name === 'CANCELED' && (
+              {data?.current_state?.name === 'CANCELED' && (
                 <Box
                   sx={{
                     display: 'flex',
@@ -677,8 +677,8 @@ export default function Actions(props) {
               </Box>
               <a
                 href={
-                  data?.files.filter(f => f.subject === 'INVOICE')[
-                    data?.files.filter(f => f.subject === 'INVOICE').length - 1
+                  data?.files?.filter(f => f.subject === 'INVOICE')[
+                    data?.files?.filter(f => f.subject === 'INVOICE').length - 1
                   ]?.url
                 }
                 download
@@ -912,7 +912,7 @@ export default function Actions(props) {
                         fontWeight: 400
                       }}
                     >
-                      {data.delivery_detail.delivery_type_detail.label}
+                      {data?.delivery_detail.delivery_type_detail.label}
                     </InputLabel>
                   </Box>
                   <Divider color="#CCD6E2" />
@@ -925,11 +925,11 @@ export default function Actions(props) {
                         fontWeight: 400
                       }}
                     >
-                      {data.delivery_detail.sender_description}
+                      {data?.delivery_detail.sender_description}
                     </InputLabel>
                   </Box>
-                  {data.files &&
-                    data.files.length > 0 &&
+                  {data?.files &&
+                    data?.files.length > 0 &&
                     data?.files.filter(f => f.subject === 'BL').length > 0 && (
                       <a
                         href={
