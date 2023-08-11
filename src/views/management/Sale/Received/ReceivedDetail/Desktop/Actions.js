@@ -310,7 +310,7 @@ export default function Actions(props) {
         </Box>
       )}
       {data.current_state.name === 'PAYMENT_APPROVED' &&
-        data.supply_by !== 'SALE_OFFICE' && (
+        data.supply_by === 'SALE_OFFICE' && (
           <Box
             sx={{
               display: 'flex',
@@ -372,19 +372,19 @@ export default function Actions(props) {
                       }
                     }}
                     onClick={() => {
-                      // setOpenPIApprove(true);
-                      const temp = data.user_type_info.filter(
-                        f => f.user_type === 'Representer'
-                      );
-                      if (temp.length >= 0) {
-                        setOpenSupplier(true);
-                      }
-                      // history.push({
-                      //   pathname: '/management/sale/received/delivery',
-                      //   order_num: data.order_num,
-                      //   state: data.current_state.name
-                      // });
-                      else setDelivery(true);
+                    //   // setOpenPIApprove(true);
+                    //   const temp = data.user_type_info.filter(
+                    //     f => f.user_type === 'Representer'
+                    //   );
+                    //   if (temp.length >= 0) {
+                    //     setOpenSupplier(true);
+                    //   }
+                    //   // history.push({
+                    //   //   pathname: '/management/sale/received/delivery',
+                    //   //   order_num: data.order_num,
+                    //   //   state: data.current_state.name
+                    //   // });
+                      setDelivery(true);
                     }}
                   >
                     <InputLabel style={{ color: 'white', padding: 0 }}>

@@ -57,8 +57,6 @@ export default function Actions(props) {
   const history = useHistory();
   const user_id = JSON.parse(localStorage.getItem('user')).user_id;
 
-  console.log('current', data);
-
   return (
     <>
       <Box>
@@ -88,7 +86,7 @@ export default function Actions(props) {
             }}
           >
             <img
-              src={data?.supplier_info?.user_profile_image}
+              src={data?.user_info?.user_profile_image}
               // alt={}
               style={{
                 width: '44px'
@@ -129,9 +127,9 @@ export default function Actions(props) {
                   lineHeight: '17px'
                 }}
               >
-                {data?.supplier_info?.first_name +
+                {data?.user_info?.first_name +
                   ' ' +
-                  data?.supplier_info?.last_name}
+                  data?.user_info?.last_name}
               </InputLabel>
               <Box
                 sx={{

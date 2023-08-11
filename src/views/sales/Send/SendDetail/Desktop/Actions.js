@@ -47,7 +47,6 @@ export default function Actions(props) {
   const [delivery, setDelivery] = useState(false);
   const location = props.location.pathname;
 
-  console.log('Data', data);
 
   return (
     <>
