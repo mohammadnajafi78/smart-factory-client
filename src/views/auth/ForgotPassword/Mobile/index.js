@@ -4,13 +4,10 @@ import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import { Formik } from 'formik';
-import ReCAPTCHA from 'react-google-recaptcha';
 import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
-import axios from 'axios';
 import useAuth from 'src/hooks/useAuth';
-import bcrypt from 'bcryptjs';
 
 // const TEST_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
 function ForgotPasswordMobile(props) {
@@ -124,7 +121,11 @@ function ForgotPasswordMobile(props) {
               </Box>
             </Box>
             <Box>
-              <ConfirmButton disabled={isSubmitting} type="submit">
+              <ConfirmButton 
+              disabled={isSubmitting} 
+              type="submit"
+              loading={isSubmitting}
+              >
                 {'ثبت'}
               </ConfirmButton>
             </Box>

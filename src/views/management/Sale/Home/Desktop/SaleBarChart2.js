@@ -1,17 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, {  } from 'react';
 import {
   BarChart,
   Bar,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  Label
-} from 'recharts';
-import httpService from 'src/utils/httpService';
-import MomentEn from 'src/utils/MomentEn';
-import { API_BASE_URL } from 'src/utils/urls';
+  CartesianGrid} from 'recharts';
 
 // const data = [
 //   {

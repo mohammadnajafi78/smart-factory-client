@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes, { string } from 'prop-types';
 
 import {
   TextField,
   FormControl,
   InputLabel,
-  Autocomplete,
   ToggleButtonGroup,
   ToggleButton
 } from '@mui/material';
@@ -13,7 +11,6 @@ import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import Table from 'src/components/Desktop/Table';
 import { useHistory } from 'react-router-dom';
-import FaTOEn from 'src/utils/FaTOEn';
 import InputLabelHeader from 'src/components/Desktop/InputLabel';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { Plus } from 'react-feather';

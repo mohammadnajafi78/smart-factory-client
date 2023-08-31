@@ -2,13 +2,9 @@ import React, { useState } from 'react';
 import { Box, Grid, Button } from '@mui/material';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
-import { Plus, Star } from 'react-feather';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import EditNote from 'src/assets/img/icons/edit_note.svg';
-import MomentFa from 'src/utils/MomentFa';
 import Upload from 'src/assets/img/icons/upload.svg';
-import Delete from 'src/assets/img/icons/delete.svg';
-import Attach from 'src/assets/img/icons/attach.svg';
 import NewProductType from './NewProductSubCategory';
 import SwiperImg from './Swiper';
 

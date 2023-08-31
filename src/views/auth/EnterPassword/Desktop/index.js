@@ -4,7 +4,6 @@ import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import { Formik } from 'formik';
-import ReCAPTCHA from 'react-google-recaptcha';
 import LoginFrame from 'src/components/Desktop/LoginFrame';
 import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
@@ -238,7 +237,9 @@ function ForgotPasswodDesktop(props) {
                   width: '100%'
                 }}
               >
-                <ConfirmButton disabled={isSubmitting} loading={isSubmitting}>
+                <ConfirmButton 
+                disabled={isSubmitting} 
+                loading={isSubmitting}>
                   {'ثبت'}
                 </ConfirmButton>
               </Box>

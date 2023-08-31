@@ -43,6 +43,8 @@ export default function ProductDetailMobile(props) {
   const [count, setCount] = useState(0);
   const [unitSelected, setUnitSelected] = useState('SINGULAR');
   const { order, setOrder, getOrder } = useSaleOrder();
+  const [isLoadingAdd, setLoadingAdd] = useState(false);
+  const [isLoadingRemove, setLoadingRemove] = useState(false);
 
   const history = useHistory();
 
@@ -536,13 +538,16 @@ export default function ProductDetailMobile(props) {
                 border: '1px solid #FEEEEC',
                 fontSize: '12px'
               }}
+              loading={isLoadingRemove}
               onClick={() => {
+                setLoadingRemove(true)
                 httpService
                   .post(`${API_BASE_URL}/api/orders/remove_product/`, {
                     order_num: order.order_num,
                     code: selected.code
                   })
                   .then(res => {
+                    setLoadingRemove(false)
                     if (res.status === 200) {
                       getOrder();
                       setOpen(false);
@@ -555,7 +560,9 @@ export default function ProductDetailMobile(props) {
             </ConfirmButton>
             <ConfirmButton
               disabled={false}
+              loading={isLoadingAdd}
               onClick={() => {
+                setLoadingAdd(true)
                 if (order) {
                   httpService
                     .post(`${API_BASE_URL}/api/orders/add_product/`, {
@@ -569,6 +576,7 @@ export default function ProductDetailMobile(props) {
                       ]
                     })
                     .then(res => {
+                      setLoadingAdd(false)
                       if (res.status === 200) {
                         setOpen(false);
                         setOrder(res.data);
@@ -587,6 +595,7 @@ export default function ProductDetailMobile(props) {
                       ]
                     })
                     .then(res => {
+                      setLoadingAdd(false)
                       if (res.status === 201) {
                         setOpen(false);
                         setOrder(res.data);

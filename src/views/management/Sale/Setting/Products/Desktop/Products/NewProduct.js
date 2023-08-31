@@ -4,22 +4,12 @@ import {
   Divider,
   Grid,
   TextField,
-  Autocomplete,
-  Button
-} from '@mui/material';
+  Autocomplete} from '@mui/material';
 import InputLabel from 'src/components/Desktop/InputLabel';
-import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
-import { Plus, Star } from 'react-feather';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
-import EditNote from 'src/assets/img/icons/edit_note.svg';
-import MomentFa from 'src/utils/MomentFa';
-import Upload from 'src/assets/img/icons/upload.svg';
-import Delete from 'src/assets/img/icons/delete.svg';
-import Attach from 'src/assets/img/icons/attach.svg';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { AttachFile } from '@mui/icons-material';
 import { API_BASE_URL } from 'src/utils/urls';
 import httpService from 'src/utils/httpService';
 

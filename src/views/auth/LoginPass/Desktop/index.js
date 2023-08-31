@@ -9,7 +9,7 @@ import {
 import { Formik } from 'formik';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Desktop/InputLabel';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import LoginFrame from 'src/components/Desktop/LoginFrame';
 import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
@@ -71,8 +71,8 @@ function LoginPassDesktop(props) {
                 )
               })
               .then(res => {
+                setSubmitting(false);
                 if (res.status === 200) {
-                  setSubmitting(false);
                   localStorage.setItem('token', res.headers['x-auth-token']);
                   askForPermissionToReceiveNotifications();
                   axios.defaults.headers.common.Authorization = `Bearer ${res.headers['x-auth-token']}`;

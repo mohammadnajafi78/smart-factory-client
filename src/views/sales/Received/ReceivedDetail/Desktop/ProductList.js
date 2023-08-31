@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Divider, Grid, Drawer, TextField } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { Box, Divider } from '@mui/material';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
-import InputLabel from 'src/components/Mobile/InputLabel';
-import CancelImg from 'src/assets/img/cancel.svg';
-import SaleCategory from 'src/assets/img/saleCategory.svg';
-import SaleSubCategory from 'src/assets/img/SaleSubCategory.svg';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import { Download, Plus } from 'react-feather';
-import { useHistory } from 'react-router-dom';
-import MomentFa from 'src/utils/MomentFa';
+import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
+import InputLabel from 'src/components/Desktop/InputLabel';
 import FilesMenu from 'src/views/sales/FilesMenu';
 
 export default function ProductList({ data, incomplete }) {

@@ -9,6 +9,7 @@ import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 
 function EntryDesktop(props) {
+  const [isLoading, setLoading] = useState(false);
   const history = useHistory();
 
   return (
@@ -78,12 +79,15 @@ function EntryDesktop(props) {
             </LinkButton>
             <LinkButton
               variant={'outlined'}
+              loading={isLoading}
               onClick={() => {
+                setLoading(true)
                 httpService
                   .post(`${API_BASE_URL}/api/users/request_otp/`, {
                     username: props.location.state.mobile
                   })
                   .then(res => {
+                    setLoading(false)
                     if (res.status === 200) {
                       history.push({
                         pathname: '/otp',

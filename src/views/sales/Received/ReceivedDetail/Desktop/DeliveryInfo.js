@@ -9,8 +9,8 @@ import {
 } from '@mui/material';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import InputLabel from 'src/components/Mobile/InputLabel';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
+import InputLabel from 'src/components/Desktop/InputLabel';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { ArrowRight, Download } from 'react-feather';
 import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';

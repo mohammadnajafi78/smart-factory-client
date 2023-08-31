@@ -202,7 +202,9 @@ function LocationDesktop() {
                 >
                   {'قبلی'}
                 </ConfirmButton> */}
-                <ConfirmButton disabled={isSubmitting} loading={isSubmitting}>
+                <ConfirmButton 
+                disabled={isSubmitting} 
+                loading={isSubmitting}>
                   {'ثبت'}
                 </ConfirmButton>
               </Box>

@@ -9,7 +9,6 @@ import InputLabel from 'src/components/Desktop/InputLabel';
 import { ChevronRight } from 'react-feather';
 import { useHistory } from 'react-router-dom';
 import ProductList from './ProductList';
-import Confirmation from './Cofirmation';
 import Actions from './Actions';
 
 export default function OrderMobile(props) {

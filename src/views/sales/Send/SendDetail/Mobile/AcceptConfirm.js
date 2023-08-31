@@ -14,6 +14,7 @@ export default function AcceptConfirm(props) {
   const [file, setFile] = useState();
   const [comment, setComment] = useState(null);
   const history = useHistory();
+  const [isLoading, setLoading] = useState(false);
 
   return (
     <>
@@ -174,7 +175,9 @@ export default function AcceptConfirm(props) {
             {'لغو'}
           </ConfirmButton>
           <ConfirmButton
+            loading={isLoading}
             onClick={() => {
+              setLoading(true)
               const formData = new FormData();
               formData.append('order_num', props.data.order_num);
               formData.append('order_action', 'Approve');
@@ -188,6 +191,7 @@ export default function AcceptConfirm(props) {
                   formData
                 )
                 .then(res => {
+                  setLoading(false)
                   if (res.status === 200) {
                     history.push('/sale/received');
                   }

@@ -1,7 +1,5 @@
-import React, { PureComponent, useEffect, useState } from 'react';
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
-import httpService from 'src/utils/httpService';
-import { API_BASE_URL } from 'src/utils/urls';
+import React, {  } from 'react';
+import { PieChart, Pie, Cell } from 'recharts';
 
 const COLORS = ['#D3D2D2', 'url(#colorUv)'];
 

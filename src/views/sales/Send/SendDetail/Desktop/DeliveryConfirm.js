@@ -1,24 +1,15 @@
 import { useEffect, useState } from 'react';
 import {
   Box,
-  TextField,
-  Autocomplete,
-  InputAdornment,
   Button,
   Divider
 } from '@mui/material';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import InputLabel from 'src/components/Mobile/InputLabel';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
+import InputLabel from 'src/components/Desktop/InputLabel';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { ArrowRight } from 'react-feather';
 import { useHistory } from 'react-router-dom';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import AdapterJalali from '@date-io/date-fns-jalali';
-import { AttachFile } from '@mui/icons-material';
-import MomentEn from 'src/utils/MomentEn';
 import Close from 'src/assets/img/close2.svg';
 import Done from 'src/assets/img/done2.svg';
 import ProductListSelectable from './ProductListSelectable';
@@ -30,6 +21,7 @@ export default function DeliveryConfirm(props) {
   const [paymentTypes, setPaymentTypes] = useState([]);
   const history = useHistory();
   const data = props.state;
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     // if (selected === 'yes') {
@@ -143,7 +135,9 @@ export default function DeliveryConfirm(props) {
           <ConfirmButton
             style={{ width: '150px' }}
             disabled={selected == null}
+            loading={isLoading}
             onClick={() => {
+              setLoading(true)
               httpService
                 .post(`${API_BASE_URL}/api/orders/update_order_state/`, {
                   order_num: data.order_num,
@@ -151,6 +145,7 @@ export default function DeliveryConfirm(props) {
                   state: selected === 'yes' ? 'Complete' : 'Incomplete'
                 })
                 .then(res => {
+                  setLoading(false)
                   if (res.status === 200) {
                     history.push('/sale/send');
                   }

@@ -1,24 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes, { string } from 'prop-types';
+import PropTypes from 'prop-types';
 
 import {
-  Box,
   Card,
   Typography,
-  Link,
-  TextField,
-  FormControl,
-  InputLabel,
-  Autocomplete,
   colors,
-  ToggleButtonGroup,
-  ToggleButton,
-  IconButton,
-  TableRow,
-  TableCell
-} from '@mui/material';
+  IconButton} from '@mui/material';
 import MUIDataTable from 'mui-datatables';
-import TableFooter from '@mui/material/TableFooter';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { ThemeProvider } from '@mui/material/styles';
@@ -27,10 +15,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import DownloadIcon from '@mui/icons-material/FileUpload';
 import ViewColumnIcon from '@mui/icons-material/ViewColumn';
 import FilterIcon from '@mui/icons-material/FilterAlt';
-import httpService from 'src/utils/httpService';
-import { API_BASE_URL } from 'src/utils/urls';
-import { consoleSandbox } from '@sentry/utils';
-import { Co2Sharp } from '@mui/icons-material';
 import { Delete } from '@mui/icons-material';
 
 const muiCache = createCache({

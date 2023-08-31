@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Divider,
-  Grid,
-  Drawer,
   TextField,
   Button,
   ButtonGroup
@@ -11,13 +9,10 @@ import {
 import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
-import InputLabel from 'src/components/Mobile/InputLabel';
+import InputLabel from 'src/components/Desktop/InputLabel';
 import CancelImg from 'src/assets/img/cancel.svg';
-import SaleCategory from 'src/assets/img/saleCategory.svg';
-import SaleSubCategory from 'src/assets/img/SaleSubCategory.svg';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import { ChevronLeft, Download, Plus } from 'react-feather';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
+import { ChevronLeft } from 'react-feather';
 import { useHistory } from 'react-router-dom';
 import MomentFa from 'src/utils/MomentFa';
 import ProductList from './ProductList';
@@ -55,6 +50,7 @@ export default function Actions(props) {
   const [delivery, setDelivery] = useState(false);
   const [selected, setSelected] = useState(null);
   const history = useHistory();
+  const [isLoading, setLoading] = useState(false);
   const sale_office_id = JSON.parse(localStorage.getItem('user'))
     .sale_office_id;
 
@@ -700,7 +696,9 @@ export default function Actions(props) {
                 <ConfirmButton
                   style={{ width: '150px' }}
                   disabled={comment == null}
+                  loading={isLoading}
                   onClick={() => {
+                    setLoading(true)
                     httpService
                       .post(
                         `${API_BASE_URL}/api/management/order/update_order_state/`,
@@ -718,6 +716,7 @@ export default function Actions(props) {
                         }
                       )
                       .then(res => {
+                        setLoading(false)
                         if (res.status === 200) {
                           history.push('/management/sale/received');
                         }
@@ -856,7 +855,9 @@ export default function Actions(props) {
                 <ConfirmButton
                   style={{ width: '150px' }}
                   disabled={selectedSupplier == null}
+                  loading={isLoading}
                   onClick={() => {
+                    setLoading(true)
                     httpService
                       .post(
                         `${API_BASE_URL}/api/management/order/set_supplier/`,
@@ -866,6 +867,7 @@ export default function Actions(props) {
                         }
                       )
                       .then(res => {
+                        setLoading(false)
                         if (res.status === 200) {
                           if (selectedSupplier === 'SUPPLIER') {
                             // history.push({

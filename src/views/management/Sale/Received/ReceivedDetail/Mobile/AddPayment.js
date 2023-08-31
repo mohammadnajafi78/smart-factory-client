@@ -6,14 +6,7 @@ import InputLabel from 'src/components/Mobile/InputLabel';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import { ArrowRight, Download } from 'react-feather';
 import { useHistory } from 'react-router-dom';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import AdapterJalali from '@date-io/date-fns-jalali';
-import { AttachFile } from '@mui/icons-material';
-import MomentEn from 'src/utils/MomentEn';
 import MomentFa from 'src/utils/MomentFa';
-import FileDownload from 'src/assets/img/icons/fileDownload.svg';
 import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles(theme => ({
@@ -31,6 +24,7 @@ export default function AddPayment(props) {
   const [paymentTypes, setPaymentTypes] = useState([]);
   const [open, setOpen] = useState(false);
   const [comment, setComment] = useState(null);
+  const [isLoading, setLoading] = useState(false);
   const history = useHistory();
   const data = props.location.state;
   const classes = useStyles();
@@ -286,8 +280,9 @@ export default function AddPayment(props) {
             <ConfirmButton
               // disabled={isSubmitting}
               // type="submit"
-              // loading={isSubmitting}
+              loading={isLoading}
               onClick={() => {
+                setLoading(true)
                 httpService
                   .post(
                     `${API_BASE_URL}/api/management/order/payment/update_payment_status/`,
@@ -297,6 +292,7 @@ export default function AddPayment(props) {
                     }
                   )
                   .then(res => {
+                    setLoading(false)
                     if (res.status === 200) {
                       history.goBack();
                     }
@@ -381,7 +377,9 @@ export default function AddPayment(props) {
               <ConfirmButton
                 style={{ width: '150px' }}
                 disabled={comment == null}
+                loading={isLoading}
                 onClick={() => {
+                  setLoading(true)
                   httpService
                     .post(
                       `${API_BASE_URL}/api/management/order/payment/update_payment_status/`,
@@ -392,6 +390,7 @@ export default function AddPayment(props) {
                       }
                     )
                     .then(res => {
+                      setLoading(false)
                       if (res.status === 200) {
                         history.goBack();
                       }

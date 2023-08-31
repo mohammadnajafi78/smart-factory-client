@@ -44,6 +44,7 @@ export default function Location(props) {
   const [cityId, setCityId] = useState();
   const history = useHistory();
   const { order, setOrder } = useSaleOrder();
+  const [isLoading, setLoading] = useState(false);
 
   console.log('ordeeeer', order);
 
@@ -194,7 +195,9 @@ export default function Location(props) {
               </ConfirmButton>
               <ConfirmButton
                 style={{ width: '100px' }}
+                loading={isLoading}
                 onClick={() => {
+                  setLoading(true)
                   httpService
                     .post(
                       `${API_BASE_URL}/api/orders/delivery/add_delivery_location/`,
@@ -204,6 +207,7 @@ export default function Location(props) {
                       }
                     )
                     .then(res => {
+                      setLoading(false)
                       if (res.status === 200) {
                         setOrder(res.data);
                         history.push('/sale/products/order/3');

@@ -1,9 +1,7 @@
 import React, { useRef, useState } from 'react';
 import LoginFrame from 'src/components/Desktop/LoginFrame';
 import { Box, IconButton, InputAdornment, TextField } from '@mui/material';
-import Logo from 'src/assets/img/LogoBTS.svg';
 import InputLabel from 'src/components/Desktop/InputLabel';
-import LinkButton from 'src/components/Desktop/Button/Link';
 import { useHistory } from 'react-router-dom';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
@@ -193,7 +191,6 @@ function EnterNewPasswordDesktop(props) {
                             <IconButton
                               aria-label="toggle password visibility"
                               onClick={handleClickShowPassword2}
-                              // onMouseDown={handleMouseDownPassword}
                               edge="end"
                               tabIndex={-1}
                             >

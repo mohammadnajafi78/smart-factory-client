@@ -1,19 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Box, TextField, Drawer, Divider } from '@mui/material';
+import { Box, TextField, Divider } from '@mui/material';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import InputLabel from 'src/components/Mobile/InputLabel';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
+import InputLabel from 'src/components/Desktop/InputLabel';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { ArrowRight, Download } from 'react-feather';
 import { useHistory } from 'react-router-dom';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import AdapterJalali from '@date-io/date-fns-jalali';
-import { AttachFile } from '@mui/icons-material';
-import MomentEn from 'src/utils/MomentEn';
 import MomentFa from 'src/utils/MomentFa';
-import FileDownload from 'src/assets/img/icons/fileDownload.svg';
 import makeStyles from '@mui/styles/makeStyles';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
 
@@ -35,6 +28,7 @@ export default function AddPayment(props) {
   const history = useHistory();
   const data = props.selected;
   const classes = useStyles();
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     httpService
@@ -395,7 +389,9 @@ export default function AddPayment(props) {
                 <ConfirmButton
                   style={{ width: '150px' }}
                   disabled={comment == null}
+                  loading={isLoading}
                   onClick={() => {
+                    setLoading(true)
                     httpService
                       .post(
                         `${API_BASE_URL}/api/orders/payment/update_payment_status/`,
@@ -406,6 +402,7 @@ export default function AddPayment(props) {
                         }
                       )
                       .then(res => {
+                        setLoading(false)
                         if (res.status === 200) {
                           props.setPayment(true);
                           props.setAddPayment(false);
