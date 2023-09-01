@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Divider,
-  TextField,
-  Button,
-  ButtonGroup
-} from '@mui/material';
+import { Box, Divider, TextField, Button, ButtonGroup } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
@@ -123,9 +117,7 @@ export default function Actions(props) {
                   lineHeight: '17px'
                 }}
               >
-                {data?.user_info?.first_name +
-                  ' ' +
-                  data?.user_info?.last_name}
+                {data?.user_info?.first_name + ' ' + data?.user_info?.last_name}
               </InputLabel>
               <Box
                 sx={{
@@ -697,7 +689,7 @@ export default function Actions(props) {
                   disabled={comment == null}
                   loading={isLoading}
                   onClick={() => {
-                    setLoading(true)
+                    setLoading(true);
                     httpService
                       .post(`${API_BASE_URL}/api/orders/update_order_state/`, {
                         order_num: data.order_num,
@@ -712,10 +704,13 @@ export default function Actions(props) {
                             : 'Cancel'
                       })
                       .then(res => {
-                        setLoading(false)
+                        setLoading(false);
                         if (res.status === 200) {
                           history.push('/sale/received');
                         }
+                      })
+                      .catch(ex => {
+                        setLoading(false);
                       });
                   }}
                 >
@@ -853,14 +848,14 @@ export default function Actions(props) {
                   disabled={selectedSupplier == null}
                   loading={isLoading}
                   onClick={() => {
-                    setLoading(true)
+                    setLoading(true);
                     httpService
                       .post(`${API_BASE_URL}/api/orders/set_supplier/`, {
                         order_num: data.order_num,
                         supply_by: selectedSupplier
                       })
                       .then(res => {
-                        setLoading(false)
+                        setLoading(false);
                         if (res.status === 200) {
                           if (selectedSupplier === 'SUPPLIER') {
                             // history.push({
@@ -872,6 +867,9 @@ export default function Actions(props) {
                             setOpenSupplier(false);
                           } else history.push('/sale/received');
                         }
+                      })
+                      .catch(ex => {
+                        setLoading(false);
                       });
                   }}
                 >

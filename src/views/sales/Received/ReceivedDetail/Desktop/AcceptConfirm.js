@@ -223,17 +223,20 @@ export default function AcceptConfirm(props) {
                 for (let i = 0; i < file.length; i++) {
                   formData.append('INVOICE' + i, file[i]);
                 }
-                setLoading(true)
+                setLoading(true);
                 httpService
                   .post(
                     `${API_BASE_URL}/api/orders/update_order_state/`,
                     formData
                   )
                   .then(res => {
-                    setLoading(false)
+                    setLoading(false);
                     if (res.status === 200) {
                       history.push('/sale/received');
                     }
+                  })
+                  .catch(ex => {
+                    setLoading(false);
                   });
               }}
             >

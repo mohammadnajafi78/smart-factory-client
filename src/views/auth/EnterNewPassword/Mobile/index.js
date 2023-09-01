@@ -81,6 +81,9 @@ function EnterNewPasswordMobile(props) {
                 setSubmitting(false);
                 history.push('/login');
               }
+            })
+            .catch(ex => {
+              setSubmitting(false);
             });
         }}
       >

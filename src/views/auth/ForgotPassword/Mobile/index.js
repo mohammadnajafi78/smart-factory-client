@@ -49,6 +49,9 @@ function ForgotPasswordMobile(props) {
                 });
                 setSubmitting(false);
               }
+            })
+            .catch(ex => {
+              setSubmitting(false);
             });
         }}
       >
@@ -121,10 +124,10 @@ function ForgotPasswordMobile(props) {
               </Box>
             </Box>
             <Box>
-              <ConfirmButton 
-              disabled={isSubmitting} 
-              type="submit"
-              loading={isSubmitting}
+              <ConfirmButton
+                disabled={isSubmitting}
+                type="submit"
+                loading={isSubmitting}
               >
                 {'ثبت'}
               </ConfirmButton>

@@ -90,6 +90,9 @@ function EnterPasswordMobile(props) {
                 // history.push('/home');
                 history.push('/' + res.data.profile_state.toLowerCase());
               }
+            })
+            .catch(ex => {
+              setSubmitting(false);
             });
         }}
       >

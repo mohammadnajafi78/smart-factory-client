@@ -15,7 +15,6 @@ export default function AcceptConfirm(props) {
   const [comment, setComment] = useState(null);
   const [isLoading, setLoading] = useState(false);
   const history = useHistory();
-  console.log('order_num', props);
 
   return (
     <>
@@ -179,7 +178,7 @@ export default function AcceptConfirm(props) {
           <ConfirmButton
             loading={isLoading}
             onClick={() => {
-              setLoading(true)
+              setLoading(true);
               const formData = new FormData();
               formData.append('order_num', props.location.state.order_num);
               formData.append('order_action', 'Approve');
@@ -193,10 +192,13 @@ export default function AcceptConfirm(props) {
                   formData
                 )
                 .then(res => {
-                  setLoading(false)
+                  setLoading(false);
                   if (res.status === 200) {
                     history.push('/management/sale/received');
                   }
+                })
+                .catch(ex => {
+                  setLoading(false);
                 });
             }}
           >

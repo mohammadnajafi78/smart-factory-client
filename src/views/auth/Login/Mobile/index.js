@@ -87,6 +87,9 @@ function LoginMobile() {
                             }
                           });
                         } else console.log('error');
+                      })
+                      .catch(ex => {
+                        setLoading(false);
                       });
                   } else if (res.status === 200) {
                     setLoading(false);
@@ -98,6 +101,9 @@ function LoginMobile() {
                       }
                     });
                   }
+                })
+                .catch(ex => {
+                  setLoading(false);
                 });
               // setSubmitting(false);
             }}
@@ -145,9 +151,7 @@ function LoginMobile() {
                     width: '100%'
                   }}
                 >
-                  <Button 
-                  disabled={isSubmitting} 
-                  loading={isSubmitting}>
+                  <Button disabled={isSubmitting} loading={isSubmitting}>
                     {isSubmitting ? 'در حال ثبت' : 'ثبت'}
                   </Button>
                   <Divider variant="middle" sx={{ margin: '15px 0px' }} />

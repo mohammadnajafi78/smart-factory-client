@@ -199,7 +199,7 @@ export default function AcceptConfirm(props) {
               style={{ width: '150px' }}
               loading={isLoading}
               onClick={() => {
-                setLoading(true)
+                setLoading(true);
                 const formData = new FormData();
                 formData.append('order_num', props.data.order_num);
                 formData.append('order_action', 'Approve');
@@ -213,10 +213,13 @@ export default function AcceptConfirm(props) {
                     formData
                   )
                   .then(res => {
-                    setLoading(false)
+                    setLoading(false);
                     if (res.status === 200) {
                       history.push('/sale/received');
                     }
+                  })
+                  .catch(ex => {
+                    setLoading(false);
                   });
               }}
             >

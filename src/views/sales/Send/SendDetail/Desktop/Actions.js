@@ -44,7 +44,6 @@ export default function Actions(props) {
   const location = props.location.pathname;
   const [isLoading, setLoading] = useState(false);
 
-
   return (
     <>
       <Box
@@ -673,7 +672,7 @@ export default function Actions(props) {
                   disabled={comment == null}
                   loading={isLoading}
                   onClick={() => {
-                    setLoading(true)
+                    setLoading(true);
                     httpService
                       .post(`${API_BASE_URL}/api/orders/update_order_state/`, {
                         order_num: data.order_num,
@@ -682,10 +681,13 @@ export default function Actions(props) {
                         state: 'Invoice'
                       })
                       .then(res => {
-                        setLoading(false)
+                        setLoading(false);
                         if (res.status === 200) {
                           history.push('/sale/received');
                         }
+                      })
+                      .catch(ex => {
+                        setLoading(false);
                       });
                   }}
                 >
@@ -796,7 +798,7 @@ export default function Actions(props) {
                   // disabled={comment == null}
                   loading={isLoading}
                   onClick={() => {
-                    setLoading(true)
+                    setLoading(true);
                     httpService
                       .post(`${API_BASE_URL}/api/orders/update_order_state/`, {
                         order_num: data.order_num,
@@ -804,10 +806,13 @@ export default function Actions(props) {
                         state: 'Invoice'
                       })
                       .then(res => {
-                        setLoading(false)
+                        setLoading(false);
                         if (res.status === 200) {
                           history.push('/sale/send');
                         }
+                      })
+                      .catch(ex => {
+                        setLoading(false);
                       });
                   }}
                 >

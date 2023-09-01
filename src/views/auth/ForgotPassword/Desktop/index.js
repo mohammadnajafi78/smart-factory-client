@@ -64,6 +64,9 @@ function ForgotPasswordDesktop(props) {
                   });
                   setSubmitting(false);
                 }
+              })
+              .catch(ex => {
+                setSubmitting(false);
               });
           }}
         >
@@ -136,10 +139,7 @@ function ForgotPasswordDesktop(props) {
                   width: '100%'
                 }}
               >
-                <ConfirmButton 
-                disabled={isSubmitting}
-                loading={isSubmitting}
-                >
+                <ConfirmButton disabled={isSubmitting} loading={isSubmitting}>
                   {'ثبت'}
                 </ConfirmButton>
               </Box>

@@ -162,7 +162,7 @@ export default function Location(props) {
           <ConfirmButton
             loading={isLoading}
             onClick={() => {
-              setLoading(true)
+              setLoading(true);
               httpService
                 .post(
                   `${API_BASE_URL}/api/orders/delivery/add_delivery_location/`,
@@ -172,11 +172,14 @@ export default function Location(props) {
                   }
                 )
                 .then(res => {
-                  setLoading(false)
+                  setLoading(false);
                   if (res.status === 200) {
                     setOrder(res.data);
                     history.push('/sale/products/order/3');
                   }
+                })
+                .catch(ex => {
+                  setLoading(false);
                 });
             }}
           >

@@ -292,7 +292,7 @@ export default function AddPayment(props) {
               style={{ width: '150px' }}
               loading={isLoading}
               onClick={() => {
-                setLoading(true)
+                setLoading(true);
                 httpService
                   .post(
                     `${API_BASE_URL}/api/management/order/payment/update_payment_status/`,
@@ -302,12 +302,15 @@ export default function AddPayment(props) {
                     }
                   )
                   .then(res => {
-                    setLoading(false)
+                    setLoading(false);
                     if (res.status === 200) {
                       // history.goBack();
                       props.setPayment(true);
                       props.setAddPayment(false);
                     }
+                  })
+                  .catch(ex => {
+                    setLoading(false);
                   });
               }}
             >
@@ -394,7 +397,7 @@ export default function AddPayment(props) {
                   disabled={comment == null}
                   loading={isLoading}
                   onClick={() => {
-                    setLoading(true)
+                    setLoading(true);
                     httpService
                       .post(
                         `${API_BASE_URL}/api/management/order/payment/update_payment_status/`,
@@ -405,11 +408,14 @@ export default function AddPayment(props) {
                         }
                       )
                       .then(res => {
-                        setLoading(false)
+                        setLoading(false);
                         if (res.status === 200) {
                           props.setPayment(true);
                           props.setAddPayment(false);
                         }
+                      })
+                      .catch(ex => {
+                        setLoading(false);
                       });
                   }}
                 >

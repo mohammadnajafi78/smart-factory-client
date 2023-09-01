@@ -109,7 +109,7 @@ export default function CancelConfirm(props) {
               disabled={comment == null}
               loading={isLoading}
               onClick={() => {
-                setLoading(true)
+                setLoading(true);
                 httpService
                   .post(`${API_BASE_URL}/api/orders/update_order_state/`, {
                     order_num: props.data.order_num,
@@ -118,10 +118,13 @@ export default function CancelConfirm(props) {
                     state: 'PI'
                   })
                   .then(res => {
-                    setLoading(false)
+                    setLoading(false);
                     if (res.status === 200) {
                       history.push('/sale/received');
                     }
+                  })
+                  .catch(ex => {
+                    setLoading(false);
                   });
               }}
             >

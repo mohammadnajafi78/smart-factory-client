@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  Divider
-} from '@mui/material';
+import { Box, Button, Divider } from '@mui/material';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import InputLabel from 'src/components/Desktop/InputLabel';
@@ -137,7 +133,7 @@ export default function DeliveryConfirm(props) {
             disabled={selected == null}
             loading={isLoading}
             onClick={() => {
-              setLoading(true)
+              setLoading(true);
               httpService
                 .post(`${API_BASE_URL}/api/orders/update_order_state/`, {
                   order_num: data.order_num,
@@ -145,10 +141,13 @@ export default function DeliveryConfirm(props) {
                   state: selected === 'yes' ? 'Complete' : 'Incomplete'
                 })
                 .then(res => {
-                  setLoading(false)
+                  setLoading(false);
                   if (res.status === 200) {
                     history.push('/sale/send');
                   }
+                })
+                .catch(ex => {
+                  setLoading(false);
                 });
             }}
           >

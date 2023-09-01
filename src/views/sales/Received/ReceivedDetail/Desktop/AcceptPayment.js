@@ -219,13 +219,13 @@ export default function AcceptPayment(props) {
                             }}
                             loading={isLoading}
                             onClick={() => {
-                              setLoading(true)
+                              setLoading(true);
                               httpService
                                 .get(
                                   `${API_BASE_URL}/api/orders/payment/get_payment?payment_num=${item.payment_num}`
                                 )
                                 .then(res => {
-                                  setLoading(false)
+                                  setLoading(false);
                                   if (res.status === 200) {
                                     // history.push({
                                     //   pathname: '/sale/received/payment/add',
@@ -235,6 +235,9 @@ export default function AcceptPayment(props) {
                                     props.setAddPayment(true);
                                     props.setSelected(item);
                                   }
+                                })
+                                .catch(ex => {
+                                  setLoading(false);
                                 });
                             }}
                           >

@@ -98,6 +98,9 @@ function EnterNewPasswordDesktop(props) {
                   setSubmitting(false);
                   history.push('/login');
                 }
+              })
+              .catch(ex => {
+                setSubmitting(false);
               });
           }}
         >

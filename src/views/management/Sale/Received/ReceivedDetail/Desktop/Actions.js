@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Divider,
-  TextField,
-  Button,
-  ButtonGroup
-} from '@mui/material';
+import { Box, Divider, TextField, Button, ButtonGroup } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
@@ -368,18 +362,18 @@ export default function Actions(props) {
                       }
                     }}
                     onClick={() => {
-                    //   // setOpenPIApprove(true);
-                    //   const temp = data.user_type_info.filter(
-                    //     f => f.user_type === 'Representer'
-                    //   );
-                    //   if (temp.length >= 0) {
-                    //     setOpenSupplier(true);
-                    //   }
-                    //   // history.push({
-                    //   //   pathname: '/management/sale/received/delivery',
-                    //   //   order_num: data.order_num,
-                    //   //   state: data.current_state.name
-                    //   // });
+                      //   // setOpenPIApprove(true);
+                      //   const temp = data.user_type_info.filter(
+                      //     f => f.user_type === 'Representer'
+                      //   );
+                      //   if (temp.length >= 0) {
+                      //     setOpenSupplier(true);
+                      //   }
+                      //   // history.push({
+                      //   //   pathname: '/management/sale/received/delivery',
+                      //   //   order_num: data.order_num,
+                      //   //   state: data.current_state.name
+                      //   // });
                       setDelivery(true);
                     }}
                   >
@@ -698,7 +692,7 @@ export default function Actions(props) {
                   disabled={comment == null}
                   loading={isLoading}
                   onClick={() => {
-                    setLoading(true)
+                    setLoading(true);
                     httpService
                       .post(
                         `${API_BASE_URL}/api/management/order/update_order_state/`,
@@ -716,10 +710,13 @@ export default function Actions(props) {
                         }
                       )
                       .then(res => {
-                        setLoading(false)
+                        setLoading(false);
                         if (res.status === 200) {
                           history.push('/management/sale/received');
                         }
+                      })
+                      .catch(ex => {
+                        setLoading(false);
                       });
                   }}
                 >
@@ -857,7 +854,7 @@ export default function Actions(props) {
                   disabled={selectedSupplier == null}
                   loading={isLoading}
                   onClick={() => {
-                    setLoading(true)
+                    setLoading(true);
                     httpService
                       .post(
                         `${API_BASE_URL}/api/management/order/set_supplier/`,
@@ -867,7 +864,7 @@ export default function Actions(props) {
                         }
                       )
                       .then(res => {
-                        setLoading(false)
+                        setLoading(false);
                         if (res.status === 200) {
                           if (selectedSupplier === 'SUPPLIER') {
                             // history.push({
@@ -879,6 +876,9 @@ export default function Actions(props) {
                             setOpenSupplier(false);
                           } else history.push('/management/sale/received');
                         }
+                      })
+                      .catch(ex => {
+                        setLoading(false);
                       });
                   }}
                 >

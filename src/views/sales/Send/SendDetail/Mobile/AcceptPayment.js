@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Button} from '@mui/material';
+import { Box, Button } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
@@ -308,7 +306,7 @@ export default function AcceptPayment(props) {
                     // }
                     loading={isLoading}
                     onClick={() => {
-                      setLoading(true)
+                      setLoading(true);
                       const formData = new FormData();
                       formData.append(
                         'order_num',
@@ -323,10 +321,13 @@ export default function AcceptPayment(props) {
                           formData
                         )
                         .then(res => {
-                          setLoading(false)
+                          setLoading(false);
                           if (res.status === 200) {
                             history.push('/sale/send');
                           }
+                        })
+                        .catch(ex => {
+                          setLoading(false);
                         });
                     }}
                   >

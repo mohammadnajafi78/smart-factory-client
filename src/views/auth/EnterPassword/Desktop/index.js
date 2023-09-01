@@ -105,6 +105,9 @@ function ForgotPasswodDesktop(props) {
                   // history.push('/home');
                   history.push('/' + res.data.profile_state.toLowerCase());
                 }
+              })
+              .catch(ex => {
+                setSubmitting(false);
               });
           }}
         >
@@ -237,9 +240,7 @@ function ForgotPasswodDesktop(props) {
                   width: '100%'
                 }}
               >
-                <ConfirmButton 
-                disabled={isSubmitting} 
-                loading={isSubmitting}>
+                <ConfirmButton disabled={isSubmitting} loading={isSubmitting}>
                   {'ثبت'}
                 </ConfirmButton>
               </Box>

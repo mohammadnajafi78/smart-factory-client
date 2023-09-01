@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Divider,
-  Grid,
-  Drawer,
-  TextField,
-  Autocomplete
-} from '@mui/material';
+import { Box, Grid, TextField, Autocomplete } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
-import InputLabel from 'src/components/Mobile/InputLabel';
+import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
+import InputLabel from 'src/components/Desktop/InputLabel';
 import CancelImg from 'src/assets/img/cancel.svg';
-import SaleCategory from 'src/assets/img/saleCategory.svg';
-import SaleSubCategory from 'src/assets/img/SaleSubCategory.svg';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { Plus } from 'react-feather';
 import { useHistory } from 'react-router-dom';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
@@ -45,8 +36,6 @@ export default function Location(props) {
   const history = useHistory();
   const { order, setOrder } = useSaleOrder();
   const [isLoading, setLoading] = useState(false);
-
-  console.log('ordeeeer', order);
 
   function getData() {
     httpService
@@ -197,7 +186,7 @@ export default function Location(props) {
                 style={{ width: '100px' }}
                 loading={isLoading}
                 onClick={() => {
-                  setLoading(true)
+                  setLoading(true);
                   httpService
                     .post(
                       `${API_BASE_URL}/api/orders/delivery/add_delivery_location/`,
@@ -207,11 +196,14 @@ export default function Location(props) {
                       }
                     )
                     .then(res => {
-                      setLoading(false)
+                      setLoading(false);
                       if (res.status === 200) {
                         setOrder(res.data);
                         history.push('/sale/products/order/3');
                       }
+                    })
+                    .catch(ex => {
+                      setLoading(false);
                     });
                 }}
                 disabled={order?.count <= 0 || selected === null}

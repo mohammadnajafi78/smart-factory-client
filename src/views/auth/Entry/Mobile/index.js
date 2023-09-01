@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box } from '@mui/material';
 import Logo from 'src/assets/img/LogoBTS.svg';
 import InputLabel from 'src/components/Mobile/InputLabel';
@@ -59,13 +59,13 @@ function EntryMobile(props) {
           variant={'outlined'}
           loading={isLoading}
           onClick={() => {
-            setLoading(true)
+            setLoading(true);
             httpService
               .post(`${API_BASE_URL}/api/users/request_otp/`, {
                 username: props.location.state.mobile
               })
               .then(res => {
-                setLoading(false)
+                setLoading(false);
                 if (res.status === 200) {
                   history.push({
                     pathname: '/otp',
@@ -76,6 +76,9 @@ function EntryMobile(props) {
                     }
                   });
                 }
+              })
+              .catch(ex => {
+                setLoading(false);
               });
           }}
         >

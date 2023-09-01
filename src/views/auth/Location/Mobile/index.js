@@ -63,6 +63,9 @@ function LocationMobile() {
               history.push('/work');
               setSubmitting(false);
             }
+          })
+          .catch(ex => {
+            setSubmitting(false);
           });
         setSubmitting(false);
       }}
@@ -196,9 +199,7 @@ function LocationMobile() {
             >
               {'قبلی'}
             </ConfirmButton> */}
-            <ConfirmButton 
-            disabled={isSubmitting} 
-            loading={isSubmitting}>
+            <ConfirmButton disabled={isSubmitting} loading={isSubmitting}>
               {'ثبت'}
             </ConfirmButton>
           </Box>

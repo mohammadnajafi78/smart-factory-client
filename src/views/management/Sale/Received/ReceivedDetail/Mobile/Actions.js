@@ -574,7 +574,7 @@ export default function Actions(props) {
                 disabled={comment == null}
                 loading={isLoading}
                 onClick={() => {
-                  setLoading(true)
+                  setLoading(true);
                   httpService
                     .post(
                       `${API_BASE_URL}/api/management/order/update_order_state/`,
@@ -589,10 +589,13 @@ export default function Actions(props) {
                       }
                     )
                     .then(res => {
-                      setLoading(false)
+                      setLoading(false);
                       if (res.status === 200) {
                         history.push('/management/sale/received');
                       }
+                    })
+                    .catch(ex => {
+                      setLoading(false);
                     });
                 }}
               >
@@ -724,7 +727,7 @@ export default function Actions(props) {
                 disabled={selectedSupplier == null}
                 loading={isLoading}
                 onClick={() => {
-                  setLoading(true)
+                  setLoading(true);
                   httpService
                     .post(
                       `${API_BASE_URL}/api/management/order/set_supplier/`,
@@ -734,7 +737,7 @@ export default function Actions(props) {
                       }
                     )
                     .then(res => {
-                      setLoading(false)
+                      setLoading(false);
                       if (res.status === 200) {
                         if (selectedSupplier === 'SUPPLIER') {
                           history.push({
@@ -744,6 +747,9 @@ export default function Actions(props) {
                           });
                         } else history.push('/management/sale/received');
                       }
+                    })
+                    .catch(ex => {
+                      setLoading(false);
                     });
                 }}
               >
