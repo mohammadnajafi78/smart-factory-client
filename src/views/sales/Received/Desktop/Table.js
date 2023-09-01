@@ -1,41 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes, { string } from 'prop-types';
+import React, { useEffect, useState } from 'react';
 
 import {
   Box,
-  Card,
-  Typography,
-  Link,
-  TextField,
   FormControl,
   InputLabel,
-  Autocomplete,
-  colors,
-  ToggleButtonGroup,
+  TextField,
   ToggleButton,
-  Tab
+  ToggleButtonGroup
 } from '@mui/material';
 
-import { Link as RouterLink, useHistory } from 'react-router-dom';
-import SearchIcon from '@mui/icons-material/Search';
-import DownloadIcon from '@mui/icons-material/FileUpload';
-import ViewColumnIcon from '@mui/icons-material/ViewColumn';
-import FilterIcon from '@mui/icons-material/FilterAlt';
+import { useHistory } from 'react-router-dom';
+import MomentFa from 'src/utils/MomentFa';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import { consoleSandbox } from '@sentry/utils';
-import FaTOEn from 'src/utils/FaTOEn';
-import MomentFa from 'src/utils/MomentFa';
 // import Datepicker from 'src/components/Desktop/Datepicker';
 import AdapterJalali from '@date-io/date-fns-jalali';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import moment from 'jalali-moment';
-import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
-import { Plus } from 'react-feather';
-import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import Table from 'src/components/Desktop/Table';
-import { ArrowBack, ArrowRight } from '@mui/icons-material';
 
 const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
@@ -278,7 +261,7 @@ const ReceiveTable = props => {
         }
       },
       {
-        name: 'current_state.label',
+        name: 'current_state',
         label: 'وضعیت',
         options: {
           customBodyRender: value => {
@@ -292,13 +275,18 @@ const ReceiveTable = props => {
                       justifyContent: 'center',
                       alignItems: 'center',
                       padding: '3px 6px !important',
-                      background: '#CCEEF0',
+                      background: JSON.parse(value.data).back,
                       borderRadius: '4px',
                       color: '#00AAB5'
                     }}
                   >
-                    <InputLabel style={{ color: '#00AAB5', paddingLeft: 0 }}>
-                      {value}
+                    <InputLabel
+                      style={{
+                        color: JSON.parse(value.data).text,
+                        paddingLeft: 0
+                      }}
+                    >
+                      {value.label}
                     </InputLabel>
                   </Box>
                 }
@@ -449,7 +437,7 @@ const ReceiveTable = props => {
       case 'order_num':
         if (filterList[0][0]) {
           item['order_num'] = filterList[0][0];
-          filterType = '__contains';
+          filterType = '__icontains';
         } else {
           delete item['order_num'];
         }
@@ -457,7 +445,7 @@ const ReceiveTable = props => {
       case 'name':
         if (filterList[1][0]) {
           item['name'] = filterList[1][0];
-          filterType = '__contains';
+          filterType = '__icontains';
         } else {
           delete item['name'];
         }

@@ -396,7 +396,7 @@ const ProductTable = props => {
       case 'erp_code':
         if (filterList[3][0]) {
           item['erp_code'] = filterList[3][0];
-          filterType = '__contains';
+          filterType = '__icontains';
         } else {
           delete item['erp_code'];
         }

@@ -263,7 +263,7 @@ const UserTypeTable = props => {
       case 'activity_translates.item_fa':
         if (filterList[1][0]) {
           item['activity'] = filterList[1][0];
-          filterType = '__contains';
+          filterType = '__icontains';
         } else {
           delete item['activity'];
         }
@@ -271,7 +271,7 @@ const UserTypeTable = props => {
       case 'type_translates':
         if (filterList[2][0]) {
           item['user_type'] = filterList[2][0];
-          filterType = '__contains';
+          filterType = '__icontains';
         } else {
           delete item['user_type'];
         }

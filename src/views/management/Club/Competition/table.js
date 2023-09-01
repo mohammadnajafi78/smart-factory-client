@@ -428,7 +428,7 @@ const CompetitionTable = props => {
       case 'name':
         if (filterList[1][0]) {
           item['name'] = filterList[1][0];
-          filterType = '__contains';
+          filterType = '__icontains';
         } else {
           delete item['name'];
         }

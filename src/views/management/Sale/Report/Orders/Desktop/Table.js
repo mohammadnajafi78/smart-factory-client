@@ -6,7 +6,8 @@ import {
   FormControl,
   InputLabel,
   ToggleButtonGroup,
-  ToggleButton} from '@mui/material';
+  ToggleButton
+} from '@mui/material';
 
 import { useHistory } from 'react-router-dom';
 import httpService from 'src/utils/httpService';
@@ -487,7 +488,7 @@ const OrdersTable = props => {
       case 'order.user':
         if (filterList[1][0]) {
           item['user__first_name'] = filterList[1][0];
-          filterType = '__contains';
+          filterType = '__icontains';
         } else {
           delete item['user__first_name'];
         }
@@ -495,7 +496,7 @@ const OrdersTable = props => {
       case 'order.last_name':
         if (filterList[2][0]) {
           item['user__last_name'] = filterList[2][0];
-          filterType = '__contains';
+          filterType = '__icontains';
         } else {
           delete item['user__last_name'];
         }
@@ -503,7 +504,7 @@ const OrdersTable = props => {
       case 'order.supplier':
         if (filterList[3][0]) {
           item['supplier__first_name'] = filterList[3][0];
-          filterType = '__contains';
+          filterType = '__icontains';
         } else {
           delete item['supplier__first_name'];
         }
@@ -511,7 +512,7 @@ const OrdersTable = props => {
       case 'order.supplier_family':
         if (filterList[4][0]) {
           item['supplier__last_name'] = filterList[4][0];
-          filterType = '__contains';
+          filterType = '__icontains';
         } else {
           delete item['supplier__last_name'];
         }

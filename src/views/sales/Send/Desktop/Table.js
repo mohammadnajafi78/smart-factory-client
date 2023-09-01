@@ -211,7 +211,7 @@ const SendTable = props => {
         }
       },
       {
-        name: 'current_state.label',
+        name: 'current_state',
         label: 'وضعیت',
         options: {
           customBodyRender: value => {
@@ -225,14 +225,19 @@ const SendTable = props => {
                       justifyContent: 'center',
                       alignItems: 'center',
                       padding: '3px 6px !important',
-                      background: '#CCEEF0',
+                      background: JSON.parse(value.data).back,
                       borderRadius: '4px',
                       color: '#00AAB5',
                       maxWidth: '150px'
                     }}
                   >
-                    <InputLabel style={{ color: '#00AAB5', paddingLeft: 0 }}>
-                      {value}
+                    <InputLabel
+                      style={{
+                        color: JSON.parse(value.data).text,
+                        paddingLeft: 0
+                      }}
+                    >
+                      {value.label}
                     </InputLabel>
                   </Box>
                 }
@@ -417,7 +422,7 @@ const SendTable = props => {
       case 'order_num':
         if (filterList[1][0]) {
           item['order_num'] = filterList[0][0];
-          filterType = '__contains';
+          filterType = '__icontains';
         } else {
           delete item['order_num'];
         }

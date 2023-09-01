@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import {
-  TextField,
-  FormControl,
-  InputLabel} from '@mui/material';
+import { TextField, FormControl, InputLabel } from '@mui/material';
 
 import { useHistory } from 'react-router-dom';
 import httpService from 'src/utils/httpService';
@@ -264,7 +261,7 @@ const OrdersTable = props => {
       case 'name':
         if (filterList[1][0]) {
           item['name'] = filterList[1][0];
-          filterType = '__contains';
+          filterType = '__icontains';
         } else {
           delete item['name'];
         }

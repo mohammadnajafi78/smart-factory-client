@@ -5,7 +5,8 @@ import {
   TextField,
   FormControl,
   InputLabel,
-  Autocomplete} from '@mui/material';
+  Autocomplete
+} from '@mui/material';
 
 import { useHistory } from 'react-router-dom';
 import httpService from 'src/utils/httpService';
@@ -307,7 +308,7 @@ const ReceiveTable = props => {
         }
       },
       {
-        name: 'current_state.label',
+        name: 'current_state',
         label: 'وضعیت',
         options: {
           customBodyRender: value => {
@@ -321,13 +322,18 @@ const ReceiveTable = props => {
                       justifyContent: 'center',
                       alignItems: 'center',
                       padding: '3px 6px !important',
-                      background: '#CCEEF0',
+                      background: JSON.parse(value.data).back,
                       borderRadius: '4px',
-                      color: '#00AAB5'
+                      color: JSON.parse(value.data).text
                     }}
                   >
-                    <InputLabel style={{ color: '#00AAB5', paddingLeft: 0 }}>
-                      {value}
+                    <InputLabel
+                      style={{
+                        color: JSON.parse(value.data).text,
+                        paddingLeft: 0
+                      }}
+                    >
+                      {value.label}
                     </InputLabel>
                   </Box>
                 }
@@ -418,23 +424,22 @@ const ReceiveTable = props => {
     //   '',
     //   '__icontains'
     // ];
-    console.log('filterlist', filterList);
 
     switch (column) {
       case 'user_info.first_name':
         if (filterList[1][0]) {
-          item['user__first_name__contains'] = filterList[1][0];
+          item['user__first_name__icontains'] = filterList[1][0];
           // filterType = '__contains';
         } else {
-          delete item['user__first_name__contains'];
+          delete item['user__first_name__icontains'];
         }
         break;
       case 'user_info.last_name':
         if (filterList[2][0]) {
-          item['user__last_name__contains'] = filterList[2][0];
+          item['user__last_name__icontains'] = filterList[2][0];
           // filterType = '__contains';
         } else {
-          delete item['user__last_name__contains'];
+          delete item['user__last_name__icontains'];
         }
         break;
 

@@ -1,21 +1,13 @@
-import React, { useRef, useEffect, useState } from 'react';
-import {
-  Box,
-  ButtonGroup,
-  Button,
-  ListItemIcon,
-  TextField,
-  Divider
-} from '@mui/material';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
-import InputLabel from 'src/components/Mobile/InputLabel';
-import { Formik } from 'formik';
-import { useHistory } from 'react-router-dom';
-import { API_BASE_URL } from 'src/utils/urls';
-import httpService from 'src/utils/httpService';
+import { Box, TextField } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
+import { Formik } from 'formik';
+import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import ConfirmButton from 'src/components/Mobile/Button/Confirm';
+import InputLabel from 'src/components/Mobile/InputLabel';
 import Text from 'src/components/Mobile/Text';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
 function WorkMobile(props) {
   const history = useHistory();
