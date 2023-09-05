@@ -12,7 +12,6 @@ import { useHistory } from 'react-router-dom';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import MomentFa from 'src/utils/MomentFa';
-// import Datepicker from 'src/components/Desktop/Datepicker';
 import AdapterJalali from '@date-io/date-fns-jalali';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -22,7 +21,6 @@ import Table from 'src/components/Desktop/Table';
 const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
 let item = {};
-// let itemSort = {};
 const ReceiveTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
@@ -356,7 +354,6 @@ const ReceiveTable = props => {
                     renderInput={params => (
                       <TextField {...params} placeholder="وضعیت" />
                     )}
-                    // getOptionLabel={option => option.label}
                     disableClearable
                     value={filterList[index]}
                     onChange={(event, values) => {
@@ -406,30 +403,10 @@ const ReceiveTable = props => {
   }
 
   function onFilterChange(column, filterList, type) {
-    // let filterNames = [
-    //   'id',
-    //   'user_info.first_name',
-    //   'user_info.last_name',
-    //   '',
-    //   'create_date__gte',
-    //   'create_date__lte',
-    //   'current_state.label'
-    // ];
-    // let filterType = [
-    //   '',
-    //   '__contains',
-    //   '__contains',
-    //   '',
-    //   '',
-    //   '',
-    //   '__icontains'
-    // ];
-
     switch (column) {
       case 'user_info.first_name':
         if (filterList[1][0]) {
           item['user__first_name__icontains'] = filterList[1][0];
-          // filterType = '__contains';
         } else {
           delete item['user__first_name__icontains'];
         }
@@ -437,7 +414,6 @@ const ReceiveTable = props => {
       case 'user_info.last_name':
         if (filterList[2][0]) {
           item['user__last_name__icontains'] = filterList[2][0];
-          // filterType = '__contains';
         } else {
           delete item['user__last_name__icontains'];
         }
@@ -446,7 +422,6 @@ const ReceiveTable = props => {
       case 'create_date':
         if (filterList[4][0]) {
           item['create_date__gte'] = startDate;
-          // filterType = '__gte';
         } else {
           delete item['create_date__gte'];
         }
@@ -454,19 +429,17 @@ const ReceiveTable = props => {
       case 'end_date':
         if (filterList[5][0]) {
           item['create_date__lte'] = endDate;
-          // filterType = '__lte';
         } else {
           delete item['create_date__lte'];
         }
         break;
-      case 'current_state.label':
+      case 'current_state':
         if (filterList[6][0]) {
-          item['order_state__icontains'] = statusList.filter(
+          item['order_state'] = statusList.filter(
             f => f.label === filterList[6][0]
           )[0].name;
-          // filterType = '';
         } else {
-          delete item['current_state.label'];
+          delete item['order_state'];
           setState(null);
         }
         break;
@@ -476,19 +449,10 @@ const ReceiveTable = props => {
 
     let temp = item;
     let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
-    console.log('filterItems', filterItems);
-    // console.log('filterType', filterType);
-
     let str = '';
     if (filterItems?.length > 0) {
       filterItems.map((itm, index) => {
-        str =
-          str +
-          itm[0] +
-          // filterType[filterNames.indexOf(itm[0])] +
-          '=' +
-          decodeURIComponent(itm[1]) +
-          '&';
+        str = str + itm[0] + '=' + decodeURIComponent(itm[1]) + '&';
       });
     }
     str.replace('&&', '&');
@@ -543,29 +507,36 @@ const ReceiveTable = props => {
   }
 
   function onRowClick(rowData, rowState) {
-    history.push({
-      pathname: '/management/sale/received/detail',
-      state: {
-        data: data.filter(f => f.order_num === rowData[0])
-      }
-    });
+    httpService
+      .get(
+        `${API_BASE_URL}/api/management/order/get_order/?order_num=${rowData[0]}`
+      )
+      .then(res => {
+        if (res.status === 200) {
+          history.push({
+            pathname: '/management/sale/received/detail',
+            state: {
+              data: res.data
+            }
+          });
+        }
+      });
   }
 
   function onRowsDelete(rowsDeleted, newData) {
-    const matchNums = [];
-    rowsDeleted.data.map((item, index) => {
-      matchNums.push(data[item.index].match_num);
-    });
-
-    httpService
-      .post(`${API_BASE_URL}/api/management/club/matches/match_delete/`, {
-        match_nums: matchNums
-      })
-      .then(res => {
-        if (res.status === 200) {
-          getData(page, rowsPerPage, '');
-        }
-      });
+    // const matchNums = [];
+    // rowsDeleted.data.map((item, index) => {
+    //   matchNums.push(data[item.index].match_num);
+    // });
+    // httpService
+    //   .post(`${API_BASE_URL}/api/management/club/matches/match_delete/`, {
+    //     match_nums: matchNums
+    //   })
+    //   .then(res => {
+    //     if (res.status === 200) {
+    //       getData(page, rowsPerPage, '');
+    //     }
+    //   });
   }
 
   function onRowSelectionChange(rowsSelectedData, allRows, rowsSelected) {

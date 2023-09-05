@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 // import Products from './Products';
 // import Location from './Location';
 // import Delivery from './Deleivery';
 // import Message from './Message';
-import { Box } from '@mui/system';
 import { Grid } from '@mui/material';
-import InputLabel from 'src/components/Desktop/InputLabel';
+import { Box } from '@mui/system';
 import { ChevronRight } from 'react-feather';
 import { useHistory } from 'react-router-dom';
-import ProductList from './ProductList';
+import InputLabel from 'src/components/Desktop/InputLabel';
 import Actions from './Actions';
+import ProductList from './ProductList';
 
 export default function OrderMobile(props) {
   const [path, setPath] = useState(props.location.pathname.split('/')[4]);
@@ -20,8 +20,6 @@ export default function OrderMobile(props) {
     setPath(props.location.pathname.split('/')[4]);
     setData(props.location.state.data);
   });
-
-  console.log('Data2', data);
 
   return (
     <>
@@ -66,11 +64,11 @@ export default function OrderMobile(props) {
               {/* <Box>{data == 3 ? <Delivery /> : <Location />}</Box> */}
               <Box>
                 {/* <Confirmation {...props} data={data[0]} /> */}
-                <Actions {...props} data={data[0]} />
+                <Actions {...props} data={data} />
               </Box>
             </Grid>
             <Grid item xs={4}>
-              <ProductList data={data[0]} />
+              <ProductList data={data} />
             </Grid>
           </Grid>
         </Box>

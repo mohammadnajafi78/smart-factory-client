@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
+  Autocomplete,
   Box,
-  TextField,
   FormControl,
   InputLabel,
-  ToggleButtonGroup,
-  ToggleButton
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup
 } from '@mui/material';
 
 import { useHistory } from 'react-router-dom';
+import MomentFa from 'src/utils/MomentFa';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import MomentFa from 'src/utils/MomentFa';
-// import Datepicker from 'src/components/Desktop/Datepicker';
 import AdapterJalali from '@date-io/date-fns-jalali';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -36,6 +36,7 @@ const OrdersTable = props => {
   const [endDate, setEndDate] = React.useState(new Date());
   const [reset, setReset] = useState(false);
   const [state, setState] = useState(null);
+  const [statusList, setStatusList] = useState([]);
 
   const history = useHistory();
 
@@ -52,17 +53,57 @@ const OrdersTable = props => {
   }, [filter, sort]);
 
   useEffect(() => {
+    httpService
+      .get(`${API_BASE_URL}/api/management/order/get_order_states/`)
+      .then(res => {
+        if (res.status === 200) {
+          setStatusList(res.data);
+        }
+      });
+  }, []);
+
+  useEffect(() => {
     setColumns([
       {
-        name: 'order.order_num',
+        name: 'order_num',
         label: 'شماره سفارش',
         options: {
-          filter: false
+          filter: true,
+          filterType: 'custom',
+          filterOptions: {
+            display: (filterList, onChange, index, column) => {
+              return (
+                <>
+                  <FormControl>
+                    <InputLabel sx={{ transform: 'none', position: 'initial' }}>
+                      شماره سفارش
+                    </InputLabel>
+                    <TextField
+                      id="order_num"
+                      aria-describedby="my-helper-text"
+                      fullWidth
+                      placeholder="شماره سفارش"
+                      value={filterList[index]}
+                      onChange={event => {
+                        if (event.target.value) {
+                          filterList[index][0] = event.target.value;
+                          onChange(filterList[index], index, column);
+                        } else {
+                          filterList[index] = [];
+                          onChange(filterList[index], index, column);
+                        }
+                      }}
+                    />
+                  </FormControl>
+                </>
+              );
+            }
+          }
         }
       },
       {
-        name: 'order.user',
-        label: 'سفارش دهنده',
+        name: 'user_info.first_name',
+        label: 'نام سفارش دهنده',
         options: {
           filter: true,
           filterType: 'custom',
@@ -78,7 +119,7 @@ const OrdersTable = props => {
                       id="user__first_name"
                       aria-describedby="my-helper-text"
                       fullWidth
-                      placeholder="نام"
+                      placeholder="نام سفارش دهنده"
                       value={filterList[index]}
                       onChange={event => {
                         if (event.target.value) {
@@ -98,11 +139,11 @@ const OrdersTable = props => {
         }
       },
       {
-        name: 'order.last_name',
-        label: 'سفارش دهنده',
+        name: 'user_info.last_name',
+        label: 'نام خانوادگی سفارش دهنده',
         options: {
           filter: true,
-          display: false,
+          display: true,
           filterType: 'custom',
           filterOptions: {
             display: (filterList, onChange, index, column) => {
@@ -116,7 +157,7 @@ const OrdersTable = props => {
                       id="user__last_name"
                       aria-describedby="my-helper-text"
                       fullWidth
-                      placeholder="نام خانوادگی"
+                      placeholder="نام خانوادگی سفارش دهنده"
                       value={filterList[index]}
                       onChange={event => {
                         if (event.target.value) {
@@ -136,8 +177,8 @@ const OrdersTable = props => {
         }
       },
       {
-        name: 'order.supplier',
-        label: 'تامین کننده',
+        name: 'supplier_info.first_name',
+        label: 'نام تامین کننده',
         options: {
           filter: true,
           filterType: 'custom',
@@ -153,7 +194,7 @@ const OrdersTable = props => {
                       id="name"
                       aria-describedby="my-helper-text"
                       fullWidth
-                      placeholder="نام"
+                      placeholder="نام تامین کننده"
                       value={filterList[index]}
                       onChange={event => {
                         if (event.target.value) {
@@ -173,10 +214,10 @@ const OrdersTable = props => {
         }
       },
       {
-        name: 'order.supplier_family',
-        label: 'تامین کننده',
+        name: 'supplier_info.last_name',
+        label: 'نام خانوادگی تامین کننده',
         options: {
-          display: false,
+          display: true,
           filter: true,
           filterType: 'custom',
           filterOptions: {
@@ -191,7 +232,7 @@ const OrdersTable = props => {
                       id="name"
                       aria-describedby="my-helper-text"
                       fullWidth
-                      placeholder="نام"
+                      placeholder="نام خانوادگی تامین کننده"
                       value={filterList[index]}
                       onChange={event => {
                         if (event.target.value) {
@@ -210,9 +251,8 @@ const OrdersTable = props => {
           }
         }
       },
-
       {
-        name: 'order.final_price',
+        name: 'final_price',
         label: 'قیمت',
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
@@ -225,13 +265,13 @@ const OrdersTable = props => {
               return (
                 <FormControl>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    تعداد شرکت کنندگان
+                    قیمت
                   </InputLabel>
                   <TextField
                     id="name"
                     aria-describedby="my-helper-text"
                     fullWidth
-                    placeholder="تعداد شرکت کنندگان"
+                    placeholder="قیمت"
                     value={filterList[index]}
                     type={'number'}
                     onChange={event => {
@@ -251,7 +291,7 @@ const OrdersTable = props => {
         }
       },
       {
-        name: 'order.create_date',
+        name: 'create_date',
         label: 'زمان ثبت',
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
@@ -264,7 +304,7 @@ const OrdersTable = props => {
               return (
                 <FormControl>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
-                    تاریخ شروع
+                    زمان ثبت
                   </InputLabel>
 
                   <LocalizationProvider dateAdapter={AdapterJalali}>
@@ -314,7 +354,7 @@ const OrdersTable = props => {
         }
       },
       {
-        name: 'order.state',
+        name: 'current_state',
         label: 'وضعیت',
         options: {
           customBodyRender: value => {
@@ -328,128 +368,60 @@ const OrdersTable = props => {
                       justifyContent: 'center',
                       alignItems: 'center',
                       padding: '3px 6px !important',
-                      background: '#CCEEF0',
+                      background: JSON.parse(value.data).back,
                       borderRadius: '4px',
-                      color: '#00AAB5',
-                      width: '150px'
+                      color: JSON.parse(value.data).text
                     }}
                   >
-                    <InputLabel style={{ color: '#00AAB5', paddingLeft: 0 }}>
-                      {value}
+                    <InputLabel
+                      style={{
+                        color: JSON.parse(value.data).text,
+                        paddingLeft: 0
+                      }}
+                    >
+                      {value.label}
                     </InputLabel>
                   </Box>
                 }
-                {/* {value.toLowerCase() === 'submit' ? (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: '3px 6px !important',
-                      background: '#CCEEF0',
-                      borderRadius: '4px',
-                      color: '#00AAB5'
-                    }}
-                  >
-                    <InputLabel style={{ color: '#00AAB5', paddingLeft: 0 }}>
-                      ارسال شده
-                    </InputLabel>
-                  </Box>
-                ) : value.toLowerCase() === 'finished' ? (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: '3px 6px !important',
-                      background: '#FDE8E8',
-                      borderRadius: '4px',
-                      color: '#F4777C !important'
-                    }}
-                  >
-                    <InputLabel style={{ color: '#F4777C', paddingLeft: 0 }}>
-                      برگزار شده
-                    </InputLabel>
-                  </Box>
-                ) : (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: '3px 6px !important',
-                      background: '#F3F3F3',
-                      borderRadius: '4px'
-                      // color: '#F3F3F3 !important'
-                    }}
-                  >
-                    <InputLabel style={{ color: '#A7A5A6', paddingLeft: 0 }}>
-                      برگزار نشده
-                    </InputLabel>
-                  </Box>
-                )} */}
               </>
             );
           },
-          filter: false,
+          filter: true,
           filterType: 'custom',
           filterOptions: {
             display: (filterList, onChange, index, column) => {
               return (
-                <FormControl sx={{ marginTop: '10px' }}>
+                <FormControl>
                   <InputLabel sx={{ transform: 'none', position: 'initial' }}>
                     وضعیت
                   </InputLabel>
-                  <ToggleButtonGroup
-                    color="primary"
-                    value={state}
-                    exclusive
-                    onChange={(event, newValue) => {
-                      setState(newValue);
-
-                      if (newValue?.toLowerCase() === 'performing')
-                        filterList[index][0] = 'در حال برگزاری';
-                      else if (newValue?.toLowerCase() === 'pending')
-                        filterList[index][0] = 'برگزار نشده';
-                      else if (newValue?.toLowerCase() === 'finished')
-                        filterList[index][0] = 'برگزار شده';
-                      else filterList[index] = [];
+                  <Autocomplete
+                    disablePortal
+                    id="status"
+                    options={statusList}
+                    renderInput={params => (
+                      <TextField {...params} placeholder="وضعیت" />
+                    )}
+                    // getOptionLabel={option => option.label}
+                    disableClearable
+                    value={filterList[index]}
+                    onChange={(event, values) => {
+                      // setStatusId(values.id);
+                      filterList[index][0] = values.label;
                       onChange(filterList[index], index, column);
                     }}
+                    isOptionEqualToValue={(option, value) =>
+                      option.name === value.name
+                    }
                     sx={{
-                      marginTop: '5px',
-                      direction: 'ltr',
-                      justifyContent: 'flex-end'
+                      background: '#F2F2F2',
+                      borderRadius: '4px',
+                      '.MuiOutlinedInput-root': {
+                        padding: '5px'
+                      }
                     }}
-                  >
-                    <ToggleButton
-                      value="PERFORMING"
-                      sx={{
-                        fontFamily: 'IRANSans'
-                      }}
-                    >
-                      در حال برگزاری
-                    </ToggleButton>
-                    <ToggleButton
-                      value="FINISHED"
-                      sx={{
-                        fontFamily: 'IRANSans'
-                      }}
-                    >
-                      برگزار شده
-                    </ToggleButton>
-                    <ToggleButton
-                      value="PENDING"
-                      sx={{
-                        fontFamily: 'IRANSans'
-                      }}
-                    >
-                      برگزار نشده
-                    </ToggleButton>
-                  </ToggleButtonGroup>
+                    noOptionsText={'موردی یافت نشد'}
+                  />
                 </FormControl>
               );
             }
@@ -457,7 +429,7 @@ const OrdersTable = props => {
         }
       }
     ]);
-  }, [state]);
+  }, [state, statusList]);
 
   function getData(page, rowsPerPage, search) {
     httpService
@@ -485,7 +457,15 @@ const OrdersTable = props => {
     console.log('column', column);
 
     switch (column) {
-      case 'order.user':
+      case 'order_num':
+        if (filterList[0][0]) {
+          item['order_num'] = filterList[0][0];
+          filterType = '__icontains';
+        } else {
+          delete item['order_num'];
+        }
+        break;
+      case 'user_info.first_name':
         if (filterList[1][0]) {
           item['user__first_name'] = filterList[1][0];
           filterType = '__icontains';
@@ -493,7 +473,7 @@ const OrdersTable = props => {
           delete item['user__first_name'];
         }
         break;
-      case 'order.last_name':
+      case 'user_info.last_name':
         if (filterList[2][0]) {
           item['user__last_name'] = filterList[2][0];
           filterType = '__icontains';
@@ -501,7 +481,7 @@ const OrdersTable = props => {
           delete item['user__last_name'];
         }
         break;
-      case 'order.supplier':
+      case 'supplier_info.first_name':
         if (filterList[3][0]) {
           item['supplier__first_name'] = filterList[3][0];
           filterType = '__icontains';
@@ -509,7 +489,7 @@ const OrdersTable = props => {
           delete item['supplier__first_name'];
         }
         break;
-      case 'order.supplier_family':
+      case 'supplier_info.last_name':
         if (filterList[4][0]) {
           item['supplier__last_name'] = filterList[4][0];
           filterType = '__icontains';
@@ -517,7 +497,7 @@ const OrdersTable = props => {
           delete item['supplier__last_name'];
         }
         break;
-      case 'order.create_date':
+      case 'create_date':
         if (filterList[6][0]) {
           item['create_date'] = startDate;
           filterType = '';
@@ -525,23 +505,15 @@ const OrdersTable = props => {
           delete item['create_date'];
         }
         break;
-
-      case 'status':
-        if (filterList[5][0]) {
-          console.log('filterlist', filterList[5][0]);
-          item['status'] =
-            filterList[5][0] == 'در حال برگزاری'
-              ? 'PERFORMING'
-              : filterList[5][0] == 'برگزار شده'
-              ? 'FINISHED'
-              : 'PENDING';
-          filterType = '';
+      case 'current_state':
+        if (filterList[7][0]) {
+          item['order_state'] = statusList.filter(
+            f => f.label === filterList[7][0]
+          )[0].name;
         } else {
-          delete item['status'];
+          delete item['order_state'];
           setState(null);
         }
-        break;
-
         break;
       default:
         item = item;
@@ -569,11 +541,23 @@ const OrdersTable = props => {
       case 'order_num':
         itemSort['order_num'] = direction;
         break;
-      case 'name':
-        itemSort['name'] = direction;
+      case 'user_info.first_name':
+        itemSort['user_info.first_name'] = direction;
         break;
-      case 'start_date':
-        itemSort['start_date'] = direction;
+      case 'user_info.last_name':
+        itemSort['user_info.last_name'] = direction;
+        break;
+      case 'supplier_info.first_name':
+        itemSort['supplier_info.first_name'] = direction;
+        break;
+      case 'supplier_info.last_name':
+        itemSort['supplier_info.last_name'] = direction;
+        break;
+      case 'create_date':
+        itemSort['create_date'] = direction;
+        break;
+      case 'current_state':
+        itemSort['current_state'] = direction;
         break;
       // case 'end_date':
       //   itemSort['end_date'] = direction;
@@ -610,29 +594,37 @@ const OrdersTable = props => {
   }
 
   function onRowClick(rowData, rowState) {
-    // history.push({
-    //   pathname: '/sale/management/received/detail',
-    //   state: {
-    //     data: data.filter(f => f.order.order_num === rowData[0])
-    //   }
-    // });
+    httpService
+      .get(
+        `${API_BASE_URL}/api/management/order/get_order/?order_num=${rowData[0]}`
+      )
+      .then(res => {
+        if (res.status === 200) {
+          console.log('res.data', res.data);
+          history.push({
+            pathname: '/management/sale/received/detail',
+            state: {
+              data: res.data
+            }
+          });
+        }
+      });
   }
 
   function onRowsDelete(rowsDeleted, newData) {
-    const matchNums = [];
-    rowsDeleted.data.map((item, index) => {
-      matchNums.push(data[item.index].match_num);
-    });
-
-    httpService
-      .post(`${API_BASE_URL}/api/management/club/matches/match_delete/`, {
-        match_nums: matchNums
-      })
-      .then(res => {
-        if (res.status === 200) {
-          getData(page, rowsPerPage, '');
-        }
-      });
+    // const matchNums = [];
+    // rowsDeleted.data.map((item, index) => {
+    //   matchNums.push(data[item.index].match_num);
+    // });
+    // httpService
+    //   .post(`${API_BASE_URL}/api/management/club/matches/match_delete/`, {
+    //     match_nums: matchNums
+    //   })
+    //   .then(res => {
+    //     if (res.status === 200) {
+    //       getData(page, rowsPerPage, '');
+    //     }
+    //   });
   }
 
   function onRowSelectionChange(rowsSelectedData, allRows, rowsSelected) {

@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  Card,
-  Typography,
-  colors,
-  IconButton} from '@mui/material';
+import { Card, Typography, colors, IconButton } from '@mui/material';
 import MUIDataTable from 'mui-datatables';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
@@ -422,7 +418,7 @@ const Table = props => {
     count: props.count,
     serverSide: true,
     enableNestedDataAccess: '.',
-    rowsPerPageOptions: [25, 50, 75],
+    rowsPerPageOptions: [25, 50, 75, 100, 200],
     print: false,
     search: props.search !== undefined ? props.search : true,
     responsive: 'vertical',

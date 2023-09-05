@@ -67,11 +67,11 @@ export default function OrderMobile(props) {
               {/* <Box>{data == 3 ? <Delivery /> : <Location />}</Box> */}
               <Box>
                 {/* <Confirmation {...props} data={data[0]} /> */}
-                <Actions {...props} data={data[0]} />
+                <Actions {...props} data={data} />
               </Box>
             </Grid>
             <Grid item xs={4}>
-              <ProductList data={data[0]} />
+              <ProductList data={data} />
             </Grid>
           </Grid>
         </Box>

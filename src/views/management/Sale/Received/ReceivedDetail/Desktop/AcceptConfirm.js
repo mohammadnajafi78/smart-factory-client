@@ -22,6 +22,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function AcceptConfirm(props) {
+  const PiTag = props.PiTag;
   const [file, setFile] = useState();
   const [comment, setComment] = useState(null);
   const history = useHistory();
@@ -204,9 +205,12 @@ export default function AcceptConfirm(props) {
                 const formData = new FormData();
                 formData.append('order_num', props.data.order_num);
                 formData.append('order_action', 'Approve');
-                formData.append('state', 'PI');
+                formData.append('state', PiTag);
                 formData.append('comment', comment);
-                formData.append('INVOICE', file);
+                formData.append(
+                  PiTag === 'PI' ? 'INVOICE' : 'AGENT_INVOICE',
+                  file
+                );
 
                 httpService
                   .post(

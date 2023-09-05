@@ -32,6 +32,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 export default function Actions(props) {
+  console.log('sale props', props);
   const data = props.data;
   const classes = useStyles();
   const [open, setOpen] = useState(false);

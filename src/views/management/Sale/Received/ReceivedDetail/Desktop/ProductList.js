@@ -8,7 +8,6 @@ import FilesMenu from 'src/views/sales/FilesMenu';
 
 export default function ProductList({ data, incomplete }) {
   const [product, setProduct] = useState();
-  console.log('Data in management', data);
 
   useEffect(() => {
     if (incomplete === true) {
@@ -31,7 +30,7 @@ export default function ProductList({ data, incomplete }) {
       {product && (
         <Box sx={{ mt: incomplete === true ? '20px' : '0px' }}>
           {incomplete !== true && (
-            <Box 
+            <Box
               sx={{
                 display: 'flex',
                 flexDirection: 'row',

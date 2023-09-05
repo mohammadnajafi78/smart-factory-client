@@ -47,7 +47,11 @@ export default function ProductList({ data, incomplete }) {
               >
                 لیست سفارشات
               </InputLabelHeader>
-              {data && <FilesMenu data={data?.files?.filter((item) => item.subject !== 'EXCEL')} />}
+              {data && (
+                <FilesMenu
+                  data={data?.files?.filter(item => item.subject !== 'EXCEL')}
+                />
+              )}
             </Box>
           )}
           <Box sx={{ height: '300px', overflow: 'auto' }}>
