@@ -314,7 +314,7 @@ const SendTable = props => {
         }
       }
     ]);
-  }, [state]);
+  }, [state, statusList]);
 
   function getData(page, rowsPerPage, search) {
     httpService
