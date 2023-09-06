@@ -364,7 +364,124 @@ export default function Actions(props) {
           </Box>
         )}
       {data.current_state.name === 'PAYMENT_APPROVED' &&
-        data.supply_by === 'SALE_OFFICE' && (
+        data.supply_by === 'SALE_OFFICE' &&
+        data.supplier_info.user_id ===
+          JSON.parse(localStorage.getItem('user')).sale_office_id && (
+          <Box
+            sx={{
+              background: '#E6EBF0',
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column'
+            }}
+          >
+            {/* {acceptConfirm === true ? (
+              <AcceptConfirm
+                data={data}
+                setAcceptConfirm={setAcceptConfirm}
+                PiTag="AGENT_PI"
+              />
+            ) : ( */}
+            <Box
+              sx={{
+                width: '100%',
+                padding: '20px 20px'
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'inline-flex',
+                  padding: '0px 10px'
+                }}
+              >
+                <img
+                  src={PaidImg}
+                  style={{
+                    marginBottom: '20px',
+                    marginLeft: '5px'
+                  }}
+                />
+                <InputLabel
+                  style={{
+                    fontWeight: 400,
+                    fontSize: '14px',
+                    lineHeight: '20px',
+                    color: '#00346D'
+                  }}
+                >
+                  {`وضعیت مالی سفارش را مشخص کنید:`}
+                </InputLabel>
+              </Box>
+
+              <Box
+                sx={{
+                  display: 'inline-flex',
+                  justifyContent: 'flex-end',
+                  width: '100%',
+                  gap: 2
+                }}
+              >
+                <ConfirmButton
+                  disabled={false}
+                  variant="outlined"
+                  style={{
+                    background: '#33BBC4',
+                    color: 'white',
+                    fontWeight: 400,
+                    fontSize: '12px',
+                    lineHeight: '18px',
+                    width: '120px'
+                  }}
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                  type={'button'}
+                >
+                  <img src={Close} style={{ marginLeft: '5px' }} />
+                  {'عدم تایید'}
+                </ConfirmButton>
+                <ConfirmButton
+                  style={{
+                    background: '#00346D',
+                    fontWeight: 400,
+                    fontSize: '12px',
+                    lineHeight: '18px',
+                    width: '120px'
+                  }}
+                  onClick={() => {
+                    setLoading(true);
+                    httpService
+                      .post(
+                        `${API_BASE_URL}/api/management/order/update_order_state/`,
+                        {
+                          order_num: data.order_num,
+                          order_action: 'Approve',
+                          state: 'AGENT_PI'
+                        }
+                      )
+                      .then(res => {
+                        setLoading(false);
+                        if (res.status === 200) {
+                          history.push('/management/sale/received');
+                        }
+                      })
+                      .catch(ex => {
+                        setLoading(false);
+                      });
+                  }}
+                >
+                  <img src={Done} style={{ marginLeft: '5px' }} />
+                  {'تایید سفارش'}
+                </ConfirmButton>
+              </Box>
+            </Box>
+            {/* )} */}
+          </Box>
+        )}
+      {data.current_state.name === 'PAYMENT_APPROVED' &&
+        data.supply_by === 'SALE_OFFICE' &&
+        data.supplier_info.user_id !==
+          JSON.parse(localStorage.getItem('user')).sale_office_id && (
           <Box
             sx={{
               background: '#E6EBF0',
