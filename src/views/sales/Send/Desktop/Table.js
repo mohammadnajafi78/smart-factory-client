@@ -56,11 +56,13 @@ const SendTable = props => {
   }, [filter, sort]);
 
   useEffect(() => {
-    httpService.get(`${API_BASE_URL}/api/order/get_order_states/`).then(res => {
-      if (res.status === 200) {
-        setStatusList(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}/api/orders/get_order_states/`)
+      .then(res => {
+        if (res.status === 200) {
+          setStatusList(res.data);
+        }
+      });
   }, []);
 
   useEffect(() => {
