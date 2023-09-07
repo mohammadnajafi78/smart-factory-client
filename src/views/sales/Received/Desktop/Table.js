@@ -82,13 +82,16 @@ const ReceiveTable = props => {
                     fullWidth
                     placeholder="شناسه"
                     value={filterList[index]}
+                    onKeyDown={event => {
+                      if (event.key === 'Enter') {
+                        onChange(filterList[index], index, column);
+                      }
+                    }}
                     onChange={event => {
                       if (event.target.value) {
                         filterList[index][0] = event.target.value;
-                        onChange(filterList[index], index, column);
                       } else {
                         filterList[index] = [];
-                        onChange(filterList[index], index, column);
                       }
                     }}
                   />
@@ -117,13 +120,16 @@ const ReceiveTable = props => {
                     fullWidth
                     placeholder="نام"
                     value={filterList[index]}
+                    onKeyDown={event => {
+                      if (event.key === 'Enter') {
+                        onChange(filterList[index], index, column);
+                      }
+                    }}
                     onChange={event => {
                       if (event.target.value) {
                         filterList[index][0] = event.target.value;
-                        onChange(filterList[index], index, column);
                       } else {
                         filterList[index] = [];
-                        onChange(filterList[index], index, column);
                       }
                     }}
                   />
@@ -152,13 +158,16 @@ const ReceiveTable = props => {
                     fullWidth
                     placeholder="نام خانوادگی"
                     value={filterList[index]}
+                    onKeyDown={event => {
+                      if (event.key === 'Enter') {
+                        onChange(filterList[index], index, column);
+                      }
+                    }}
                     onChange={event => {
                       if (event.target.value) {
                         filterList[index][0] = event.target.value;
-                        onChange(filterList[index], index, column);
                       } else {
                         filterList[index] = [];
-                        onChange(filterList[index], index, column);
                       }
                     }}
                   />
@@ -191,13 +200,16 @@ const ReceiveTable = props => {
                     placeholder="قیمت"
                     value={filterList[index]}
                     type={'number'}
+                    onKeyDown={event => {
+                      if (event.key === 'Enter') {
+                        onChange(filterList[index], index, column);
+                      }
+                    }}
                     onChange={event => {
                       if (event.target.value) {
                         filterList[index][0] = event.target.value;
-                        onChange(filterList[index], index, column);
                       } else {
                         filterList[index] = [];
-                        onChange(filterList[index], index, column);
                       }
                     }}
                   />

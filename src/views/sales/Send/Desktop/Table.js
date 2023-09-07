@@ -85,13 +85,16 @@ const SendTable = props => {
                     placeholder="شناسه"
                     value={filterList[index]}
                     variant="outlined"
+                    onKeyDown={event => {
+                      if (event.key === 'Enter') {
+                        onChange(filterList[index], index, column);
+                      }
+                    }}
                     onChange={event => {
                       if (event.target.value) {
                         filterList[index][0] = event.target.value;
-                        onChange(filterList[index], index, column);
                       } else {
                         filterList[index] = [];
-                        onChange(filterList[index], index, column);
                       }
                     }}
                   />
@@ -124,13 +127,16 @@ const SendTable = props => {
                     placeholder="قیمت"
                     value={filterList[index]}
                     type={'number'}
+                    onKeyDown={event => {
+                      if (event.key === 'Enter') {
+                        onChange(filterList[index], index, column);
+                      }
+                    }}
                     onChange={event => {
                       if (event.target.value) {
                         filterList[index][0] = event.target.value;
-                        onChange(filterList[index], index, column);
                       } else {
                         filterList[index] = [];
-                        onChange(filterList[index], index, column);
                       }
                     }}
                   />

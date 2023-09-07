@@ -84,13 +84,16 @@ const OrdersTable = props => {
                       fullWidth
                       placeholder="شماره سفارش"
                       value={filterList[index]}
+                      onKeyDown={event => {
+                        if (event.key === 'Enter') {
+                          onChange(filterList[index], index, column);
+                        }
+                      }}
                       onChange={event => {
                         if (event.target.value) {
                           filterList[index][0] = event.target.value;
-                          onChange(filterList[index], index, column);
                         } else {
                           filterList[index] = [];
-                          onChange(filterList[index], index, column);
                         }
                       }}
                     />
@@ -121,13 +124,16 @@ const OrdersTable = props => {
                       fullWidth
                       placeholder="نام سفارش دهنده"
                       value={filterList[index]}
+                      onKeyDown={event => {
+                        if (event.key === 'Enter') {
+                          onChange(filterList[index], index, column);
+                        }
+                      }}
                       onChange={event => {
                         if (event.target.value) {
                           filterList[index][0] = event.target.value;
-                          onChange(filterList[index], index, column);
                         } else {
                           filterList[index] = [];
-                          onChange(filterList[index], index, column);
                         }
                       }}
                     />
@@ -159,13 +165,16 @@ const OrdersTable = props => {
                       fullWidth
                       placeholder="نام خانوادگی سفارش دهنده"
                       value={filterList[index]}
+                      onKeyDown={event => {
+                        if (event.key === 'Enter') {
+                          onChange(filterList[index], index, column);
+                        }
+                      }}
                       onChange={event => {
                         if (event.target.value) {
                           filterList[index][0] = event.target.value;
-                          onChange(filterList[index], index, column);
                         } else {
                           filterList[index] = [];
-                          onChange(filterList[index], index, column);
                         }
                       }}
                     />
@@ -196,13 +205,16 @@ const OrdersTable = props => {
                       fullWidth
                       placeholder="نام تامین کننده"
                       value={filterList[index]}
+                      onKeyDown={event => {
+                        if (event.key === 'Enter') {
+                          onChange(filterList[index], index, column);
+                        }
+                      }}
                       onChange={event => {
                         if (event.target.value) {
                           filterList[index][0] = event.target.value;
-                          onChange(filterList[index], index, column);
                         } else {
                           filterList[index] = [];
-                          onChange(filterList[index], index, column);
                         }
                       }}
                     />
@@ -234,13 +246,16 @@ const OrdersTable = props => {
                       fullWidth
                       placeholder="نام خانوادگی تامین کننده"
                       value={filterList[index]}
+                      onKeyDown={event => {
+                        if (event.key === 'Enter') {
+                          onChange(filterList[index], index, column);
+                        }
+                      }}
                       onChange={event => {
                         if (event.target.value) {
                           filterList[index][0] = event.target.value;
-                          onChange(filterList[index], index, column);
                         } else {
                           filterList[index] = [];
-                          onChange(filterList[index], index, column);
                         }
                       }}
                     />
@@ -274,13 +289,16 @@ const OrdersTable = props => {
                     placeholder="قیمت"
                     value={filterList[index]}
                     type={'number'}
+                    onKeyDown={event => {
+                      if (event.key === 'Enter') {
+                        onChange(filterList[index], index, column);
+                      }
+                    }}
                     onChange={event => {
                       if (event.target.value) {
                         filterList[index][0] = event.target.value;
-                        onChange(filterList[index], index, column);
                       } else {
                         filterList[index] = [];
-                        onChange(filterList[index], index, column);
                       }
                     }}
                   />
@@ -637,6 +655,7 @@ const OrdersTable = props => {
     <Table
       title={'لیست'}
       data={data}
+      sumColumn={5}
       columns={columns}
       rowsPerPage={rowsPerPage}
       setRowsPerPage={setRowsPerPage}

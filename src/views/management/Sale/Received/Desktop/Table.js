@@ -5,7 +5,10 @@ import {
   TextField,
   FormControl,
   InputLabel,
-  Autocomplete
+  Autocomplete,
+  TableRow,
+  TableCell,
+  TableFooter
 } from '@mui/material';
 
 import { useHistory } from 'react-router-dom';
@@ -17,6 +20,9 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import moment from 'jalali-moment';
 import Table from 'src/components/Desktop/Table';
+import { number } from 'prop-types';
+import NumberFormat from 'src/components/Desktop/NumberFormat';
+import { NumericFormat } from 'react-number-format';
 
 const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
@@ -35,6 +41,7 @@ const ReceiveTable = props => {
   const [state, setState] = useState(null);
   const [statusList, setStatusList] = useState([]);
   const [statusId, setStatusId] = useState(null);
+  const [total, setTotal] = useState(0);
 
   const history = useHistory();
 
@@ -64,9 +71,42 @@ const ReceiveTable = props => {
     setColumns([
       {
         name: 'order_num',
-        label: 'شناسه',
+        label: 'شماره سفارش',
         options: {
-          filter: false
+          filter: true,
+          filterType: 'custom',
+          filterOptions: {
+            display: (filterList, onChange, index, column) => {
+              return (
+                <>
+                  <FormControl>
+                    <InputLabel sx={{ transform: 'none', position: 'initial' }}>
+                      شماره سفارش
+                    </InputLabel>
+                    <TextField
+                      id="order_num"
+                      aria-describedby="my-helper-text"
+                      fullWidth
+                      placeholder="شماره سفارش"
+                      value={filterList[index]}
+                      onKeyDown={event => {
+                        if (event.key === 'Enter') {
+                          onChange(filterList[index], index, column);
+                        }
+                      }}
+                      onChange={event => {
+                        if (event.target.value) {
+                          filterList[index][0] = event.target.value;
+                        } else {
+                          filterList[index] = [];
+                        }
+                      }}
+                    />
+                  </FormControl>
+                </>
+              );
+            }
+          }
         }
       },
       {
@@ -88,13 +128,16 @@ const ReceiveTable = props => {
                     fullWidth
                     placeholder="نام"
                     value={filterList[index]}
+                    onKeyDown={event => {
+                      if (event.key === 'Enter') {
+                        onChange(filterList[index], index, column);
+                      }
+                    }}
                     onChange={event => {
                       if (event.target.value) {
                         filterList[index][0] = event.target.value;
-                        onChange(filterList[index], index, column);
                       } else {
                         filterList[index] = [];
-                        onChange(filterList[index], index, column);
                       }
                     }}
                   />
@@ -123,13 +166,16 @@ const ReceiveTable = props => {
                     fullWidth
                     placeholder="نام خانوادگی"
                     value={filterList[index]}
+                    onKeyDown={event => {
+                      if (event.key === 'Enter') {
+                        onChange(filterList[index], index, column);
+                      }
+                    }}
                     onChange={event => {
                       if (event.target.value) {
                         filterList[index][0] = event.target.value;
-                        onChange(filterList[index], index, column);
                       } else {
                         filterList[index] = [];
-                        onChange(filterList[index], index, column);
                       }
                     }}
                   />
@@ -404,6 +450,13 @@ const ReceiveTable = props => {
 
   function onFilterChange(column, filterList, type) {
     switch (column) {
+      case 'order_num':
+        if (filterList[0][0]) {
+          item['order_num__icontains'] = filterList[0][0];
+        } else {
+          delete item['order_num__icontains'];
+        }
+        break;
       case 'user_info.first_name':
         if (filterList[1][0]) {
           item['user__first_name__icontains'] = filterList[1][0];
@@ -545,9 +598,21 @@ const ReceiveTable = props => {
     // console.log('rowsSelected', rowsSelected);
   }
 
+  function handleTableChange(action, tableState) {
+    const totalAmount = calculateTotalSum(tableState.displayData);
+    setTotal(totalAmount);
+  }
+
+  const calculateTotalSum = data => {
+    const totalAmount = data.map(a => a.data[3]).reduce((a, b) => (a += b), 0);
+    return totalAmount;
+  };
+
   return (
     <Table
       title={'سفارشات دریافتی'}
+      sumColumn={3}
+      // options={options}
       data={data}
       columns={columns}
       rowsPerPage={rowsPerPage}
