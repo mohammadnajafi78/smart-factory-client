@@ -1,22 +1,7 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import {
-  Box,
-  Card,
-  CardContent,
-  Chip,
-  Container,
-  Divider,
-  Link,
-  Tooltip,
-  Typography
-} from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import Page from 'src/components/Page';
 import useAuth from 'src/hooks/useAuth';
-import Auth0Login from './Auth0Login';
-import FirebaseAuthLogin from './FirebaseAuthLogin';
-import JWTLogin from './JWTLogin';
 import IrisaLogin from './IrisaLogin/IrisaLogin';
 
 const methodIcons = {

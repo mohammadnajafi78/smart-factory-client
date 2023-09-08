@@ -77,6 +77,9 @@ function LoginDesktop() {
                           }
                         });
                       } else console.log('error');
+                    })
+                    .catch(ex => {
+                      setSubmitting(false);
                     });
                 } else if (res.status === 200) {
                   setSubmitting(false);

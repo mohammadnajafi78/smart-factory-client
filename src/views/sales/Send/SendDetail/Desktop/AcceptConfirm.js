@@ -3,8 +3,8 @@ import { Box, Divider, Grid, Drawer, TextField, Button } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import InputLabel from 'src/components/Mobile/InputLabel';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
+import InputLabel from 'src/components/Desktop/InputLabel';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { ArrowRight, Plus } from 'react-feather';
 import { useHistory } from 'react-router-dom';
 import Upload from 'src/assets/img/icons/upload.svg';
@@ -25,6 +25,7 @@ export default function AcceptConfirm(props) {
   const [file, setFile] = useState();
   const [comment, setComment] = useState(null);
   const history = useHistory();
+  const [isLoading, setLoading] = useState(false);
 
   return (
     <>
@@ -196,7 +197,9 @@ export default function AcceptConfirm(props) {
             </ConfirmButton>
             <ConfirmButton
               style={{ width: '150px' }}
+              loading={isLoading}
               onClick={() => {
+                setLoading(true);
                 const formData = new FormData();
                 formData.append('order_num', props.data.order_num);
                 formData.append('order_action', 'Approve');
@@ -210,9 +213,13 @@ export default function AcceptConfirm(props) {
                     formData
                   )
                   .then(res => {
+                    setLoading(false);
                     if (res.status === 200) {
                       history.push('/sale/received');
                     }
+                  })
+                  .catch(ex => {
+                    setLoading(false);
                   });
               }}
             >

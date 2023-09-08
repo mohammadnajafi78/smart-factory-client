@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Divider, Grid, Drawer, TextField, Button } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Divider, TextField, Button } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
-import InputLabel from 'src/components/Mobile/InputLabel';
+import InputLabel from 'src/components/Desktop/InputLabel';
 import CancelImg from 'src/assets/img/cancel.svg';
 import DescriptionImg from 'src/assets/img/description.svg';
 import PaidImg from 'src/assets/img/paid.svg';
 import Info from 'src/assets/img/info.svg';
-import SaleCategory from 'src/assets/img/saleCategory.svg';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import { ChevronLeft, Download, Plus } from 'react-feather';
-import { Route, useHistory, useParams } from 'react-router-dom';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
+import { ChevronLeft, Download } from 'react-feather';
+import { useHistory } from 'react-router-dom';
 import MomentFa from 'src/utils/MomentFa';
-import ProductList from './ProductList';
-import { da } from 'date-fns/locale';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
 import AddPayment from './AddPayment';
 import AddPayment2 from './AddPayment2';
@@ -46,7 +42,7 @@ export default function Actions(props) {
   const [payment, setPayment] = useState(false);
   const [delivery, setDelivery] = useState(false);
   const location = props.location.pathname;
-
+  const [isLoading, setLoading] = useState(false);
 
   return (
     <>
@@ -674,7 +670,9 @@ export default function Actions(props) {
                 <ConfirmButton
                   style={{ width: '150px' }}
                   disabled={comment == null}
+                  loading={isLoading}
                   onClick={() => {
+                    setLoading(true);
                     httpService
                       .post(`${API_BASE_URL}/api/orders/update_order_state/`, {
                         order_num: data.order_num,
@@ -683,9 +681,13 @@ export default function Actions(props) {
                         state: 'Invoice'
                       })
                       .then(res => {
+                        setLoading(false);
                         if (res.status === 200) {
                           history.push('/sale/received');
                         }
+                      })
+                      .catch(ex => {
+                        setLoading(false);
                       });
                   }}
                 >
@@ -794,7 +796,9 @@ export default function Actions(props) {
                 <ConfirmButton
                   style={{ width: '150px' }}
                   // disabled={comment == null}
+                  loading={isLoading}
                   onClick={() => {
+                    setLoading(true);
                     httpService
                       .post(`${API_BASE_URL}/api/orders/update_order_state/`, {
                         order_num: data.order_num,
@@ -802,9 +806,13 @@ export default function Actions(props) {
                         state: 'Invoice'
                       })
                       .then(res => {
+                        setLoading(false);
                         if (res.status === 200) {
                           history.push('/sale/send');
                         }
+                      })
+                      .catch(ex => {
+                        setLoading(false);
                       });
                   }}
                 >

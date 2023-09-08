@@ -307,7 +307,7 @@ const CommentTable = props => {
       case 'subject':
         if (filterList[1][0]) {
           item['subject'] = filterList[1][0];
-          filterType = '__contains';
+          filterType = '__icontains';
         } else {
           delete item['subject'];
         }
@@ -315,7 +315,7 @@ const CommentTable = props => {
       case 'topic_detail.name':
         if (filterList[2][0]) {
           item['topic__name'] = filterList[2][0];
-          filterType = '__contains';
+          filterType = '__icontains';
         } else {
           delete item['topic__name'];
         }

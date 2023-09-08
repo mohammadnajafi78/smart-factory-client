@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Divider, Grid, Drawer, TextField, Button } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import React, { useState } from 'react';
+import { Box, TextField, Button } from '@mui/material';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
-import InputLabel from 'src/components/Mobile/InputLabel';
-import CancelImg from 'src/assets/img/cancel.svg';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import { ArrowRight, Plus } from 'react-feather';
+import InputLabel from 'src/components/Desktop/InputLabel';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
+import { ArrowRight } from 'react-feather';
 import { useHistory } from 'react-router-dom';
 import Upload from 'src/assets/img/icons/upload.svg';
 import Delete from 'src/assets/img/icons/delete.svg';
@@ -16,8 +13,8 @@ import Attach from 'src/assets/img/icons/attach.svg';
 export default function AcceptConfirm(props) {
   const [file, setFile] = useState();
   const [comment, setComment] = useState(null);
+  const [isLoading, setLoading] = useState(false);
   const history = useHistory();
-  console.log('order_num', props);
 
   return (
     <>
@@ -179,7 +176,9 @@ export default function AcceptConfirm(props) {
             {'لغو'}
           </ConfirmButton>
           <ConfirmButton
+            loading={isLoading}
             onClick={() => {
+              setLoading(true);
               const formData = new FormData();
               formData.append('order_num', props.location.state.order_num);
               formData.append('order_action', 'Approve');
@@ -193,9 +192,13 @@ export default function AcceptConfirm(props) {
                   formData
                 )
                 .then(res => {
+                  setLoading(false);
                   if (res.status === 200) {
                     history.push('/management/sale/received');
                   }
+                })
+                .catch(ex => {
+                  setLoading(false);
                 });
             }}
           >

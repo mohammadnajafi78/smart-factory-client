@@ -320,7 +320,7 @@ const GiftBoxReceiverTable = props => {
       case 'user_info.first_name':
         if (filterList[1][0]) {
           item['user__first_name'] = filterList[1][0];
-          filterType = '__contains';
+          filterType = '__icontains';
         } else {
           delete item['user__first_name'];
         }
@@ -328,7 +328,7 @@ const GiftBoxReceiverTable = props => {
       case 'user_info.last_name':
         if (filterList[2][0]) {
           item['user__last_name'] = filterList[2][0];
-          filterType = '__contains';
+          filterType = '__icontains';
         } else {
           delete item['user__last_name'];
         }
@@ -336,7 +336,7 @@ const GiftBoxReceiverTable = props => {
       case 'user_info.mobile':
         if (filterList[3][0]) {
           item['user__mobile'] = FaTOEn(filterList[3][0]);
-          filterType = '__contains';
+          filterType = '__icontains';
         } else {
           delete item['user__mobile'];
         }

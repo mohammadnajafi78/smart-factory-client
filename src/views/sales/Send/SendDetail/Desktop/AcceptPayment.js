@@ -1,28 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Divider,
-  Grid,
-  Drawer,
-  TextField,
-  Button,
-  Autocomplete
-} from '@mui/material';
+import { Box, Button } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
-import InputLabel from 'src/components/Mobile/InputLabel';
-import CancelImg from 'src/assets/img/cancel.svg';
+import InputLabel from 'src/components/Desktop/InputLabel';
 import CreditCard from 'src/assets/img/credit-card.svg';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { ArrowRight, ChevronLeft, Plus } from 'react-feather';
 import { useHistory } from 'react-router-dom';
-import Upload from 'src/assets/img/icons/upload.svg';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import AdapterJalali from '@date-io/date-fns-jalali';
+import { TrainRounded } from '@mui/icons-material';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -38,6 +24,7 @@ export default function AcceptPayment(props) {
   const [payment, setPayment] = useState(null);
   const history = useHistory();
   const classes = useStyles();
+  const [isLoading, setLoading] = useState(false);
 
   console.log('props data', props);
 
@@ -334,7 +321,9 @@ export default function AcceptPayment(props) {
                     //   payment.filter(f => f.payment_state.name === 'INITIAL')
                     //     .length > 0
                     // }
+                    loading={isLoading}
                     onClick={() => {
+                      setLoading(TrainRounded);
                       const formData = new FormData();
                       formData.append('order_num', props.data.order_num);
                       formData.append('order_action', 'Approve');
@@ -346,9 +335,13 @@ export default function AcceptPayment(props) {
                           formData
                         )
                         .then(res => {
+                          setLoading(false);
                           if (res.status === 200) {
                             history.push('/sale/send');
                           }
+                        })
+                        .catch(ex => {
+                          setLoading(false);
                         });
                     }}
                   >

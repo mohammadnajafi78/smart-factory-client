@@ -63,6 +63,9 @@ function LocationMobile() {
               history.push('/work');
               setSubmitting(false);
             }
+          })
+          .catch(ex => {
+            setSubmitting(false);
           });
         setSubmitting(false);
       }}

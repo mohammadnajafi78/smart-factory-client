@@ -41,6 +41,7 @@ export default function Delivery(props) {
   const { setOrder } = useSaleOrder();
   const history = useHistory();
   const order = props.order;
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     httpService
@@ -230,7 +231,9 @@ export default function Delivery(props) {
             {'بارگشت'}
           </ConfirmButton>
           <ConfirmButton
+            loading={isLoading}
             onClick={() => {
+              setLoading(true);
               httpService
                 .post(`${API_BASE_URL}/api/orders/delivery/update_delivery/`, {
                   start_date: startDate,
@@ -247,6 +250,7 @@ export default function Delivery(props) {
                         order_num: order.order_num
                       })
                       .then(res => {
+                        setLoading(false);
                         if (res.status === 200) {
                           setOrder(res.data);
                           history.push({
@@ -254,8 +258,16 @@ export default function Delivery(props) {
                             state: res.data
                           });
                         }
+                      })
+                      .catch(ex => {
+                        setLoading(false);
                       });
+                  } else {
+                    setLoading(false);
                   }
+                })
+                .catch(ex => {
+                  setLoading(false);
                 });
             }}
           >

@@ -1,8 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Box, IconButton, InputAdornment, TextField } from '@mui/material';
-import Logo from 'src/assets/img/LogoBTS.svg';
 import InputLabel from 'src/components/Mobile/InputLabel';
-import LinkButton from 'src/components/Mobile/Button/Link';
 import { useHistory } from 'react-router-dom';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
@@ -92,6 +90,9 @@ function EnterPasswordMobile(props) {
                 // history.push('/home');
                 history.push('/' + res.data.profile_state.toLowerCase());
               }
+            })
+            .catch(ex => {
+              setSubmitting(false);
             });
         }}
       >

@@ -38,6 +38,7 @@ export default function AcceptPayment(props) {
   const [payment, setPayment] = useState(null);
   const history = useHistory();
   const classes = useStyles();
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     httpService
@@ -211,17 +212,20 @@ export default function AcceptPayment(props) {
                               {item?.payment_state.label}
                             </InputLabel>
                           </Box>
-                          <Box
+                          <ConfirmButton
                             sx={{
                               display: 'inline-flex',
                               color: '#335D8A'
                             }}
+                            loading={isLoading}
                             onClick={() => {
+                              setLoading(true);
                               httpService
                                 .get(
                                   `${API_BASE_URL}/api/orders/payment/get_payment?payment_num=${item.payment_num}`
                                 )
                                 .then(res => {
+                                  setLoading(false);
                                   if (res.status === 200) {
                                     // history.push({
                                     //   pathname: '/sale/received/payment/add',
@@ -231,6 +235,9 @@ export default function AcceptPayment(props) {
                                     props.setAddPayment(true);
                                     props.setSelected(item);
                                   }
+                                })
+                                .catch(ex => {
+                                  setLoading(false);
                                 });
                             }}
                           >
@@ -247,7 +254,7 @@ export default function AcceptPayment(props) {
                             <ChevronLeft
                               style={{ marginTop: '2px', color: '#335D8A' }}
                             />
-                          </Box>
+                          </ConfirmButton>
                         </Box>
                       </Box>
                     );

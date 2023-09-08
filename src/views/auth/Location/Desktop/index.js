@@ -81,6 +81,9 @@ function LocationDesktop() {
                   history.push('/work');
                   setSubmitting(false);
                 }
+              })
+              .catch(ex => {
+                setSubmitting(false);
               });
             setSubmitting(false);
           }}

@@ -87,6 +87,9 @@ function LoginMobile() {
                             }
                           });
                         } else console.log('error');
+                      })
+                      .catch(ex => {
+                        setLoading(false);
                       });
                   } else if (res.status === 200) {
                     setLoading(false);
@@ -98,6 +101,9 @@ function LoginMobile() {
                       }
                     });
                   }
+                })
+                .catch(ex => {
+                  setLoading(false);
                 });
               // setSubmitting(false);
             }}

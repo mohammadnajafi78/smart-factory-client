@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import React from 'react';
-import { ChevronLeft, Star } from 'react-feather';
-import { NavLink, useHistory } from 'react-router-dom';
+import { ChevronLeft } from 'react-feather';
+import { useHistory } from 'react-router-dom';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import useSaleSearch from 'src/hooks/useSaleSearch';
 import MomentFa from 'src/utils/MomentFa';

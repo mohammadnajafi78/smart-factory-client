@@ -25,6 +25,7 @@ export default function AcceptConfirm(props) {
   const [file, setFile] = useState(null);
   const [comment, setComment] = useState(null);
   const history = useHistory();
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     console.log('file list', file);
@@ -212,6 +213,7 @@ export default function AcceptConfirm(props) {
             </ConfirmButton>
             <ConfirmButton
               style={{ width: '150px' }}
+              loading={isLoading}
               onClick={() => {
                 const formData = new FormData();
                 formData.append('order_num', props.data.order_num);
@@ -221,16 +223,20 @@ export default function AcceptConfirm(props) {
                 for (let i = 0; i < file.length; i++) {
                   formData.append('INVOICE' + i, file[i]);
                 }
-
+                setLoading(true);
                 httpService
                   .post(
                     `${API_BASE_URL}/api/orders/update_order_state/`,
                     formData
                   )
                   .then(res => {
+                    setLoading(false);
                     if (res.status === 200) {
                       history.push('/sale/received');
                     }
+                  })
+                  .catch(ex => {
+                    setLoading(false);
                   });
               }}
             >

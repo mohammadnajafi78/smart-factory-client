@@ -1,28 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Divider,
-  Grid,
-  Drawer,
-  TextField,
-  Button,
-  Autocomplete
-} from '@mui/material';
+import { Box } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
-import CancelImg from 'src/assets/img/cancel.svg';
-import CreditCard from 'src/assets/img/credit-card.svg';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import { ArrowRight, ChevronLeft, Plus } from 'react-feather';
+import { ArrowRight, ChevronLeft } from 'react-feather';
 import { useHistory } from 'react-router-dom';
-import Upload from 'src/assets/img/icons/upload.svg';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import AdapterJalali from '@date-io/date-fns-jalali';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -38,6 +22,7 @@ export default function AcceptPayment(props) {
   const [payment, setPayment] = useState(null);
   const history = useHistory();
   const classes = useStyles();
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     httpService
@@ -208,17 +193,20 @@ export default function AcceptPayment(props) {
                               {item?.payment_state.label}
                             </InputLabel>
                           </Box>
-                          <Box
+                          <ConfirmButton
                             sx={{
                               display: 'inline-flex',
                               color: '#335D8A'
                             }}
+                            loading={isLoading}
                             onClick={() => {
+                              setLoading(true);
                               httpService
                                 .get(
                                   `${API_BASE_URL}/api/orders/payment/get_payment?payment_num=${item.payment_num}`
                                 )
                                 .then(res => {
+                                  setLoading(false);
                                   if (res.status === 200) {
                                     history.push({
                                       pathname: '/sale/received/payment/add',
@@ -227,6 +215,9 @@ export default function AcceptPayment(props) {
                                     // props.setPayment(false);
                                     // props.setAddPayment(true);
                                   }
+                                })
+                                .catch(ex => {
+                                  setLoading(false);
                                 });
                             }}
                           >
@@ -242,7 +233,7 @@ export default function AcceptPayment(props) {
                             <ChevronLeft
                               style={{ marginTop: '2px', color: '#335D8A' }}
                             />
-                          </Box>
+                          </ConfirmButton>
                         </Box>
                       </Box>
                     );
@@ -278,7 +269,9 @@ export default function AcceptPayment(props) {
                     payment.filter(f => f.payment_state.name === 'INITIAL')
                       .length > 0
                   }
+                  loading={isLoading}
                   onClick={() => {
+                    setLoading(true);
                     const formData = new FormData();
                     formData.append(
                       'order_num',
@@ -291,9 +284,13 @@ export default function AcceptPayment(props) {
                         formData
                       )
                       .then(res => {
+                        setLoading(false);
                         if (res.status === 200) {
                           history.push('/sale/received');
                         }
+                      })
+                      .catch(ex => {
+                        setLoading(false);
                       });
                   }}
                 >

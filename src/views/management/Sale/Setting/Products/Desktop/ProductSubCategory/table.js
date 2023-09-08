@@ -433,7 +433,7 @@ const ProductSubCategoryTable = props => {
       case 'translate_detail.item_en':
         if (filterList[3][0]) {
           item['translate__item_en'] = filterList[3][0];
-          filterType = '__contains';
+          filterType = '__icontains';
         } else {
           delete item['translate__item_en'];
         }
@@ -441,7 +441,7 @@ const ProductSubCategoryTable = props => {
       case 'translate_detail.item_fa':
         if (filterList[4][0]) {
           item['translate__item_fa'] = FaTOEn(filterList[4][0]);
-          filterType = '__contains';
+          filterType = '__icontains';
         } else {
           delete item['translate__item_fa'];
         }

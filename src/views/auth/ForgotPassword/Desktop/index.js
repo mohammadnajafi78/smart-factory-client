@@ -2,16 +2,12 @@ import React, { useRef } from 'react';
 import { Box, TextField } from '@mui/material';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
-import InputLabel from 'src/components/Desktop/InputLabel';
 import { Formik } from 'formik';
-import ReCAPTCHA from 'react-google-recaptcha';
 import LoginFrame from 'src/components/Desktop/LoginFrame';
 import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
-import axios from 'axios';
 import useAuth from 'src/hooks/useAuth';
-import bcrypt from 'bcryptjs';
 
 function ForgotPasswordDesktop(props) {
   const recaptchaRef = useRef();
@@ -68,6 +64,9 @@ function ForgotPasswordDesktop(props) {
                   });
                   setSubmitting(false);
                 }
+              })
+              .catch(ex => {
+                setSubmitting(false);
               });
           }}
         >
@@ -140,7 +139,9 @@ function ForgotPasswordDesktop(props) {
                   width: '100%'
                 }}
               >
-                <ConfirmButton disabled={isSubmitting}>{'ثبت'}</ConfirmButton>
+                <ConfirmButton disabled={isSubmitting} loading={isSubmitting}>
+                  {'ثبت'}
+                </ConfirmButton>
               </Box>
             </form>
           )}

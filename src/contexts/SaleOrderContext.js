@@ -90,7 +90,6 @@ export const SaleOrderProvider = ({ children }) => {
   };
 
   const setOrder = order => {
-    console.log('order', order);
     dispatch({
       type: 'SET_ORDER',
       payload: {

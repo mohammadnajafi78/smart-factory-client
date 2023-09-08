@@ -1,20 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Divider, Grid, Drawer, TextField, Button } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Divider, TextField } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
-import InputLabel from 'src/components/Mobile/InputLabel';
-import CancelImg from 'src/assets/img/cancel.svg';
-import SaleCategory from 'src/assets/img/saleCategory.svg';
-import SaleSubCategory from 'src/assets/img/SaleSubCategory.svg';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import { ArrowRight, Plus } from 'react-feather';
+import InputLabel from 'src/components/Desktop/InputLabel';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
+import { ArrowRight } from 'react-feather';
 import { useHistory } from 'react-router-dom';
-import Upload from 'src/assets/img/icons/upload.svg';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import AdapterJalali from '@date-io/date-fns-jalali';
-import useSaleOrder from 'src/hooks/useSaleOrder';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -31,6 +23,7 @@ export default function CancelConfirm(props) {
   const [open, setOpen] = useState(false);
   const [comment, setComment] = useState(null);
   const history = useHistory();
+  const [isLoading, setLoading] = useState(false);
 
   return (
     <>
@@ -114,7 +107,9 @@ export default function CancelConfirm(props) {
             <ConfirmButton
               style={{ width: '150px' }}
               disabled={comment == null}
+              loading={isLoading}
               onClick={() => {
+                setLoading(true);
                 httpService
                   .post(
                     `${API_BASE_URL}/api/management/order/update_order_state/`,
@@ -126,9 +121,13 @@ export default function CancelConfirm(props) {
                     }
                   )
                   .then(res => {
+                    setLoading(false);
                     if (res.status === 200) {
                       history.push('/management/sale/received');
                     }
+                  })
+                  .catch(ex => {
+                    setLoading(false);
                   });
               }}
             >

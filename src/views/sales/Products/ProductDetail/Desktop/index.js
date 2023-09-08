@@ -52,6 +52,8 @@ export default function GetAwardDesktop(props) {
   const { order, setOrder, getOrder } = useSaleOrder();
   const [selected, setSelected] = useState(null);
   const [selectedList, setSelectedList] = useState([]);
+  const [isLoadingAdd, setLoadingAdd] = useState(false);
+  const [isLoadingRemove, setLoadingRemove] = useState(false);
 
   useEffect(() => {
     getOrder();
@@ -727,13 +729,16 @@ export default function GetAwardDesktop(props) {
                   border: '1px solid #FEEEEC',
                   fontSize: '12px'
                 }}
+                loading={isLoadingRemove}
                 onClick={() => {
+                  setLoadingRemove(true)
                   httpService
                     .post(`${API_BASE_URL}/api/orders/remove_product/`, {
                       order_num: order.order_num,
                       code: selected.code
                     })
                     .then(res => {
+                      setLoadingRemove(false)
                       if (res.status === 200) {
                         getOrder();
                         setOpen(false);
@@ -746,7 +751,9 @@ export default function GetAwardDesktop(props) {
               </ConfirmButton>
               <ConfirmButton
                 disabled={false}
+                loading={isLoadingAdd}
                 onClick={() => {
+                  setLoadingAdd(true)
                   if (order) {
                     httpService
                       .post(`${API_BASE_URL}/api/orders/add_product/`, {
@@ -760,6 +767,7 @@ export default function GetAwardDesktop(props) {
                         ]
                       })
                       .then(res => {
+                        setLoadingAdd(false)
                         if (res.status === 200) {
                           setOpen(false);
                           setOrder(res.data);
@@ -778,6 +786,7 @@ export default function GetAwardDesktop(props) {
                         ]
                       })
                       .then(res => {
+                        setLoadingAdd(false)
                         if (res.status === 201) {
                           setOpen(false);
                           setOrder(res.data);

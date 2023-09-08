@@ -1,14 +1,12 @@
 import React, { useRef, useState } from 'react';
 import { Box, IconButton, InputAdornment, TextField } from '@mui/material';
-import Logo from 'src/assets/img/LogoBTS.svg';
-import InputLabel from 'src/components/Mobile/InputLabel';
-import LinkButton from 'src/components/Mobile/Button/Link';
+import InputLabel from 'src/components/Desktop/InputLabel';
 import { useHistory } from 'react-router-dom';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import useAuth from 'src/hooks/useAuth';
 import { Formik } from 'formik';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
+import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import bcrypt from 'bcryptjs';
@@ -83,6 +81,9 @@ function EnterNewPasswordMobile(props) {
                 setSubmitting(false);
                 history.push('/login');
               }
+            })
+            .catch(ex => {
+              setSubmitting(false);
             });
         }}
       >

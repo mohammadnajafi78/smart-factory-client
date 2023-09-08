@@ -17,7 +17,7 @@ import InputLabel from 'src/components/Mobile/InputLabel';
 import CancelImg from 'src/assets/img/cancel.svg';
 import SaleCategory from 'src/assets/img/saleCategory.svg';
 import SaleSubCategory from 'src/assets/img/SaleSubCategory.svg';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { useHistory } from 'react-router-dom';
 import useSaleOrder from 'src/hooks/useSaleOrder';
 import { Edit } from 'react-feather';
@@ -40,6 +40,8 @@ export default function Products(props) {
   const [selected, setSelected] = useState(null);
   const [count, setCount] = useState(0);
   const [unitSelected, setUnitSelected] = useState('SINGULAR');
+  const [isLoadingAdd, setLoadingAdd] = useState(false);
+  const [isLoadingRemove, setLoadingRemove] = useState(false);
 
   function get_products() {
     httpService
@@ -528,13 +530,16 @@ export default function Products(props) {
                   border: '1px solid #FEEEEC',
                   fontSize: '12px'
                 }}
+                loading={isLoadingRemove}
                 onClick={() => {
+                  setLoadingRemove(true)
                   httpService
                     .post(`${API_BASE_URL}/api/orders/remove_product/`, {
                       order_num: order.order_num,
                       code: selected.product_detail.code
                     })
                     .then(res => {
+                      setLoadingRemove(false)
                       if (res.status === 200) {
                         getOrder();
                         setOpen(false);
@@ -550,8 +555,11 @@ export default function Products(props) {
               </ConfirmButton>
               <ConfirmButton
                 disabled={false}
+                loading={isLoadingAdd}
                 onClick={() => {
                   if (order) {
+                    console.log("isLoadingAdd", isLoadingAdd)
+                    setLoadingAdd(true)
                     httpService
                       .post(`${API_BASE_URL}/api/orders/add_product/`, {
                         order_num: order.order_num,
@@ -564,6 +572,7 @@ export default function Products(props) {
                         ]
                       })
                       .then(res => {
+                        setLoadingAdd(false)
                         if (res.status === 200) {
                           get_products();
                           setOpen(false);

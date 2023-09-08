@@ -43,6 +43,7 @@ export default function Location(props) {
   const [cityId, setCityId] = useState();
   const history = useHistory();
   const { order, setOrder } = useSaleOrder();
+  const [isLoading, setLoading] = useState(false);
 
   function getData() {
     httpService
@@ -159,7 +160,9 @@ export default function Location(props) {
             {'بارگشت'}
           </ConfirmButton>
           <ConfirmButton
+            loading={isLoading}
             onClick={() => {
+              setLoading(true);
               httpService
                 .post(
                   `${API_BASE_URL}/api/orders/delivery/add_delivery_location/`,
@@ -169,10 +172,14 @@ export default function Location(props) {
                   }
                 )
                 .then(res => {
+                  setLoading(false);
                   if (res.status === 200) {
                     setOrder(res.data);
                     history.push('/sale/products/order/3');
                   }
+                })
+                .catch(ex => {
+                  setLoading(false);
                 });
             }}
           >
@@ -412,6 +419,7 @@ export default function Location(props) {
                       disabled={false}
                       variant="outlined"
                       type="submit"
+                      loading={isSubmitting}
                     >
                       {'لغو'}
                     </ConfirmButton>

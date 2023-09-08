@@ -506,7 +506,7 @@ const AllUsersTable = props => {
       case 'user.first_name':
         if (filterList[1][0]) {
           item['first_name'] = filterList[1][0];
-          filterType = '__contains';
+          filterType = '__icontains';
         } else {
           delete item['first_name'];
         }
@@ -514,7 +514,7 @@ const AllUsersTable = props => {
       case 'user.last_name':
         if (filterList[2][0]) {
           item['last_name'] = filterList[2][0];
-          filterType = '__contains';
+          filterType = '__icontains';
         } else {
           delete item['last_name'];
         }
@@ -522,7 +522,7 @@ const AllUsersTable = props => {
       case 'user.mobile':
         if (filterList[3][0]) {
           item['mobile'] = FaTOEn(filterList[3][0]);
-          filterType = '__contains';
+          filterType = '__icontains';
         } else {
           delete item['mobile'];
         }

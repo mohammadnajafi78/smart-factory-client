@@ -1,47 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes, { string } from 'prop-types';
 
 import {
   Box,
-  Card,
-  Typography,
-  Link,
   TextField,
   FormControl,
   InputLabel,
   Autocomplete,
-  colors,
-  ToggleButtonGroup,
-  ToggleButton,
-  Tab
+  TableRow,
+  TableCell,
+  TableFooter
 } from '@mui/material';
 
-import { Link as RouterLink, useHistory } from 'react-router-dom';
-import SearchIcon from '@mui/icons-material/Search';
-import DownloadIcon from '@mui/icons-material/FileUpload';
-import ViewColumnIcon from '@mui/icons-material/ViewColumn';
-import FilterIcon from '@mui/icons-material/FilterAlt';
+import { useHistory } from 'react-router-dom';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import { consoleSandbox } from '@sentry/utils';
-import FaTOEn from 'src/utils/FaTOEn';
 import MomentFa from 'src/utils/MomentFa';
-// import Datepicker from 'src/components/Desktop/Datepicker';
 import AdapterJalali from '@date-io/date-fns-jalali';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import moment from 'jalali-moment';
-import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
-import { Plus } from 'react-feather';
-import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import Table from 'src/components/Desktop/Table';
-import { ArrowBack, ArrowRight } from '@mui/icons-material';
-import { indexOf } from 'lodash';
+import { number } from 'prop-types';
+import NumberFormat from 'src/components/Desktop/NumberFormat';
+import { NumericFormat } from 'react-number-format';
 
 const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
 let item = {};
-// let itemSort = {};
 const ReceiveTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
@@ -56,6 +41,7 @@ const ReceiveTable = props => {
   const [state, setState] = useState(null);
   const [statusList, setStatusList] = useState([]);
   const [statusId, setStatusId] = useState(null);
+  const [total, setTotal] = useState(0);
 
   const history = useHistory();
 
@@ -85,9 +71,42 @@ const ReceiveTable = props => {
     setColumns([
       {
         name: 'order_num',
-        label: 'شناسه',
+        label: 'شماره سفارش',
         options: {
-          filter: false
+          filter: true,
+          filterType: 'custom',
+          filterOptions: {
+            display: (filterList, onChange, index, column) => {
+              return (
+                <>
+                  <FormControl>
+                    <InputLabel sx={{ transform: 'none', position: 'initial' }}>
+                      شماره سفارش
+                    </InputLabel>
+                    <TextField
+                      id="order_num"
+                      aria-describedby="my-helper-text"
+                      fullWidth
+                      placeholder="شماره سفارش"
+                      value={filterList[index]}
+                      onKeyDown={event => {
+                        if (event.key === 'Enter') {
+                          onChange(filterList[index], index, column);
+                        }
+                      }}
+                      onChange={event => {
+                        if (event.target.value) {
+                          filterList[index][0] = event.target.value;
+                        } else {
+                          filterList[index] = [];
+                        }
+                      }}
+                    />
+                  </FormControl>
+                </>
+              );
+            }
+          }
         }
       },
       {
@@ -109,13 +128,16 @@ const ReceiveTable = props => {
                     fullWidth
                     placeholder="نام"
                     value={filterList[index]}
+                    onKeyDown={event => {
+                      if (event.key === 'Enter') {
+                        onChange(filterList[index], index, column);
+                      }
+                    }}
                     onChange={event => {
                       if (event.target.value) {
                         filterList[index][0] = event.target.value;
-                        onChange(filterList[index], index, column);
                       } else {
                         filterList[index] = [];
-                        onChange(filterList[index], index, column);
                       }
                     }}
                   />
@@ -144,13 +166,16 @@ const ReceiveTable = props => {
                     fullWidth
                     placeholder="نام خانوادگی"
                     value={filterList[index]}
+                    onKeyDown={event => {
+                      if (event.key === 'Enter') {
+                        onChange(filterList[index], index, column);
+                      }
+                    }}
                     onChange={event => {
                       if (event.target.value) {
                         filterList[index][0] = event.target.value;
-                        onChange(filterList[index], index, column);
                       } else {
                         filterList[index] = [];
-                        onChange(filterList[index], index, column);
                       }
                     }}
                   />
@@ -327,7 +352,7 @@ const ReceiveTable = props => {
         }
       },
       {
-        name: 'current_state.label',
+        name: 'current_state',
         label: 'وضعیت',
         options: {
           customBodyRender: value => {
@@ -341,13 +366,18 @@ const ReceiveTable = props => {
                       justifyContent: 'center',
                       alignItems: 'center',
                       padding: '3px 6px !important',
-                      background: '#CCEEF0',
+                      background: JSON.parse(value.data).back,
                       borderRadius: '4px',
-                      color: '#00AAB5'
+                      color: JSON.parse(value.data).text
                     }}
                   >
-                    <InputLabel style={{ color: '#00AAB5', paddingLeft: 0 }}>
-                      {value}
+                    <InputLabel
+                      style={{
+                        color: JSON.parse(value.data).text,
+                        paddingLeft: 0
+                      }}
+                    >
+                      {value.label}
                     </InputLabel>
                   </Box>
                 }
@@ -370,7 +400,6 @@ const ReceiveTable = props => {
                     renderInput={params => (
                       <TextField {...params} placeholder="وضعیت" />
                     )}
-                    // getOptionLabel={option => option.label}
                     disableClearable
                     value={filterList[index]}
                     onChange={(event, values) => {
@@ -420,48 +449,32 @@ const ReceiveTable = props => {
   }
 
   function onFilterChange(column, filterList, type) {
-    // let filterNames = [
-    //   'id',
-    //   'user_info.first_name',
-    //   'user_info.last_name',
-    //   '',
-    //   'create_date__gte',
-    //   'create_date__lte',
-    //   'current_state.label'
-    // ];
-    // let filterType = [
-    //   '',
-    //   '__contains',
-    //   '__contains',
-    //   '',
-    //   '',
-    //   '',
-    //   '__icontains'
-    // ];
-    console.log('filterlist', filterList);
-
     switch (column) {
+      case 'order_num':
+        if (filterList[0][0]) {
+          item['order_num__icontains'] = filterList[0][0];
+        } else {
+          delete item['order_num__icontains'];
+        }
+        break;
       case 'user_info.first_name':
         if (filterList[1][0]) {
-          item['user__first_name__contains'] = filterList[1][0];
-          // filterType = '__contains';
+          item['user__first_name__icontains'] = filterList[1][0];
         } else {
-          delete item['user__first_name__contains'];
+          delete item['user__first_name__icontains'];
         }
         break;
       case 'user_info.last_name':
         if (filterList[2][0]) {
-          item['user__last_name__contains'] = filterList[2][0];
-          // filterType = '__contains';
+          item['user__last_name__icontains'] = filterList[2][0];
         } else {
-          delete item['user__last_name__contains'];
+          delete item['user__last_name__icontains'];
         }
         break;
 
       case 'create_date':
         if (filterList[4][0]) {
           item['create_date__gte'] = startDate;
-          // filterType = '__gte';
         } else {
           delete item['create_date__gte'];
         }
@@ -469,19 +482,17 @@ const ReceiveTable = props => {
       case 'end_date':
         if (filterList[5][0]) {
           item['create_date__lte'] = endDate;
-          // filterType = '__lte';
         } else {
           delete item['create_date__lte'];
         }
         break;
-      case 'current_state.label':
+      case 'current_state':
         if (filterList[6][0]) {
-          item['order_state__icontains'] = statusList.filter(
+          item['order_state'] = statusList.filter(
             f => f.label === filterList[6][0]
           )[0].name;
-          // filterType = '';
         } else {
-          delete item['current_state.label'];
+          delete item['order_state'];
           setState(null);
         }
         break;
@@ -491,19 +502,10 @@ const ReceiveTable = props => {
 
     let temp = item;
     let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
-    console.log('filterItems', filterItems);
-    // console.log('filterType', filterType);
-
     let str = '';
     if (filterItems?.length > 0) {
       filterItems.map((itm, index) => {
-        str =
-          str +
-          itm[0] +
-          // filterType[filterNames.indexOf(itm[0])] +
-          '=' +
-          decodeURIComponent(itm[1]) +
-          '&';
+        str = str + itm[0] + '=' + decodeURIComponent(itm[1]) + '&';
       });
     }
     str.replace('&&', '&');
@@ -558,29 +560,36 @@ const ReceiveTable = props => {
   }
 
   function onRowClick(rowData, rowState) {
-    history.push({
-      pathname: '/management/sale/received/detail',
-      state: {
-        data: data.filter(f => f.order_num === rowData[0])
-      }
-    });
+    httpService
+      .get(
+        `${API_BASE_URL}/api/management/order/get_order/?order_num=${rowData[0]}`
+      )
+      .then(res => {
+        if (res.status === 200) {
+          history.push({
+            pathname: '/management/sale/received/detail',
+            state: {
+              data: res.data
+            }
+          });
+        }
+      });
   }
 
   function onRowsDelete(rowsDeleted, newData) {
-    const matchNums = [];
-    rowsDeleted.data.map((item, index) => {
-      matchNums.push(data[item.index].match_num);
-    });
-
-    httpService
-      .post(`${API_BASE_URL}/api/management/club/matches/match_delete/`, {
-        match_nums: matchNums
-      })
-      .then(res => {
-        if (res.status === 200) {
-          getData(page, rowsPerPage, '');
-        }
-      });
+    // const matchNums = [];
+    // rowsDeleted.data.map((item, index) => {
+    //   matchNums.push(data[item.index].match_num);
+    // });
+    // httpService
+    //   .post(`${API_BASE_URL}/api/management/club/matches/match_delete/`, {
+    //     match_nums: matchNums
+    //   })
+    //   .then(res => {
+    //     if (res.status === 200) {
+    //       getData(page, rowsPerPage, '');
+    //     }
+    //   });
   }
 
   function onRowSelectionChange(rowsSelectedData, allRows, rowsSelected) {
@@ -589,9 +598,21 @@ const ReceiveTable = props => {
     // console.log('rowsSelected', rowsSelected);
   }
 
+  function handleTableChange(action, tableState) {
+    const totalAmount = calculateTotalSum(tableState.displayData);
+    setTotal(totalAmount);
+  }
+
+  const calculateTotalSum = data => {
+    const totalAmount = data.map(a => a.data[3]).reduce((a, b) => (a += b), 0);
+    return totalAmount;
+  };
+
   return (
     <Table
       title={'سفارشات دریافتی'}
+      sumColumn={3}
+      // options={options}
       data={data}
       columns={columns}
       rowsPerPage={rowsPerPage}

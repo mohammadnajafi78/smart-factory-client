@@ -5,11 +5,11 @@ import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import { Formik } from 'formik';
-import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 import axios from 'axios';
 import * as Yup from 'yup';
+import httpService from 'src/utils/httpService';
 
 // import axios from 'axios';
 // import axiosInstance from 'src/utils/axios';
@@ -51,7 +51,7 @@ function IdentityInfoDesktop(props) {
           })}
           onSubmit={(values, { setErrors, setSubmitting, setFieldError }) => {
             setSubmitting(true);
-            axios
+            httpService
               .post(`${API_BASE_URL}/api/users/update_user/`, {
                 first_name: values.name,
                 last_name: values.family,
@@ -191,7 +191,9 @@ function IdentityInfoDesktop(props) {
                 >
                   {'قبلی'}
                 </ConfirmButton> */}
-                <ConfirmButton disabled={isSubmitting} loading={isSubmitting}>
+                <ConfirmButton 
+                disabled={isSubmitting} 
+                loading={isSubmitting}>
                   {'ثبت'}
                 </ConfirmButton>
               </Box>

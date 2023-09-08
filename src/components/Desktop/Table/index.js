@@ -1,24 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes, { string } from 'prop-types';
+import PropTypes from 'prop-types';
 
 import {
-  Box,
   Card,
   Typography,
-  Link,
-  TextField,
-  FormControl,
-  InputLabel,
-  Autocomplete,
   colors,
-  ToggleButtonGroup,
-  ToggleButton,
   IconButton,
   TableRow,
-  TableCell
+  TableCell,
+  TableFooter
 } from '@mui/material';
 import MUIDataTable from 'mui-datatables';
-import TableFooter from '@mui/material/TableFooter';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { ThemeProvider } from '@mui/material/styles';
@@ -27,12 +19,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import DownloadIcon from '@mui/icons-material/FileUpload';
 import ViewColumnIcon from '@mui/icons-material/ViewColumn';
 import FilterIcon from '@mui/icons-material/FilterAlt';
-import httpService from 'src/utils/httpService';
-import { API_BASE_URL } from 'src/utils/urls';
-import { consoleSandbox } from '@sentry/utils';
-import { Co2Sharp } from '@mui/icons-material';
 import { Delete } from '@mui/icons-material';
 import PropagateLoader from 'react-spinners/PropagateLoader';
+import { NumericFormat } from 'react-number-format';
 
 const muiCache = createCache({
   key: 'mui-datatables',
@@ -111,7 +100,11 @@ let theme = createTheme({
     MuiTableCell: {
       styleOverrides: {
         root: {
-          textAlign: 'right'
+          textAlign: 'right',
+          fontFamily: 'IRANSans',
+          fontSize: 14,
+          fontWeight: 400,
+          color: '#263238'
         },
         head: {
           backgroundColor: 'purple'
@@ -427,7 +420,52 @@ const Table = props => {
     props.getData(page, rowsPerPage, search);
   }
 
+  function summation(opts, sumColumn, columns) {
+    let sumArray = opts.data.map(a =>
+      parseInt(a.data[sumColumn].replaceAll(',', ''))
+    );
+    let sumPrice = sumArray.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0
+    );
+    return (
+      <TableFooter>
+        <TableRow>
+          {columns.map((item, index) => {
+            if (index === sumColumn - 1) {
+              return <TableCell>مجموع: </TableCell>;
+            } else if (index === sumColumn) {
+              return (
+                <TableCell
+                  style={{
+                    display: 'inline-flex',
+                    width: '200px'
+                  }}
+                >
+                  <NumericFormat
+                    value={sumPrice}
+                    thousandSeparator={true}
+                    displayType={'text'}
+                  />
+                </TableCell>
+              );
+            } else {
+              return <TableCell></TableCell>;
+            }
+          })}
+        </TableRow>
+      </TableFooter>
+    );
+  }
+
+  console.log('props', props);
+
   const tableOptions = {
+    customTableBodyFooterRender:
+      props.sumColumn > 0
+        ? (opts, sumColumn, columns) =>
+            summation(opts, props.sumColumn, props.columns)
+        : null,
     filter: true,
     selectableRows:
       props.selectableRows !== undefined ? props.selectableRows : true,
@@ -439,7 +477,7 @@ const Table = props => {
     count: props.count,
     serverSide: true,
     enableNestedDataAccess: '.',
-    rowsPerPageOptions: [25, 50, 75],
+    rowsPerPageOptions: [25, 50, 75, 100, 200],
     print: false,
     search: props.search !== undefined ? props.search : true,
     responsive: 'vertical',

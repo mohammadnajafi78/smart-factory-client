@@ -405,6 +405,7 @@ function LoginOTPDesktop(props) {
                 {reSend && (
                   <ConfirmButton
                     disabled={isSubmitting}
+                    loading={isSubmitting}
                     onClick={() => {
                       handleSubmit();
                     }}

@@ -99,7 +99,7 @@ export default function ReceivedItem({ data }) {
                 justifyContent: 'center',
                 alignItems: 'center',
                 padding: '3px 4px !important',
-                background: '#CCEEF0',
+                background: JSON.parse(data?.current_state?.data).back,
                 borderRadius: '4px',
                 color: '#00AAB5',
                 width: '100px',
@@ -108,7 +108,7 @@ export default function ReceivedItem({ data }) {
             >
               <InputLabel
                 style={{
-                  color: '#00AAB5',
+                  color: JSON.parse(data?.current_state?.data).text,
                   fontSize: '12px',
                   textAlign: 'center',
                   padding: 0
