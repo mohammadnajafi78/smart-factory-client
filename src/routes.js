@@ -13,6 +13,8 @@ import SaleDashboardLayout from './layouts/Sales/SalesDashboardLayout';
 import SalesDashboardLayoutBack from './layouts/Sales/SalesDashboardLayoutBack';
 import SalesDashboardLayoutForm from './layouts/Sales/SalesDashboardLayoutForm';
 import ProjectDashboardLayout from './layouts/Projects/ProjectsDashboardLayout';
+import ProjectDashboardLayoutForm from './layouts/Projects/ProjectsDashboardLayoutForm';
+import ProjectDashboardLayoutBack from './layouts/Projects/ProjectsDashboardLayoutBack';
 
 export const renderRoutes = (routes = []) => (
   <Suspense fallback={<LoadingScreen />}>
@@ -429,17 +431,203 @@ const routes = [
     ]
   },
   {
-    path: '/projects',
+    path: '/project',
     guard: AuthGuard,
-    layout: ProjectDashboardLayout,
+    // layout: ProjectDashboardLayout,
     routes: [
       {
         exact: true,
-        path: '/projects/project',
+        path: '/project/project',
+        layout: ProjectDashboardLayout,
         component: lazy(() => import('src/views/projects/Project/index'))
       },
       {
-        component: lazy(() => import('src/views/projects/Project/index'))
+        exact: true,
+        path: '/project/project/new/1',
+        layout: ProjectDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/projects/Project/NewProject/ProjectInfo')
+        )
+      },
+      {
+        exact: true,
+        path: '/project/project/new/2',
+        layout: ProjectDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/projects/Project/NewProject/BuildingInfo')
+        )
+      },
+      {
+        exact: true,
+        path: '/project/project/new/3',
+        layout: ProjectDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/projects/Project/NewProject/PhotoInfo')
+        )
+      },
+      {
+        exact: true,
+        path: '/project/request',
+        layout: ProjectDashboardLayout,
+        component: lazy(() => import('src/views/projects/MyRequest/index'))
+      },
+      {
+        exact: true,
+        path: '/project/request/detail',
+        layout: ProjectDashboardLayoutBack,
+        component: lazy(() =>
+          import('src/views/projects/MyRequest/RequestDetail')
+        )
+      },
+      {
+        exact: true,
+        path: '/project/request/new',
+        layout: ProjectDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/projects/MyRequest/NewRequest/RegisterNewRequest')
+        )
+      },
+      {
+        exact: true,
+        path: '/project/request/new/design/reqInfo',
+        layout: ProjectDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/projects/MyRequest/NewRequest/Design/RequestInfo')
+        )
+      },
+      {
+        exact: true,
+        path: '/project/request/new/design/techInfo',
+        layout: ProjectDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/projects/MyRequest/NewRequest/Design/TechnicalInfo')
+        )
+      },
+      {
+        exact: true,
+        path: '/project/request/new/design/mapInfo',
+        layout: ProjectDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/projects/MyRequest/NewRequest/Design/MapInfo')
+        )
+      },
+      {
+        exact: true,
+        path: '/project/request/new/design/designerInfo',
+        layout: ProjectDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/projects/MyRequest/NewRequest/Design/DesignerInfo')
+        )
+      },
+      {
+        exact: true,
+        path: '/project/request/new/design/confirmInfo',
+        layout: ProjectDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/projects/MyRequest/NewRequest/Design/ConfirmInfo')
+        )
+      },
+      {
+        exact: true,
+        path: '/project/request/new/bom/reqInfo',
+        layout: ProjectDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/projects/MyRequest/NewRequest/Bom/RequestInfo')
+        )
+      },
+      {
+        exact: true,
+        path: '/project/request/new/bom/mapInfo',
+        layout: ProjectDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/projects/MyRequest/NewRequest/Bom/MapInfo')
+        )
+      },
+      {
+        exact: true,
+        path: '/project/request/new/bom/confirmInfo',
+        layout: ProjectDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/projects/MyRequest/NewRequest/Bom/ConfirmInfo')
+        )
+      },
+      {
+        exact: true,
+        path: '/project/request/new/supervision/supervisorInfo',
+        layout: ProjectDashboardLayoutForm,
+        component: lazy(() =>
+          import(
+            'src/views/projects/MyRequest/NewRequest/Supervision/SupervisorInfo'
+          )
+        )
+      },
+      {
+        exact: true,
+        path: '/project/request/new/supervision/instructionInfo',
+        layout: ProjectDashboardLayoutForm,
+        component: lazy(() =>
+          import(
+            'src/views/projects/MyRequest/NewRequest/Supervision/InstructionInfo'
+          )
+        )
+      },
+      {
+        exact: true,
+        path: '/project/request/new/supervision/testInfo',
+        layout: ProjectDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/projects/MyRequest/NewRequest/Supervision/TestInfo')
+        )
+      },
+      {
+        exact: true,
+        path: '/project/request/new/warranty/reqInfo',
+        layout: ProjectDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/projects/MyRequest/NewRequest/Warranty/RequestInfo')
+        )
+      },
+      {
+        exact: true,
+        path: '/project/received',
+        layout: ProjectDashboardLayout,
+        component: lazy(() => import('src/views/projects/Received/index'))
+      },
+      {
+        exact: true,
+        path: '/project/received/detail',
+        layout: ProjectDashboardLayoutBack,
+        component: lazy(() =>
+          import('src/views/projects/Received/ReceivedDetail')
+        )
+      },
+      {
+        exact: true,
+        path: '/project/received/new',
+        layout: ProjectDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/projects/Received/NewRequest/RegisterNewRequest')
+        )
+      },
+      // {
+      //   exact: true,
+      //   path: '/project/project/new/4',
+      //   layout: ProjectDashboardLayoutForm,
+      //   component: lazy(() =>
+      //     import('src/views/projects/Project/NewProject/PhotoInfo')
+      //   )
+      // },
+      {
+        exact: true,
+        path: '/project/project/detail',
+        layout: ProjectDashboardLayoutBack,
+        component: lazy(() =>
+          import('src/views/projects/Project/ProjectDetail/index')
+        )
+      },
+      {
+        component: lazy(() => import('src/views/projects/Project/index')),
+        layout: ProjectDashboardLayout
       }
     ]
   },

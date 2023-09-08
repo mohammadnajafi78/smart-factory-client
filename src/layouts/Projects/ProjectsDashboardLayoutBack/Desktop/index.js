@@ -1,11 +1,11 @@
 import React from 'react';
-import SaleDashboardLayout from '../../ProjectsDashboardLayout';
+import ProjectDashboardLayout from '../../ProjectsDashboardLayout';
 
-export default function SalesDashboardLayoutBackDesktop(props) {
+export default function ProjectDashboardLayoutBackDesktop(props) {
   console.log('desktopppp');
   return (
     <div>
-      <SaleDashboardLayout>{props.children}</SaleDashboardLayout>
+      <ProjectDashboardLayout>{props.children}</ProjectDashboardLayout>
     </div>
   );
 }

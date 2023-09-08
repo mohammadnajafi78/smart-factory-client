@@ -50,12 +50,11 @@ const useStyles = makeStyles(theme => ({
 const TopBar = ({ className, onMobileNavOpen, location, ...rest }) => {
   const classes = useStyles();
   const history = useHistory();
-  const [path, setPath] = useState('products');
+  const [path, setPath] = useState('project');
   const list = [
-    { key: 'products', path: '/sale/products', name: 'همه محصولات' },
-    { key: 'received', path: '/sale/received', name: 'لیست دریافتی ها' },
-    { key: 'send', path: '/sale/send', name: 'لیست ارسالی ها' },
-    { key: 'tripartite', path: '/sale/tripartite', name: 'سه جانبه' }
+    { key: 'project', path: '/project/project', name: 'لیست پروژه ها' },
+    { key: 'received', path: '/project/received', name: 'لیست دریافتی ها' },
+    { key: 'request', path: '/project/request', name: 'لیست درخواست ها' }
   ];
   useEffect(() => {
     setPath(location.split('/')[2]);

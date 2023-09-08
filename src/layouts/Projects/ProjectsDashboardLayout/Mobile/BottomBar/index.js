@@ -3,14 +3,12 @@ import PropTypes from 'prop-types';
 import { AppBar, Toolbar, SvgIcon, Box } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { THEMES } from 'src/constants';
-import SendSale from 'src/assets/img/sendSales.svg';
-import SendSaleSelected from 'src/assets/img/sendSaleSelected.svg';
-import Products from 'src/assets/img/products.svg';
-import ProductsSelected from 'src/assets/img/productSelected.svg';
-import ReceivedSale from 'src/assets/img/receivedSale.svg';
-import ReceivedSaleSelected from 'src/assets/img/receivedSaleSelected.svg';
-import Tripartite from 'src/assets/img/tripartiteSale.svg';
-import TripartiteSelected from 'src/assets/img/tripartiteSelected.svg';
+import ProjectRequest from 'src/assets/img/projectRequest.png';
+import ProjectRequestSelected from 'src/assets/img/projectRequest.png';
+import Project2 from 'src/assets/img/project2.png';
+import Project2Selected from 'src/assets/img/project2.png';
+import ProjectReceived from 'src/assets/img/projectReceived.png';
+import ProjectReceivedSelected from 'src/assets/img/projectReceived.png';
 import Vector from 'src/assets/img/icons/VectorMobile.svg';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -42,37 +40,20 @@ const useStyles = makeStyles(theme => ({
 const BottomBar = ({ className, onMobileNavOpen, ...rest }) => {
   const classes = useStyles();
   let data = [
-    { name: 'send', title: 'ارسالی', path: '/sale/send' },
-    { name: 'products', title: 'محصولات', path: '/sale/products' },
-    { name: 'received', title: 'دریافتی', path: '/sale/received' },
-    { name: 'tripartite', title: 'سه جانبه', path: '/sale/tripartite' }
+    { name: 'request', title: 'درخواست', path: '/project/request' },
+    { name: 'project', title: 'پروژه', path: '/project/project' },
+    { name: 'received', title: 'دریافتی', path: '/project/received' }
   ];
   const history = useHistory();
   let path = history.location.pathname.split('/')[2];
   const [selected, setSelected] = useState(
-    ['send', 'products', 'received', 'tripartite'].includes(path)
-      ? path
-      : // : path === 'receivedItem'
-        // ? 'received'
-        // : path === 'newComment'
-        // ? 'comments'
-        // : path === 'newCompetition' || path === 'competitionDetails'
-        // ? 'competition'
-        'products'
+    ['request', 'project', 'received'].includes(path) ? path : 'project'
   );
 
   useEffect(() => {
     path = history.location.pathname.split('/')[2];
     setSelected(
-      ['send', 'products', 'received', 'tripartite'].includes(path)
-        ? path
-        : // : path === 'receivedItem'
-          // ? 'received'
-          // : path === 'newComment'
-          // ? 'comments'
-          // : path === 'newCompetition' || path === 'competitionDetails'
-          // ? 'competition'
-          'products'
+      ['request', 'project', 'received'].includes(path) ? path : 'project'
     );
   }, [rest]);
 
@@ -126,7 +107,7 @@ const BottomBar = ({ className, onMobileNavOpen, ...rest }) => {
                           alignItems: 'center'
                         }}
                       >
-                        <img src={SendSale} />
+                        <img src={ProjectRequest} />
                       </Box>
                     ) : (
                       <Box
@@ -142,7 +123,7 @@ const BottomBar = ({ className, onMobileNavOpen, ...rest }) => {
                         }}
                       >
                         <img
-                          src={SendSaleSelected}
+                          src={ProjectRequestSelected}
                           width="31px"
                           height={'22px'}
                         />
@@ -159,7 +140,7 @@ const BottomBar = ({ className, onMobileNavOpen, ...rest }) => {
                           alignItems: 'center'
                         }}
                       >
-                        <img src={Products} width="31px" height={'32px'} />
+                        <img src={Project2} width="31px" height={'32px'} />
                       </Box>
                     ) : (
                       <Box
@@ -175,7 +156,7 @@ const BottomBar = ({ className, onMobileNavOpen, ...rest }) => {
                         }}
                       >
                         <img
-                          src={ProductsSelected}
+                          src={Project2Selected}
                           width="31px"
                           height={'22px'}
                         />
@@ -192,7 +173,7 @@ const BottomBar = ({ className, onMobileNavOpen, ...rest }) => {
                           alignItems: 'center'
                         }}
                       >
-                        <img src={ReceivedSale} />
+                        <img src={ProjectReceived} />
                       </Box>
                     ) : (
                       <Box
@@ -208,40 +189,7 @@ const BottomBar = ({ className, onMobileNavOpen, ...rest }) => {
                         }}
                       >
                         <img
-                          src={ReceivedSaleSelected}
-                          width="31px"
-                          height={'22px'}
-                        />
-                      </Box>
-                    ))}
-                  {index === 3 &&
-                    (selected !== item.name ? (
-                      <Box
-                        sx={{
-                          width: '55.69px',
-                          height: '43.79px',
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center'
-                        }}
-                      >
-                        <img src={Tripartite} />
-                      </Box>
-                    ) : (
-                      <Box
-                        sx={{
-                          background: `url(${Vector})`,
-                          width: '55.69px',
-                          height: '43.79px',
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          backgroundPosition: 'center',
-                          backgroundRepeat: 'no-repeat'
-                        }}
-                      >
-                        <img
-                          src={TripartiteSelected}
+                          src={ProjectReceivedSelected}
                           width="31px"
                           height={'22px'}
                         />

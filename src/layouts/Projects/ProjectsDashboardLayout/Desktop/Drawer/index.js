@@ -22,36 +22,20 @@ import { useHistory } from 'react-router-dom';
 export default function DrawerComp(props) {
   const history = useHistory();
   let data = [
-    { name: 'send', title: 'ارسالی', path: '/sale/send' },
-    { name: 'products', title: 'محصولات', path: '/sale/products' },
-    { name: 'received', title: 'دریافتی', path: '/sale/received' },
-    { name: 'tripartite', title: 'سه جانبه', path: '/sale/tripartite' }
+    { name: 'request', title: 'درخواست', path: '/project/request' },
+    { name: 'project', title: 'پروژه', path: '/project/project' },
+    { name: 'received', title: 'دریافتی', path: '/project/received' }
   ];
+
   let path = history.location.pathname.split('/')[2];
   const [selected, setSelected] = useState(
-    ['send', 'products', 'received', 'tripartite'].includes(path)
-      ? path
-      : // : path === 'receivedItem'
-        // ? 'received'
-        // : path === 'newComment'
-        // ? 'comments'
-        // : path === 'newCompetition' || path === 'competitionDetails'
-        // ? 'competition'
-        'products'
+    ['request', 'project', 'received'].includes(path) ? path : 'project'
   );
 
   useEffect(() => {
     path = history.location.pathname.split('/')[2];
     setSelected(
-      ['send', 'products', 'received', 'tripartite'].includes(path)
-        ? path
-        : // : path === 'receivedItem'
-          // ? 'received'
-          // : path === 'newComment'
-          // ? 'comments'
-          // : path === 'newCompetition' || path === 'competitionDetails'
-          // ? 'competition'
-          'products'
+      ['request', 'project', 'received'].includes(path) ? path : 'project'
     );
   }, [props]);
 

@@ -34,7 +34,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SalesDashboardLayoutBackMobile({ children, ...props }) {
+export default function ProjectDashboardLayoutBackMobile({
+  children,
+  ...props
+}) {
   const classes = useStyles();
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
 

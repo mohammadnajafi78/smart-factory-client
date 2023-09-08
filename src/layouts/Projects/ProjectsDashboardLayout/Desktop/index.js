@@ -62,10 +62,6 @@ export default function ProjectDashboardLayoutDesktop(props) {
       <Drawer {...props} />
       <div className={classes.wrapper}>
         <TopBar />
-        {/* <div className={classes.contentContainer}>{props.children}</div> */}
-        {/* <div className={classes.content}>
-          <GetAwards />
-        </div> */}
         {props.children}
       </div>
     </div>

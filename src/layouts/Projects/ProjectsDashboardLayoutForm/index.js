@@ -1,30 +1,30 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMediaQuery, useTheme } from '@mui/material';
-import SalesDashboardLayoutFormMobile from './Mobile';
-import SalesDashboardLayoutFormDesktop from './Desktop';
+import ProjectDashboardLayoutFormMobile from './Mobile';
+import ProjectDashboardLayoutFormDesktop from './Desktop';
 
-const SalesDashboardLayoutForm = ({ children }) => {
+const ProjectDashboardLayoutForm = ({ children }) => {
   const theme = useTheme();
   const mobileDevice = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <>
       {mobileDevice ? (
-        <SalesDashboardLayoutFormMobile>
+        <ProjectDashboardLayoutFormMobile>
           {children}
-        </SalesDashboardLayoutFormMobile>
+        </ProjectDashboardLayoutFormMobile>
       ) : (
-        <SalesDashboardLayoutFormDesktop>
+        <ProjectDashboardLayoutFormDesktop>
           {children}
-        </SalesDashboardLayoutFormDesktop>
+        </ProjectDashboardLayoutFormDesktop>
       )}
     </>
   );
 };
 
-SalesDashboardLayoutForm.propTypes = {
+ProjectDashboardLayoutForm.propTypes = {
   children: PropTypes.node
 };
 
-export default SalesDashboardLayoutForm;
+export default ProjectDashboardLayoutForm;

@@ -1,10 +1,10 @@
 import React from 'react';
-import SaleDashboardLayout from '../../ProjectsDashboardLayout';
+import ProjectDashboardLayout from '../../ProjectsDashboardLayout';
 
-export default function SalesDashboardLayoutFormDesktop(props) {
+export default function ProjectDashboardLayoutFormDesktop(props) {
   return (
     <div>
-      <SaleDashboardLayout>{props.children}</SaleDashboardLayout>
+      <ProjectDashboardLayout>{props.children}</ProjectDashboardLayout>
     </div>
   );
 }

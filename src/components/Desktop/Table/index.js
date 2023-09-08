@@ -32,6 +32,7 @@ import { API_BASE_URL } from 'src/utils/urls';
 import { consoleSandbox } from '@sentry/utils';
 import { Co2Sharp } from '@mui/icons-material';
 import { Delete } from '@mui/icons-material';
+import PropagateLoader from 'react-spinners/PropagateLoader';
 
 const muiCache = createCache({
   key: 'mui-datatables',
@@ -471,7 +472,21 @@ const Table = props => {
     resizableColumns: false,
     textLabels: {
       body: {
-        noMatch: 'رکوردی برای نمایش نیست',
+        noMatch: (
+          <div
+            style={{
+              margin: '10px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <PropagateLoader
+              color="#00AAB5"
+              style={{ marginBottom: '30px', marginTop: '10px' }}
+            />
+          </div>
+        ),
         toolTip: (
           <Typography variant="body2" color="inherit">
             مرتب سازی

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import CategoryButton from 'src/components/Mobile/Button/Category';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import BasketSale from 'src/assets/img/basketSale.svg';
-import ProductsList from './ProductList';
+import ProductsList from './ProjectList';
 import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';

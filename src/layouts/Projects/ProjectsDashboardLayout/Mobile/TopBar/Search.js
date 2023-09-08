@@ -6,11 +6,11 @@ import Icon from 'src/components/Mobile/Icon';
 import UserClub from 'src/utils/userClub';
 import { Search as SearchIcon } from '@mui/icons-material';
 import { SearchTextField } from 'src/components/Mobile/TextField/SearchTextField';
-import useSaleSearch from 'src/hooks/useSaleSearch';
+import useProjectSearch from 'src/hooks/useProjectSearch';
 
 export default function Search() {
   const [input, setInput] = useState(null);
-  const { setSaleSearchResult } = useSaleSearch();
+  const { setProjectSearchResult } = useProjectSearch();
 
   return (
     <Box
@@ -19,12 +19,10 @@ export default function Search() {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        // padding: '4px',
 
         width: '170px',
         height: '44px',
 
-        // background: '#FFFFFF',
         boxShadow: '1px 1px 6px rgba(201, 201, 201, 0.25)',
         borderRadius: '6px',
         flex: 'none',
@@ -35,7 +33,7 @@ export default function Search() {
         id="search"
         aria-describedby="my-helper-text"
         fullWidth
-        placeholder="جستجو در محصولات"
+        placeholder="جستجوی پروژه"
         value={input}
         autoFocus
         onChange={event => {
@@ -43,7 +41,7 @@ export default function Search() {
         }}
         onKeyDown={event => {
           if (event.key === 'Enter') {
-            setSaleSearchResult(event.target.value);
+            setProjectSearchResult(event.target.value);
           }
         }}
         InputProps={{

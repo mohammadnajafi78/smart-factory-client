@@ -59,7 +59,6 @@ const TopBar = ({
   return (
     <AppBar
       sx={{
-        // backgroundColor: '#f4f4f4',
         backgroundColor: '#33BBC4',
         color: 'white',
         margin: 0,
@@ -70,48 +69,6 @@ const TopBar = ({
       }}
     >
       <Toolbar className={classes.toolbar}>
-        {/* {!openMobile ? (
-          <IconButton
-            color="inherit"
-            onClick={onMobileNavOpen}
-            size="large"
-            style={{
-              background: '#FFFFFF',
-              boxShadow: '1px 1px 6px rgba(201, 201, 201, 0.25)',
-              borderRadius: ' 6px',
-              width: '49px',
-              height: '44px'
-            }}
-          >
-            <SvgIcon fontSize="small">
-              <MenuIcon color="#00346D" width="25px" height="21px" />
-            </SvgIcon>
-          </IconButton>
-        ) : (
-          <IconButton
-            color="inherit"
-            onClick={onMobileClose}
-            size="large"
-            style={{
-              background: '#FFFFFF',
-              boxShadow: '1px 1px 6px rgba(201, 201, 201, 0.25)',
-              borderRadius: ' 6px',
-              width: '49px',
-              height: '44px'
-            }}
-          >
-            <SvgIcon fontSize="small">
-              <Close
-                color="#00346D"
-                width="25px"
-                height="21px"
-                onClick={onMobileClose}
-              />
-            </SvgIcon>
-          </IconButton>
-        )} */}
-
-        {/* <Score /> */}
         <Search />
         <Box sx={{ display: 'flex', gap: '10px' }}>
           <Message />
@@ -122,14 +79,5 @@ const TopBar = ({
     </AppBar>
   );
 };
-
-// TopBar.propTypes = {
-//   className: PropTypes.string,
-//   onMobileNavOpen: PropTypes.func
-// };
-
-// TopBar.defaultProps = {
-//   onMobileNavOpen: () => {}
-// };
 
 export default TopBar;

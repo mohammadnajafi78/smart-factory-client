@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SalesDashboardLayoutFormMobile({ children }) {
+export default function ProjectDashboardLayoutFormMobile({ children }) {
   const classes = useStyles();
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
 
