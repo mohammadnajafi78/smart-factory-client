@@ -7,6 +7,7 @@ import useSaleSearch from 'src/hooks/useSaleSearch';
 import MomentFa from 'src/utils/MomentFa';
 import ContentCopy from 'src/assets/img/content_copy.svg';
 import Share from 'src/assets/img/share.svg';
+import httpService from 'src/utils/httpService';
 
 export default function SendItem({ data }) {
   const { searched } = useSaleSearch();
