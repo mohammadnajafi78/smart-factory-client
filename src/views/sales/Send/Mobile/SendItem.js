@@ -8,6 +8,7 @@ import MomentFa from 'src/utils/MomentFa';
 import ContentCopy from 'src/assets/img/content_copy.svg';
 import Share from 'src/assets/img/share.svg';
 import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
 export default function SendItem({ data }) {
   const { searched } = useSaleSearch();
