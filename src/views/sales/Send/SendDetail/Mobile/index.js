@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import makeStyles from '@mui/styles/makeStyles';
-import Actions from './Actions';
 import { Box } from '@mui/material';
+import { useEffect, useState } from 'react';
+import Actions from './Actions';
 
 export default function SendDetailMobile(props) {
   const data = props.location.state;

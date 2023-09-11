@@ -5,6 +5,8 @@ import { NavLink, useHistory } from 'react-router-dom';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import useSaleSearch from 'src/hooks/useSaleSearch';
 import MomentFa from 'src/utils/MomentFa';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
 export default function ReceivedItem({ data }) {
   const { searched } = useSaleSearch();
@@ -196,10 +198,19 @@ export default function ReceivedItem({ data }) {
             alignItems: 'center'
           }}
           onClick={() => {
-            history.push({
-              pathname: '/sale/received/detail',
-              state: data
-            });
+            httpService
+              .get(
+                `${API_BASE_URL}/api/orders/get_order/?order_num=${data.order_num}`
+              )
+              .then(res => {
+                if (res.status === 200) {
+                  console.log('res.data', res.data);
+                  history.push({
+                    pathname: '/sale/received/detail',
+                    state: res.data
+                  });
+                }
+              });
           }}
         >
           <InputLabel

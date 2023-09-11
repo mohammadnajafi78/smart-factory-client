@@ -242,18 +242,18 @@ export default function SendItem({ data }) {
           }}
           onClick={() => {
             httpService
-      .get(`${API_BASE_URL}/api/orders/get_order/?order_num=${data.order_num}`)
-      .then(res => {
-        if (res.status === 200) {
-          console.log('res.data', res.data);
-          history.push({
-            pathname: '/sale/send/detail',
-            state: {
-              data: res.data
-            }
-          });
-        }
-      });
+              .get(
+                `${API_BASE_URL}/api/orders/get_order/?order_num=${data.order_num}`
+              )
+              .then(res => {
+                if (res.status === 200) {
+                  console.log('res.data', res.data);
+                  history.push({
+                    pathname: '/sale/send/detail',
+                    state: res.data
+                  });
+                }
+              });
 
             // history.push({
             //   pathname: '/sale/send/detail',
