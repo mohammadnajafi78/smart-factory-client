@@ -1,13 +1,10 @@
 import { Box } from '@mui/material';
-import React from 'react';
-import { ChevronLeft, Star } from 'react-feather';
-import { NavLink, useHistory } from 'react-router-dom';
+import { ChevronLeft } from 'react-feather';
+import { useHistory } from 'react-router-dom';
+import ProjectImage from 'src/assets/img/projectImage.png';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import useSaleSearch from 'src/hooks/useSaleSearch';
 import MomentFa from 'src/utils/MomentFa';
-import ProjectImage from 'src/assets/img/projectImage.png';
-import httpService from 'src/utils/httpService';
-import { API_BASE_URL } from 'src/utils/urls';
 
 export default function RequestItem({
   data,

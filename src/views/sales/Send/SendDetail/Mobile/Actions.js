@@ -626,7 +626,7 @@ export default function Actions(props) {
                     .then(res => {
                       setLoading(false);
                       if (res.status === 200) {
-                        history.push('/sale/received');
+                        history.push('/sale/send');
                       }
                     })
                     .catch(ex => {
