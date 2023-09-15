@@ -55,7 +55,7 @@ export default function RequestListDesktop({
 
   return (
     <>
-      <Box
+      {/* <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
@@ -66,13 +66,29 @@ export default function RequestListDesktop({
           padding: '40px 30px 0px',
           paddingBottom: '40px'
         }}
+      > */}
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          // justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          position: 'sticky',
+          top: '25px',
+          zIndex: 999,
+          gap: '5px',
+          padding: '10px 20px',
+          background: '#eee',
+          width: '100%'
+        }}
       >
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
-            alignItems: 'center'
+            alignItems: 'center',
+            width: '100%'
           }}
         >
           <InputLabelHeader style={{ color: '#00346D' }}>
@@ -99,10 +115,7 @@ export default function RequestListDesktop({
             justifyContent: 'flex-start',
             alignItems: 'center',
             gap: '2px',
-            position: 'sticky',
-            top: '55px',
             width: '100%',
-            // height: '57px',
             zIndex: 100,
             overflow: 'auto'
           }}
@@ -126,6 +139,19 @@ export default function RequestListDesktop({
               );
             })}
         </Box>
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          // alignItems: 'center',
+          padding: '12px 12px 0px',
+          gap: '10px',
+          width: '100%',
+          padding: '40px 30px 0px',
+          paddingBottom: '40px'
+        }}
+      >
         <Box
           sx={{
             display: 'flex',

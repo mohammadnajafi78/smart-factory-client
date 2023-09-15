@@ -16,7 +16,7 @@ export default function MyRequestDesktop() {
         display: 'flex',
         flexDirection: 'row',
         width: '100%',
-        marginTop: '40px'
+        marginTop: '35px'
       }}
     >
       <Box
