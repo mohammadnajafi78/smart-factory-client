@@ -53,9 +53,9 @@ function MapInfoDesktop(props) {
             'project_num',
             data ? data.project_num : props.location.state1.project_num
           );
-          for (let i = 0; i < values.files.length; i++) {
-            formData.append('files' + i, values.files[i]);
-          }
+          // for (let i = 0; i < values.files.length; i++) {
+          formData.append('files', values.files);
+          // }
 
           setSubmitting(true);
           httpService
@@ -151,7 +151,7 @@ function MapInfoDesktop(props) {
                   <InputLabel style={{ color: '#00346D', fontSize: '10px' }}>
                     {'فرمت فایل ها:‌DWG, DGN, ACIS'}
                   </InputLabel>
-                  <input type="file" hidden multiple />
+                  <input type="file" hidden />
                 </Button>
               </Box>
               {/* {values.files !== undefined &&

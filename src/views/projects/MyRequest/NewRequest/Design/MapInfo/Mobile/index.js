@@ -38,44 +38,31 @@ function MapInfoMobile(props) {
           // city: Yup.string().required('شهر اجباری می باشد')
         })}
         onSubmit={(values, { setErrors, setSubmitting }) => {
-          console.log('values', values);
           const formData = new FormData();
           formData.append(
-            'project_num',
-            data ? data.project_num : props.location.state1.project_num
+            'ref_num',
+            data ? data.ref_num : props.location.state1.ref_num
           );
-          for (let i = 0; i < values.files.length; i++) {
-            formData.append('files' + i, values.files[i]);
-          }
+          formData.append('RAW_PLAN', values.files);
 
           setSubmitting(true);
           httpService
-            .post(`${API_BASE_URL}/api/project/update_project/`, formData)
+            .post(`${API_BASE_URL}/api/project/design/update_design/`, formData)
             .then(res => {
               if (res.status === 200) {
-                httpService
-                  .post(`${API_BASE_URL}/api/project/submit_project/`, {
-                    project_num: data
-                      ? data.project_num
-                      : props.location.state1.project_num
-                  })
-                  .then(result => {
-                    if (result.state === 200) {
-                      if (data) {
-                        history.push({
-                          pathname: '/project/project/',
-                          state: data
-                        });
-                        setSubmitting(false);
-                      } else {
-                        history.push({
-                          pathname: '/project/project/',
-                          state1: data
-                        });
-                        setSubmitting(false);
-                      }
-                    }
+                if (data) {
+                  history.push({
+                    pathname: '/project/request/new/design/designerInfo',
+                    state: data
                   });
+                  setSubmitting(false);
+                } else {
+                  history.push({
+                    pathname: '/project/request/new/design/designerInfo',
+                    state1: data
+                  });
+                  setSubmitting(false);
+                }
               }
             });
           setSubmitting(false);
@@ -145,7 +132,7 @@ function MapInfoMobile(props) {
                   <InputLabel style={{ color: '#00346D', fontSize: '10px' }}>
                     {'فرمت فایل ها:‌DWG, DGN, ACIS'}
                   </InputLabel>
-                  <input type="file" hidden multiple />
+                  <input type="file" hidden />
                 </Button>
               </Box>
               {/* {values.files !== undefined &&

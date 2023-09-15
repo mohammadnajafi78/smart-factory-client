@@ -28,7 +28,7 @@ function RegisterNewRequestMobile(props) {
       <InputLabelHeader style={{ marginRight: '10px' }}>
         اطلاعات درخواست
       </InputLabelHeader>
-      <CustomizedProgressBars percentage={33.33} />
+      <CustomizedProgressBars percentage={50} />
 
       <Formik
         initialValues={{
@@ -42,15 +42,15 @@ function RegisterNewRequestMobile(props) {
         onSubmit={(values, { setErrors, setSubmitting }) => {
           setSubmitting(true);
           httpService
-            .post(`${API_BASE_URL}/api/project/design/update_design/`, {
-              design_num: state.data.ref_num,
+            .post(`${API_BASE_URL}/api/project/bom/update_bom/`, {
+              ref_num: state.data.ref_num,
               design_type: designType,
               control: control
             })
             .then(res => {
               if (res.status === 200) {
                 history.push({
-                  pathname: '/project/request/new/design/techInfo',
+                  pathname: '/project/request/new/bom/confirmInfo',
                   state: res.data
                 });
                 setSubmitting(false);
@@ -129,7 +129,7 @@ function RegisterNewRequestMobile(props) {
                     }}
                   >
                     <FormControlLabel
-                      value="TERMOSTATIC"
+                      value="THERMOSTATIC"
                       control={<Radio sx={{ padding: '4px' }} />}
                       label="ترموستاتیک"
                       sx={{

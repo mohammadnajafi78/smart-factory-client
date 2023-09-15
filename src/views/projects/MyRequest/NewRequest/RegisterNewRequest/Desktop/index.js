@@ -92,6 +92,7 @@ function RegisterNewRequestMobile(props) {
                     history.push({
                       pathname: '/project/request/new/design/reqInfo',
                       state: {
+                        data: res.data,
                         project_num: projectId,
                         request_type: requestTypeId
                       }
@@ -100,6 +101,7 @@ function RegisterNewRequestMobile(props) {
                     history.push({
                       pathname: '/project/request/new/bom/reqInfo',
                       state: {
+                        data: res.data,
                         project_num: projectId,
                         request_type: requestTypeId
                       }
@@ -109,6 +111,7 @@ function RegisterNewRequestMobile(props) {
                       pathname:
                         '/project/request/new/supervision/supervisorInfo',
                       state: {
+                        data: res.data,
                         project_num: projectId,
                         request_type: requestTypeId
                       }
@@ -117,6 +120,7 @@ function RegisterNewRequestMobile(props) {
                     history.push({
                       pathname: '/project/request/new/warranty/reqInfo',
                       state: {
+                        data: res.data,
                         project_num: projectId,
                         request_type: requestTypeId
                       }

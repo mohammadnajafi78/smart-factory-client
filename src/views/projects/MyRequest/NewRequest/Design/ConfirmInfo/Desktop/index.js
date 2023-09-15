@@ -9,6 +9,8 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader
 import CustomizedProgressBars from 'src/components/Desktop/ProgressBar';
 
 import makeStyles from '@mui/styles/makeStyles';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -148,17 +150,33 @@ function ConfirmInfoDesktop(props) {
           <ConfirmButton
             disabled={false}
             variant="outlined"
-            // onClick={() => {
-            //   history.push({
-            //     pathname: '/project/project/new/2',
-            //     state: data
-            //   });
-            // }}
-            type={'button'}
+            onClick={() => {
+              history.push({
+                pathname: '/project/request/new/design/designerInfo',
+                state: data
+              });
+            }}
           >
             {'بازگشت'}
           </ConfirmButton>
-          <ConfirmButton type="submit">{'ثبت'}</ConfirmButton>
+          <ConfirmButton
+            onClick={() => {
+              httpService
+                .post(
+                  `${API_BASE_URL}/project/request/new/design/designerInfo`,
+                  {
+                    ref_num: data?.ref_num
+                  }
+                )
+                .then(res => {
+                  if (res.status === 200) {
+                    history.push('/project/request/');
+                  }
+                });
+            }}
+          >
+            {'ثبت'}
+          </ConfirmButton>
         </Box>
       </Box>
     </Box>

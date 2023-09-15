@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 function ConfirmInfoMobile(props) {
-  // let data = props.location.state;
+  let data = props.location.state;
   const [requestTypeList, setRequestTypeList] = useState(null);
   const [requestTypeId, setRequestTypeId] = useState(null);
   const [projectList, setProjectList] = useState(null);
@@ -133,17 +133,30 @@ function ConfirmInfoMobile(props) {
           <ConfirmButton
             disabled={false}
             variant="outlined"
-            // onClick={() => {
-            //   history.push({
-            //     pathname: '/project/project/new/2',
-            //     state: data
-            //   });
-            // }}
-            type={'button'}
+            onClick={() => {
+              history.push({
+                pathname: '/project/request/new/bom/reqInfo',
+                state: data
+              });
+            }}
           >
             {'بازگشت'}
           </ConfirmButton>
-          <ConfirmButton type="submit">{'ثبت'}</ConfirmButton>
+          <ConfirmButton
+            onClick={() => {
+              httpService
+                .post(`${API_BASE_URL}/api/project/bom/submit_bom/`, {
+                  ref_num: data?.ref_num
+                })
+                .then(res => {
+                  if (res.status === 200) {
+                    history.push('/project/request');
+                  }
+                });
+            }}
+          >
+            {'ثبت'}
+          </ConfirmButton>
         </Box>
       </Box>
     </Box>

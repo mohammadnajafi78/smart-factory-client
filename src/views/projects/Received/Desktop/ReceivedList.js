@@ -48,31 +48,25 @@ export default function ReceivedListDesktop({
   }, []);
 
   return (
-    <>
+    <Box>
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          // alignItems: 'center',
-          padding: '12px 12px 0px',
-          gap: '10px',
-          width: '100%',
-          padding: '40px 30px 0px',
-          paddingBottom: '40px'
+          // justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          position: 'sticky',
+          top: '25px',
+          zIndex: 999,
+          gap: '5px',
+          padding: '10px 20px',
+          background: '#eee'
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}
-        >
-          <InputLabelHeader style={{ color: '#00346D' }}>
-            دریافتی ها
-          </InputLabelHeader>
-          {/* <ConfirmButton
+        <InputLabelHeader style={{ color: '#00346D' }}>
+          دریافتی ها
+        </InputLabelHeader>
+        {/* <ConfirmButton
             style={{
               margin: '0px 10px',
               backgroundColor: '#00346D',
@@ -84,8 +78,6 @@ export default function ReceivedListDesktop({
             <img src={DomainAdd} style={{ marginLeft: '3px' }} />
             ثبت درخواست جدید
           </ConfirmButton> */}
-        </Box>
-
         <Box
           sx={{
             display: 'flex',
@@ -93,8 +85,8 @@ export default function ReceivedListDesktop({
             justifyContent: 'flex-start',
             alignItems: 'center',
             gap: '2px',
-            position: 'sticky',
-            top: '55px',
+            // position: 'sticky',
+            // top: '55px',
             width: '100%',
             // height: '57px',
             zIndex: 100,
@@ -120,6 +112,19 @@ export default function ReceivedListDesktop({
               );
             })}
         </Box>
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          // alignItems: 'center',
+          padding: '12px 12px 0px',
+          gap: '10px',
+          width: '100%',
+          padding: '40px 30px 0px',
+          paddingBottom: '40px'
+        }}
+      >
         <Box
           sx={{
             display: 'flex',
@@ -145,6 +150,6 @@ export default function ReceivedListDesktop({
             })}
         </Box>
       </Box>
-    </>
+    </Box>
   );
 }

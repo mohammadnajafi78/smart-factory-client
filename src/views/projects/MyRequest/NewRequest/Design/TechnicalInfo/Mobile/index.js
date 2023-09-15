@@ -19,7 +19,7 @@ function TechnicalInfoMobile(props) {
   useEffect(() => {
     httpService
       .get(
-        `${API_BASE_URL}/api/project/design/get_questions/?design_num=${data?.ref_num}`
+        `${API_BASE_URL}/api/project/design/get_questions/?ref_num=${data?.ref_num}`
       )
       .then(res => {
         if (res.status === 200) {
@@ -48,17 +48,24 @@ function TechnicalInfoMobile(props) {
         })}
         onSubmit={(values, { setErrors, setSubmitting }) => {
           setSubmitting(true);
+          let temp = [];
+          for (const [key, value] of Object.entries(values)) {
+            temp.push({
+              id: key, // question id
+              type: questions.filter(f => f.id == key)[0].question_type,
+              answer: value // selected items id
+            });
+          }
           httpService
-            .post(`${API_BASE_URL}/api/project/design/update_design/`, {
-              design_num: '',
-              design_type: [1, 2, 3],
-              control: 'MANUAL'
+            .post(`${API_BASE_URL}/api/project/design/add_question_response/`, {
+              ref_num: data?.ref_num,
+              questions: temp
             })
             .then(res => {
               if (res.status === 200) {
                 history.push({
-                  pathname: '/project/project/new/2'
-                  // state: res.data
+                  pathname: '/project/request/new/design/mapInfo',
+                  state: data
                 });
                 setSubmitting(false);
               }
@@ -95,23 +102,98 @@ function TechnicalInfoMobile(props) {
             <Box>
               <Box sx={{ mt: 2 }}>
                 <InputLabel>فرم های اطلاعات فنی طراحی را پر کنید</InputLabel>
-                {/* <ProjectTreeView url="/api/project/get_project_type" /> */}
               </Box>
-              <Box sx={{ mt: 2 }}>
+              {questions && (
                 <Box sx={{ mt: 2 }}>
-                  <InputLabel>عنوان</InputLabel>
-                  <TextField
-                    // {...params}
-                    placeholder="مساحت زیربنا"
-                    fullWidth
-                    id="area"
-                    value={values.area}
-                    onChange={handleChange}
-                    error={Boolean(touched.area && errors.area)}
-                    helperText={touched.area && errors.area}
-                  />
+                  {questions.map(item => {
+                    return (
+                      <>
+                        {item.question_type === 'TEXT' && (
+                          <Box sx={{ mt: 2 }}>
+                            <InputLabel>{item.question}</InputLabel>
+                            <TextField
+                              placeholder="مساحت زیربنا"
+                              fullWidth
+                              id={item.id}
+                              value={values[item.id]}
+                              onChange={handleChange}
+                              error={Boolean(
+                                touched[item.id] && errors[item.id]
+                              )}
+                              helperText={touched[item.id] && errors[item.id]}
+                            />
+                          </Box>
+                        )}
+                        {item.question_type === 'SINGLE_CHOICE' && (
+                          <Box sx={{ mt: 2 }}>
+                            <FormControl>
+                              <FormLabel
+                                sx={{ color: 'black', fontWeight: 400 }}
+                              >
+                                {item.question}
+                              </FormLabel>
+                              <RadioGroup
+                                defaultValue="female"
+                                name={item.id}
+                                id={item.id}
+                                onChange={event => {
+                                  setFieldValue(item.id, event.target.value);
+                                }}
+                                value={values[item.id]}
+                              >
+                                {item.items.map(sub => {
+                                  return (
+                                    <FormControlLabel
+                                      value={sub.id}
+                                      control={<Radio />}
+                                      label={sub.text}
+                                    />
+                                  );
+                                })}
+                              </RadioGroup>
+                            </FormControl>
+                          </Box>
+                        )}
+                        {item.question_type === 'MULTI_CHOICE' && (
+                          <Box sx={{ mt: 2 }}>
+                            <FormLabel sx={{ color: 'black', fontWeight: 400 }}>
+                              {item.question}
+                            </FormLabel>
+                            <FormGroup>
+                              {item.items.map(sub => {
+                                return (
+                                  <FormControlLabel
+                                    control={
+                                      <Checkbox
+                                        id={item.id}
+                                        name={sub.id}
+                                        onChange={event => {
+                                          if (values[item.id])
+                                            setFieldValue(item.id, [
+                                              ...values[item.id],
+                                              sub.id
+                                            ]);
+                                          else {
+                                            let temp = [];
+                                            temp.push(sub.id);
+                                            setFieldValue(item.id, temp);
+                                          }
+                                        }}
+                                        // name={}
+                                      />
+                                    }
+                                    label={sub.text}
+                                  />
+                                );
+                              })}
+                            </FormGroup>
+                          </Box>
+                        )}
+                      </>
+                    );
+                  })}
                 </Box>
-              </Box>
+              )}
             </Box>
             <Box
               sx={{
@@ -123,12 +205,12 @@ function TechnicalInfoMobile(props) {
               <ConfirmButton
                 disabled={false}
                 variant="outlined"
-                // onClick={() => {
-                //   history.push({
-                //     pathname: '/project/project/new/2',
-                //     state: data
-                //   });
-                // }}
+                onClick={() => {
+                  history.push({
+                    pathname: '/project/request/new/design/reqInfo',
+                    state: data
+                  });
+                }}
                 type={'button'}
               >
                 {'بازگشت'}

@@ -41,7 +41,12 @@ function SupervisorInfoDesktop(props) {
   const [selected, setSelected] = useState('BTS_WE');
   const [openDesigner, setOpenDesigner] = useState(false);
   const [openOther, setOpenOther] = useState(false);
+  const [designer, setDesigner] = useState(null);
+  const [other, setOther] = useState(null);
   const classes = useStyles();
+
+  const data = props.location.state.data;
+  console.log('Data445455', data);
 
   let types = [
     { name: 'BTS_WE', label: 'طراحی توسط شرکت', image: Domain },
@@ -88,18 +93,22 @@ function SupervisorInfoDesktop(props) {
           // project: Yup.string().required('پروژه مورد نظر اجباری می باشد')
         })}
         onSubmit={(values, { setErrors, setSubmitting }) => {
+          console.log('data', data);
           setSubmitting(true);
           httpService
-            .post(`${API_BASE_URL}/api/project/design/update_design/`, {
-              design_num: '',
-              design_type: [1, 2, 3],
-              control: 'MANUAL'
-            })
+            .post(
+              `${API_BASE_URL}/api/project/supervision/update_supervision/`,
+              {
+                ref_num: data.ref_num,
+                supervisor: selected,
+                user: designer ? designer.user_id : other ? other.user_id : ''
+              }
+            )
             .then(res => {
               if (res.status === 200) {
                 history.push({
-                  pathname: '/project/project/new/2'
-                  // state: res.data
+                  pathname: '/project/request/new/supervision/instructionInfo',
+                  state: data
                 });
                 setSubmitting(false);
               }
@@ -237,11 +246,45 @@ function SupervisorInfoDesktop(props) {
                               </Box>
                             </AccordionSummary>
                             <AccordionDetails>
-                              <Typography>
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Suspendisse malesuada lacus ex,
-                                sit amet blandit leo lobortis eget.
-                              </Typography>
+                              {selected.toLowerCase() === 'bts_designer' ? (
+                                <>
+                                  {designer && (
+                                    <Box
+                                      sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column'
+                                      }}
+                                    >
+                                      <InputLabel>
+                                        {designer?.first_name +
+                                          ' ' +
+                                          designer?.last_name}
+                                      </InputLabel>
+                                      <InputLabel>
+                                        {designer?.user_id}
+                                      </InputLabel>
+                                    </Box>
+                                  )}
+                                </>
+                              ) : (
+                                <>
+                                  {other && (
+                                    <Box
+                                      sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column'
+                                      }}
+                                    >
+                                      <InputLabel>
+                                        {other?.first_name +
+                                          ' ' +
+                                          other?.last_name}
+                                      </InputLabel>
+                                      <InputLabel>{other?.user_id}</InputLabel>
+                                    </Box>
+                                  )}
+                                </>
+                              )}
                             </AccordionDetails>
                           </Accordion>
                         )}
@@ -261,12 +304,12 @@ function SupervisorInfoDesktop(props) {
               <ConfirmButton
                 disabled={false}
                 variant="outlined"
-                // onClick={() => {
-                //   history.push({
-                //     pathname: '/project/project/new/2',
-                //     state: data
-                //   });
-                // }}
+                onClick={() => {
+                  history.push({
+                    pathname: '/project/request/new/',
+                    state: data
+                  });
+                }}
                 type={'button'}
               >
                 {'بازگشت'}
@@ -313,10 +356,9 @@ function SupervisorInfoDesktop(props) {
                   })
                   .then(res => {
                     if (res.status === 200) {
-                      // history.push({
-                      //   pathname: '/project/project/new/2'
-                      //   // state: res.data
-                      // });
+                      console.log('designer', designer);
+                      setDesigner(res.data);
+                      setOpenDesigner(false);
                       setSubmitting(false);
                     }
                   });
@@ -409,32 +451,27 @@ function SupervisorInfoDesktop(props) {
               initialValues={{
                 Desktop: '',
                 first_name: '',
-                last_name: '',
-                supervision_id: ''
+                last_name: ''
               }}
               validationSchema={Yup.object().shape({
                 first_name: Yup.string().required('نام اجباری می باشد'),
                 last_name: Yup.string().required('نام خانوادگی اجباری می باشد'),
-                mobile: Yup.string().required('شماره موبایل اجباری می باشد'),
-                supervision_id: Yup.string().required(
-                  'کد نظام مهندسی اجباری می باشد'
-                )
+                mobile: Yup.string().required('شماره موبایل اجباری می باشد')
               })}
               onSubmit={(values, { setErrors, setSubmitting }) => {
                 setSubmitting(true);
                 httpService
                   .post(`${API_BASE_URL}/api/project/design/add_designer/`, {
                     type: 'OTHER',
-                    Desktop: values.Desktop,
+                    mobile: values.mobile,
                     first_name: values.first_name,
                     last_name: values.last_name
                   })
                   .then(res => {
                     if (res.status === 200) {
-                      // history.push({
-                      //   pathname: '/project/project/new/2'
-                      //   // state: res.data
-                      // });
+                      console.log('other', other);
+                      setOther(res.data);
+                      setOpenOther(false);
                       setSubmitting(false);
                     }
                   });
@@ -509,24 +546,6 @@ function SupervisorInfoDesktop(props) {
                         onChange={handleChange}
                         error={Boolean(touched.mobile && errors.mobile)}
                         helperText={touched.mobile && errors.mobile}
-                      />
-                    </Box>
-
-                    <Box sx={{ mt: 2 }}>
-                      <InputLabel>کد نظام مهندسی</InputLabel>
-                      <TextField
-                        // {...params}
-                        placeholder="کد نظام مهندسی"
-                        fullWidth
-                        id="supervision_id"
-                        value={values.supervision_id}
-                        onChange={handleChange}
-                        error={Boolean(
-                          touched.supervision_id && errors.supervision_id
-                        )}
-                        helperText={
-                          touched.supervision_id && errors.supervision_id
-                        }
                       />
                     </Box>
                   </Box>

@@ -41,7 +41,11 @@ function DesignerInfoDesktop(props) {
   const [selected, setSelected] = useState('BTS_WE');
   const [openDesigner, setOpenDesigner] = useState(false);
   const [openOther, setOpenOther] = useState(false);
+  const [designer, setDesigner] = useState(null);
+  const [other, setOther] = useState(null);
   const classes = useStyles();
+
+  const data = props.location.state;
 
   let types = [
     { name: 'BTS_WE', label: 'طراحی توسط شرکت', image: Domain },
@@ -88,17 +92,18 @@ function DesignerInfoDesktop(props) {
           // project: Yup.string().required('پروژه مورد نظر اجباری می باشد')
         })}
         onSubmit={(values, { setErrors, setSubmitting }) => {
+          console.log('data', data);
           setSubmitting(true);
           httpService
             .post(`${API_BASE_URL}/api/project/design/update_design/`, {
-              design_num: '',
-              design_type: [1, 2, 3],
-              control: 'MANUAL'
+              ref_num: data.ref_num,
+              designer: selected,
+              user: designer ? designer.user_id : other ? other.user_id : ''
             })
             .then(res => {
               if (res.status === 200) {
                 history.push({
-                  pathname: '/project/project/new/2'
+                  pathname: '/project/request/new/design/confirmInfo'
                   // state: res.data
                 });
                 setSubmitting(false);
@@ -237,11 +242,45 @@ function DesignerInfoDesktop(props) {
                               </Box>
                             </AccordionSummary>
                             <AccordionDetails>
-                              <Typography>
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Suspendisse malesuada lacus ex,
-                                sit amet blandit leo lobortis eget.
-                              </Typography>
+                              {selected.toLowerCase() === 'bts_designer' ? (
+                                <>
+                                  {designer && (
+                                    <Box
+                                      sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column'
+                                      }}
+                                    >
+                                      <InputLabel>
+                                        {designer?.first_name +
+                                          ' ' +
+                                          designer?.last_name}
+                                      </InputLabel>
+                                      <InputLabel>
+                                        {designer?.user_id}
+                                      </InputLabel>
+                                    </Box>
+                                  )}
+                                </>
+                              ) : (
+                                <>
+                                  {other && (
+                                    <Box
+                                      sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column'
+                                      }}
+                                    >
+                                      <InputLabel>
+                                        {other?.first_name +
+                                          ' ' +
+                                          other?.last_name}
+                                      </InputLabel>
+                                      <InputLabel>{other?.user_id}</InputLabel>
+                                    </Box>
+                                  )}
+                                </>
+                              )}
                             </AccordionDetails>
                           </Accordion>
                         )}
@@ -261,12 +300,12 @@ function DesignerInfoDesktop(props) {
               <ConfirmButton
                 disabled={false}
                 variant="outlined"
-                // onClick={() => {
-                //   history.push({
-                //     pathname: '/project/project/new/2',
-                //     state: data
-                //   });
-                // }}
+                onClick={() => {
+                  history.push({
+                    pathname: '/project/request/new/design/mapInfo',
+                    state: data
+                  });
+                }}
                 type={'button'}
               >
                 {'بازگشت'}
@@ -313,10 +352,9 @@ function DesignerInfoDesktop(props) {
                   })
                   .then(res => {
                     if (res.status === 200) {
-                      // history.push({
-                      //   pathname: '/project/project/new/2'
-                      //   // state: res.data
-                      // });
+                      console.log('designer', designer);
+                      setDesigner(res.data);
+                      setOpenDesigner(false);
                       setSubmitting(false);
                     }
                   });
@@ -414,23 +452,22 @@ function DesignerInfoDesktop(props) {
               validationSchema={Yup.object().shape({
                 first_name: Yup.string().required('نام اجباری می باشد'),
                 last_name: Yup.string().required('نام خانوادگی اجباری می باشد'),
-                Desktop: Yup.string().required('شماره موبایل اجباری می باشد')
+                mobile: Yup.string().required('شماره موبایل اجباری می باشد')
               })}
               onSubmit={(values, { setErrors, setSubmitting }) => {
                 setSubmitting(true);
                 httpService
                   .post(`${API_BASE_URL}/api/project/design/add_designer/`, {
                     type: 'OTHER',
-                    Desktop: values.Desktop,
+                    mobile: values.mobile,
                     first_name: values.first_name,
                     last_name: values.last_name
                   })
                   .then(res => {
                     if (res.status === 200) {
-                      // history.push({
-                      //   pathname: '/project/project/new/2'
-                      //   // state: res.data
-                      // });
+                      console.log('other', other);
+                      setOther(res.data);
+                      setOpenOther(false);
                       setSubmitting(false);
                     }
                   });
@@ -472,11 +509,11 @@ function DesignerInfoDesktop(props) {
                         // {...params}
                         placeholder="نام"
                         fullWidth
-                        id="user_id"
-                        value={values.user_id}
+                        id="first_name"
+                        value={values.first_name}
                         onChange={handleChange}
-                        error={Boolean(touched.user_id && errors.user_id)}
-                        helperText={touched.user_id && errors.user_id}
+                        error={Boolean(touched.first_name && errors.first_name)}
+                        helperText={touched.first_name && errors.first_name}
                       />
                     </Box>
 
@@ -486,11 +523,11 @@ function DesignerInfoDesktop(props) {
                         // {...params}
                         placeholder="نام خانوادگی"
                         fullWidth
-                        id="user_id"
-                        value={values.user_id}
+                        id="last_name"
+                        value={values.last_name}
                         onChange={handleChange}
-                        error={Boolean(touched.user_id && errors.user_id)}
-                        helperText={touched.user_id && errors.user_id}
+                        error={Boolean(touched.last_name && errors.last_name)}
+                        helperText={touched.last_name && errors.last_name}
                       />
                     </Box>
 
@@ -500,11 +537,11 @@ function DesignerInfoDesktop(props) {
                         // {...params}
                         placeholder="شماره موبایل"
                         fullWidth
-                        id="user_id"
-                        value={values.user_id}
+                        id="mobile"
+                        value={values.mobile}
                         onChange={handleChange}
-                        error={Boolean(touched.user_id && errors.user_id)}
-                        helperText={touched.user_id && errors.user_id}
+                        error={Boolean(touched.mobile && errors.mobile)}
+                        helperText={touched.mobile && errors.mobile}
                       />
                     </Box>
                   </Box>

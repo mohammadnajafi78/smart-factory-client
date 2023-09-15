@@ -8,6 +8,8 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader
 import CustomizedProgressBars from 'src/components/Desktop/ProgressBar';
 
 import makeStyles from '@mui/styles/makeStyles';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -19,7 +21,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 function ConfirmInfoDesktop(props) {
-  // let data = props.location.state;
+  let data = props.location.state;
 
   const history = useHistory();
 
@@ -36,7 +38,7 @@ function ConfirmInfoDesktop(props) {
       }}
     >
       <InputLabelHeader style={{ marginRight: '10px' }}>تایید</InputLabelHeader>
-      <CustomizedProgressBars activeStep={2} steps={['', '', '']} />
+      <CustomizedProgressBars activeStep={1} steps={['', '']} />
       <Box sx={{ mt: 2, ml: 2 }}>
         <InputLabel>خلاصه درخواست BOM شما</InputLabel>
       </Box>
@@ -114,17 +116,30 @@ function ConfirmInfoDesktop(props) {
           <ConfirmButton
             disabled={false}
             variant="outlined"
-            // onClick={() => {
-            //   history.push({
-            //     pathname: '/project/project/new/2',
-            //     state: data
-            //   });
-            // }}
-            type={'button'}
+            onClick={() => {
+              history.push({
+                pathname: '/project/request/new/bom/reqInfo',
+                state: data
+              });
+            }}
           >
             {'بازگشت'}
           </ConfirmButton>
-          <ConfirmButton type="submit">{'ثبت'}</ConfirmButton>
+          <ConfirmButton
+            onClick={() => {
+              httpService
+                .post(`${API_BASE_URL}/api/project/bom/submit_bom/`, {
+                  ref_num: data?.ref_num
+                })
+                .then(res => {
+                  if (res.status === 200) {
+                    history.push('/project/request');
+                  }
+                });
+            }}
+          >
+            {'ثبت'}
+          </ConfirmButton>
         </Box>
       </Box>
     </Box>

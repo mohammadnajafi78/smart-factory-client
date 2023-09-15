@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { Box, TextField, Drawer } from '@mui/material';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
-import InputLabel from 'src/components/Mobile/InputLabel';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Box, Drawer, TextField } from '@mui/material';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Typography from '@mui/material/Typography';
+import makeStyles from '@mui/styles/makeStyles';
 import { Formik } from 'formik';
-import Autocomplete from '@mui/material/Autocomplete';
-import httpService from 'src/utils/httpService';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { API_BASE_URL } from 'src/utils/urls';
-import * as Yup from 'yup';
-import CustomizedProgressBars from 'src/components/Mobile/ProgressBar';
+import Domain from 'src/assets/img/domain22.png';
 import LocationAway from 'src/assets/img/location_away.png';
 import PersonFilled from 'src/assets/img/person_filled.png';
-import Domain from 'src/assets/img/domain22.png';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import makeStyles from '@mui/styles/makeStyles';
+import ConfirmButton from 'src/components/Mobile/Button/Confirm';
+import InputLabel from 'src/components/Mobile/InputLabel';
+import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
+import CustomizedProgressBars from 'src/components/Mobile/ProgressBar';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
+import * as Yup from 'yup';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -33,24 +32,24 @@ const useStyles = makeStyles(theme => ({
     zIndex: 999,
     position: 'fixed',
     bottom: 0,
-    minHeight: '80%'
+    minHeight: '65%'
   }
 }));
 function SupervisorInfoMobile(props) {
   // let data = props.location.state;
-  const [requestTypeList, setRequestTypeList] = useState(null);
-  const [requestTypeId, setRequestTypeId] = useState(null);
-  const [projectList, setProjectList] = useState(null);
-  const [projectId, setProjectId] = useState(null);
   const [selected, setSelected] = useState('BTS_WE');
   const [openDesigner, setOpenDesigner] = useState(false);
   const [openOther, setOpenOther] = useState(false);
+  const [designer, setDesigner] = useState(null);
+  const [other, setOther] = useState(null);
   const classes = useStyles();
 
+  const data = props.location.state.data;
+
   let types = [
-    { name: 'BTS_WE', label: 'مهندس ناظر شرکت', image: Domain },
-    { name: 'BTS_DESIGNER', label: 'ناظر عضو اپلیکیشن', image: LocationAway },
-    { name: 'OTHER', label: 'ناظر غیر عضو', image: PersonFilled }
+    { name: 'BTS_WE', label: 'طراحی توسط شرکت', image: Domain },
+    { name: 'BTS_DESIGNER', label: 'طراح عضو اپلیکیشن', image: LocationAway },
+    { name: 'OTHER', label: 'طراح غیر عضو', image: PersonFilled }
   ];
 
   useEffect(() => {
@@ -66,7 +65,7 @@ function SupervisorInfoMobile(props) {
   return (
     <Box sx={{ mt: '20px' }}>
       <InputLabelHeader style={{ marginRight: '10px' }}>
-        انتخاب ناظر
+        انتخاب طراح
       </InputLabelHeader>
       <CustomizedProgressBars percentage={33.33} />
 
@@ -82,18 +81,22 @@ function SupervisorInfoMobile(props) {
           // project: Yup.string().required('پروژه مورد نظر اجباری می باشد')
         })}
         onSubmit={(values, { setErrors, setSubmitting }) => {
+          console.log('data', data);
           setSubmitting(true);
           httpService
-            .post(`${API_BASE_URL}/api/project/design/update_design/`, {
-              design_num: '',
-              design_type: [1, 2, 3],
-              control: 'MANUAL'
-            })
+            .post(
+              `${API_BASE_URL}/api/project/supervision/update_supervision/`,
+              {
+                ref_num: data.ref_num,
+                supervisor: selected,
+                user: designer ? designer.user_id : other ? other.user_id : ''
+              }
+            )
             .then(res => {
               if (res.status === 200) {
                 history.push({
-                  pathname: '/project/project/new/2'
-                  // state: res.data
+                  pathname: '/project/request/new/supervision/instructionInfo',
+                  state: data
                 });
                 setSubmitting(false);
               }
@@ -129,7 +132,7 @@ function SupervisorInfoMobile(props) {
           >
             <Box>
               <Box sx={{ mt: 2 }}>
-                <InputLabel>نظارت پروژه توسط:</InputLabel>
+                <InputLabel>طراحی پروژه توسط:</InputLabel>
                 {/* <ProjectTreeView url="/api/project/get_project_type" /> */}
               </Box>
               <Box sx={{ mt: 2 }}>
@@ -232,11 +235,45 @@ function SupervisorInfoMobile(props) {
                               </Box>
                             </AccordionSummary>
                             <AccordionDetails>
-                              <Typography>
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Suspendisse malesuada lacus ex,
-                                sit amet blandit leo lobortis eget.
-                              </Typography>
+                              {selected.toLowerCase() === 'bts_designer' ? (
+                                <>
+                                  {designer && (
+                                    <Box
+                                      sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column'
+                                      }}
+                                    >
+                                      <InputLabel>
+                                        {designer?.first_name +
+                                          ' ' +
+                                          designer?.last_name}
+                                      </InputLabel>
+                                      <InputLabel>
+                                        {designer?.user_id}
+                                      </InputLabel>
+                                    </Box>
+                                  )}
+                                </>
+                              ) : (
+                                <>
+                                  {other && (
+                                    <Box
+                                      sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column'
+                                      }}
+                                    >
+                                      <InputLabel>
+                                        {other?.first_name +
+                                          ' ' +
+                                          other?.last_name}
+                                      </InputLabel>
+                                      <InputLabel>{other?.user_id}</InputLabel>
+                                    </Box>
+                                  )}
+                                </>
+                              )}
                             </AccordionDetails>
                           </Accordion>
                         )}
@@ -256,12 +293,12 @@ function SupervisorInfoMobile(props) {
               <ConfirmButton
                 disabled={false}
                 variant="outlined"
-                // onClick={() => {
-                //   history.push({
-                //     pathname: '/project/project/new/2',
-                //     state: data
-                //   });
-                // }}
+                onClick={() => {
+                  history.push({
+                    pathname: '/project/request/new/',
+                    state: data
+                  });
+                }}
                 type={'button'}
               >
                 {'بازگشت'}
@@ -308,11 +345,11 @@ function SupervisorInfoMobile(props) {
                   user_id: values.user_id
                 })
                 .then(res => {
+                  console.log(first);
                   if (res.status === 200) {
-                    // history.push({
-                    //   pathname: '/project/project/new/2'
-                    //   // state: res.data
-                    // });
+                    console.log('designer', designer);
+                    setDesigner(res.data);
+                    setOpenDesigner(false);
                     setSubmitting(false);
                   }
                 });
@@ -405,16 +442,12 @@ function SupervisorInfoMobile(props) {
             initialValues={{
               mobile: '',
               first_name: '',
-              last_name: '',
-              supervision_id: ''
+              last_name: ''
             }}
             validationSchema={Yup.object().shape({
               first_name: Yup.string().required('نام اجباری می باشد'),
               last_name: Yup.string().required('نام خانوادگی اجباری می باشد'),
-              mobile: Yup.string().required('شماره موبایل اجباری می باشد'),
-              supervision_id: Yup.string().required(
-                'کد نظام مهندسی اجباری می باشد'
-              )
+              mobile: Yup.string().required('شماره موبایل اجباری می باشد')
             })}
             onSubmit={(values, { setErrors, setSubmitting }) => {
               setSubmitting(true);
@@ -423,15 +456,13 @@ function SupervisorInfoMobile(props) {
                   type: 'OTHER',
                   mobile: values.mobile,
                   first_name: values.first_name,
-                  last_name: values.last_name,
-                  supervision_id: values.supervision_id
+                  last_name: values.last_name
                 })
                 .then(res => {
                   if (res.status === 200) {
-                    // history.push({
-                    //   pathname: '/project/project/new/2'
-                    //   // state: res.data
-                    // });
+                    console.log('other', other);
+                    setOther(res.data);
+                    setOpenOther(false);
                     setSubmitting(false);
                   }
                 });
@@ -457,9 +488,9 @@ function SupervisorInfoMobile(props) {
                   justifyContent: 'space-between',
                   padding: '0px',
                   gap: '50px',
-                  position: 'absolute',
-                  width: '90%',
-                  left: '20px'
+                  // position: 'absolute',
+                  width: '90%'
+                  // left: '20px'
                 }}
               >
                 <Box>
@@ -473,11 +504,11 @@ function SupervisorInfoMobile(props) {
                       // {...params}
                       placeholder="نام"
                       fullWidth
-                      id="user_id"
-                      value={values.user_id}
+                      id="first_name"
+                      value={values.first_name}
                       onChange={handleChange}
-                      error={Boolean(touched.user_id && errors.user_id)}
-                      helperText={touched.user_id && errors.user_id}
+                      error={Boolean(touched.first_name && errors.first_name)}
+                      helperText={touched.first_name && errors.first_name}
                     />
                   </Box>
 
@@ -487,11 +518,11 @@ function SupervisorInfoMobile(props) {
                       // {...params}
                       placeholder="نام خانوادگی"
                       fullWidth
-                      id="user_id"
-                      value={values.user_id}
+                      id="last_name"
+                      value={values.last_name}
                       onChange={handleChange}
-                      error={Boolean(touched.user_id && errors.user_id)}
-                      helperText={touched.user_id && errors.user_id}
+                      error={Boolean(touched.last_name && errors.last_name)}
+                      helperText={touched.last_name && errors.last_name}
                     />
                   </Box>
 
@@ -506,23 +537,6 @@ function SupervisorInfoMobile(props) {
                       onChange={handleChange}
                       error={Boolean(touched.mobile && errors.mobile)}
                       helperText={touched.mobile && errors.mobile}
-                    />
-                  </Box>
-                  <Box sx={{ mt: 2 }}>
-                    <InputLabel>کد نظام مهندسی</InputLabel>
-                    <TextField
-                      // {...params}
-                      placeholder="کد نظام مهندسی"
-                      fullWidth
-                      id="supervision_id"
-                      value={values.supervision_id}
-                      onChange={handleChange}
-                      error={Boolean(
-                        touched.supervision_id && errors.supervision_id
-                      )}
-                      helperText={
-                        touched.supervision_id && errors.supervision_id
-                      }
                     />
                   </Box>
                 </Box>

@@ -60,8 +60,9 @@ function BuildingInfoMobile(props) {
         width: '400px',
         background: 'white',
         padding: '20px',
-        height: '580px',
-        borderRadius: '8px'
+        height: '620px',
+        borderRadius: '8px',
+        overflow: 'auto'
       }}
     >
       <InputLabelHeader style={{ marginRight: '10px' }}>
@@ -134,7 +135,8 @@ function BuildingInfoMobile(props) {
               flexDirection: 'column',
               justifyContent: 'space-between',
               padding: '0px',
-              height: '500px'
+              height: '580px',
+              gap: '20px'
             }}
           >
             <Box>
@@ -279,7 +281,8 @@ function BuildingInfoMobile(props) {
               sx={{
                 display: 'inline-flex',
                 justifyContent: 'center',
-                gap: 2
+                gap: 2,
+                paddingBottom: '10px'
               }}
             >
               <ConfirmButton

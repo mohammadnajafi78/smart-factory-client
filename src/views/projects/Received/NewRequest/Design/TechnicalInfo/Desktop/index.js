@@ -19,7 +19,7 @@ function TechnicalInfoDesktop(props) {
   useEffect(() => {
     httpService
       .get(
-        `${API_BASE_URL}/api/project/design/get_questions/?design_num=${data?.ref_num}`
+        `${API_BASE_URL}/api/project/design/get_questions/?ref_num=${data?.ref_num}`
       )
       .then(res => {
         if (res.status === 200) {
@@ -60,7 +60,7 @@ function TechnicalInfoDesktop(props) {
           setSubmitting(true);
           httpService
             .post(`${API_BASE_URL}/api/project/design/update_design/`, {
-              design_num: '',
+              ref_num: '',
               design_type: [1, 2, 3],
               control: 'MANUAL'
             })

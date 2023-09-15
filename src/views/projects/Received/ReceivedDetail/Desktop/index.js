@@ -1,4 +1,4 @@
-import { Box, Divider, Grid } from '@mui/material';
+import { Box, Divider, Grid, Button } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { Download } from 'react-feather';
 import { useHistory } from 'react-router-dom';
@@ -12,6 +12,13 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader
 import SwiperImg from './Swiper';
 import Tune from 'src/assets/img/tune.png';
 import Engineering from 'src/assets/img/engineering.png';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
+import { useState } from 'react';
+import CustomizedDialogs from 'src/components/Desktop/Dialog';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+import Upload from 'src/assets/img/icons/upload.svg';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -26,6 +33,7 @@ export default function ReceivedDetailDesktop(props) {
   const data = props.data;
   const type = props.type;
   const typeName = props.typeName;
+  const [open, setOpen] = useState(false);
   const history = useHistory();
   console.log('Data1234', data);
 
@@ -50,7 +58,7 @@ export default function ReceivedDetailDesktop(props) {
                 background: '#FFFFFF',
                 borderRadius: '30px 30px 0px 0px',
                 width: '100%',
-                height: '450px',
+                // height: '450px',
                 overflow: 'auto',
                 marginTop: '20px',
                 // position: 'absolute',
@@ -88,9 +96,8 @@ export default function ReceivedDetailDesktop(props) {
                     alignItems: 'center',
                     padding: '2px',
                     gap: '4px',
-                    backgroundColor: JSON.parse(data?.project?.status?.data)
-                      .back,
-                    color: JSON.parse(data?.project?.status?.data).text,
+                    backgroundColor: JSON.parse(data?.status?.data).back,
+                    color: JSON.parse(data?.status?.data).text,
                     padding: '3px 6px',
                     borderRadius: '4px'
                   }}
@@ -99,10 +106,10 @@ export default function ReceivedDetailDesktop(props) {
                     style={{
                       fontWeight: 400,
                       fontSize: '12px',
-                      color: JSON.parse(data?.project?.status?.data).text
+                      color: JSON.parse(data?.status?.data).text
                     }}
                   >
-                    {data?.project?.status?.label}
+                    {data?.status?.label}
                   </InputLabel>
                 </Box>
 
@@ -220,11 +227,70 @@ export default function ReceivedDetailDesktop(props) {
                       {data?.project?.designer_type?.label}
                     </InputLabel>
                   </Box>
-                  {/* <Box sx={{ display: 'inline-flex', mt: 0, ml: 3 }}>
-                <InputLabel style={{ color: '#335D8A', fontSize: '12px' }}>
-                  شرکت
-                </InputLabel>
-              </Box> */}
+                  <Divider sx={{ mt: 2 }} />
+                  {data?.project?.status?.name === 'DESIGNER_CONFIRM' ? (
+                    <Box
+                      sx={{
+                        display: 'inline-flex',
+                        justifyContent: 'center',
+                        gap: 2,
+                        mt: 1
+                      }}
+                    >
+                      <ConfirmButton
+                        disabled={false}
+                        variant="outlined"
+                        onClick={() => {
+                          httpService
+                            .post(
+                              `${API_BASE_URL}/api/project/design/update_design_status/`,
+                              {
+                                ref_num: data?.ref_num,
+                                action: 'Reject',
+                                state: 'Designer'
+                              }
+                            )
+                            .then(res => {
+                              if (res.status === 200) {
+                                console.log('ok');
+                              }
+                            });
+                        }}
+                      >
+                        {'رد'}
+                      </ConfirmButton>
+                      <ConfirmButton
+                        onClick={() => {
+                          httpService
+                            .post(
+                              `${API_BASE_URL}/api/project/design/update_design_status/`,
+                              {
+                                ref_num: data?.ref_num,
+                                action: 'Approve',
+                                state: 'Designer'
+                              }
+                            )
+                            .then(res => {
+                              if (res.status === 200) {
+                                console.log('ok');
+                              }
+                            });
+                        }}
+                      >
+                        {'تایید'}
+                      </ConfirmButton>
+                    </Box>
+                  ) : data?.project?.status?.name === 'DESIGNING' ? (
+                    <ConfirmButton
+                      onClick={() => {
+                        setOpen(true);
+                      }}
+                    >
+                      {'آپلود'}
+                    </ConfirmButton>
+                  ) : (
+                    <></>
+                  )}
                 </Box>
               )}
 
@@ -260,7 +326,210 @@ export default function ReceivedDetailDesktop(props) {
                       {data?.control?.label}
                     </InputLabel>
                   </Box>
+
+                  <Divider sx={{ mt: 2 }} />
+                  {data?.project?.status?.name === 'DESIGNER_CONFIRM' ? (
+                    <Box
+                      sx={{
+                        display: 'inline-flex',
+                        justifyContent: 'center',
+                        gap: 2,
+                        mt: 1
+                      }}
+                    >
+                      <ConfirmButton
+                        disabled={false}
+                        variant="outlined"
+                        onClick={() => {
+                          httpService
+                            .post(
+                              `${API_BASE_URL}/api/project/design/update_bom_status/`,
+                              {
+                                ref_num: data?.ref_num,
+                                action: 'Reject',
+                                state: 'Designer'
+                              }
+                            )
+                            .then(res => {
+                              if (res.status === 200) {
+                                console.log('ok');
+                              }
+                            });
+                        }}
+                      >
+                        {'رد'}
+                      </ConfirmButton>
+                      <ConfirmButton
+                        onClick={() => {
+                          httpService
+                            .post(
+                              `${API_BASE_URL}/api/project/design/update_bom_status/`,
+                              {
+                                ref_num: data?.ref_num,
+                                action: 'Approve',
+                                state: 'Designer'
+                              }
+                            )
+                            .then(res => {
+                              if (res.status === 200) {
+                                console.log('ok');
+                              }
+                            });
+                        }}
+                      >
+                        {'تایید'}
+                      </ConfirmButton>
+                    </Box>
+                  ) : data?.project?.status?.name === 'DESIGNING' ? (
+                    <ConfirmButton
+                      onClick={() => {
+                        setOpen(true);
+                      }}
+                    >
+                      {'آپلود'}
+                    </ConfirmButton>
+                  ) : (
+                    <></>
+                  )}
                 </Box>
+              )}
+
+              {type === 'supervision' && (
+                <>
+                  <Divider sx={{ mt: 2 }} />
+                  {data?.project?.status?.name === 'SUPERVISOR_CONFIRM' ? (
+                    <Box
+                      sx={{
+                        display: 'inline-flex',
+                        justifyContent: 'center',
+                        gap: 2,
+                        mt: 1
+                      }}
+                    >
+                      <ConfirmButton
+                        disabled={false}
+                        variant="outlined"
+                        onClick={() => {
+                          httpService
+                            .post(
+                              `${API_BASE_URL}/api/project/design/update_supervision_status/`,
+                              {
+                                ref_num: data?.ref_num,
+                                action: 'Reject',
+                                state: 'Designer'
+                              }
+                            )
+                            .then(res => {
+                              if (res.status === 200) {
+                                console.log('ok');
+                              }
+                            });
+                        }}
+                      >
+                        {'رد'}
+                      </ConfirmButton>
+                      <ConfirmButton
+                        onClick={() => {
+                          httpService
+                            .post(
+                              `${API_BASE_URL}/api/project/design/update_supervision_status/`,
+                              {
+                                ref_num: data?.ref_num,
+                                action: 'Approve',
+                                state: 'Designer'
+                              }
+                            )
+                            .then(res => {
+                              if (res.status === 200) {
+                                console.log('ok');
+                              }
+                            });
+                        }}
+                      >
+                        {'تایید'}
+                      </ConfirmButton>
+                    </Box>
+                  ) : data?.project?.status?.name === 'PREPARING' ? (
+                    <ConfirmButton
+                      onClick={() => {
+                        setOpen(true);
+                      }}
+                    >
+                      {'آپلود'}
+                    </ConfirmButton>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              )}
+
+              {type === 'supervision' && (
+                <>
+                  <Divider sx={{ mt: 2 }} />
+                  {data?.project?.status?.name === 'SUPERVISOR_CONFIRM' ? (
+                    <Box
+                      sx={{
+                        display: 'inline-flex',
+                        justifyContent: 'center',
+                        gap: 2,
+                        mt: 1
+                      }}
+                    >
+                      <ConfirmButton
+                        disabled={false}
+                        variant="outlined"
+                        onClick={() => {
+                          httpService
+                            .post(
+                              `${API_BASE_URL}/api/project/design/update_supervision_status/`,
+                              {
+                                ref_num: data?.ref_num,
+                                action: 'Reject',
+                                state: 'Designer'
+                              }
+                            )
+                            .then(res => {
+                              if (res.status === 200) {
+                                console.log('ok');
+                              }
+                            });
+                        }}
+                      >
+                        {'رد'}
+                      </ConfirmButton>
+                      <ConfirmButton
+                        onClick={() => {
+                          httpService
+                            .post(
+                              `${API_BASE_URL}/api/project/design/update_supervision_status/`,
+                              {
+                                ref_num: data?.ref_num,
+                                action: 'Approve',
+                                state: 'Designer'
+                              }
+                            )
+                            .then(res => {
+                              if (res.status === 200) {
+                                console.log('ok');
+                              }
+                            });
+                        }}
+                      >
+                        {'تایید'}
+                      </ConfirmButton>
+                    </Box>
+                  ) : data?.project?.status?.name === 'PREPARING' ? (
+                    <ConfirmButton
+                      onClick={() => {
+                        setOpen(true);
+                      }}
+                    >
+                      {'آپلود'}
+                    </ConfirmButton>
+                  ) : (
+                    <></>
+                  )}
+                </>
               )}
             </Box>
           </Grid>
@@ -333,6 +602,179 @@ export default function ReceivedDetailDesktop(props) {
           </Grid>
         </Grid>
       </Box>
+
+      <CustomizedDialogs
+        open={open}
+        handleClose={() => {
+          setOpen(false);
+        }}
+        title={'آپلود فایل'}
+        content={
+          <Formik
+            initialValues={{
+              files: data ? data.files : null
+            }}
+            validationSchema={Yup.object().shape({
+              // province: Yup.string().required('استان اجباری می باشد'),
+              // city: Yup.string().required('شهر اجباری می باشد')
+            })}
+            onSubmit={(values, { setErrors, setSubmitting }) => {
+              if (type === 'design') {
+                const formData = new FormData();
+                formData.append('ref_num', data.ref_num);
+                formData.append('action', 'Approve');
+                formData.append('state', 'Designed');
+                formData.append('DESIGNED_PLAN', values.files[0]);
+
+                setSubmitting(true);
+                httpService
+                  .post(
+                    `${API_BASE_URL}/api/project/design/update_design_status/`,
+                    formData
+                  )
+                  .then(res => {
+                    if (res.status === 200) {
+                      setOpen(false);
+                    }
+                  });
+              } else if (type === 'bom') {
+                const formData = new FormData();
+                formData.append('ref_num', data.ref_num);
+                formData.append('action', 'Approve');
+                formData.append('state', 'Designed');
+                formData.append('BOM', values.files[0]);
+
+                setSubmitting(true);
+                httpService
+                  .post(
+                    `${API_BASE_URL}/api/project/design/update_bom_status/`,
+                    formData
+                  )
+                  .then(res => {
+                    if (res.status === 200) {
+                      setOpen(false);
+                    }
+                  });
+              } else if (type === 'supervision') {
+                const formData = new FormData();
+                formData.append('ref_num', data.ref_num);
+                formData.append('action', 'Approve');
+                formData.append('state', 'Supervised');
+                formData.append('SUPERVISION', values.files[0]);
+
+                setSubmitting(true);
+                httpService
+                  .post(
+                    `${API_BASE_URL}/api/project/design/update_supervision_status/`,
+                    formData
+                  )
+                  .then(res => {
+                    if (res.status === 200) {
+                      setOpen(false);
+                    }
+                  });
+              }
+
+              setSubmitting(false);
+            }}
+          >
+            {({
+              errors,
+              handleBlur,
+              handleChange,
+              handleSubmit,
+              setFieldValue,
+              isSubmitting,
+              touched,
+              values
+            }) => (
+              <form
+                noValidate
+                onSubmit={handleSubmit}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  padding: '0px',
+                  width: '400px',
+                  // height: '540px',
+                  gap: '40px',
+                  overflow: 'auto'
+                }}
+              >
+                <Box>
+                  <Box sx={{ mt: 2 }}>
+                    <InputLabel style={{ fontSize: '13px' }}>
+                      فایل را بارگزاری کنید:
+                    </InputLabel>
+                    <Button
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        padding: '40px 0px',
+                        // gap: '30px',
+                        // width: '480',
+                        height: '150px',
+                        border: '2px dashed #99DDE1',
+                        borderRadius: '4px',
+                        color: '#4F4C4D',
+                        fontFamily: 'IRANSans',
+                        fontWeight: 400,
+                        fontSize: '16px'
+                      }}
+                      component="label"
+                      onChange={event => {
+                        console.log('files', event.target.files);
+                        setFieldValue('files', event.target.files);
+                      }}
+                    >
+                      <img src={Upload} with="33px" height="28px" />
+                      <InputLabel
+                        style={{ color: '#00346D', fontSize: '14px' }}
+                      >
+                        {'انتخاب فایل'}
+                      </InputLabel>
+                      <InputLabel
+                        style={{ color: '#00346D', fontSize: '12px' }}
+                      >
+                        {'حداکثر حجم فایل 3M'}
+                      </InputLabel>
+                      <InputLabel
+                        style={{ color: '#00346D', fontSize: '10px' }}
+                      >
+                        {'فرمت فایل ها:‌DWG, DGN, ACIS'}
+                      </InputLabel>
+                      <input type="file" hidden multiple />
+                    </Button>
+                  </Box>
+                </Box>
+
+                <Box
+                  sx={{
+                    display: 'inline-flex',
+                    justifyContent: 'center',
+                    gap: 2
+                  }}
+                >
+                  <ConfirmButton
+                    disabled={false}
+                    variant="outlined"
+                    onClick={() => {
+                      setOpen(false);
+                    }}
+                    type={'button'}
+                  >
+                    {'لغو'}
+                  </ConfirmButton>
+                  <ConfirmButton type="submit">{'ثبت'}</ConfirmButton>
+                </Box>
+              </form>
+            )}
+          </Formik>
+        }
+      />
     </>
   );
 }

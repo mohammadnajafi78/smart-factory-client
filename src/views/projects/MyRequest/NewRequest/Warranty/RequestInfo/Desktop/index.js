@@ -17,7 +17,7 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
 function RequestInfoDesktop(props) {
-  // let data = props.location.state;
+  let data = props.location.state.data;
   const [requestTypeList, setRequestTypeList] = useState(null);
   const [requestTypeId, setRequestTypeId] = useState(null);
   const [projectList, setProjectList] = useState(null);
@@ -46,29 +46,40 @@ function RequestInfoDesktop(props) {
         initialValues={{
           Desktop: '',
           first_name: '',
-          last_name: '',
-          description: ''
+          last_name: ''
         }}
         validationSchema={Yup.object().shape({
           first_name: Yup.string().required('نام اجباری می باشد'),
           last_name: Yup.string().required('نام خانوادگی اجباری می باشد'),
-          Desktop: Yup.string().required('شماره موبایل اجباری می باشد')
+          mobile: Yup.string().required('شماره موبایل اجباری می باشد')
         })}
         onSubmit={(values, { setErrors, setSubmitting }) => {
           setSubmitting(true);
           httpService
-            .post(`${API_BASE_URL}/api/project/design/add_designer/`, {
-              type: 'OTHER',
-              Desktop: values.Desktop,
-              first_name: values.first_name,
-              last_name: values.last_name
-            })
+            .post(
+              `${API_BASE_URL}/api/project/warranty/update_certificate/
+            `,
+              {
+                ref_num: data?.ref_num,
+                mobile: values.mobile,
+                first_name: values.first_name,
+                last_name: values.last_name
+              }
+            )
             .then(res => {
               if (res.status === 200) {
-                // history.push({
-                //   pathname: '/project/project/new/2'
-                //   // state: res.data
-                // });
+                httpService
+                  .post(
+                    `${API_BASE_URL}/api/project/warranty/submit_certificate/`,
+                    {
+                      ref_num: data?.ref_num
+                    }
+                  )
+                  .then(res => {
+                    if (res.status === 200) {
+                      history.push('/project/request');
+                    }
+                  });
                 setSubmitting(false);
               }
             });
@@ -108,11 +119,11 @@ function RequestInfoDesktop(props) {
                   // {...params}
                   placeholder="نام"
                   fullWidth
-                  id="user_id"
-                  value={values.user_id}
+                  id="first_name"
+                  value={values.first_name}
                   onChange={handleChange}
-                  error={Boolean(touched.user_id && errors.user_id)}
-                  helperText={touched.user_id && errors.user_id}
+                  error={Boolean(touched.first_name && errors.first_name)}
+                  helperText={touched.first_name && errors.first_name}
                 />
               </Box>
               <Box sx={{ mt: 2 }}>
@@ -121,11 +132,11 @@ function RequestInfoDesktop(props) {
                   // {...params}
                   placeholder="نام خانوادگی"
                   fullWidth
-                  id="user_id"
-                  value={values.user_id}
+                  id="last_name"
+                  value={values.last_name}
                   onChange={handleChange}
-                  error={Boolean(touched.user_id && errors.user_id)}
-                  helperText={touched.user_id && errors.user_id}
+                  error={Boolean(touched.last_name && errors.last_name)}
+                  helperText={touched.last_name && errors.last_name}
                 />
               </Box>
               <Box sx={{ mt: 2 }}>
@@ -134,26 +145,11 @@ function RequestInfoDesktop(props) {
                   // {...params}
                   placeholder="شماره موبایل"
                   fullWidth
-                  id="user_id"
-                  value={values.user_id}
+                  id="mobile"
+                  value={values.mobile}
                   onChange={handleChange}
-                  error={Boolean(touched.user_id && errors.user_id)}
-                  helperText={touched.user_id && errors.user_id}
-                />
-              </Box>
-              <Box sx={{ mt: 2 }}>
-                <InputLabel>توضیحات</InputLabel>
-                <TextField
-                  // {...params}
-                  placeholder="توضیحات"
-                  multiline
-                  rows={3}
-                  fullWidth
-                  id="description"
-                  value={values.description}
-                  onChange={handleChange}
-                  error={Boolean(touched.description && errors.description)}
-                  helperText={touched.description && errors.description}
+                  error={Boolean(touched.mobile && errors.mobile)}
+                  helperText={touched.mobile && errors.mobile}
                 />
               </Box>
             </Box>

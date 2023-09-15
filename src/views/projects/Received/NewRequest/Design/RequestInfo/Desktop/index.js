@@ -53,7 +53,7 @@ function RegisterNewRequestDesktop(props) {
           setSubmitting(true);
           httpService
             .post(`${API_BASE_URL}/api/project/design/update_design/`, {
-              design_num: state.data.ref_num,
+              ref_num: state.data.ref_num,
               design_type: designType,
               control: control
             })
@@ -136,7 +136,7 @@ function RegisterNewRequestDesktop(props) {
                     }}
                   >
                     <FormControlLabel
-                      value="TERMOSTATIC"
+                      value="THERMOSTATIC"
                       control={<Radio sx={{ padding: '4px' }} />}
                       label="ترموستاتیک"
                       sx={{

@@ -14,13 +14,21 @@ import { Download } from 'react-feather';
 import Article from 'src/assets/img/article.png';
 
 function InstructionInfoDesktop(props) {
-  // let data = props.location.state;
-  const [requestTypeList, setRequestTypeList] = useState(null);
-  const [requestTypeId, setRequestTypeId] = useState(null);
-  const [projectList, setProjectList] = useState(null);
-  const [projectId, setProjectId] = useState(null);
+  let data = props.location.state;
+  const [files, setFiles] = useState(null);
 
   const history = useHistory();
+  useEffect(() => {
+    httpService
+      .get(
+        `${API_BASE_URL}/api/project/supervision/get_file?ref_num=${data?.ref_num}`
+      )
+      .then(res => {
+        if (res.status === 200) {
+          setFiles(res.data);
+        }
+      });
+  }, []);
 
   return (
     <Box
@@ -45,21 +53,23 @@ function InstructionInfoDesktop(props) {
           project: ''
         }}
         validationSchema={Yup.object().shape({
-          requestTypeName: Yup.string().required('نوع پروژه اجباری می باشد'),
-          project: Yup.string().required('پروژه مورد نظر اجباری می باشد')
+          // requestTypeName: Yup.string().required('نوع پروژه اجباری می باشد'),
+          // project: Yup.string().required('پروژه مورد نظر اجباری می باشد')
         })}
         onSubmit={(values, { setErrors, setSubmitting }) => {
           setSubmitting(true);
+          console.log('inja', data);
           httpService
-            .post(`${API_BASE_URL}/api/project/design/update_design/`, {
-              design_num: '',
-              design_type: [1, 2, 3],
-              control: 'MANUAL'
-            })
+            .post(
+              `${API_BASE_URL}/api/project/supervision/submit_supervision/`,
+              {
+                ref_num: data?.ref_num
+              }
+            )
             .then(res => {
               if (res.status === 200) {
                 history.push({
-                  pathname: '/project/project/new/2'
+                  pathname: '/project/request'
                   // state: res.data
                 });
                 setSubmitting(false);
@@ -98,43 +108,50 @@ function InstructionInfoDesktop(props) {
                 </InputLabel>
                 {/* <ProjectTreeView url="/api/project/get_project_type" /> */}
               </Box>
-              <a
-                href={''}
-                download
-                target="_blank"
-                style={{ textDecoration: 'none', width: '100%' }}
-              >
-                <ConfirmButton
-                  style={{
-                    color: '#6685A7',
-                    backgroundColor: '#E6EBF0',
-                    position: 'relative',
-                    bottom: 0,
-                    marginTop: '30px',
-                    border: 'none',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <Box sx={{ display: 'inline-flex' }}>
-                    <img src={Article} />
-                    <InputLabel style={{ color: '#6685A7' }}>
-                      دستورالعمل
-                    </InputLabel>
-                  </Box>
-                  <Box sx={{ display: 'inline-flex' }}>
-                    <Download
-                      style={{
-                        color: '#00346D',
-                        width: '20px',
-                        height: '20px',
-                        marginLeft: '3px'
-                      }}
-                    />
-                    <InputLabel style={{ color: '#00346D' }}>دانلود</InputLabel>
-                  </Box>
-                </ConfirmButton>
-              </a>
+              {files &&
+                files.map(item => {
+                  return (
+                    <a
+                      href={''}
+                      download
+                      target="_blank"
+                      style={{ textDecoration: 'none', width: '100%' }}
+                    >
+                      <ConfirmButton
+                        style={{
+                          color: '#6685A7',
+                          backgroundColor: '#E6EBF0',
+                          position: 'relative',
+                          bottom: 0,
+                          marginTop: '30px',
+                          border: 'none',
+                          display: 'flex',
+                          justifyContent: 'space-between'
+                        }}
+                      >
+                        <Box sx={{ display: 'inline-flex' }}>
+                          <img src={Article} />
+                          <InputLabel style={{ color: '#6685A7' }}>
+                            دستورالعمل
+                          </InputLabel>
+                        </Box>
+                        <Box sx={{ display: 'inline-flex' }}>
+                          <Download
+                            style={{
+                              color: '#00346D',
+                              width: '20px',
+                              height: '20px',
+                              marginLeft: '3px'
+                            }}
+                          />
+                          <InputLabel style={{ color: '#00346D' }}>
+                            دانلود
+                          </InputLabel>
+                        </Box>
+                      </ConfirmButton>
+                    </a>
+                  );
+                })}
             </Box>
             <Box
               sx={{
@@ -156,7 +173,7 @@ function InstructionInfoDesktop(props) {
               >
                 {'بازگشت'}
               </ConfirmButton>
-              <ConfirmButton type="submit">{'بعدی'}</ConfirmButton>
+              <ConfirmButton type="submit">{'ثبت'}</ConfirmButton>
             </Box>
           </form>
         )}

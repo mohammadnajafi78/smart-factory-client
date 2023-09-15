@@ -70,7 +70,7 @@ function PhotoInfoMobile(props) {
                       : props.location.state1.project_num
                   })
                   .then(result => {
-                    if (result.state === 200) {
+                    if (result.status === 200) {
                       if (data) {
                         history.push({
                           pathname: '/project/project/',
