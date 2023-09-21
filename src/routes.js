@@ -696,6 +696,15 @@ const routes = [
         )
       },
       {
+        exact: true,
+        guard: AuthGuard,
+        path: '/management/project/received',
+        // layout: SalesDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/management/projects/received/Index.js')
+        )
+      },
+      {
         component: () => <Redirect to="/management/user/home" />
       }
     ]

@@ -274,7 +274,7 @@ export default function DrawerComp(props) {
         }
       });
   }, []);
-
+console.log(menu)
   return (
     <Box>
       <Drawer
