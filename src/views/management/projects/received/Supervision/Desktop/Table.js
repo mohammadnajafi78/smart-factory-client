@@ -26,7 +26,7 @@ let item = {};
 const ReceiveTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(25);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [filter, setFilter] = useState('');
@@ -45,17 +45,17 @@ const ReceiveTable = props => {
     setSort('');
   }, [reset]);
 
-  useEffect(() => {
-    httpService
-      .get(
-        `${API_BASE_URL}/api/management/project/get_received/?limit=10&offset=0`
-      )
-      .then(res => {
-        if (res.status === 200) {
-          setStatusList(res.data);
-        }
-      });
-  }, []);
+  // useEffect(() => {
+  //   httpService
+  //     .get(
+  //       `${API_BASE_URL}/api/management/project/get_receive_request?type=SUPERVISION&limit=10&offset=0`
+  //     )
+  //     .then(res => {
+  //       if (res.status === 200) {
+  //         setStatusList(res.data.results);
+  //       }
+  //     });
+  // }, []);
 
   useEffect(() => {
     if (filter.length === 0 && sort.length === 0 && reset === true) {
@@ -63,18 +63,17 @@ const ReceiveTable = props => {
       setReset(false);
     }
   }, [filter, sort]);
-
   useEffect(() => {
     setColumns([
       {
-        name: 'project_num',
+        name: 'project.project_num',
         label: 'شماره پروژه',
         options: {
           filter: false
         }
       },
       {
-        name: 'name',
+        name: 'project.name',
         label: 'عنوان',
         options: {
           filter: true
@@ -84,26 +83,72 @@ const ReceiveTable = props => {
         name: 'create_date',
         label: 'تاریخ پروژه',
         options: {
-          filter: true
+          filter: true,
+          customBodyRender: value => {
+            return (
+              <div>
+                {/* {moment(value, 'YYYY/MM/DD HH:mm:ss', 'fa')
+                  .format.p2e('YYYY/MM/DD')
+                  .toLocaleLowerCase('fa')} */}
+                {MomentFa(value)}
+              </div>
+            );
+          }
         }
       },
       {
         //should edit
-        name: 'user',
+        name: 'project.user',
         label: 'کاربر ثبت کننده پروژه',
         options: {
-          filter: true
+          filter: true,
+          customBodyRender: value => {
+            return (
+              <>
+                {
+                  <div
+                    style={{
+                      fontSize: '12px',
+                      paddingRight: '12px',
+                      display: 'flex',
+                      justifyContent: 'start'
+                    }}
+                  >
+                    {value.first_name} {value.last_name}
+                  </div>
+                }
+              </>
+            );
+          }
         }
       },
       {
-        name: 'supervisor_type',
+        name: 'project.supplier',
         label: 'تامین کننده',
         options: {
-          filter: false
+          filter: false,
+          customBodyRender: value => {
+            return (
+              <>
+                {
+                  <div
+                    style={{
+                      fontSize: '12px',
+                      paddingRight: '8px',
+                      display: 'flex',
+                      justifyContent: 'start'
+                    }}
+                  >
+                    {value.first_name} {value.last_name}
+                  </div>
+                }
+              </>
+            );
+          }
         }
       },
       {
-        name: 'status.label',
+        name: 'status',
         label: 'وضعیت',
         options: {
           customBodyRender: value => {
@@ -183,7 +228,7 @@ const ReceiveTable = props => {
   function getData(page, rowsPerPage, search) {
     httpService
       .post(
-        `${API_BASE_URL}/api/management/project/get_received/?limit=${rowsPerPage}&offset=${page *
+        `${API_BASE_URL}/api/management/project/get_receive_request/?type=SUPERVISION&limit=${rowsPerPage}&offset=${page *
           rowsPerPage}${filter !== '' ? `&${filter}` : ''}`,
         {
           order: sort,
@@ -192,76 +237,50 @@ const ReceiveTable = props => {
       )
       .then(res => {
         if (res.status === 200) {
-          //   setData(res.data.results);
-          //   setCount(res.data.count);
           setData(res.data.results);
           setCount(res.data.count);
+          setStatusList(res.data.results);
         }
       });
   }
 
   function onFilterChange(column, filterList, type) {
-    // let filterNames = [
-    //   'id',
-    //   'user_info.first_name',
-    //   'user_info.last_name',
-    //   '',
-    //   'create_date__gte',
-    //   'create_date__lte',
-    //   'current_state.label'
-    // ];
-    // let filterType = [
-    //   '',
-    //   '__contains',
-    //   '__contains',
-    //   '',
-    //   '',
-    //   '',
-    //   '__icontains'
-    // ];
-
     switch (column) {
-      case 'user_info.first_name':
+      case 'name':
         if (filterList[1][0]) {
-          item['user__first_name__icontains'] = filterList[1][0];
+          item['name__icontains'] = filterList[1][0];
           // filterType = '__contains';
         } else {
-          delete item['user__first_name__icontains'];
+          delete item['name__icontains'];
+          setState(null);
         }
         break;
-      case 'user_info.last_name':
-        if (filterList[2][0]) {
-          item['user__last_name__icontains'] = filterList[2][0];
-          // filterType = '__contains';
-        } else {
-          delete item['user__last_name__icontains'];
-        }
-        break;
-
       case 'create_date':
-        if (filterList[4][0]) {
-          item['create_date__gte'] = startDate;
+        if (filterList[2][0]) {
+          item['create_date__gte'] = filterList[2][0];
           // filterType = '__gte';
         } else {
           delete item['create_date__gte'];
         }
         break;
-      case 'end_date':
-        if (filterList[5][0]) {
-          item['create_date__lte'] = endDate;
-          // filterType = '__lte';
+      case 'user':
+        if (filterList[3][0]) {
+          item['user__icontains'] = filterList[2][0];
+          // filterType = '__contains';
         } else {
-          delete item['create_date__lte'];
+          delete item['user__icontains'];
+          setState(null);
         }
         break;
-      case 'current_state.label':
+
+      case 'status.label':
         if (filterList[6][0]) {
-          item['order_state__icontains'] = statusList.filter(
+          item['status.label__icontains'] = statusList.filter(
             f => f.label === filterList[6][0]
           )[0].name;
           // filterType = '';
         } else {
-          delete item['current_state.label'];
+          delete item['status.label'];
           setState(null);
         }
         break;
@@ -294,37 +313,20 @@ const ReceiveTable = props => {
     let itemSort = {};
 
     switch (changedColumn) {
-      case 'order_num':
-        itemSort['order_num'] = direction;
+      case 'project_num':
+        itemSort['project_num'] = direction;
         break;
       case 'name':
         itemSort['name'] = direction;
         break;
-      case 'start_date':
+      case 'create_date':
         itemSort['start_date'] = direction;
         break;
-      case 'end_date':
-        itemSort['end_date'] = direction;
-        break;
-      case 'participant_count':
-        itemSort['participant_count'] = direction;
-        break;
-      case 'status':
-        itemSort['status'] = direction;
-        break;
+
       default:
         itemSort = itemSort;
     }
 
-    // let temp = itemSort;
-    // let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
-
-    // let str = [];
-    // if (filterItems?.length > 0) {
-    //   filterItems.map((itm, index) => {
-    //     str.push(itm[1] === 'asc' ? itm[0] : `-${itm[0]}`);
-    //   });
-    // }
     let temp = itemSort;
     let filterItems = Object.keys(temp).map(key => [key, temp[key]]);
 
@@ -334,49 +336,30 @@ const ReceiveTable = props => {
         str = itm[1] === 'asc' ? itm[0] : `-${itm[0]}`;
       });
     }
+    console.log(str);
     setSort(str);
   }
-
-  // function onRowClick(rowData, rowState) {
-  //   history.push({
-  //     pathname: '/management/sale/received/detail',
-  //     state: {
-  //       data: data.filter(f => f.order_num === rowData[0])
-  //     }
-  //   });
-  // }
-
-  // function onRowsDelete(rowsDeleted, newData) {
-  //   const matchNums = [];
-  //   rowsDeleted.data.map((item, index) => {
-  //     matchNums.push(data[item.index].match_num);
-  //   });
-
-  //   httpService
-  //     .post(`${API_BASE_URL}/api/management/club/matches/match_delete/`, {
-  //       match_nums: matchNums
-  //     })
-  //     .then(res => {
-  //       if (res.status === 200) {
-  //         getData(page, rowsPerPage, '');
-  //       }
-  //     });
-  // }
-
-  function onRowSelectionChange(rowsSelectedData, allRows, rowsSelected) {
-    // console.log('rowsSelectedData', rowsSelectedData);
-    // console.log('allRows', allRows);
-    // console.log('rowsSelected', rowsSelected);
+  function onRowClick(rowData, rowState) {
+    history.push({
+      pathname: '/management/project/received/supervision/details',
+      state: {
+        data: data?.filter(f => f?.project?.project_num === rowData[0])
+      }
+    });
   }
+
+  function onRowsDelete(rowsDeleted, newData) {}
+
+  function onRowSelectionChange(rowsSelectedData, allRows, rowsSelected) {}
 
   return (
     <Table
       title={'پروژه‌های دریافتی'}
-      // data={data}
+      data={data}
       columns={columns}
       rowsPerPage={rowsPerPage}
       setRowsPerPage={setRowsPerPage}
-      // count={count}
+      count={count}
       page={page}
       filter={filter}
       sort={sort}
@@ -391,10 +374,10 @@ const ReceiveTable = props => {
       getData={(page, rowsPerPage, search) =>
         getData(page, rowsPerPage, search)
       }
-      // onRowClick={(rowData, rowState) => onRowClick(rowData, rowState)}
-      // onFilterChange={(column, filterList, type) =>
-      //   onFilterChange(column, filterList, type)
-      // }
+      onRowClick={(rowData, rowState) => onRowClick(rowData, rowState)}
+      onFilterChange={(column, filterList, type) =>
+        onFilterChange(column, filterList, type)
+      }
       onColumnSortChange={(changedColumn, direction) =>
         onColumnSortChange(changedColumn, direction)
       }
