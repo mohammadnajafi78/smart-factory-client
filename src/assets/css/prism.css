@@ -5,14 +5,14 @@ pre {
   background-color: #191c27;
   padding: 16px;
   font-size: 14px;
-  margin-bottom: 24px
+  margin-bottom: 24px;
 }
 
-code[class*="language-"],
-pre[class*="language-"] {
+code[class*='language-'],
+pre[class*='language-'] {
   color: rgb(191, 199, 213);
   font-family: IRANSans !important;
-	font-weight: 300;
+  font-weight: 300;
   /* font-family:IRANSans,IRANSans,Vazir, Inconsolata, Monaco, Consolas, 'Courier New', Courier, monospace; */
   direction: ltr;
   text-align: left;
@@ -25,22 +25,25 @@ pre[class*="language-"] {
 }
 
 /* Code blocks */
-pre[class*="language-"] {
+pre[class*='language-'] {
   padding: 1em;
-  margin: .5em 0;
+  margin: 0.5em 0;
   overflow: auto;
   border-radius: 0.3em;
 }
 
-:not(pre) > code[class*="language-"],
-pre[class*="language-"] {
+:not(pre) > code[class*='language-'],
+pre[class*='language-'] {
   background: #1d1f21;
 }
-
+textarea:focus,
+input:focus {
+  outline: none;
+}
 /* Inline code */
-:not(pre) > code[class*="language-"] {
-  padding: .1em;
-  border-radius: .3em;
+:not(pre) > code[class*='language-'] {
+  padding: 0.1em;
+  border-radius: 0.3em;
 }
 
 .token.prolog {
@@ -79,7 +82,8 @@ pre[class*="language-"] {
   color: rgb(250, 200, 99);
 }
 
-.token.boolean {}
+.token.boolean {
+}
 
 .token.constant {
   color: rgb(100, 102, 149);
@@ -121,7 +125,7 @@ pre[class*="language-"] {
   color: rgb(197, 165, 197);
 }
 
-.token.string{
+.token.string {
   color: rgb(195, 232, 141);
 }
 
@@ -134,34 +138,34 @@ pre[class*="language-"] {
 }
 
 .token.operator {
-  color: #EDEDED;
+  color: #ededed;
 }
 
 .token.entity {
-  color: #FFFFB6;
+  color: #ffffb6;
   cursor: help;
 }
 
 .token.url {
-  color: #96CBFE;
+  color: #96cbfe;
 }
 
 .language-css .token.string,
 .style .token.string {
-  color: #87C38A;
+  color: #87c38a;
 }
 
 .token.atrule,
 .token.attr-value {
-  color: #F9EE98;
+  color: #f9ee98;
 }
 
 .token.function {
-  color: rgb(121, 182, 242)
+  color: rgb(121, 182, 242);
 }
 
 .token.regex {
-  color: #E9C062;
+  color: #e9c062;
 }
 
 .token.important {
@@ -179,22 +183,20 @@ pre[class*="language-"] {
 
 .orientleft #shell {
   -webkit-transform: rotate(-90deg);
-  -webkit-transform-origin:160px 160px;
+  -webkit-transform-origin: 160px 160px;
 }
 
 .orientright #shell {
   -webkit-transform: rotate(90deg);
-  -webkit-transform-origin:230px 230px;
-} 
+  -webkit-transform-origin: 230px 230px;
+}
 
-
-
-.mui-datatables-wnkla-MuiGrid-root>.MuiGrid-item {
-    padding-top: 10px;
+.mui-datatables-wnkla-MuiGrid-root > .MuiGrid-item {
+  padding-top: 10px;
 }
 
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
+input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 textarea:-webkit-autofill,
 textarea:-webkit-autofill:hover,
@@ -202,7 +204,7 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-    -webkit-box-shadow: 0 0 0px 1000px #F2F2F2 inset;
-    height: 7px;
-    padding: 18px 10px
+  -webkit-box-shadow: 0 0 0px 1000px #f2f2f2 inset;
+  height: 7px;
+  padding: 18px 10px;
 }
