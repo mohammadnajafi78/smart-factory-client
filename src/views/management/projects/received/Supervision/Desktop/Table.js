@@ -354,7 +354,7 @@ const ReceiveTable = props => {
 
   return (
     <Table
-      title={'پروژه‌های دریافتی'}
+      title={'لیست'}
       data={data}
       columns={columns}
       rowsPerPage={rowsPerPage}
