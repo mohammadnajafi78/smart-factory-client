@@ -353,12 +353,20 @@ const ReceiveTable = props => {
   }
 
   function onRowClick(rowData, rowState) {
-    history.push({
-      pathname: '/management/project/received/design/details',
-      state: {
-        data: data.filter(f => f.project_num === rowData[0])
-      }
-    });
+    httpService
+      .get(
+        `${API_BASE_URL}/api/management/project/get_project/?project_num=${rowData[0]}`
+      )
+      .then(res => {
+        if (res.status === 200) {
+          history.push({
+            pathname: '/management/project/received/design/details',
+            state: {
+              data: res.data
+            }
+          });
+        }
+      });
   }
 
   function onRowsDelete(rowsDeleted, newData) {}

@@ -38,6 +38,8 @@ import RejectRequest from '../../../ReceivedDetails/Desktop/RejectRequest';
 import AcceptRequest from '../../../ReceivedDetails/Desktop/AcceptRequest';
 
 export default function OrderMobile(props) {
+  console.log('props', props);
+
   const [path, setPath] = useState('');
   const [data, setData] = useState('');
   const [cancel, setCancel] = useState();
@@ -47,13 +49,15 @@ export default function OrderMobile(props) {
 
   useEffect(() => {
     if (props.location.state) {
-      setData(props.location.state.data[0]);
+      setData(props.location.state.data);
     } else {
       history.push({
         pathname: '/management/project/received/design/'
       });
     }
   });
+
+  console.log('data', data);
 
   return (
     <>
@@ -124,7 +128,8 @@ export default function OrderMobile(props) {
                   />{' '}
                   <InputLabel style={{ color: '#00AAB5' }}> آدرس: </InputLabel>
                   <InputLabel style={{ color: '#335D8A' }}>
-                    {data?.location}
+                    {data?.location?.province_name} -{' '}
+                    {data?.location?.city_name} - {data?.location?.address}
                   </InputLabel>
                 </div>
               </div>
@@ -132,7 +137,11 @@ export default function OrderMobile(props) {
                 style={{
                   display: 'inline-flex',
                   width: '100%',
-                  marginBottom: 16
+                  marginBottom: 16,
+                  padding: '6px',
+                  justifyContent: 'right',
+                  alignItems: 'right',
+                  gap: '4px'
                 }}
               >
                 <BusinessOutlined
@@ -142,7 +151,22 @@ export default function OrderMobile(props) {
                   نوع ساختمان:{' '}
                 </InputLabel>
                 <InputLabel style={{ color: '#335D8A' }}>
-                  {data?.building_type}
+                  {data?.building_type?.label}
+                </InputLabel>
+                <InputLabel
+                  sx={{
+                    borderRadius: '4px',
+                    background: '#E6EBF0',
+                    boxShadow: 3
+                  }}
+                >
+                  {data?.area} {'متر مربع'}
+                </InputLabel>
+                <InputLabel style={{ color: '#335D8A' }}>
+                  {data?.floor_count} {'طبقه - '}
+                </InputLabel>
+                <InputLabel style={{ color: '#335D8A' }}>
+                  {data?.unit_count} {'واحد در مجموع'}
                 </InputLabel>
               </div>
               <div
@@ -173,9 +197,15 @@ export default function OrderMobile(props) {
                   style={{ color: '#00AAB5', fontSize: '22px' }}
                 />{' '}
                 <InputLabel style={{ color: '#00AAB5' }}>نوع پروژه:</InputLabel>
-                <InputLabel style={{ color: '#335D8A' }}>
-                  {data?.project_type && data?.project_type[0]?.name}
-                </InputLabel>
+                {data?.project_type?.map(prj => {
+                  console.log(prj);
+                  return (
+                    <InputLabel style={{ color: '#335D8A' }}>
+                      {prj?.name}
+                      {' / '}
+                    </InputLabel>
+                  );
+                })}
               </div>
               <div
                 style={{
@@ -190,7 +220,7 @@ export default function OrderMobile(props) {
                 />{' '}
                 <InputLabel style={{ color: '#00AAB5' }}>محصولات:</InputLabel>
                 <InputLabel style={{ color: '#335D8A' }}>
-                  {/* {data?.detail_translate.item_fa} */}
+                  {data?.material_brand}
                 </InputLabel>
               </div>
               {/* <div
@@ -344,7 +374,7 @@ export default function OrderMobile(props) {
                   سفارش دهنده:{' '}
                 </InputLabel>
                 <InputLabel style={{ color: '#335D8A' }}>
-                  {/* {data?.} */}
+                  {data?.user?.first_name} {data?.user?.last_name}
                 </InputLabel>
               </div>
               <div
@@ -359,7 +389,7 @@ export default function OrderMobile(props) {
                   تامین کننده:{' '}
                 </InputLabel>
                 <InputLabel style={{ color: '#335D8A' }}>
-                  {data?.supplier}
+                  {data?.supplier?.first_name} {data?.supplier?.last_name}
                 </InputLabel>
               </div>
               <Divider sx={{ marginBottom: '20px' }} />
@@ -377,7 +407,7 @@ export default function OrderMobile(props) {
                   نوع طراحی:{' '}
                 </InputLabel>
                 <InputLabel style={{ color: '#335D8A' }}>
-                  {data?.designer_type}
+                  {data?.designer_type?.label}
                 </InputLabel>
               </div>
               <div style={{ display: 'flex' }}>
