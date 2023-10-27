@@ -936,6 +936,109 @@ const routes = [
         )
       },
       {
+        exact: true,
+        guard: AuthGuard,
+        path: '/management/project/received/design',
+        // layout: SalesDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/management/projects/received/Design/Index.js')
+        )
+      },
+      {
+        exact: true,
+        guard: AuthGuard,
+        path: '/management/project/received/',
+        // layout: SalesDashboardLayoutForm,
+        component: () => <Redirect to="/management/project/received/design" />
+      },
+      {
+        exact: true,
+        guard: AuthGuard,
+        path: '/management/project/received/design/details',
+        // layout: SalesDashboardLayoutForm,
+        component: lazy(() =>
+          import(
+            'src/views/management/projects/received/Design/designdetails/Index'
+          )
+        )
+      },
+      {
+        exact: true,
+        guard: AuthGuard,
+        path: '/management/project/home',
+        // layout: SalesDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/management/projects/Home/index')
+        )
+      },
+      {
+        exact: true,
+        guard: AuthGuard,
+        path: '/management/project/received/bom',
+        // layout: SalesDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/management/projects/received/BOM/Index')
+        )
+      },
+      {
+        exact: true,
+        guard: AuthGuard,
+        path: '/management/project/received/bom/details',
+        // layout: SalesDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/management/projects/received/BOM/BomDetails/Index')
+        )
+      },
+      {
+        exact: true,
+        guard: AuthGuard,
+        path: '/management/project/received/supervision',
+        // layout: SalesDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/management/projects/received/Supervision/Index')
+        )
+      },
+      {
+        exact: true,
+        guard: AuthGuard,
+        path: '/management/project/received/supervision/details',
+        // layout: SalesDashboardLayoutForm,
+        component: lazy(() =>
+          import(
+            'src/views/management/projects/received/Supervision/SupervisionDetails/Index'
+          )
+        )
+      },
+      {
+        exact: true,
+        guard: AuthGuard,
+        path: '/management/project/received/certificate',
+        // layout: SalesDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/management/projects/received/Warranty/Index')
+        )
+      },
+      {
+        exact: true,
+        guard: AuthGuard,
+        path: '/management/project/received/certificate/details',
+        // layout: SalesDashboardLayoutForm,
+        component: lazy(() =>
+          import(
+            'src/views/management/projects/received/Warranty/WarrantyDetails/Index'
+          )
+        )
+      },
+      {
+        exact: true,
+        guard: AuthGuard,
+        path: '/management/project/report',
+        // layout: SalesDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/management/projects/report/index')
+        )
+      },
+      {
         component: () => <Redirect to="/management/user/home" />
       }
     ]
