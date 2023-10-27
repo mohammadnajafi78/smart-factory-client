@@ -22,6 +22,7 @@ function BuildingInfoMobile(props) {
   const [projectTypeId, setProjectTypeId] = useState(null);
   const history = useHistory();
   let data = props.location.state;
+  console.log('building data', props.location);
 
   useEffect(() => {
     httpService
@@ -32,7 +33,7 @@ function BuildingInfoMobile(props) {
           res.data.map(item =>
             item.child.map(sub =>
               temp.push({
-                label: item.name + '/' + sub.name,
+                name: item.name + '/' + sub.name,
                 id: sub.id
               })
             )
@@ -77,7 +78,7 @@ function BuildingInfoMobile(props) {
           floor_count: data ? data.floor_count : '',
           unit_count: data ? data.unit_count : '',
           pipe_length: data ? data.pipe_length : '',
-          projectTypeName: data ? data.project_type.label : ''
+          projectTypeName: data ? data.project_type : ''
         }}
         validationSchema={Yup.object().shape({
           // province: Yup.string().required('استان اجباری می باشد'),
@@ -240,7 +241,7 @@ function BuildingInfoMobile(props) {
                     //     ? values.projectTypeName.map(item => item.label)
                     //     : values.projectTypeName
                     // }
-                    // value={values.projectTypeName}
+                    defaultValue={values.projectTypeName}
                     renderInput={params => (
                       <TextField
                         {...params}
@@ -256,7 +257,7 @@ function BuildingInfoMobile(props) {
                       if (newValue) {
                         setFieldValue(
                           'projectTypeName',
-                          newValue.map(item => item.label)
+                          newValue.map(item => item.name)
                         );
                         setProjectTypeId(newValue.map(item => item.id));
                       } else {
@@ -264,9 +265,9 @@ function BuildingInfoMobile(props) {
                       }
                     }}
                     isOptionEqualToValue={(option, value) =>
-                      option.label === value.label
+                      option.name === value.name
                     }
-                    // getOptionLabel={option => option.name}
+                    getOptionLabel={option => option.name}
                     noOptionsText={'موردی یافت نشد'}
                     sx={{
                       '.MuiOutlinedInput-root': {
@@ -296,7 +297,7 @@ function BuildingInfoMobile(props) {
                 }}
                 type={'button'}
               >
-                {'بارگشت'}
+                {'بازگشت'}
               </ConfirmButton>
               <ConfirmButton type="submit">{'ادامه'}</ConfirmButton>
             </Box>

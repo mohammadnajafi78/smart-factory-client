@@ -11,7 +11,8 @@ import { API_BASE_URL } from 'src/utils/urls';
 import * as Yup from 'yup';
 import CustomizedProgressBars from 'src/components/Desktop/ProgressBar';
 import Upload from 'src/assets/img/icons/upload.svg';
-
+import Delete from 'src/assets/img/icons/delete.svg';
+import Attach from 'src/assets/img/icons/attach.svg';
 function PhotoInfoMobile(props) {
   const [provinces, setProvinces] = useState(null);
   const [provinceId, setProvinceId] = useState(null);
@@ -31,7 +32,8 @@ function PhotoInfoMobile(props) {
         background: 'white',
         padding: '20px',
         height: '580px',
-        borderRadius: '8px'
+        borderRadius: '8px',
+        overflow: 'auto'
       }}
     >
       <InputLabelHeader style={{ marginRight: '10px' }}>
@@ -109,7 +111,7 @@ function PhotoInfoMobile(props) {
               flexDirection: 'column',
               justifyContent: 'space-between',
               padding: '0px',
-              height: '500px'
+              height: '480px'
             }}
           >
             <Box>
@@ -117,33 +119,123 @@ function PhotoInfoMobile(props) {
                 <InputLabel style={{ fontSize: '13px' }}>
                   شما میتوانید ۱ تا ۵ عکس برای این پروژه آپلود کنید:
                 </InputLabel>
-                <Button
+                <Box
                   sx={{
                     display: 'flex',
-                    flexDirection: 'column',
                     justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: '40px 0px',
-                    gap: '30px',
-                    // width: '480',
-                    height: '150px',
-                    border: '2px dashed #99DDE1',
-                    borderRadius: '4px',
-                    color: '#4F4C4D',
-                    fontFamily: 'IRANSans',
-                    fontWeight: 400,
-                    fontSize: '16px'
-                  }}
-                  component="label"
-                  onChange={event => {
-                    console.log('files', event.target.files);
-                    setFieldValue('files', event.target.files);
+                    width: '100%',
+                    marginBottom: '30px'
                   }}
                 >
-                  <img src={Upload} with="33px" height="28px" />
-                  {'انتخاب فایل'}
-                  <input type="file" hidden multiple />
-                </Button>
+                  {!file ? (
+                    <Button
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        padding: '40px 0px',
+                        gap: '30px',
+                        // width: '480',
+                        height: '150px',
+                        border: '2px dashed #99DDE1',
+                        borderRadius: '4px',
+                        color: '#4F4C4D',
+                        fontFamily: 'IRANSans',
+                        fontWeight: 400,
+                        fontSize: '16px',
+                        width: '100%'
+                      }}
+                      component="label"
+                      onChange={event => {
+                        // console.log('fileeeeee', event.target.files);
+                        setFile(Array.from(event.target.files));
+                      }}
+                    >
+                      <img src={Upload} with="33px" height="28px" />
+                      {'انتخاب فایل'}
+                      <input type="file" hidden multiple={true} />
+                    </Button>
+                  ) : (
+                    <Box
+                      sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}
+                    >
+                      {file.map((item, index) => {
+                        return (
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              justifyContent: 'flex-end',
+                              alignItems: 'center',
+                              padding: '20px 0px 5px',
+                              gap: '20px',
+                              // width: '480px',
+                              height: '300px',
+                              border: '2px dashed #99DDE1',
+                              borderRadius: '4px'
+                            }}
+                          >
+                            <img
+                              src={URL.createObjectURL(item)}
+                              width="300px"
+                              height="150px"
+                              style={{ borderRadius: '8px' }}
+                            />
+                            <InputLabel style={{ color: '#335D8A' }}>
+                              {item.name}
+                            </InputLabel>
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'space-around',
+                                width: '100%'
+                              }}
+                            >
+                              <Button
+                                sx={{
+                                  fontFamily: 'IRANSans',
+                                  fontSize: '16px',
+                                  fontWeight: 400
+                                }}
+                                onClick={() => {
+                                  if (
+                                    file.filter(f => f.name !== item.name)
+                                      .length > 0
+                                  )
+                                    setFile(
+                                      file.filter(f => f.name !== item.name)
+                                    );
+                                  else setFile(null);
+                                }}
+                              >
+                                <img src={Delete} width="13px" height="13px" />
+                                پاک کردن
+                              </Button>
+                              {/* <Button
+                                sx={{
+                                  fontFamily: 'IRANSans',
+                                  fontSize: '16px',
+                                  fontWeight: 400
+                                }}
+                                component="label"
+                                onChange={e => {
+                                  // setFile(e.target.files);
+                                  setFile(Array.from(event.target.files));
+                                }}
+                              >
+                                <img src={Attach} width="13px" height="20px" />
+                                تغییر فایل
+                                <input type="file" hidden multiple={true} />
+                              </Button> */}
+                            </Box>
+                          </Box>
+                        );
+                      })}
+                    </Box>
+                  )}
+                </Box>
               </Box>
               {/* {values.files !== undefined &&
                 values.files !== null &&
@@ -193,7 +285,7 @@ function PhotoInfoMobile(props) {
                 }}
                 type={'button'}
               >
-                {'بارگشت'}
+                {'بازگشت'}
               </ConfirmButton>
               <ConfirmButton type="submit">{'ثبت پروژه'}</ConfirmButton>
             </Box>

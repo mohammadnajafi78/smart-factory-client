@@ -79,7 +79,7 @@ export const ProjectSearchProvider = ({ children }) => {
   const setProjectSearchResult = search => {
     if (search.length > 0) {
       httpService
-        .post(`${API_BASE_URL}/api/project/get_sent?search=${search}`)
+        .post(`${API_BASE_URL}/api/project/get_sent/?search=${search}`)
         .then(result => {
           if (result.status === 200) {
             dispatch({
@@ -105,7 +105,7 @@ export const ProjectSearchProvider = ({ children }) => {
   };
 
   const getProjects = () => {
-    httpService.get(`${API_BASE_URL}/api/project/get_sent/`).then(result => {
+    httpService.post(`${API_BASE_URL}/api/project/get_sent/`).then(result => {
       if (result.status === 200) {
         dispatch({
           type: 'GET_PROJECTS',

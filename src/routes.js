@@ -15,6 +15,8 @@ import SalesDashboardLayoutForm from './layouts/Sales/SalesDashboardLayoutForm';
 import ProjectDashboardLayout from './layouts/Projects/ProjectsDashboardLayout';
 import ProjectDashboardLayoutForm from './layouts/Projects/ProjectsDashboardLayoutForm';
 import ProjectDashboardLayoutBack from './layouts/Projects/ProjectsDashboardLayoutBack';
+import LmsDashboardLayout from './layouts/Lms/LmsDashboardLayout';
+import LmsDashboardLayoutBack from './layouts/Lms/LmsDashboardLayoutBack';
 
 export const renderRoutes = (routes = []) => (
   <Suspense fallback={<LoadingScreen />}>
@@ -416,13 +418,6 @@ const routes = [
         path: '/sale/tripartite',
         component: lazy(() => import('src/views/sales/Tripartite'))
       },
-      // {
-      //   exact: true,
-      //   path: '/club/getAwards',
-      //   layout: ClubDashboardLayoutBack,
-      //   component: lazy(() => import('src/views/club/Awards/GetAwards'))
-      // },
-
       {
         component: lazy(() =>
           import('src/views/sales/Send/SendDetail/Desktop/index')
@@ -433,7 +428,6 @@ const routes = [
   {
     path: '/project',
     guard: AuthGuard,
-    // layout: ProjectDashboardLayout,
     routes: [
       {
         exact: true,
@@ -628,6 +622,64 @@ const routes = [
       {
         component: lazy(() => import('src/views/projects/Project/index')),
         layout: ProjectDashboardLayout
+      }
+    ]
+  },
+  {
+    path: '/lms',
+    guard: AuthGuard,
+    routes: [
+      {
+        exact: true,
+        path: '/lms/profile',
+        layout: LmsDashboardLayout,
+        component: lazy(() => import('src/views/lms/Profile/index'))
+      },
+      {
+        exact: true,
+        path: '/lms/course',
+        layout: LmsDashboardLayout,
+        component: lazy(() => import('src/views/lms/Courses'))
+      },
+      {
+        exact: true,
+        path: '/lms/course/detail',
+        layout: LmsDashboardLayoutBack,
+        component: lazy(() => import('src/views/lms/Courses/CourseDetail'))
+      },
+      {
+        exact: true,
+        path: '/lms/course/class',
+        layout: LmsDashboardLayoutBack,
+        component: lazy(() => import('src/views/lms/Courses/CourseClass'))
+      },
+      {
+        exact: true,
+        path: '/lms/exam',
+        layout: LmsDashboardLayout,
+        component: lazy(() => import('src/views/lms/Exams'))
+      },
+      {
+        exact: true,
+        path: '/lms/exam/detail',
+        layout: LmsDashboardLayoutBack,
+        component: lazy(() => import('src/views/lms/Exams/ExamDetail'))
+      },
+      {
+        exact: true,
+        path: '/lms/exam/questions',
+        layout: LmsDashboardLayoutBack,
+        component: lazy(() => import('src/views/lms/Exams/ExamQuestions'))
+      },
+      {
+        exact: true,
+        path: '/lms/calendar',
+        layout: LmsDashboardLayout,
+        component: lazy(() => import('src/views/lms/Calendar'))
+      },
+      {
+        component: lazy(() => import('src/views/lms/Profile/index')),
+        layout: LmsDashboardLayout
       }
     ]
   },

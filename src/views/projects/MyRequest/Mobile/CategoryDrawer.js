@@ -1,12 +1,10 @@
 import { Box, Drawer } from '@mui/material';
-import React, { useEffect, useState } from 'react';
 import makeStyles from '@mui/styles/makeStyles';
+import { useEffect, useState } from 'react';
+import { ChevronLeft } from 'react-feather';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import httpService from 'src/utils/httpService';
-import { API_BASE_URL } from 'src/utils/urls';
-import InputLabel from 'src/components/Mobile/InputLabel';
 import DoubleBox from 'src/components/Mobile/DoubleBox';
-import { ChevronLeft, Star } from 'react-feather';
+import InputLabel from 'src/components/Mobile/InputLabel';
 import useSaleSearch from 'src/hooks/useSaleSearch';
 
 const useStyles = makeStyles(theme => ({

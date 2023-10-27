@@ -33,7 +33,7 @@ function BuildingInfoMobile(props) {
           res.data.map(item =>
             item.child.map(sub =>
               temp.push({
-                label: item.name + '/' + sub.name,
+                name: item.name + '/' + sub.name,
                 id: sub.id
               })
             )
@@ -234,7 +234,7 @@ function BuildingInfoMobile(props) {
                     //     ? values.projectTypeName.map(item => item.label)
                     //     : values.projectTypeName
                     // }
-                    // value={values.projectTypeName}
+                    defaultValue={values.projectTypeName}
                     renderInput={params => (
                       <TextField
                         {...params}
@@ -250,7 +250,7 @@ function BuildingInfoMobile(props) {
                       if (newValue) {
                         setFieldValue(
                           'projectTypeName',
-                          newValue.map(item => item.label)
+                          newValue.map(item => item.name)
                         );
                         setProjectTypeId(newValue.map(item => item.id));
                       } else {
@@ -258,9 +258,9 @@ function BuildingInfoMobile(props) {
                       }
                     }}
                     isOptionEqualToValue={(option, value) =>
-                      option.label === value.label
+                      option.name === value.name
                     }
-                    // getOptionLabel={option => option.name}
+                    getOptionLabel={option => option.name}
                     noOptionsText={'موردی یافت نشد'}
                     sx={{
                       '.MuiOutlinedInput-root': {

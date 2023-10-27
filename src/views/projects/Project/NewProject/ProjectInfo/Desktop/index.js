@@ -12,7 +12,9 @@ import * as Yup from 'yup';
 import CustomizedProgressBars from 'src/components/Desktop/ProgressBar';
 
 function ProjectInfoDesktop(props) {
+  // let data = props.location.state;
   let data = props.location.state;
+  console.log('state', props.location.state);
   const [provinces, setProvinces] = useState(null);
   const [provinceId, setProvinceId] = useState(
     data ? data.location.province : null
@@ -23,6 +25,11 @@ function ProjectInfoDesktop(props) {
   const [statusId, setStatusId] = useState(
     data ? data.project_state.name : null
   );
+  // const [data, setData] = useState(
+  //   props.location.state?.back === true
+  //     ? props.location.state?.data
+  //     : props.location.state
+  // );
   const history = useHistory();
 
   useEffect(() => {
@@ -55,6 +62,21 @@ function ProjectInfoDesktop(props) {
           setStatusList(res.data);
         }
       });
+  }, []);
+
+  useEffect(() => {
+    if (props.location.state?.back === true) {
+      httpService
+        .get(
+          `${API_BASE_URL}/api/project/get_project?project_num=${data.project_num}`
+        )
+        .then(res => {
+          if (res.status === 200) {
+            console.log('inja', res.data);
+            // setSelected(res.data);
+          }
+        });
+    }
   }, []);
 
   return (
@@ -125,7 +147,7 @@ function ProjectInfoDesktop(props) {
                 if (res.status === 201) {
                   history.push({
                     pathname: '/project/project/new/2',
-                    state1: res.data
+                    state: res.data
                   });
                   setSubmitting(false);
                 }

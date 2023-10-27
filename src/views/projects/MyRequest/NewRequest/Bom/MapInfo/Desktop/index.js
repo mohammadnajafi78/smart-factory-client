@@ -1,5 +1,6 @@
 import { Box, Button } from '@mui/material';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Upload from 'src/assets/img/icons/upload.svg';
@@ -9,7 +10,6 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader
 import CustomizedProgressBars from 'src/components/Desktop/ProgressBar';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import * as Yup from 'yup';
 
 function MapInfoDesktop(props) {
   const [provinces, setProvinces] = useState(null);
