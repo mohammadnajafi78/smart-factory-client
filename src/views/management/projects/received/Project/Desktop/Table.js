@@ -68,29 +68,22 @@ const ReceiveTable = props => {
   useEffect(() => {
     setColumns([
       {
-        name: 'project.project_num',
+        name: 'project_num',
         label: 'شماره پروژه',
-        options: {
-          filter: true
-        }
-      },
-      {
-        name: 'project.name',
-        label: 'نام پروژه',
-        options: {
-          filter: true
-        }
-      },
-      {
-        name: 'ref_num',
-        label: 'شماره درخواست',
         options: {
           filter: false
         }
       },
       {
+        name: 'name',
+        label: 'عنوان',
+        options: {
+          filter: true
+        }
+      },
+      {
         name: 'create_date',
-        label: 'تاریخ درخواست',
+        label: 'تاریخ پروژه',
         options: {
           customBodyRender: value => {
             return <div>{MomentFa(value)}</div>;
@@ -153,18 +146,17 @@ const ReceiveTable = props => {
       },
       {
         //should edit
-        name: 'project.user.first_name',
-        label: 'نام کاربر',
+        name: 'user',
+        label: 'کاربر ثبت کننده پروژه',
         options: {
           filter: true
         }
       },
       {
-        //should edit
-        name: 'project.user.last_name',
-        label: 'نام خانوادگی کاربر',
+        name: 'supplier',
+        label: 'تامین کننده',
         options: {
-          filter: true
+          filter: false
         }
       },
       {
@@ -248,7 +240,7 @@ const ReceiveTable = props => {
   function getData(page, rowsPerPage, search) {
     httpService
       .post(
-        `${API_BASE_URL}/api/management/project/design/get_received/?limit=${rowsPerPage}&offset=${page *
+        `${API_BASE_URL}/api/management/project/get_received/?limit=${rowsPerPage}&offset=${page *
           rowsPerPage}${filter !== '' ? `&${filter}` : ''}`,
         {
           order: sort,
@@ -266,67 +258,41 @@ const ReceiveTable = props => {
 
   function onFilterChange(column, filterList, type) {
     switch (column) {
-      case 'project.project_num':
-        if (filterList[0][0]) {
-          item['project__project_num__icontains'] = filterList[0][0];
-          // filterType = '__contains';
-        } else {
-          delete item['project__project_num__icontains'];
-          setState(null);
-        }
-        break;
-      case 'project.name':
+      case 'name':
         if (filterList[1][0]) {
-          item['project__name__icontains'] = filterList[1][0];
+          item['name__icontains'] = filterList[1][0];
           // filterType = '__contains';
         } else {
-          delete item['project__name__icontains'];
-          setState(null);
-        }
-        break;
-      case 'ref_num':
-        if (filterList[2][0]) {
-          item['ref_num__icontains'] = filterList[2][0];
-          // filterType = '__contains';
-        } else {
-          delete item['ref_num__icontains'];
+          delete item['name__icontains'];
           setState(null);
         }
         break;
       case 'create_date':
-        if (filterList[3][0]) {
-          item['create_date__gte'] = filterList[3][0];
+        if (filterList[2][0]) {
+          item['create_date__gte'] = filterList[2][0];
           // filterType = '__gte';
         } else {
           delete item['create_date__gte'];
         }
         break;
-      case 'project.user.first_name':
-        if (filterList[4][0]) {
-          item['project__user__first_name__icontains'] = filterList[4][0];
+      case 'user':
+        if (filterList[3][0]) {
+          item['user__icontains'] = filterList[2][0];
           // filterType = '__contains';
         } else {
-          delete item['project__user__first_name__icontains'];
+          delete item['user__icontains'];
           setState(null);
         }
         break;
-      case 'project.user.last_name':
-        if (filterList[5][0]) {
-          item['project__user__last_name__icontains'] = filterList[5][0];
-          // filterType = '__contains';
-        } else {
-          delete item['project__user__last_name__icontains'];
-          setState(null);
-        }
-        break;
+
       case 'status.label':
         if (filterList[6][0]) {
-          item['status'] = statusList.filter(
+          item['status.label__icontains'] = statusList.filter(
             f => f.label === filterList[6][0]
           )[0].name;
           // filterType = '';
         } else {
-          delete item['status'];
+          delete item['status.label'];
           setState(null);
         }
         break;
@@ -359,27 +325,16 @@ const ReceiveTable = props => {
     let itemSort = {};
 
     switch (changedColumn) {
-      case 'project.project_num':
-        itemSort['project.project_num'] = direction;
+      case 'project_num':
+        itemSort['project_num'] = direction;
         break;
-      case 'project.name':
-        itemSort['project.name'] = direction;
-        break;
-      case 'ref_num':
-        itemSort['ref_num'] = direction;
+      case 'name':
+        itemSort['name'] = direction;
         break;
       case 'create_date':
-        itemSort['create_date'] = direction;
+        itemSort['start_date'] = direction;
         break;
-      case 'project.user.first_name':
-        itemSort['project.user.first_name'] = direction;
-        break;
-      case 'project.user.last_name':
-        itemSort['project.user.last_name'] = direction;
-        break;
-      case 'status.label':
-        itemSort['status.label'] = direction;
-        break;
+
       default:
         itemSort = itemSort;
     }
@@ -398,7 +353,6 @@ const ReceiveTable = props => {
   }
 
   function onRowClick(rowData, rowState) {
-    console.log('row data', rowData);
     httpService
       .get(
         `${API_BASE_URL}/api/management/project/get_project/?project_num=${rowData[0]}`
@@ -406,7 +360,7 @@ const ReceiveTable = props => {
       .then(res => {
         if (res.status === 200) {
           history.push({
-            pathname: '/management/project/received/design/details',
+            pathname: '/management/project/received/project/details',
             state: {
               data: res.data
             }
@@ -421,7 +375,7 @@ const ReceiveTable = props => {
 
   return (
     <Table
-      title={'درخواست های طراحی دریافتی'}
+      title={'پروژه‌های دریافتی'}
       data={data}
       columns={columns}
       rowsPerPage={rowsPerPage}

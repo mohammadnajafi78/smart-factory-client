@@ -25,7 +25,7 @@ export default function HomeDesktop() {
 
   function getOrderCounts() {
     httpService
-      .get(`${API_BASE_URL}/api/management/order/get_order_count_state`)
+      .get(`${API_BASE_URL}/api/management/project/get_project_count_state`)
       .then(res => {
         if (res.status === 200) {
           console.log('rees', res);
@@ -37,7 +37,7 @@ export default function HomeDesktop() {
   function getLastWeekConfirmOrders() {
     httpService
       .get(
-        `${API_BASE_URL}/api/management/order/get_order_count/?create_date__lt=${MomentEn(
+        `${API_BASE_URL}/api/management/project/get_project_count/?create_date__lt=${MomentEn(
           tomorrow
         )}&create_date__gt=${MomentEn(yesterday)}&period=daily`
       )
@@ -51,7 +51,7 @@ export default function HomeDesktop() {
   function getLastWeekDeliveryOrders() {
     httpService
       .get(
-        `${API_BASE_URL}/api/management/order/get_order_count/?create_date__lt=${MomentEn(
+        `${API_BASE_URL}/api/management/project/get_project_count/?create_date__lt=${MomentEn(
           tomorrow
         )}&create_date__gt=${MomentEn(
           yesterday
@@ -67,7 +67,7 @@ export default function HomeDesktop() {
   function getCountUserSend() {
     httpService
       .get(
-        `${API_BASE_URL}/api/management/order/get_order_count_user?group=ordered`
+        `${API_BASE_URL}/api/management/project/get_project_count_user?group=ordered`
       )
       .then(res => {
         if (res.status === 200) {
@@ -79,7 +79,7 @@ export default function HomeDesktop() {
   function getCountUserReceived() {
     httpService
       .get(
-        `${API_BASE_URL}/api/management/order/get_order_count_user?group=supplied`
+        `${API_BASE_URL}/api/management/project/get_project_count_user?group=supplied`
       )
       .then(res => {
         if (res.status === 200) {
@@ -127,7 +127,7 @@ export default function HomeDesktop() {
               />
             )}
             <InputLabel style={{ color: '#6685A7' }}>
-              سفارشات تایید شده
+              پروژه های تایید شده
             </InputLabel>
           </Box>
         </Grid>
@@ -151,7 +151,7 @@ export default function HomeDesktop() {
               />
             )}
             <InputLabel style={{ color: '#6685A7' }}>
-              سفارشات در انتظار تایید
+              پروژه های در انتظار تایید
             </InputLabel>
           </Box>
         </Grid>
@@ -173,7 +173,7 @@ export default function HomeDesktop() {
               {orderCounts && orderCounts.total}
             </InputLabelHeader>
             <InputLabel style={{ color: '#00346D' }}>
-              تعداد کل سفارشات دریافتی
+              تعداد کل پروژه های ثبت شده
             </InputLabel>
           </Box>
         </Grid>
@@ -200,7 +200,7 @@ export default function HomeDesktop() {
                 fontWeight: 700
               }}
             >
-              سفارشات ثبت شده هفته گذشته
+              پروژه های ثبت شده هفته گذشته
             </InputLabelHeader>
             <SaleBarChart data={confirmOrders} />
           </Box>
@@ -226,7 +226,7 @@ export default function HomeDesktop() {
                 fontWeight: 700
               }}
             >
-              سفارشات ارسالی به دفتر فروش هفته گذشته
+              پروژه های ارسالی به دفتر فروش هفته گذشته
             </InputLabelHeader>
             <SaleBarChart data={deliveryOrders} />
           </Box>
@@ -255,7 +255,7 @@ export default function HomeDesktop() {
                 fontWeight: 700
               }}
             >
-              کاربران با بیشترین سفارش ارسالی
+              کاربران با بیشترین پروژه ثبت شده
             </InputLabelHeader>
             <SaleBarChart2 data={userSend} />
           </Box>
@@ -281,7 +281,7 @@ export default function HomeDesktop() {
                 fontWeight: 700
               }}
             >
-              کاربران با بیشترین سفارش دریافتی
+              کاربران با بیشترین پروژه ثبت شده
             </InputLabelHeader>
             <SaleBarChart2 data={userReceived} />
           </Box>

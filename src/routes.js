@@ -938,18 +938,38 @@ const routes = [
       {
         exact: true,
         guard: AuthGuard,
-        path: '/management/project/received/design',
+        path: '/management/project/received/',
+        // layout: SalesDashboardLayoutForm,
+        component: () => <Redirect to="/management/project/received/project" />
+      },
+      {
+        exact: true,
+        guard: AuthGuard,
+        path: '/management/project/received/project',
         // layout: SalesDashboardLayoutForm,
         component: lazy(() =>
-          import('src/views/management/projects/received/Design/Index.js')
+          import('src/views/management/projects/received/Project/Index.js')
         )
       },
       {
         exact: true,
         guard: AuthGuard,
-        path: '/management/project/received/',
+        path: '/management/project/received/project/details',
         // layout: SalesDashboardLayoutForm,
-        component: () => <Redirect to="/management/project/received/design" />
+        component: lazy(() =>
+          import(
+            'src/views/management/projects/received/Project/ProjectDetail/Index'
+          )
+        )
+      },
+      {
+        exact: true,
+        guard: AuthGuard,
+        path: '/management/project/received/design',
+        // layout: SalesDashboardLayoutForm,
+        component: lazy(() =>
+          import('src/views/management/projects/received/Design/Index.js')
+        )
       },
       {
         exact: true,
