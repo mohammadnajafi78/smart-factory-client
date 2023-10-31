@@ -38,8 +38,6 @@ import RejectRequest from '../../../ReceivedDetails/Desktop/RejectRequest';
 import AcceptRequest from '../../../ReceivedDetails/Desktop/AcceptRequest';
 
 export default function ProjectDesktop(props) {
-  console.log('props', props);
-
   const [path, setPath] = useState('');
   const [data, setData] = useState('');
   const [cancel, setCancel] = useState();
@@ -198,7 +196,6 @@ export default function ProjectDesktop(props) {
                 />{' '}
                 <InputLabel style={{ color: '#00AAB5' }}>نوع پروژه:</InputLabel>
                 {data?.project_type?.map(prj => {
-                  console.log(prj);
                   return (
                     <InputLabel style={{ color: '#335D8A' }}>
                       {prj?.name}
@@ -549,13 +546,11 @@ export default function ProjectDesktop(props) {
                     <>
                       <RejectRequest
                         state={'Designer'}
-                        api={
-                          '/api/management/project/project/update_project_status/'
-                        }
+                        api={'/api/management/project/update_project_status/'}
                         postInfo={{
-                          ref_num: data.project_num,
+                          project_num: data?.project_num,
                           action: 'Reject',
-                          state: 'Designer'
+                          state: 'Office'
                         }}
                         cancel={() => setCancel(false)}
                       />
@@ -565,13 +560,11 @@ export default function ProjectDesktop(props) {
                   )}
                   {accept ? (
                     <AcceptRequest
-                      api={
-                        '/api/management/project/project/update_project_status/'
-                      }
+                      api={'/api/management/project/update_project_status/'}
                       postInfo={{
-                        ref_num: data?.ref_num,
+                        project_num: data?.project_num,
                         action: 'Approve',
-                        state: 'Certificated'
+                        state: 'Office'
                       }}
                       accept={() => setAccept(false)}
                     />

@@ -146,15 +146,15 @@ const ReceiveTable = props => {
       },
       {
         //should edit
-        name: 'user',
-        label: 'کاربر ثبت کننده پروژه',
+        name: 'user.first_name',
+        label: 'نام کاربر',
         options: {
           filter: true
         }
       },
       {
-        name: 'supplier',
-        label: 'تامین کننده',
+        name: 'user.last_name',
+        label: 'نام خانوادگی کاربر',
         options: {
           filter: false
         }
@@ -258,6 +258,15 @@ const ReceiveTable = props => {
 
   function onFilterChange(column, filterList, type) {
     switch (column) {
+      case 'project_num':
+        if (filterList[0][0]) {
+          item['project_num__icontains'] = filterList[0][0];
+          // filterType = '__contains';
+        } else {
+          delete item['project_num__icontains'];
+          setState(null);
+        }
+        break;
       case 'name':
         if (filterList[1][0]) {
           item['name__icontains'] = filterList[1][0];
@@ -275,24 +284,32 @@ const ReceiveTable = props => {
           delete item['create_date__gte'];
         }
         break;
-      case 'user':
+      case 'user.first_name':
         if (filterList[3][0]) {
-          item['user__icontains'] = filterList[2][0];
+          item['user__first_name__icontains'] = filterList[3][0];
           // filterType = '__contains';
         } else {
-          delete item['user__icontains'];
+          delete item['user__first_name__icontains'];
           setState(null);
         }
         break;
-
-      case 'status.label':
-        if (filterList[6][0]) {
-          item['status.label__icontains'] = statusList.filter(
-            f => f.label === filterList[6][0]
+      case 'user.last_name':
+        if (filterList[4][0]) {
+          item['user__last_name__icontains'] = filterList[4][0];
+          // filterType = '__contains';
+        } else {
+          delete item['user__last_name__icontains'];
+          setState(null);
+        }
+        break;
+      case 'status':
+        if (filterList[5][0]) {
+          item['status'] = statusList.filter(
+            f => f.label === filterList[5][0]
           )[0].name;
           // filterType = '';
         } else {
-          delete item['status.label'];
+          delete item['status'];
           setState(null);
         }
         break;

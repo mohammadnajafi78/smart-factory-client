@@ -23,9 +23,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 export default function ProjectDetailDesktop(props) {
-  const data = props.data;
-  const type = props.type;
-  const typeName = props.typeName;
+  const data = props.location.state.data;
+  const type = props.location.state.type;
+  const typeName = props.location.state.typeName;
   const history = useHistory();
 
   return (

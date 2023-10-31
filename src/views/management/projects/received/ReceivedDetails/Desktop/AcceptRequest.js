@@ -45,6 +45,7 @@ const AcceptRequest = ({ accept, postInfo, api }) => {
           const formData = new FormData();
           formData.append('DESIGNED_PLAN', values.file);
           formData.append('ref_num', postInfo.ref_num);
+          formData.append('project_num', postInfo.project_num);
           formData.append('action', postInfo.action);
           formData.append('state', postInfo.state);
 

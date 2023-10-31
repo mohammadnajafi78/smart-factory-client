@@ -401,7 +401,7 @@ const ReceiveTable = props => {
     console.log('row data', rowData);
     httpService
       .get(
-        `${API_BASE_URL}/api/management/project/get_project/?project_num=${rowData[0]}`
+        `${API_BASE_URL}/api/management/project/design/get_design/?ref_num=${rowData[2]}`
       )
       .then(res => {
         if (res.status === 200) {
