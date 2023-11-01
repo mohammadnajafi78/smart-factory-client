@@ -168,7 +168,7 @@ const ReceiveTable = props => {
         }
       },
       {
-        name: 'status',
+        name: 'project.status',
         label: 'وضعیت',
         options: {
           customBodyRender: value => {
@@ -398,7 +398,6 @@ const ReceiveTable = props => {
   }
 
   function onRowClick(rowData, rowState) {
-    console.log('row data', rowData);
     httpService
       .get(
         `${API_BASE_URL}/api/management/project/design/get_design/?ref_num=${rowData[2]}`
@@ -412,6 +411,10 @@ const ReceiveTable = props => {
             }
           });
         }
+      })
+      .catch(err => {
+        enqueueSnackbar('پروژه معتبر نیست', { variant: 'error' });
+        console.log(err);
       });
   }
 

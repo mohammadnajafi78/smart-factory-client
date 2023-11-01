@@ -340,12 +340,24 @@ const ReceiveTable = props => {
     setSort(str);
   }
   function onRowClick(rowData, rowState) {
-    history.push({
-      pathname: '/management/project/received/supervision/details',
-      state: {
-        data: data?.filter(f => f?.project?.project_num === rowData[0])
-      }
-    });
+    httpService
+      .get(
+        `${API_BASE_URL}/api/management/project/get_project/?project_num=${rowData[0]}`
+      )
+      .then(res => {
+        if (res.status === 200) {
+          history.push({
+            pathname: '/management/project/received/project/details',
+            state: {
+              data: res.data
+            }
+          });
+        }
+      })
+      .catch(err => {
+        enqueueSnackbar('پروژه معتبر نیست', { variant: 'error' });
+        console.log(err);
+      });
   }
 
   function onRowsDelete(rowsDeleted, newData) {}

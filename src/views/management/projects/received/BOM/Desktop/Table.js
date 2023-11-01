@@ -51,6 +51,7 @@ const ReceiveTable = props => {
       setReset(false);
     }
   }, [filter, sort]);
+
   useEffect(() => {
     setColumns([
       {
@@ -228,6 +229,7 @@ const ReceiveTable = props => {
           setData(res.data.results);
           setCount(res.data.count);
           setStatusList(res.data.results);
+          console.log(data);
         }
       });
   }
@@ -323,14 +325,25 @@ const ReceiveTable = props => {
   }
 
   function onRowClick(rowData, rowState) {
-    history.push({
-      pathname: '/management/project/received/bom/details',
-      state: {
-        data: data?.filter(f => f?.project?.project_num === rowData[0])
-      }
-    });
+    httpService
+      .get(
+        `${API_BASE_URL}/api/management/project/get_project/?project_num=${rowData[0]}`
+      )
+      .then(res => {
+        if (res.status === 200) {
+          history.push({
+            pathname: '/management/project/received/project/details',
+            state: {
+              data: res.data
+            }
+          });
+        }
+      })
+      .catch(err => {
+        enqueueSnackbar('پروژه معتبر نیست', { variant: 'error' });
+        console.log(err);
+      });
   }
-  // console.log(data?.filter(f => f.project.project_num === 'PRJ2302002230912'));
   function onRowsDelete(rowsDeleted, newData) {}
 
   function onRowSelectionChange(rowsSelectedData, allRows, rowsSelected) {}

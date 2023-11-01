@@ -337,12 +337,29 @@ const ReceiveTable = props => {
     setSort(str);
   }
   function onRowClick(rowData, rowState) {
-    history.push({
-      pathname: '/management/project/received/certificate/details',
-      state: {
-        data: data?.filter(f => f?.project?.project_num === rowData[0])
-      }
-    });
+    console.log(
+      data?.filter(f => f?.project?.project_num === rowData[0])[0].ref_num
+    );
+    httpService
+      .get(
+        `${API_BASE_URL}/api/management/project/design/get_design/?ref_num=${
+          data?.filter(f => f?.project?.project_num === rowData[0])[0].ref_num
+        }`
+      )
+      .then(res => {
+        if (res.status === 200) {
+          history.push({
+            pathname: '/management/project/received/certificate/details',
+            state: {
+              data: res.data
+            }
+          });
+        }
+      })
+      .catch(err => {
+        enqueueSnackbar('پروژه معتبر نیست', { variant: 'error' });
+        console.log(err);
+      });
   }
 
   function onRowsDelete(rowsDeleted, newData) {}

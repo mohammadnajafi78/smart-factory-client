@@ -55,8 +55,6 @@ export default function ProjectDesktop(props) {
     }
   });
 
-  console.log('data', data);
-
   return (
     <>
       <Grid container spacing={2}>
@@ -220,22 +218,6 @@ export default function ProjectDesktop(props) {
                   {data?.material_brand}
                 </InputLabel>
               </div>
-              {/* <div
-                style={{
-                  display: 'inline-flex',
-                  width: '100%',
-                  marginBottom: 16
-                }}
-              >
-                {' '}
-                <ManageAccountsOutlined
-                  style={{ color: '#00AAB5', fontSize: '22px' }}
-                />{' '}
-                <InputLabel style={{ color: '#00AAB5' }}>نوع پروژه:</InputLabel>
-                <InputLabel style={{ color: '#335D8A' }}>
-                  {data?.supervisor_type}
-                </InputLabel>
-              </div> */}
             </Box>
           </Box>
           <Box
@@ -439,7 +421,7 @@ export default function ProjectDesktop(props) {
                     طراحی توسط:{' '}
                   </InputLabel>
                   <InputLabel style={{ color: '#335D8A' }}>
-                    {data?.designer}
+                    {(data?.designer?.first_name, data?.designer?.last_name)}
                   </InputLabel>
                 </div>
               </div>
@@ -459,119 +441,122 @@ export default function ProjectDesktop(props) {
                 </InputLabel>
               </div>
               <Box>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    // justifyContent: 'center',
-                    // alignItems: 'center',
-                    padding: '12px',
-                    gap: '17px',
-                    width: '100%',
-                    // height: '100px',
-                    backgroundColor: '#E6EBF0',
-                    borderRadius: '4px',
-                    color: '#00346D',
-                    fontFamily: 'IRANSans',
-                    fontWeight: 400,
-                    fontSize: '16px'
-                  }}
-                >
-                  {!cancel && !accept ? (
-                    <>
-                      <div
-                        style={{
-                          display: 'flex'
-                        }}
-                      >
-                        <LiveHelpOutlined
-                          style={{ color: '#00AAB5', fontSize: '22px' }}
-                        />
-                        وضعیت درخواست را مشخص کنید :
-                      </div>
-                      <div
-                        style={{
-                          display: 'flex',
-                          gap: '10px',
-                          alignSelf: 'end'
-                        }}
-                      >
-                        <ConfirmButton
+                {data?.status?.name === '' ? (
+                  <></>
+                ) : (
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+
+                      padding: '12px',
+                      gap: '17px',
+                      width: '100%',
+
+                      backgroundColor: '#E6EBF0',
+                      borderRadius: '4px',
+                      color: '#00346D',
+                      fontFamily: 'IRANSans',
+                      fontWeight: 400,
+                      fontSize: '16px'
+                    }}
+                  >
+                    {!cancel && !accept ? (
+                      <>
+                        <div
                           style={{
-                            width: '90px',
-                            height: '32px',
-                            fontSize: '13px',
-                            padding: '0'
-                          }}
-                          disabled={false}
-                          onClick={() => {
-                            setCancel(true);
+                            display: 'flex'
                           }}
                         >
-                          <Close
-                            style={{
-                              color: '',
-                              fontSize: '18px',
-                              padding: '0'
-                            }}
+                          <LiveHelpOutlined
+                            style={{ color: '#00AAB5', fontSize: '22px' }}
                           />
-                          عدم تایید
-                        </ConfirmButton>
-                        <ConfirmButton
+                          وضعیت درخواست را مشخص کنید :
+                        </div>
+                        <div
                           style={{
-                            background: '#00346D',
-                            width: '125px',
-                            height: '32px',
-                            fontSize: '13px',
-                            padding: '0'
-                          }}
-                          disabled={false}
-                          type={'submit'}
-                          onClick={() => {
-                            setAccept(true);
+                            display: 'flex',
+                            gap: '10px',
+                            alignSelf: 'end'
                           }}
                         >
-                          <Done
+                          <ConfirmButton
                             style={{
-                              color: '',
-                              fontSize: '18px',
+                              width: '90px',
+                              height: '32px',
+                              fontSize: '13px',
                               padding: '0'
                             }}
-                          />{' '}
-                          تایید درخواست
-                        </ConfirmButton>
-                      </div>
-                    </>
-                  ) : cancel ? (
-                    <>
-                      <RejectRequest
-                        state={'Designer'}
+                            disabled={false}
+                            onClick={() => {
+                              setCancel(true);
+                            }}
+                          >
+                            <Close
+                              style={{
+                                color: '',
+                                fontSize: '18px',
+                                padding: '0'
+                              }}
+                            />
+                            عدم تایید
+                          </ConfirmButton>
+                          <ConfirmButton
+                            style={{
+                              background: '#00346D',
+                              width: '125px',
+                              height: '32px',
+                              fontSize: '13px',
+                              padding: '0'
+                            }}
+                            disabled={false}
+                            type={'submit'}
+                            onClick={() => {
+                              setAccept(true);
+                            }}
+                          >
+                            <Done
+                              style={{
+                                color: '',
+                                fontSize: '18px',
+                                padding: '0'
+                              }}
+                            />{' '}
+                            تایید درخواست
+                          </ConfirmButton>
+                        </div>
+                      </>
+                    ) : cancel ? (
+                      <>
+                        <RejectRequest
+                          state={'Designer'}
+                          api={'/api/management/project/update_project_status/'}
+                          postInfo={{
+                            project_num: data?.project_num,
+                            action: 'Reject',
+                            state: 'Office'
+                          }}
+                          cancel={() => setCancel(false)}
+                        />
+                      </>
+                    ) : (
+                      ''
+                    )}
+                    {accept ? (
+                      <AcceptRequest
                         api={'/api/management/project/update_project_status/'}
                         postInfo={{
                           project_num: data?.project_num,
-                          action: 'Reject',
+                          action: 'Approve',
                           state: 'Office'
                         }}
-                        cancel={() => setCancel(false)}
+                        accept={() => setAccept(false)}
                       />
-                    </>
-                  ) : (
-                    ''
-                  )}
-                  {accept ? (
-                    <AcceptRequest
-                      api={'/api/management/project/update_project_status/'}
-                      postInfo={{
-                        project_num: data?.project_num,
-                        action: 'Approve',
-                        state: 'Office'
-                      }}
-                      accept={() => setAccept(false)}
-                    />
-                  ) : (
-                    ''
-                  )}
-                </div>
+                    ) : (
+                      ''
+                    )}
+                  </div>
+                )}
               </Box>
             </Box>
           </Box>
