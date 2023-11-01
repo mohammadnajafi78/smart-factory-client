@@ -33,8 +33,8 @@ function RegisterNewRequestMobile(props) {
   useEffect(() => {
     if (requestTypeId) {
       httpService
-        .get(
-          `${API_BASE_URL}/api/project/get_project_list?action=${requestTypeId.toLowerCase()}`
+        .post(
+          `${API_BASE_URL}/api/project/get_project_list/?action=${requestTypeId.toLowerCase()}`
         )
         .then(res => {
           if (res.status === 200) {

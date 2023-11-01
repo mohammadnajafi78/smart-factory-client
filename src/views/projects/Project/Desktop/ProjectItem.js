@@ -94,6 +94,14 @@ export default function ProjectItem({ data, selected, setSelected }) {
               >
                 {data?.name}
               </InputLabel>
+            </Box>
+            <Box
+              sx={{
+                display: 'inline-flex',
+                justifyContent: 'space-between',
+                width: '100%'
+              }}
+            >
               <InputLabel
                 style={{
                   fontWeight: 500,
@@ -106,16 +114,29 @@ export default function ProjectItem({ data, selected, setSelected }) {
               </InputLabel>
             </Box>
           </Box>
-          <InputLabel
-            style={{
-              fontWeight: 400,
-              fontSize: '12px',
-              color: '#335D8A'
-              //
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'start',
+              alignItems: 'center',
+              padding: '2px',
+              gap: '4px',
+              color: '#6685A7',
+              padding: '3px 6px',
+              borderRadius: '4px'
             }}
           >
-            {data?.status?.label}
-          </InputLabel>
+            <InputLabel
+              style={{
+                fontWeight: 400,
+                fontSize: '12px',
+                color: '#335D8A'
+              }}
+            >
+              {data?.project_state?.label}
+            </InputLabel>
+          </Box>
         </Box>
       </Box>
       <Box
@@ -126,8 +147,10 @@ export default function ProjectItem({ data, selected, setSelected }) {
           alignItems: 'center',
           padding: '0px',
           gap: '4px',
-          backgroundColor: '#DDF5F6',
-          color: '#335D8A',
+          // backgroundColor: '#DDF5F6',
+          // color: '#335D8A',
+          color: JSON.parse(data?.status?.data).text,
+          background: JSON.parse(data?.status?.data).back,
           // width: '100%',
           // height: '25px',
           padding: '3px 6px',
@@ -137,11 +160,13 @@ export default function ProjectItem({ data, selected, setSelected }) {
         <InputLabel
           style={{
             fontWeight: 400,
-            fontSize: '12px',
-            color: '#335D8A'
+            fontSize: '12px'
+            // color: '#335D8A',
+
+            //
           }}
         >
-          {data?.project_state?.label}
+          {data?.status?.label}
         </InputLabel>
       </Box>
       <Box

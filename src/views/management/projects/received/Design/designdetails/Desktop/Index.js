@@ -36,6 +36,8 @@ import RejectRequest from '../../../ReceivedDetails/Desktop/RejectRequest';
 import AcceptRequest from '../../../ReceivedDetails/Desktop/AcceptRequest';
 import MomentFa from 'src/utils/MomentFa';
 import Loading from 'src/components/Desktop/Loading';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
 export default function OrderMobile(props) {
   console.log('props', props);
@@ -345,11 +347,11 @@ export default function OrderMobile(props) {
                             padding: '3px 6px !important',
                             background:
                               data?.project?.status?.data &&
-                              JSON.parse(data?.project?.status?.data)?.back,
+                              JSON.parse(data?.status?.data)?.back,
                             borderRadius: '4px',
                             color:
                               data?.project?.status?.data &&
-                              JSON.parse(data?.project?.status?.data)?.text
+                              JSON.parse(data?.status?.data)?.text
                           }}
                         >
                           <InputLabel
@@ -357,11 +359,11 @@ export default function OrderMobile(props) {
                               fontSize: '1rem',
                               color:
                                 data?.project?.status?.data &&
-                                JSON.parse(data?.project?.status?.data)?.text,
+                                JSON.parse(data?.status?.data)?.text,
                               paddingLeft: 0
                             }}
                           >
-                            {data?.project?.status?.label}
+                            {data?.status?.label}
                           </InputLabel>
                         </Box>
                       }
@@ -480,9 +482,140 @@ export default function OrderMobile(props) {
                   </InputLabel>
                 </div>
                 <Box>
-                  {data?.status?.name === '' ? (
-                    <></>
-                  ) : (
+                  {data?.status?.name === 'SUBMITTED' && (
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        // justifyContent: 'center',
+                        // alignItems: 'center',
+                        padding: '12px',
+                        gap: '17px',
+                        width: '100%',
+                        // height: '100px',
+                        backgroundColor: '#E6EBF0',
+                        borderRadius: '4px',
+                        color: '#00346D',
+                        fontFamily: 'IRANSans',
+                        fontWeight: 400,
+                        fontSize: '16px'
+                      }}
+                    >
+                      {!cancel && !accept ? (
+                        <>
+                          <div
+                            style={{
+                              display: 'flex'
+                            }}
+                          >
+                            <LiveHelpOutlined
+                              style={{ color: '#00AAB5', fontSize: '22px' }}
+                            />
+                            وضعیت درخواست را مشخص کنید :
+                          </div>
+                          <div
+                            style={{
+                              display: 'flex',
+                              gap: '10px',
+                              alignSelf: 'end'
+                            }}
+                          >
+                            <ConfirmButton
+                              style={{
+                                width: '90px',
+                                height: '32px',
+                                fontSize: '13px',
+                                padding: '0'
+                              }}
+                              disabled={false}
+                              onClick={() => {
+                                setCancel(true);
+                              }}
+                            >
+                              <Close
+                                style={{
+                                  color: '',
+                                  fontSize: '18px',
+                                  padding: '0'
+                                }}
+                              />
+                              عدم تایید
+                            </ConfirmButton>
+                            <ConfirmButton
+                              style={{
+                                background: '#00346D',
+                                width: '125px',
+                                height: '32px',
+                                fontSize: '13px',
+                                padding: '0'
+                              }}
+                              disabled={false}
+                              type={'submit'}
+                              onClick={() => {
+                                // setAccept(true);
+                                httpService
+                                  .post(
+                                    `${API_BASE_URL}/api/management/project/design/update_design_status/`,
+                                    {
+                                      ref_num: data.ref_num,
+                                      action: 'Approve',
+                                      state: 'Designer'
+                                    }
+                                  )
+                                  .then(res => {
+                                    if (res.status === 200) {
+                                      history.goBack();
+                                    }
+                                  });
+                              }}
+                            >
+                              <Done
+                                style={{
+                                  color: '',
+                                  fontSize: '18px',
+                                  padding: '0'
+                                }}
+                              />{' '}
+                              تایید درخواست
+                            </ConfirmButton>
+                          </div>
+                        </>
+                      ) : cancel ? (
+                        <>
+                          <RejectRequest
+                            state={'Designer'}
+                            api={
+                              '/api/management/project/design/update_design_status/'
+                            }
+                            postInfo={{
+                              ref_num: data.ref_num,
+                              action: 'Reject',
+                              state: 'Designer'
+                            }}
+                            cancel={() => setCancel(false)}
+                          />
+                        </>
+                      ) : (
+                        ''
+                      )}
+                      {accept ? (
+                        <AcceptRequest
+                          api={
+                            '/api/management/project/design/update_design_status/'
+                          }
+                          postInfo={{
+                            ref_num: data?.ref_num,
+                            action: 'Approve',
+                            state: 'Designer'
+                          }}
+                          accept={() => setAccept(false)}
+                        />
+                      ) : (
+                        ''
+                      )}
+                    </div>
+                  )}
+                  {data?.status?.name === 'DESIGNING' && (
                     <div
                       style={{
                         display: 'flex',
@@ -569,14 +702,14 @@ export default function OrderMobile(props) {
                       ) : cancel ? (
                         <>
                           <RejectRequest
-                            state={'Designer'}
+                            state={'Designed'}
                             api={
                               '/api/management/project/design/update_design_status/'
                             }
                             postInfo={{
                               ref_num: data.ref_num,
                               action: 'Reject',
-                              state: 'Designer'
+                              state: 'Designed'
                             }}
                             cancel={() => setCancel(false)}
                           />
@@ -592,7 +725,7 @@ export default function OrderMobile(props) {
                           postInfo={{
                             ref_num: data?.ref_num,
                             action: 'Approve',
-                            state: 'Designer'
+                            state: 'Designed'
                           }}
                           accept={() => setAccept(false)}
                         />

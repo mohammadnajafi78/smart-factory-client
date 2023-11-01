@@ -36,7 +36,7 @@ const AcceptRequest = ({ accept, postInfo, api }) => {
           display: 'flex'
         }}
       >
-        فایل تخمین هزینه را وارد کنید :
+        فایل مربوطه را بارگزاری کنید :
       </div>
       <Formik
         initialValues={{ file: null }}
@@ -53,7 +53,7 @@ const AcceptRequest = ({ accept, postInfo, api }) => {
             .post(`${API_BASE_URL}${api}`, formData)
             .then(res => {
               if (res.status === 200) {
-                enqueueSnackbar('عدم تایید با موفقیت انجام شد', {
+                enqueueSnackbar('تایید با موفقیت انجام شد', {
                   variant: 'success'
                 });
                 setSubmitting(false);

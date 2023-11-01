@@ -53,9 +53,7 @@ export default function HomeDesktop() {
       .get(
         `${API_BASE_URL}/api/management/project/get_project_count/?create_date__lt=${MomentEn(
           tomorrow
-        )}&create_date__gt=${MomentEn(
-          yesterday
-        )}&period=daily&supply_by=SALE_OFFICE`
+        )}&create_date__gt=${MomentEn(yesterday)}&period=daily`
       )
       .then(res => {
         if (res.status == 200) {
@@ -66,9 +64,7 @@ export default function HomeDesktop() {
 
   function getCountUserSend() {
     httpService
-      .get(
-        `${API_BASE_URL}/api/management/project/get_project_count_user?group=ordered`
-      )
+      .get(`${API_BASE_URL}/api/management/project/get_project_count_user`)
       .then(res => {
         if (res.status === 200) {
           setUserSend(res.data);
@@ -78,9 +74,7 @@ export default function HomeDesktop() {
 
   function getCountUserReceived() {
     httpService
-      .get(
-        `${API_BASE_URL}/api/management/project/get_project_count_user?group=supplied`
-      )
+      .get(`${API_BASE_URL}/api/management/project/get_project_count_user`)
       .then(res => {
         if (res.status === 200) {
           setUserReceived(res.data);

@@ -22,8 +22,8 @@ export default function FilterButton({ children, ...rest }) {
         lineHeight: '20px',
         textAlign: 'center',
         color: '#00346D',
-        whiteSpace: 'nowrap'
-        // width: '100%'
+        whiteSpace: 'nowrap',
+        width: '100%'
       }}
       {...rest}
       color="primary"

@@ -112,7 +112,7 @@ export default function RequestListDesktop({
           sx={{
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'flex-start',
+            justifyContent: 'space-between',
             alignItems: 'center',
             gap: '2px',
             width: '100%',
@@ -131,7 +131,9 @@ export default function RequestListDesktop({
                   style={{
                     fontWeight: 300,
                     fontSize: '12px',
-                    minWidth: 'auto'
+                    minWidth: 'auto',
+                    background:
+                      filterSelected === item.name ? '#E6EBF0' : '#FFFFFF'
                   }}
                 >
                   {item.label}

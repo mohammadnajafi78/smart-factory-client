@@ -168,7 +168,7 @@ const ReceiveTable = props => {
         }
       },
       {
-        name: 'project.status',
+        name: 'status',
         label: 'وضعیت',
         options: {
           customBodyRender: value => {
