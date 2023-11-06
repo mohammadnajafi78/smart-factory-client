@@ -18,6 +18,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import moment from 'jalali-moment';
 import Table from 'src/components/Desktop/Table';
+import { useSnackbar } from 'notistack';
 
 const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
@@ -56,7 +57,7 @@ const ReceiveTable = props => {
   //       }
   //     });
   // }, []);
-
+  const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
     if (filter.length === 0 && sort.length === 0 && reset === true) {
       getData(page, rowsPerPage, '');

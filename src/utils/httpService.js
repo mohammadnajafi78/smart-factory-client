@@ -3,9 +3,8 @@ import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import { useHistory } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-// import { toast } from "react-toastify";
-// import { log } from "./logService";
-const { enqueueSnackbar } = useSnackbar();
+import snackBar from './snackBar';
+
 let token = null;
 let headers = {
   'Cache-Control': 'no-cache'
@@ -43,11 +42,8 @@ axios.interceptors.response.use(null, error => {
     error.response.status < 500;
   if (!expectedError) {
     console.log(error);
-    enqueueSnackbar('مشکلی سمت سرور پیش آمده', { variant: 'error' });
   } else if (error?.response?.status === 417) {
-    enqueueSnackbar('پروژه معتبر نیست', { variant: 'error' });
   } else if (error?.response?.status === 401) {
-    enqueueSnackbar('دوباره وارد شوید', { variant: 'error' });
     localStorage.removeItem('token');
     delete axios.defaults.headers.common.Authorization;
     window.location.href = '/login';
