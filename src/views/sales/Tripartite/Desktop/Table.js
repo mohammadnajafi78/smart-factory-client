@@ -1,41 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes, { string } from 'prop-types';
 
 import {
   Box,
-  Card,
-  Typography,
-  Link,
   TextField,
   FormControl,
   InputLabel,
-  Autocomplete,
-  colors,
   ToggleButtonGroup,
-  ToggleButton,
-  Tab
+  ToggleButton
 } from '@mui/material';
 
-import { Link as RouterLink, useHistory } from 'react-router-dom';
-import SearchIcon from '@mui/icons-material/Search';
-import DownloadIcon from '@mui/icons-material/FileUpload';
-import ViewColumnIcon from '@mui/icons-material/ViewColumn';
-import FilterIcon from '@mui/icons-material/FilterAlt';
+import { useHistory } from 'react-router-dom';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import { consoleSandbox } from '@sentry/utils';
-import FaTOEn from 'src/utils/FaTOEn';
 import MomentFa from 'src/utils/MomentFa';
 // import Datepicker from 'src/components/Desktop/Datepicker';
 import AdapterJalali from '@date-io/date-fns-jalali';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import moment from 'jalali-moment';
-import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
-import { Plus } from 'react-feather';
-import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import Table from 'src/components/Desktop/Table';
-import { ArrowBack, ArrowRight } from '@mui/icons-material';
+import { useSnackbar } from 'notistack';
 
 const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
@@ -53,6 +37,7 @@ const ReceiveTable = props => {
   const [endDate, setEndDate] = React.useState(new Date());
   const [reset, setReset] = useState(false);
   const [state, setState] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   const history = useHistory();
 
@@ -422,6 +407,15 @@ const ReceiveTable = props => {
           setData(res.data.results);
           setCount(res.data.count);
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }
 
@@ -565,6 +559,15 @@ const ReceiveTable = props => {
       .then(res => {
         if (res.status === 200) {
           getData(page, rowsPerPage, '');
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }

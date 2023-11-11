@@ -1,15 +1,12 @@
 import { Box, Divider } from '@mui/material';
 import React from 'react';
-import { ChevronLeft, Star } from 'react-feather';
-import { NavLink, useHistory } from 'react-router-dom';
+import { ChevronLeft } from 'react-feather';
+import { useHistory } from 'react-router-dom';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import useSaleSearch from 'src/hooks/useSaleSearch';
 import MomentFa from 'src/utils/MomentFa';
-import LocalLibrary from 'src/assets/img/local_library.png';
 import Frame from 'src/assets/img/Frame.png';
 import CalendarToday from 'src/assets/img/calendar_today.png';
-import httpService from 'src/utils/httpService';
-import { API_BASE_URL } from 'src/utils/urls';
 
 export default function ExamItem({ data, type, typeName }) {
   const { searched } = useSaleSearch();

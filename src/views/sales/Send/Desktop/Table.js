@@ -5,9 +5,7 @@ import {
   Box,
   FormControl,
   InputLabel,
-  TextField,
-  ToggleButton,
-  ToggleButtonGroup
+  TextField
 } from '@mui/material';
 
 import { useHistory } from 'react-router-dom';
@@ -21,6 +19,7 @@ import moment from 'jalali-moment';
 import ContentCopy from 'src/assets/img/content_copy.svg';
 import Share from 'src/assets/img/share.svg';
 import Table from 'src/components/Desktop/Table';
+import { useSnackbar } from 'notistack';
 
 const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
@@ -40,6 +39,7 @@ const SendTable = props => {
   const [state, setState] = useState(null);
   const [statusList, setStatusList] = useState([]);
   const [statusId, setStatusId] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   const history = useHistory();
 
@@ -61,6 +61,15 @@ const SendTable = props => {
       .then(res => {
         if (res.status === 200) {
           setStatusList(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -305,6 +314,20 @@ const SendTable = props => {
                         if (res.status === 200) {
                           history.push('/sale/products/order');
                         }
+                      })
+                      .catch(ex => {
+                        if (ex.response.status === 417) {
+                          enqueueSnackbar(ex.response.data.error, {
+                            variant: 'error'
+                          });
+                        } else {
+                          enqueueSnackbar(
+                            'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                            {
+                              variant: 'error'
+                            }
+                          );
+                        }
                       });
                   }}
                 >
@@ -336,6 +359,15 @@ const SendTable = props => {
         if (res.status === 200) {
           setData(res.data.results);
           setCount(res.data.count);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }
@@ -440,6 +472,15 @@ const SendTable = props => {
             state: {
               data: res.data
             }
+          });
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
           });
         }
       });

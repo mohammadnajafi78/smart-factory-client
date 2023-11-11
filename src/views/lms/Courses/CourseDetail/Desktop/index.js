@@ -4,6 +4,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import makeStyles from '@mui/styles/makeStyles';
+import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { Download } from 'react-feather';
 import { useHistory } from 'react-router';
@@ -33,6 +34,7 @@ export default function CourseDetailDesktop(props) {
   const [open, setOpen] = useState(false);
   const history = useHistory();
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
@@ -43,6 +45,15 @@ export default function CourseDetailDesktop(props) {
         if (res.status === 200) {
           console.log('detail', res.data);
           setCourseDetail(res.data[0]);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -508,6 +519,20 @@ export default function CourseDetailDesktop(props) {
                       .then(res => {
                         if (res.status === 200) {
                           setOpen(false);
+                        }
+                      })
+                      .catch(ex => {
+                        if (ex.response.status === 417) {
+                          enqueueSnackbar(ex.response.data.error, {
+                            variant: 'error'
+                          });
+                        } else {
+                          enqueueSnackbar(
+                            'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                            {
+                              variant: 'error'
+                            }
+                          );
                         }
                       });
                   }}

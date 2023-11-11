@@ -9,10 +9,12 @@ import Attach from 'src/assets/img/icons/attach.svg';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import Participants from './Participants';
+import { useSnackbar } from 'notistack';
 
 export default function ParticipateNewComp({ selected, setSelected }) {
   const [file, setFile] = useState(null);
   const userId = JSON.parse(localStorage.getItem('user')).user_id;
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <Box
@@ -194,6 +196,17 @@ export default function ParticipateNewComp({ selected, setSelected }) {
                 .then(res => {
                   if (res.status === 200) {
                     setSelected(res.data);
+                  }
+                })
+                .catch(ex => {
+                  if (ex.response.status === 417) {
+                    enqueueSnackbar(ex.response.data.error, {
+                      variant: 'error'
+                    });
+                  } else {
+                    enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                      variant: 'error'
+                    });
                   }
                 });
             }}

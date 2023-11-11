@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 import * as Yup from 'yup';
 import CustomizedProgressBars from 'src/components/Mobile/ProgressBar';
+import { useSnackbar } from 'notistack';
 
 function BuildingInfoMobile(props) {
   const [provinces, setProvinces] = useState(null);
@@ -21,8 +22,8 @@ function BuildingInfoMobile(props) {
   const [projectTypeList, setProjectTypeList] = useState(null);
   const [projectTypeId, setProjectTypeId] = useState(null);
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
   let data = props.location.state;
-  console.log('dataa', data);
 
   useEffect(() => {
     httpService
@@ -40,6 +41,15 @@ function BuildingInfoMobile(props) {
           );
           setProjectTypeList(temp);
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }, []);
 
@@ -49,6 +59,15 @@ function BuildingInfoMobile(props) {
       .then(res => {
         if (res.status === 200) {
           setBuildingTypeList(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -102,6 +121,15 @@ function BuildingInfoMobile(props) {
                   });
                   setSubmitting(false);
                 }
+              }
+            })
+            .catch(ex => {
+              if (ex.response.status === 417) {
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                  variant: 'error'
+                });
               }
             });
           setSubmitting(false);

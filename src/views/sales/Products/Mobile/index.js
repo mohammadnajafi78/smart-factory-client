@@ -1,16 +1,15 @@
-import { Box, Drawer } from '@mui/material';
+import { Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import CategoryButton from 'src/components/Mobile/Button/Category';
 import BasketSale from 'src/assets/img/basketSale.svg';
 import ProductsList from './ProductList';
-import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import CategoryDrawer from './CategoryDrawer';
-import SubCategoryDrawer from './SubCategoryDrawer';
 import useSaleSearch from 'src/hooks/useSaleSearch';
 import { useHistory } from 'react-router';
 import useSaleOrder from 'src/hooks/useSaleOrder';
+import { useSnackbar } from 'notistack';
 
 export default function ProductsMobile() {
   const [openCategory, setOpenCategory] = useState();
@@ -19,6 +18,7 @@ export default function ProductsMobile() {
   const { products, searched, getProducts } = useSaleSearch();
   const history = useHistory();
   const { order, getOrder } = useSaleOrder();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     getProducts();
@@ -28,6 +28,15 @@ export default function ProductsMobile() {
       .then(res => {
         if (res.status === 200) {
           setCategory(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);

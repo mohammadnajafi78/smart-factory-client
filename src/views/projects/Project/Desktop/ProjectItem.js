@@ -1,17 +1,19 @@
 import { Box } from '@mui/material';
 import React from 'react';
-import { ChevronLeft, Star } from 'react-feather';
-import { NavLink, useHistory } from 'react-router-dom';
+import { ChevronLeft } from 'react-feather';
+import { useHistory } from 'react-router-dom';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import useSaleSearch from 'src/hooks/useSaleSearch';
 import MomentFa from 'src/utils/MomentFa';
 import ProjectImage from 'src/assets/img/projectImage.png';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { useSnackbar } from 'notistack';
 
 export default function ProjectItem({ data, selected, setSelected }) {
   const { searched } = useSaleSearch();
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <Box
@@ -39,6 +41,15 @@ export default function ProjectItem({ data, selected, setSelected }) {
             if (res.status === 200) {
               console.log('inja', res.data);
               setSelected(res.data);
+            }
+          })
+          .catch(ex => {
+            if (ex.response.status === 417) {
+              enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+            } else {
+              enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                variant: 'error'
+              });
             }
           });
       }}

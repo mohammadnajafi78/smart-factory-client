@@ -5,13 +5,7 @@ import Box from '@mui/material/Box';
 import TreeView from '@mui/lab/TreeView';
 import TreeItem, { treeItemClasses } from '@mui/lab/TreeItem';
 import Typography from '@mui/material/Typography';
-import {
-  Checkbox,
-  Divider,
-  FormControlLabel,
-  FormGroup,
-  IconButton
-} from '@mui/material';
+import { Checkbox, Divider, IconButton } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import InputLabelHeader from 'src/components/Desktop/InputLabel';
@@ -20,8 +14,8 @@ import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import { useState } from 'react';
 import useSaleSearch from 'src/hooks/useSaleSearch';
-import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { FilterAlt, FilterAltOff } from '@mui/icons-material';
+import { useSnackbar } from 'notistack';
 
 const MenuRoot = styled(TreeItem)(({ theme }) => ({
   color: theme.palette.text.secondary,
@@ -159,6 +153,7 @@ export default function GmailTreeView() {
   const { setFilterProducts, getProducts } = useSaleSearch();
   const [catIds, setCatIds] = useState([]);
   const [subCatIds, setSubCatIds] = useState([]);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     setCatIds([]);
@@ -169,6 +164,15 @@ export default function GmailTreeView() {
       .then(res => {
         if (res.status === 200) {
           setData(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);

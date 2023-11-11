@@ -1,42 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Avatar,
-  Box,
-  Button,
-  Divider,
-  Drawer,
-  TextField,
-  ToggleButton,
-  ToggleButtonGroup
-} from '@mui/material';
-import { useHistory } from 'react-router-dom';
-import Score from './Score';
-import { ArrowBack, KeyboardArrowLeft } from '@mui/icons-material';
+import { Avatar, Box, Button } from '@mui/material';
 import InputLabel from 'src/components/Mobile/InputLabel';
-import useAuth from 'src/hooks/useAuth';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import makeStyles from '@mui/styles/makeStyles';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import { Minus, Plus, Star } from 'react-feather';
-import useScore from 'src/hooks/useScore';
+import { Star } from 'react-feather';
 import Main from './Main';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import EditSquare from 'src/assets/img/icons/edit_square.svg';
 import ProfileEdit from 'src/assets/img/icons/profileEdit.svg';
+import { useSnackbar } from 'notistack';
 
 export default function ProfileMobile() {
   const [data, setData] = useState(null);
   const [editable, setEditable] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   function getData() {
     setData(null);
-    httpService.get(`${API_BASE_URL}/api/users/get_user_profile/`).then(res => {
-      if (res.status === 200) {
-        setData(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}/api/users/get_user_profile/`)
+      .then(res => {
+        if (res.status === 200) {
+          setData(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
   }
 
   useEffect(() => {
@@ -53,6 +51,15 @@ export default function ProfileMobile() {
           if (res.status === 200) {
             setProfileImage(null);
             getData();
+          }
+        })
+        .catch(ex => {
+          if (ex.response.status === 417) {
+            enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+          } else {
+            enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+              variant: 'error'
+            });
           }
         });
     }

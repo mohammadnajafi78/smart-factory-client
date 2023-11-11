@@ -1,14 +1,13 @@
-import { Box, InputAdornment, makeStyles, TextField } from '@mui/material';
+import { Box, InputAdornment, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import Attach from 'src/assets/img/icons/attachComment.svg';
 import SendMessageImage from 'src/assets/img/icons/sendMessage.svg';
 import Smile from 'src/assets/img/icons/smile.svg';
-import { alpha, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import { SelectAllRounded } from '@mui/icons-material';
-import { func } from 'prop-types';
+import { useSnackbar } from 'notistack';
 
 const CssTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
@@ -28,6 +27,7 @@ const CssTextField = styled(TextField)({
 export default function SendMessage({ message, getData }) {
   const [messageText, setMessageText] = useState('');
   const [files, setFiles] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (files) {
@@ -39,6 +39,15 @@ export default function SendMessage({ message, getData }) {
         .post(`${API_BASE_URL}/api/club/suggestions/add_response/`, formData)
         .then(res => {
           if (res.status === 201) getData();
+        })
+        .catch(ex => {
+          if (ex.response.status === 417) {
+            enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+          } else {
+            enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+              variant: 'error'
+            });
+          }
         });
     }
   }, [files]);
@@ -53,6 +62,15 @@ export default function SendMessage({ message, getData }) {
         if (res.status === 201) {
           getData();
           setMessageText('');
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }

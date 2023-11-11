@@ -1,15 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Divider, Grid, Drawer, TextField } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Drawer, TextField } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
-import httpService from 'src/utils/httpService';
-import { API_BASE_URL } from 'src/utils/urls';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import CancelImg from 'src/assets/img/cancel.svg';
-import SaleCategory from 'src/assets/img/saleCategory.svg';
-import SaleSubCategory from 'src/assets/img/SaleSubCategory.svg';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import { ChevronRight, Download, Plus } from 'react-feather';
 import { useHistory } from 'react-router-dom';
 import MomentFa from 'src/utils/MomentFa';
 import Close from 'src/assets/img/close.svg';

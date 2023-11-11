@@ -1,27 +1,12 @@
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Box, Button, Divider, Drawer } from '@mui/material';
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
+import { Box, Button, Drawer } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { useEffect, useState } from 'react';
-import { Download } from 'react-feather';
 import { useHistory } from 'react-router';
-import Frame from 'src/assets/img/Frame.png';
-import Info from 'src/assets/img/info.png';
 import Group from 'src/assets/img/group.png';
 import Chat from 'src/assets/img/chat.png';
 import DownloadImg from 'src/assets/img/download.png';
-import PlayCircle from 'src/assets/img/play_circle.png';
-import Timer from 'src/assets/img/timer.png';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import InputLabel from 'src/components/Mobile/InputLabel';
-import MomentFa from 'src/utils/MomentFa';
-import httpService from 'src/utils/httpService';
-import { API_BASE_URL } from 'src/utils/urls';
 import jwtDecode from 'jwt-decode';
-import { setUser } from '@sentry/react';
-import MomentTimeFa from 'src/utils/MomentTimeFa';
 
 const useStyles = makeStyles(theme => ({
   paper: {

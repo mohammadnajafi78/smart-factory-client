@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Divider,
-  Grid,
-  TextField,
-  Autocomplete} from '@mui/material';
+import { Box, Divider, Grid, TextField, Autocomplete } from '@mui/material';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
@@ -12,6 +7,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { API_BASE_URL } from 'src/utils/urls';
 import httpService from 'src/utils/httpService';
+import { useSnackbar } from 'notistack';
 
 export default function NewProductType({
   open,
@@ -25,6 +21,7 @@ export default function NewProductType({
   const [types, setTypes] = useState([]);
   const [singulars, setSingulars] = useState([]);
   const [plural, setPlural] = useState([]);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
@@ -32,6 +29,15 @@ export default function NewProductType({
       .then(res => {
         if (res.status === 200) {
           setTypes(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -42,6 +48,15 @@ export default function NewProductType({
         if (res.status === 200) {
           setSingulars(res.data);
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }, []);
   useEffect(() => {
@@ -50,6 +65,15 @@ export default function NewProductType({
       .then(res => {
         if (res.status === 200) {
           setPlural(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -139,6 +163,17 @@ export default function NewProductType({
                       props.reloadData();
                       setSubmitting(false);
                     }
+                  })
+                  .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
+                    }
                   });
               } else {
                 httpService
@@ -151,6 +186,17 @@ export default function NewProductType({
                       handleClose();
                       props.setData(res.data);
                       setSubmitting(false);
+                    }
+                  })
+                  .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
                     }
                   });
               }

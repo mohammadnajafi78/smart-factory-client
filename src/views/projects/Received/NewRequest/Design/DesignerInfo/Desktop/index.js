@@ -6,6 +6,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import makeStyles from '@mui/styles/makeStyles';
 import { Formik } from 'formik';
+import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Domain from 'src/assets/img/domain22.png';
@@ -42,6 +43,7 @@ function DesignerInfoDesktop(props) {
   const [openDesigner, setOpenDesigner] = useState(false);
   const [openOther, setOpenOther] = useState(false);
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   let types = [
     { name: 'BTS_WE', label: 'طراحی توسط شرکت', image: Domain },
@@ -102,6 +104,15 @@ function DesignerInfoDesktop(props) {
                   // state: res.data
                 });
                 setSubmitting(false);
+              }
+            })
+            .catch(ex => {
+              if (ex.response.status === 417) {
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                  variant: 'error'
+                });
               }
             });
           setSubmitting(false);
@@ -319,6 +330,17 @@ function DesignerInfoDesktop(props) {
                       // });
                       setSubmitting(false);
                     }
+                  })
+                  .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
+                    }
                   });
                 setSubmitting(false);
               }}
@@ -432,6 +454,17 @@ function DesignerInfoDesktop(props) {
                       //   // state: res.data
                       // });
                       setSubmitting(false);
+                    }
+                  })
+                  .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
                     }
                   });
                 setSubmitting(false);

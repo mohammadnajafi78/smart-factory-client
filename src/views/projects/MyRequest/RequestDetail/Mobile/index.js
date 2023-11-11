@@ -1,26 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Divider,
-  Grid,
-  Drawer,
-  TextField,
-  InputAdornment,
-  ButtonGroup,
-  Button
-} from '@mui/material';
+import React from 'react';
+import { Box, Divider } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
-import httpService from 'src/utils/httpService';
-import { API_BASE_URL } from 'src/utils/urls';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
-import CancelImg from 'src/assets/img/cancel.svg';
-import SaleCategory from 'src/assets/img/saleCategory.svg';
-import SaleSubCategory from 'src/assets/img/SaleSubCategory.svg';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import { useHistory } from 'react-router-dom';
-import LargeSize from 'src/assets/img/largeSize.svg';
-import SmallSize from 'src/assets/img/smallSize.svg';
 import Domain from 'src/assets/img/domain.png';
 import Location from 'src/assets/img/pin_drop.png';
 import SwiperImg from '../Desktop/Swiper';

@@ -14,6 +14,7 @@ import { API_BASE_URL } from 'src/utils/urls';
 import useScore from 'src/hooks/useScore';
 import { Star } from 'react-feather';
 import ErrorImg from 'src/assets/img/icons/error.svg';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -43,13 +44,25 @@ export default function AwardsBox() {
   const { setScore } = useScore();
   const [openError, setOpenError] = useState(false);
   const [error, setError] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    httpService.get(`${API_BASE_URL}/api/club/gift_box/`).then(res => {
-      if (res.status === 200) {
-        setAwards(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}/api/club/gift_box/`)
+      .then(res => {
+        if (res.status === 200) {
+          setAwards(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
   }, []);
 
   return (
@@ -212,11 +225,18 @@ export default function AwardsBox() {
                       setScore();
                     }
                   })
-                  .catch(err => {
-                    if (err.response.status === 417) {
+                  .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
                       setOpenError(true);
-                      setError(err.response.data.error);
+                      setError(ex.response.data.error);
                       setOpenFirst(false);
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
                     }
                   });
               }}

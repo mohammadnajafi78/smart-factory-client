@@ -1,4 +1,4 @@
-import React, {  } from 'react';
+import React from 'react';
 import {
   Box,
   Grid,
@@ -14,6 +14,7 @@ import * as Yup from 'yup';
 import { AttachFile } from '@mui/icons-material';
 import { API_BASE_URL } from 'src/utils/urls';
 import httpService from 'src/utils/httpService';
+import { useSnackbar } from 'notistack';
 
 export default function NewPrice({
   open,
@@ -23,7 +24,8 @@ export default function NewPrice({
   type,
   ...props
 }) {
-  console.log('data', type);
+  const { enqueueSnackbar } = useSnackbar();
+
   return (
     <>
       <CustomizedDialogs
@@ -65,6 +67,17 @@ export default function NewPrice({
                       props.reloadData();
                       setSubmitting(false);
                     }
+                  })
+                  .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
+                    }
                   });
               } else {
                 httpService
@@ -77,6 +90,17 @@ export default function NewPrice({
                       handleClose();
                       props.setData(res.data);
                       setSubmitting(false);
+                    }
+                  })
+                  .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
                     }
                   });
               }

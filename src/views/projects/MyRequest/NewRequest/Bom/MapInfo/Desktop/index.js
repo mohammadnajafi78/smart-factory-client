@@ -10,6 +10,7 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader
 import CustomizedProgressBars from 'src/components/Desktop/ProgressBar';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { useSnackbar } from 'notistack';
 
 function MapInfoDesktop(props) {
   const [provinces, setProvinces] = useState(null);
@@ -19,6 +20,7 @@ function MapInfoDesktop(props) {
   const [statusList, setStatusList] = useState([]);
   const [file, setFile] = useState();
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
   let data = props.location.state;
 
   return (
@@ -84,7 +86,27 @@ function MapInfoDesktop(props) {
                         setSubmitting(false);
                       }
                     }
+                  })
+                  .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
+                    }
                   });
+              }
+            })
+            .catch(ex => {
+              if (ex.response.status === 417) {
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                  variant: 'error'
+                });
               }
             });
           setSubmitting(false);

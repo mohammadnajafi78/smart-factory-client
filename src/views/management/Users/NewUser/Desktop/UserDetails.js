@@ -1,15 +1,12 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import SwipeableViews from 'react-swipeable-views';
 import { useTheme } from '@mui/material/styles';
 import UserProfile from './UserProfile';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import Club from './Club';
+import { useSnackbar } from 'notistack';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -49,6 +46,7 @@ export default function UserDetails(props) {
   const [userData, setUserData] = React.useState(null);
   const userId = props.location.state.rowData[0];
   const theme = useTheme();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -63,6 +61,15 @@ export default function UserDetails(props) {
       .then(res => {
         if (res.status === 200) {
           setUserData(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);

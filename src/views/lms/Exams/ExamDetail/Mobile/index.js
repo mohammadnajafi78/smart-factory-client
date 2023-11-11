@@ -1,5 +1,6 @@
 import { Box, Divider, Drawer } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
+import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { Download } from 'react-feather';
 import { useHistory } from 'react-router';
@@ -28,6 +29,7 @@ export default function ExamDetailMobile(props) {
   const [open, setOpen] = useState(false);
   const history = useHistory();
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   function getData() {
     httpService
@@ -37,6 +39,15 @@ export default function ExamDetailMobile(props) {
       .then(res => {
         if (res.status === 200) {
           setExamDetail(res.data[0]);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }
@@ -357,6 +368,17 @@ export default function ExamDetailMobile(props) {
                   if (res.status === 200) {
                     setExamDetail(res.data);
                     setOpen(false);
+                  }
+                })
+                .catch(ex => {
+                  if (ex.response.status === 417) {
+                    enqueueSnackbar(ex.response.data.error, {
+                      variant: 'error'
+                    });
+                  } else {
+                    enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                      variant: 'error'
+                    });
                   }
                 });
             }}

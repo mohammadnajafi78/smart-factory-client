@@ -14,6 +14,7 @@ import bcrypt from 'bcryptjs';
 import useScore from 'src/hooks/useScore';
 import * as Yup from 'yup';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { useSnackbar } from 'notistack';
 
 function ForgotPasswodDesktop(props) {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,6 +23,7 @@ function ForgotPasswodDesktop(props) {
   const history = useHistory();
   const { registry } = useAuth();
   const { setScore } = useScore();
+  const { enqueueSnackbar } = useSnackbar();
 
   function onChange(value) {
     console.log('Captcha value:', value);
@@ -95,8 +97,8 @@ function ForgotPasswodDesktop(props) {
                 )
               })
               .then(res => {
+                setSubmitting(false);
                 if (res.status === 200) {
-                  setSubmitting(false);
                   localStorage.setItem('token', res.headers['x-auth-token']);
                   axios.defaults.headers.common.Authorization = `Bearer ${res.headers['x-auth-token']}`;
                   registry(res.headers['x-auth-token']);
@@ -107,6 +109,13 @@ function ForgotPasswodDesktop(props) {
                 }
               })
               .catch(ex => {
+                if (ex.response.status === 417) {
+                  enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+                } else {
+                  enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                    variant: 'error'
+                  });
+                }
                 setSubmitting(false);
               });
           }}

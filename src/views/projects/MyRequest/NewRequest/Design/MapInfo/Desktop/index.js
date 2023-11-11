@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Button, TextField } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Button } from '@mui/material';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import { Formik } from 'formik';
-import Autocomplete from '@mui/material/Autocomplete';
 import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 import * as Yup from 'yup';
 import CustomizedProgressBars from 'src/components/Desktop/ProgressBar';
 import Upload from 'src/assets/img/icons/upload.svg';
+import { useSnackbar } from 'notistack';
 
 function MapInfoDesktop(props) {
   const [provinces, setProvinces] = useState(null);
@@ -20,6 +20,7 @@ function MapInfoDesktop(props) {
   const [statusList, setStatusList] = useState([]);
   const [file, setFile] = useState();
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
   let data = props.location.state;
   console.log('inja', data);
 
@@ -74,6 +75,15 @@ function MapInfoDesktop(props) {
                   });
                   setSubmitting(false);
                 }
+              }
+            })
+            .catch(ex => {
+              if (ex.response.status === 417) {
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                  variant: 'error'
+                });
               }
             });
           setSubmitting(false);

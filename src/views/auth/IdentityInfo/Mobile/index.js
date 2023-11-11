@@ -8,9 +8,11 @@ import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 import * as Yup from 'yup';
+import { useSnackbar } from 'notistack';
 
 function IdentityInfoMobile(props) {
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <>
@@ -43,8 +45,15 @@ function IdentityInfoMobile(props) {
                 setSubmitting(false);
               }
             })
-            .catch(err => {
-              err.response.data.map(e => {
+            .catch(ex => {
+              if (ex.response.status === 417) {
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                  variant: 'error'
+                });
+              }
+              ex.response.data.map(e => {
                 setFieldError(e.field, e.error);
               });
               setSubmitting(false);

@@ -8,6 +8,7 @@ import CreditCard from 'src/assets/img/credit-card.svg';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import { ArrowRight, ChevronLeft, Plus } from 'react-feather';
 import { useHistory } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -24,6 +25,7 @@ export default function AcceptPayment(props) {
   const history = useHistory();
   const classes = useStyles();
   const [isLoading, setLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar;
 
   useEffect(() => {
     httpService
@@ -33,6 +35,15 @@ export default function AcceptPayment(props) {
       .then(res => {
         if (res.status === 200) {
           setPayment(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -172,6 +183,20 @@ export default function AcceptPayment(props) {
                                       pathname: '/sale/send/payment/edit2',
                                       state: item
                                     });
+                                  }
+                                })
+                                .catch(ex => {
+                                  if (ex.response.status === 417) {
+                                    enqueueSnackbar(ex.response.data.error, {
+                                      variant: 'error'
+                                    });
+                                  } else {
+                                    enqueueSnackbar(
+                                      'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                                      {
+                                        variant: 'error'
+                                      }
+                                    );
                                   }
                                 });
                             }}
@@ -328,6 +353,18 @@ export default function AcceptPayment(props) {
                         })
                         .catch(ex => {
                           setLoading(false);
+                          if (ex.response.status === 417) {
+                            enqueueSnackbar(ex.response.data.error, {
+                              variant: 'error'
+                            });
+                          } else {
+                            enqueueSnackbar(
+                              'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                              {
+                                variant: 'error'
+                              }
+                            );
+                          }
                         });
                     }}
                   >

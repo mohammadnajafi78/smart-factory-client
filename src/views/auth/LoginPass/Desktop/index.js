@@ -20,12 +20,14 @@ import bcrypt from 'bcryptjs';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import useScore from 'src/hooks/useScore';
 import { askForPermissionToReceiveNotifications } from 'src/push-notification';
+import { useSnackbar } from 'notistack';
 
 function LoginPassDesktop(props) {
   const [showPassword, setShowPassword] = useState(false);
   const history = useHistory();
   const { registry } = useAuth();
   const { setScore } = useScore();
+  const { enqueueSnackbar } = useSnackbar();
 
   function handleClickShowPassword() {
     setShowPassword(!showPassword);
@@ -81,6 +83,16 @@ function LoginPassDesktop(props) {
                   setScore();
                   // history.push('/home');
                   history.push('/' + res.data.profile_state.toLowerCase());
+                }
+              })
+              .catch(ex => {
+                setSubmitting(false);
+                if (ex.response.status === 417) {
+                  enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+                } else {
+                  enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                    variant: 'error'
+                  });
                 }
               });
           }}
@@ -183,6 +195,21 @@ function LoginPassDesktop(props) {
                               status: 'forgot'
                             }
                           });
+                        }
+                      })
+                      .catch(ex => {
+                        setSubmitting(false);
+                        if (ex.response.status === 417) {
+                          enqueueSnackbar(ex.response.data.error, {
+                            variant: 'error'
+                          });
+                        } else {
+                          enqueueSnackbar(
+                            'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                            {
+                              variant: 'error'
+                            }
+                          );
                         }
                       });
                   }}

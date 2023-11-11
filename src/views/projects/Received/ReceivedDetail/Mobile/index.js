@@ -1,26 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Divider,
-  Grid,
-  Drawer,
-  TextField,
-  InputAdornment,
-  ButtonGroup,
-  Button
-} from '@mui/material';
+import React from 'react';
+import { Box, Divider, Drawer, Button } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
-import CancelImg from 'src/assets/img/cancel.svg';
-import SaleCategory from 'src/assets/img/saleCategory.svg';
-import SaleSubCategory from 'src/assets/img/SaleSubCategory.svg';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import { useHistory } from 'react-router-dom';
-import LargeSize from 'src/assets/img/largeSize.svg';
-import SmallSize from 'src/assets/img/smallSize.svg';
 import Domain from 'src/assets/img/domain.png';
 import Location from 'src/assets/img/pin_drop.png';
 import SwiperImg from '../Desktop/Swiper';
@@ -29,6 +15,7 @@ import Tune from 'src/assets/img/tune.png';
 import Engineering from 'src/assets/img/engineering.png';
 import Article from 'src/assets/img/article.png';
 import { Download } from 'react-feather';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -44,6 +31,7 @@ export default function ReceivedDetailMobile(props) {
   const type = props.location.state.type;
   const typeName = props.location.state.typeName;
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   console.log('Data', data);
 
@@ -278,6 +266,20 @@ export default function ReceivedDetailMobile(props) {
                           if (res.status === 200) {
                             console.log('ok');
                           }
+                        })
+                        .catch(ex => {
+                          if (ex.response.status === 417) {
+                            enqueueSnackbar(ex.response.data.error, {
+                              variant: 'error'
+                            });
+                          } else {
+                            enqueueSnackbar(
+                              'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                              {
+                                variant: 'error'
+                              }
+                            );
+                          }
                         });
                     }}
                   >
@@ -297,6 +299,20 @@ export default function ReceivedDetailMobile(props) {
                         .then(res => {
                           if (res.status === 200) {
                             console.log('ok');
+                          }
+                        })
+                        .catch(ex => {
+                          if (ex.response.status === 417) {
+                            enqueueSnackbar(ex.response.data.error, {
+                              variant: 'error'
+                            });
+                          } else {
+                            enqueueSnackbar(
+                              'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                              {
+                                variant: 'error'
+                              }
+                            );
                           }
                         });
                     }}
@@ -377,6 +393,20 @@ export default function ReceivedDetailMobile(props) {
                           if (res.status === 200) {
                             console.log('ok');
                           }
+                        })
+                        .catch(ex => {
+                          if (ex.response.status === 417) {
+                            enqueueSnackbar(ex.response.data.error, {
+                              variant: 'error'
+                            });
+                          } else {
+                            enqueueSnackbar(
+                              'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                              {
+                                variant: 'error'
+                              }
+                            );
+                          }
                         });
                     }}
                   >
@@ -396,6 +426,20 @@ export default function ReceivedDetailMobile(props) {
                         .then(res => {
                           if (res.status === 200) {
                             console.log('ok');
+                          }
+                        })
+                        .catch(ex => {
+                          if (ex.response.status === 417) {
+                            enqueueSnackbar(ex.response.data.error, {
+                              variant: 'error'
+                            });
+                          } else {
+                            enqueueSnackbar(
+                              'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                              {
+                                variant: 'error'
+                              }
+                            );
                           }
                         });
                     }}
@@ -446,6 +490,20 @@ export default function ReceivedDetailMobile(props) {
                           if (res.status === 200) {
                             console.log('ok');
                           }
+                        })
+                        .catch(ex => {
+                          if (ex.response.status === 417) {
+                            enqueueSnackbar(ex.response.data.error, {
+                              variant: 'error'
+                            });
+                          } else {
+                            enqueueSnackbar(
+                              'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                              {
+                                variant: 'error'
+                              }
+                            );
+                          }
                         });
                     }}
                   >
@@ -465,6 +523,20 @@ export default function ReceivedDetailMobile(props) {
                         .then(res => {
                           if (res.status === 200) {
                             console.log('ok');
+                          }
+                        })
+                        .catch(ex => {
+                          if (ex.response.status === 417) {
+                            enqueueSnackbar(ex.response.data.error, {
+                              variant: 'error'
+                            });
+                          } else {
+                            enqueueSnackbar(
+                              'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                              {
+                                variant: 'error'
+                              }
+                            );
                           }
                         });
                     }}
@@ -515,6 +587,20 @@ export default function ReceivedDetailMobile(props) {
                           if (res.status === 200) {
                             console.log('ok');
                           }
+                        })
+                        .catch(ex => {
+                          if (ex.response.status === 417) {
+                            enqueueSnackbar(ex.response.data.error, {
+                              variant: 'error'
+                            });
+                          } else {
+                            enqueueSnackbar(
+                              'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                              {
+                                variant: 'error'
+                              }
+                            );
+                          }
                         });
                     }}
                   >
@@ -534,6 +620,20 @@ export default function ReceivedDetailMobile(props) {
                         .then(res => {
                           if (res.status === 200) {
                             console.log('ok');
+                          }
+                        })
+                        .catch(ex => {
+                          if (ex.response.status === 417) {
+                            enqueueSnackbar(ex.response.data.error, {
+                              variant: 'error'
+                            });
+                          } else {
+                            enqueueSnackbar(
+                              'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                              {
+                                variant: 'error'
+                              }
+                            );
                           }
                         });
                     }}
@@ -642,6 +742,17 @@ export default function ReceivedDetailMobile(props) {
                   if (res.status === 200) {
                     setOpen(false);
                   }
+                })
+                .catch(ex => {
+                  if (ex.response.status === 417) {
+                    enqueueSnackbar(ex.response.data.error, {
+                      variant: 'error'
+                    });
+                  } else {
+                    enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                      variant: 'error'
+                    });
+                  }
                 });
             } else if (type === 'bom') {
               const formData = new FormData();
@@ -660,6 +771,17 @@ export default function ReceivedDetailMobile(props) {
                   if (res.status === 200) {
                     setOpen(false);
                   }
+                })
+                .catch(ex => {
+                  if (ex.response.status === 417) {
+                    enqueueSnackbar(ex.response.data.error, {
+                      variant: 'error'
+                    });
+                  } else {
+                    enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                      variant: 'error'
+                    });
+                  }
                 });
             } else if (type === 'supervision') {
               const formData = new FormData();
@@ -677,6 +799,17 @@ export default function ReceivedDetailMobile(props) {
                 .then(res => {
                   if (res.status === 200) {
                     setOpen(false);
+                  }
+                })
+                .catch(ex => {
+                  if (ex.response.status === 417) {
+                    enqueueSnackbar(ex.response.data.error, {
+                      variant: 'error'
+                    });
+                  } else {
+                    enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                      variant: 'error'
+                    });
                   }
                 });
             }

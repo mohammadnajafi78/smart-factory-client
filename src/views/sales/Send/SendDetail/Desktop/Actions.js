@@ -18,6 +18,7 @@ import AddPayment2 from './AddPayment2';
 import AcceptPayment from './AcceptPayment';
 import AcceptPayment2 from './AcceptPayment2';
 import DeliveryConfirm from './DeliveryConfirm';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -43,6 +44,7 @@ export default function Actions(props) {
   const [delivery, setDelivery] = useState(false);
   const location = props.location.pathname;
   const [isLoading, setLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <>
@@ -688,6 +690,18 @@ export default function Actions(props) {
                       })
                       .catch(ex => {
                         setLoading(false);
+                        if (ex.response.status === 417) {
+                          enqueueSnackbar(ex.response.data.error, {
+                            variant: 'error'
+                          });
+                        } else {
+                          enqueueSnackbar(
+                            'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                            {
+                              variant: 'error'
+                            }
+                          );
+                        }
                       });
                   }}
                 >
@@ -813,6 +827,18 @@ export default function Actions(props) {
                       })
                       .catch(ex => {
                         setLoading(false);
+                        if (ex.response.status === 417) {
+                          enqueueSnackbar(ex.response.data.error, {
+                            variant: 'error'
+                          });
+                        } else {
+                          enqueueSnackbar(
+                            'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                            {
+                              variant: 'error'
+                            }
+                          );
+                        }
                       });
                   }}
                 >
@@ -887,6 +913,20 @@ export default function Actions(props) {
                       .then(res => {
                         if (res.status === 200) {
                           setOpenConfirm(false);
+                        }
+                      })
+                      .catch(ex => {
+                        if (ex.response.status === 417) {
+                          enqueueSnackbar(ex.response.data.error, {
+                            variant: 'error'
+                          });
+                        } else {
+                          enqueueSnackbar(
+                            'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                            {
+                              variant: 'error'
+                            }
+                          );
                         }
                       });
                   }}

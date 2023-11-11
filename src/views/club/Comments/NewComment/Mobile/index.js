@@ -6,12 +6,14 @@ import AdminChat from './AdminChat';
 import SendMessage from './SendMessage';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { useSnackbar } from 'notistack';
 
 export default function NewCommentMobile(props) {
   const [chat, setChat] = useState();
   const userId = JSON.parse(localStorage.getItem('user')).user_id;
   const [selected, setSelected] = useState(null);
   const messageId = props.location.state.data.id;
+  const { enqueueSnackbar } = useSnackbar();
 
   function getData() {
     httpService
@@ -19,6 +21,15 @@ export default function NewCommentMobile(props) {
       .then(res => {
         if (res.status === 200) {
           setChat(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }

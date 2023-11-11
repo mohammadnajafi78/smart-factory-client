@@ -1,20 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Divider, Grid, Drawer, TextField, Button } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, TextField, Button } from '@mui/material';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import { ArrowRight, Plus } from 'react-feather';
+import { ArrowRight } from 'react-feather';
 import { useHistory } from 'react-router-dom';
 import Upload from 'src/assets/img/icons/upload.svg';
 import Delete from 'src/assets/img/icons/delete.svg';
 import Attach from 'src/assets/img/icons/attach.svg';
+import { useSnackbar } from 'notistack';
 
 export default function AcceptConfirm(props) {
   const [file, setFile] = useState();
   const [comment, setComment] = useState(null);
   const history = useHistory();
   const [isLoading, setLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <>
@@ -198,6 +200,15 @@ export default function AcceptConfirm(props) {
                 })
                 .catch(ex => {
                   setLoading(false);
+                  if (ex.response.status === 417) {
+                    enqueueSnackbar(ex.response.data.error, {
+                      variant: 'error'
+                    });
+                  } else {
+                    enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                      variant: 'error'
+                    });
+                  }
                 });
             }}
           >

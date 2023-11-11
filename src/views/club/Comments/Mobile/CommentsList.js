@@ -10,6 +10,7 @@ import { API_BASE_URL } from 'src/utils/urls';
 import makeStyles from '@mui/styles/makeStyles';
 import { SettingsOutlined } from '@mui/icons-material';
 import { set } from 'lodash';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -27,24 +28,46 @@ export default function CommentsList() {
   const [topics, setTopics] = useState([]);
   const [topicId, setTopicId] = useState(null);
   const [title, setTitle] = useState();
-
+  const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
   const classes = useStyles();
 
   function getSuggestions() {
-    httpService.get(`${API_BASE_URL}/api/club/suggestions/`).then(res => {
-      if (res.status === 200) {
-        setComments(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}/api/club/suggestions/`)
+      .then(res => {
+        if (res.status === 200) {
+          setComments(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
   }
 
   function getTopics() {
-    httpService.get(`${API_BASE_URL}/api/club/suggestion_topic/`).then(res => {
-      if (res.status === 200) {
-        setTopics(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}/api/club/suggestion_topic/`)
+      .then(res => {
+        if (res.status === 200) {
+          setTopics(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
   }
 
   useEffect(() => {
@@ -192,6 +215,17 @@ export default function CommentsList() {
                       state: {
                         data: res.data
                       }
+                    });
+                  }
+                })
+                .catch(ex => {
+                  if (ex.response.status === 417) {
+                    enqueueSnackbar(ex.response.data.error, {
+                      variant: 'error'
+                    });
+                  } else {
+                    enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                      variant: 'error'
                     });
                   }
                 });

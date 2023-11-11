@@ -11,6 +11,7 @@ import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
 import { QrReader } from 'react-qr-reader';
+import { useSnackbar } from 'notistack';
 
 export default function ReceivedListDesktop({
   selected,
@@ -25,22 +26,45 @@ export default function ReceivedListDesktop({
   const [filters, setFilters] = useState(null);
   const [filterSelected, setFilterSelected] = useState(1);
   const [scan, setScan] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   function getData() {
-    httpService.get(`${API_BASE_URL}/api/club/user_gifts/`).then(res => {
-      if (res.status === 200) {
-        setReceived(res.data);
-        setAll(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}/api/club/user_gifts/`)
+      .then(res => {
+        if (res.status === 200) {
+          setReceived(res.data);
+          setAll(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
   }
 
   useEffect(() => {
-    httpService.get(`${API_BASE_URL}/api/club/gift_type/`).then(res => {
-      if (res.status === 200) {
-        setFilters(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}/api/club/gift_type/`)
+      .then(res => {
+        if (res.status === 200) {
+          setFilters(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
   }, []);
 
   useEffect(() => {
@@ -207,6 +231,20 @@ export default function ReceivedListDesktop({
                           if (res.status === 200) {
                             // alert('انتقال انجام شد');
                             getData();
+                          }
+                        })
+                        .catch(ex => {
+                          if (ex.response.status === 417) {
+                            enqueueSnackbar(ex.response.data.error, {
+                              variant: 'error'
+                            });
+                          } else {
+                            enqueueSnackbar(
+                              'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                              {
+                                variant: 'error'
+                              }
+                            );
                           }
                         });
                     }

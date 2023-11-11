@@ -5,9 +5,7 @@ import {
   Box,
   FormControl,
   InputLabel,
-  TextField,
-  ToggleButton,
-  ToggleButtonGroup
+  TextField
 } from '@mui/material';
 
 import { useHistory } from 'react-router-dom';
@@ -19,6 +17,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import moment from 'jalali-moment';
 import Table from 'src/components/Desktop/Table';
+import { useSnackbar } from 'notistack';
 
 const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
@@ -37,7 +36,7 @@ const OrdersTable = props => {
   const [reset, setReset] = useState(false);
   const [state, setState] = useState(null);
   const [statusList, setStatusList] = useState([]);
-
+  const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
 
   useEffect(() => {
@@ -58,6 +57,15 @@ const OrdersTable = props => {
       .then(res => {
         if (res.status === 200) {
           setStatusList(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -466,6 +474,15 @@ const OrdersTable = props => {
           setData(res.data.results);
           setCount(res.data.count);
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }
 
@@ -624,6 +641,15 @@ const OrdersTable = props => {
             state: {
               data: res.data
             }
+          });
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
           });
         }
       });

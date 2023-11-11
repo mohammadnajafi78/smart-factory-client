@@ -17,6 +17,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -31,6 +32,7 @@ export default function ProfileMobile() {
   const [open, setOpen] = useState(false);
   const classes = useStyles();
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <Box sx={{ padding: '20px' }}>
@@ -120,6 +122,16 @@ export default function ProfileMobile() {
                 if (res.status === 201) {
                   setOpen(false);
                   setSubmitting(false);
+                }
+              })
+              .catch(ex => {
+                setSubmitting(false);
+                if (ex.response.status === 417) {
+                  enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+                } else {
+                  enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                    variant: 'error'
+                  });
                 }
               });
             setSubmitting(false);

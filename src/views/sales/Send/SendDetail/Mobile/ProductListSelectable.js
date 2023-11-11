@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Divider,
-  Grid,
   Drawer,
   TextField,
   InputAdornment,
@@ -12,16 +11,10 @@ import {
 import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
-import CancelImg from 'src/assets/img/cancel.svg';
-import SaleCategory from 'src/assets/img/saleCategory.svg';
-import SaleSubCategory from 'src/assets/img/SaleSubCategory.svg';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import { Download, Plus } from 'react-feather';
-import { useHistory } from 'react-router-dom';
-import MomentFa from 'src/utils/MomentFa';
 import SmallSize from 'src/assets/img/smallSize.svg';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -40,6 +33,7 @@ export default function ProductListSelectable(props) {
   const [count, setCount] = useState(0);
   const [all, setAll] = useState(false);
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     getData();
@@ -52,6 +46,15 @@ export default function ProductListSelectable(props) {
       .then(res => {
         if (res.status === 200) {
           setData(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }
@@ -507,6 +510,17 @@ export default function ProductListSelectable(props) {
                       setSelected(null);
                       setAll(false);
                       getData();
+                    }
+                  })
+                  .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
                     }
                   });
               }}

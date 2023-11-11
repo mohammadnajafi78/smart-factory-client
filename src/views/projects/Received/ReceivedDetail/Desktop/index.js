@@ -19,6 +19,7 @@ import CustomizedDialogs from 'src/components/Desktop/Dialog';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Upload from 'src/assets/img/icons/upload.svg';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -35,7 +36,7 @@ export default function ReceivedDetailDesktop(props) {
   const typeName = props.typeName;
   const [open, setOpen] = useState(false);
   const history = useHistory();
-  console.log('Data1234', data);
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <>
@@ -254,6 +255,20 @@ export default function ReceivedDetailDesktop(props) {
                               if (res.status === 200) {
                                 console.log('ok');
                               }
+                            })
+                            .catch(ex => {
+                              if (ex.response.status === 417) {
+                                enqueueSnackbar(ex.response.data.error, {
+                                  variant: 'error'
+                                });
+                              } else {
+                                enqueueSnackbar(
+                                  'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                                  {
+                                    variant: 'error'
+                                  }
+                                );
+                              }
                             });
                         }}
                       >
@@ -273,6 +288,20 @@ export default function ReceivedDetailDesktop(props) {
                             .then(res => {
                               if (res.status === 200) {
                                 console.log('ok');
+                              }
+                            })
+                            .catch(ex => {
+                              if (ex.response.status === 417) {
+                                enqueueSnackbar(ex.response.data.error, {
+                                  variant: 'error'
+                                });
+                              } else {
+                                enqueueSnackbar(
+                                  'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                                  {
+                                    variant: 'error'
+                                  }
+                                );
                               }
                             });
                         }}
@@ -354,6 +383,20 @@ export default function ReceivedDetailDesktop(props) {
                               if (res.status === 200) {
                                 console.log('ok');
                               }
+                            })
+                            .catch(ex => {
+                              if (ex.response.status === 417) {
+                                enqueueSnackbar(ex.response.data.error, {
+                                  variant: 'error'
+                                });
+                              } else {
+                                enqueueSnackbar(
+                                  'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                                  {
+                                    variant: 'error'
+                                  }
+                                );
+                              }
                             });
                         }}
                       >
@@ -373,6 +416,20 @@ export default function ReceivedDetailDesktop(props) {
                             .then(res => {
                               if (res.status === 200) {
                                 console.log('ok');
+                              }
+                            })
+                            .catch(ex => {
+                              if (ex.response.status === 417) {
+                                enqueueSnackbar(ex.response.data.error, {
+                                  variant: 'error'
+                                });
+                              } else {
+                                enqueueSnackbar(
+                                  'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                                  {
+                                    variant: 'error'
+                                  }
+                                );
                               }
                             });
                         }}
@@ -423,6 +480,20 @@ export default function ReceivedDetailDesktop(props) {
                               if (res.status === 200) {
                                 console.log('ok');
                               }
+                            })
+                            .catch(ex => {
+                              if (ex.response.status === 417) {
+                                enqueueSnackbar(ex.response.data.error, {
+                                  variant: 'error'
+                                });
+                              } else {
+                                enqueueSnackbar(
+                                  'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                                  {
+                                    variant: 'error'
+                                  }
+                                );
+                              }
                             });
                         }}
                       >
@@ -442,6 +513,20 @@ export default function ReceivedDetailDesktop(props) {
                             .then(res => {
                               if (res.status === 200) {
                                 console.log('ok');
+                              }
+                            })
+                            .catch(ex => {
+                              if (ex.response.status === 417) {
+                                enqueueSnackbar(ex.response.data.error, {
+                                  variant: 'error'
+                                });
+                              } else {
+                                enqueueSnackbar(
+                                  'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                                  {
+                                    variant: 'error'
+                                  }
+                                );
                               }
                             });
                         }}
@@ -492,6 +577,20 @@ export default function ReceivedDetailDesktop(props) {
                               if (res.status === 200) {
                                 console.log('ok');
                               }
+                            })
+                            .catch(ex => {
+                              if (ex.response.status === 417) {
+                                enqueueSnackbar(ex.response.data.error, {
+                                  variant: 'error'
+                                });
+                              } else {
+                                enqueueSnackbar(
+                                  'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                                  {
+                                    variant: 'error'
+                                  }
+                                );
+                              }
                             });
                         }}
                       >
@@ -511,6 +610,20 @@ export default function ReceivedDetailDesktop(props) {
                             .then(res => {
                               if (res.status === 200) {
                                 console.log('ok');
+                              }
+                            })
+                            .catch(ex => {
+                              if (ex.response.status === 417) {
+                                enqueueSnackbar(ex.response.data.error, {
+                                  variant: 'error'
+                                });
+                              } else {
+                                enqueueSnackbar(
+                                  'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                                  {
+                                    variant: 'error'
+                                  }
+                                );
                               }
                             });
                         }}
@@ -636,6 +749,17 @@ export default function ReceivedDetailDesktop(props) {
                     if (res.status === 200) {
                       setOpen(false);
                     }
+                  })
+                  .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
+                    }
                   });
               } else if (type === 'bom') {
                 const formData = new FormData();
@@ -654,6 +778,17 @@ export default function ReceivedDetailDesktop(props) {
                     if (res.status === 200) {
                       setOpen(false);
                     }
+                  })
+                  .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
+                    }
                   });
               } else if (type === 'supervision') {
                 const formData = new FormData();
@@ -671,6 +806,17 @@ export default function ReceivedDetailDesktop(props) {
                   .then(res => {
                     if (res.status === 200) {
                       setOpen(false);
+                    }
+                  })
+                  .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
                     }
                   });
               }

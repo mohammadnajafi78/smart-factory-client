@@ -13,6 +13,7 @@ import CustomizedDialogs from 'src/components/Desktop/Dialog';
 import useSaleOrder from 'src/hooks/useSaleOrder';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -36,12 +37,22 @@ export default function Location(props) {
   const history = useHistory();
   const { order, setOrder } = useSaleOrder();
   const [isLoading, setLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   function getData() {
     httpService
       .get(`${API_BASE_URL}/api/orders/delivery/get_user_delivery_locations/ `)
       .then(res => {
         if (res.status === 200) setLocations(res.data);
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }
 
@@ -53,6 +64,15 @@ export default function Location(props) {
         if (res.status === 200) {
           setProvinces(res.data);
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }, []);
 
@@ -63,6 +83,15 @@ export default function Location(props) {
         .then(res => {
           if (res.status === 200) {
             setCities(res.data);
+          }
+        })
+        .catch(ex => {
+          if (ex.response.status === 417) {
+            enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+          } else {
+            enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+              variant: 'error'
+            });
           }
         });
     }
@@ -204,6 +233,18 @@ export default function Location(props) {
                     })
                     .catch(ex => {
                       setLoading(false);
+                      if (ex.response.status === 417) {
+                        enqueueSnackbar(ex.response.data.error, {
+                          variant: 'error'
+                        });
+                      } else {
+                        enqueueSnackbar(
+                          'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                          {
+                            variant: 'error'
+                          }
+                        );
+                      }
                     });
                 }}
                 disabled={order?.count <= 0 || selected === null}
@@ -279,8 +320,20 @@ export default function Location(props) {
                         setSubmitting(false);
                       }
                     })
-                    .catch(err => {
+                    .catch(ex => {
                       setSubmitting(false);
+                      if (ex.response.status === 417) {
+                        enqueueSnackbar(ex.response.data.error, {
+                          variant: 'error'
+                        });
+                      } else {
+                        enqueueSnackbar(
+                          'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                          {
+                            variant: 'error'
+                          }
+                        );
+                      }
                     });
                 }}
               >
@@ -527,6 +580,20 @@ export default function Location(props) {
                       .then(res => {
                         if (res.status === 200) {
                           setOpenCancel(false);
+                        }
+                      })
+                      .catch(ex => {
+                        if (ex.response.status === 417) {
+                          enqueueSnackbar(ex.response.data.error, {
+                            variant: 'error'
+                          });
+                        } else {
+                          enqueueSnackbar(
+                            'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                            {
+                              variant: 'error'
+                            }
+                          );
                         }
                       });
                   }}

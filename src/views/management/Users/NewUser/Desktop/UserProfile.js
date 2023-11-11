@@ -1,17 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Avatar, Button, Divider } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Avatar, Divider } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
-import { Star } from 'react-feather';
 // import Score from './Score';
-import { ArrowBack } from '@mui/icons-material';
-import profileImg from 'src/assets/img/icons/profile.png';
-import edit from 'src/assets/img/icons/edit.svg';
-import exit from 'src/assets/img/icons/exit.svg';
 import useAuth from 'src/hooks/useAuth';
-import httpService from 'src/utils/httpService';
-import { API_BASE_URL } from 'src/utils/urls';
 
 export default function UserProfile(props) {
   const [data, setData] = useState(props.data);

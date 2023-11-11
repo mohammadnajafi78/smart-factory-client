@@ -13,12 +13,14 @@ import LinkIconButton from 'src/components/Mobile/Button/LinkIcon';
 import IdCard from 'src/assets/img/icons/id_card.svg';
 import MomentEn from 'src/utils/MomentEn';
 import * as Yup from 'yup';
+import { useSnackbar } from 'notistack';
 
 function IdentityInfoMobile(props) {
   const history = useHistory();
   const data = props?.data;
   const editable = props?.editable;
   const [works, setWorks] = useState([]);
+  const { enqueueSnackbar } = useSnackbar();
   // const [supplier, setSupplier] = useState(null);
   // const [introducer, setIntroducer] = useState(null);
 
@@ -89,12 +91,19 @@ function IdentityInfoMobile(props) {
                 setSubmitting(false);
               }
             })
-            .catch(err => {
-              console.log('error', err.response.data);
-              err.response.data.map(e => {
-                setFieldError(e.field, e.error);
-              });
+            .catch(ex => {
               setSubmitting(false);
+              if (ex.response.status === 417) {
+                ex.response.data.map(e => {
+                  setFieldError(e.field, e.error);
+                });
+
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                  variant: 'error'
+                });
+              }
             });
         }}
       >

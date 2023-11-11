@@ -21,6 +21,7 @@ import Table from 'src/components/Desktop/Table';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { useSnackbar } from 'notistack';
 
 const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
@@ -38,6 +39,7 @@ const GiftTypesTable = props => {
   const [reset, setReset] = useState(false);
   const [open, setOpen] = useState(false);
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     setFilter('');
@@ -231,11 +233,19 @@ const GiftTypesTable = props => {
           search: search
         }
       )
-
       .then(res => {
         if (res.status === 200) {
           setData(res.data.results);
           setCount(res.data.count);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }
@@ -350,6 +360,15 @@ const GiftTypesTable = props => {
         if (res.status === 200) {
           getData(page, rowsPerPage, '');
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }
 
@@ -445,8 +464,20 @@ const GiftTypesTable = props => {
                         setSubmitting(false);
                       }
                     })
-                    .catch(err => {
+                    .catch(ex => {
                       setSubmitting(false);
+                      if (ex.response.status === 417) {
+                        enqueueSnackbar(ex.response.data.error, {
+                          variant: 'error'
+                        });
+                      } else {
+                        enqueueSnackbar(
+                          'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                          {
+                            variant: 'error'
+                          }
+                        );
+                      }
                     });
                 }}
               >

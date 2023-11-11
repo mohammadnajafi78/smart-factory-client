@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Divider,
-  Grid,
-  Drawer,
   TextField,
   InputAdornment,
   ButtonGroup,
@@ -13,10 +11,10 @@ import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import InputLabel from 'src/components/Mobile/InputLabel';
-import CancelImg from 'src/assets/img/cancel.svg';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import useSaleOrder from 'src/hooks/useSaleOrder';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -39,6 +37,7 @@ export default function ProductList({ data }) {
   const [all, setAll] = useState(false);
   const { order, setOrder, getOrder } = useSaleOrder();
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     getOrder();
@@ -495,6 +494,20 @@ export default function ProductList({ data }) {
                           setSelected(null);
                           setAll(false);
                         }
+                      })
+                      .catch(ex => {
+                        if (ex.response.status === 417) {
+                          enqueueSnackbar(ex.response.data.error, {
+                            variant: 'error'
+                          });
+                        } else {
+                          enqueueSnackbar(
+                            'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                            {
+                              variant: 'error'
+                            }
+                          );
+                        }
                       });
                   } else {
                     httpService
@@ -513,6 +526,20 @@ export default function ProductList({ data }) {
                           setOrder(res.data);
                           setSelected(null);
                           setAll(false);
+                        }
+                      })
+                      .catch(ex => {
+                        if (ex.response.status === 417) {
+                          enqueueSnackbar(ex.response.data.error, {
+                            variant: 'error'
+                          });
+                        } else {
+                          enqueueSnackbar(
+                            'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                            {
+                              variant: 'error'
+                            }
+                          );
                         }
                       });
                   }

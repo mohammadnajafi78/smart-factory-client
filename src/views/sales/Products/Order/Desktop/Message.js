@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Divider, Grid, Drawer, TextField } from '@mui/material';
+import { Box } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
-import CancelImg from 'src/assets/img/cancel.svg';
-import SaleCategory from 'src/assets/img/saleCategory.svg';
 import OrderOK from 'src/assets/img/orderOk.svg';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import { useHistory } from 'react-router-dom';
-import useSaleOrder from 'src/hooks/useSaleOrder';
 import MomentFa from 'src/utils/MomentFa';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -26,6 +24,7 @@ export default function Message(props) {
   const history = useHistory();
   const order = props.location.state;
   const [factor, setFactor] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
@@ -35,6 +34,15 @@ export default function Message(props) {
       .then(res => {
         if (res.status === 200) {
           setFactor(res.data.files.filter(f => f.subject === 'PI')[0]?.url);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);

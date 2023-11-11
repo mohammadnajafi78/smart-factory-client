@@ -254,6 +254,15 @@ const ReceiveTable = props => {
           setData(res.data.results);
           setCount(res.data.count);
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }
 
@@ -386,9 +395,14 @@ const ReceiveTable = props => {
           });
         }
       })
-      .catch(err => {
-        enqueueSnackbar('پروژه معتبر نیست', { variant: 'error' });
-        console.log(err);
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }
 

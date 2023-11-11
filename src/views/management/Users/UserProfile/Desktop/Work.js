@@ -1,15 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react';
-import {
-  Box,
-  ButtonGroup,
-  Button,
-  ListItemIcon,
-  TextField,
-  Divider,
-  Grid
-} from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, TextField, Divider, Grid } from '@mui/material';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import { Formik } from 'formik';
 import { useHistory } from 'react-router-dom';
@@ -18,6 +9,7 @@ import httpService from 'src/utils/httpService';
 import Autocomplete from '@mui/material/Autocomplete';
 import * as Yup from 'yup';
 import Text from 'src/components/Desktop/Text';
+import { useSnackbar } from 'notistack';
 
 function WorkMobile(props) {
   const history = useHistory();
@@ -31,6 +23,7 @@ function WorkMobile(props) {
   const [cityId, setCityId] = useState(
     props.data?.company?.location_info?.city
   );
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
@@ -38,6 +31,15 @@ function WorkMobile(props) {
       .then(res => {
         if (res.status === 200) {
           setProvinces(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -49,6 +51,15 @@ function WorkMobile(props) {
         .then(res => {
           if (res.status === 200) {
             setCities(res.data);
+          }
+        })
+        .catch(ex => {
+          if (ex.response.status === 417) {
+            enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+          } else {
+            enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+              variant: 'error'
+            });
           }
         });
     }
@@ -107,11 +118,18 @@ function WorkMobile(props) {
               setSubmitting(false);
             }
           })
-          .catch(err => {
-            err.response.data.map(e => {
-              setFieldError(e.field, e.error);
-            });
+          .catch(ex => {
             setSubmitting(false);
+            if (ex.response.status === 417) {
+              ex.response.data.map(e => {
+                setFieldError(e.field, e.error);
+              });
+              enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+            } else {
+              enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                variant: 'error'
+              });
+            }
           });
       }}
     >

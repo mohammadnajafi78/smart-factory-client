@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Box,
-  Avatar,
-  Button,
-  Divider,
-  TextField,
-  Autocomplete
-} from '@mui/material';
+import { Box, Avatar, Divider, TextField, Autocomplete } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
-import profileImg from 'src/assets/img/icons/profile.png';
 import useAuth from 'src/hooks/useAuth';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { Formik } from 'formik';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { useSnackbar } from 'notistack';
 
 export default function ProfileDesktop(props) {
   const history = useHistory();
@@ -27,6 +20,7 @@ export default function ProfileDesktop(props) {
   const [cities, setCities] = useState([]);
   const [cityId, setCityId] = useState(null);
   const [works, setWorks] = useState([]);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
@@ -34,6 +28,15 @@ export default function ProfileDesktop(props) {
       .then(res => {
         if (res.status === 200) {
           setProvinces(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -46,6 +49,15 @@ export default function ProfileDesktop(props) {
           if (res.status === 200) {
             setCities(res.data);
           }
+        })
+        .catch(ex => {
+          if (ex.response.status === 417) {
+            enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+          } else {
+            enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+              variant: 'error'
+            });
+          }
         });
     }
   }, [provinceId]);
@@ -56,6 +68,15 @@ export default function ProfileDesktop(props) {
       .then(res => {
         if (res.status === 200) {
           setWorks(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);

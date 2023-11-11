@@ -1,11 +1,11 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Box, Drawer, TextField } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import Typography from '@mui/material/Typography';
 import makeStyles from '@mui/styles/makeStyles';
 import { Formik } from 'formik';
+import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Domain from 'src/assets/img/domain22.png';
@@ -44,6 +44,7 @@ function DesignerInfoDesktop(props) {
   const [designer, setDesigner] = useState(null);
   const [other, setOther] = useState(null);
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   const data = props.location.state;
 
@@ -107,6 +108,15 @@ function DesignerInfoDesktop(props) {
                   // state: res.data
                 });
                 setSubmitting(false);
+              }
+            })
+            .catch(ex => {
+              if (ex.response.status === 417) {
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                  variant: 'error'
+                });
               }
             });
           setSubmitting(false);
@@ -357,6 +367,17 @@ function DesignerInfoDesktop(props) {
                       setOpenDesigner(false);
                       setSubmitting(false);
                     }
+                  })
+                  .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
+                    }
                   });
                 setSubmitting(false);
               }}
@@ -469,6 +490,17 @@ function DesignerInfoDesktop(props) {
                       setOther(res.data);
                       setOpenOther(false);
                       setSubmitting(false);
+                    }
+                  })
+                  .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
                     }
                   });
                 setSubmitting(false);

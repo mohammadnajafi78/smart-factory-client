@@ -1,10 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  Box,
-  TextField,
-  Autocomplete,
-  Button
-} from '@mui/material';
+import { Box, TextField, Autocomplete, Button } from '@mui/material';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import InputLabel from 'src/components/Desktop/InputLabel';
@@ -21,6 +16,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import Delete from 'src/assets/img/icons/delete.svg';
 import Attach from 'src/assets/img/icons/attach.svg';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -40,7 +36,7 @@ export default function DeliveryInfo(props) {
   const history = useHistory();
   const data = props.state;
   const classes = useStyles();
-  
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
@@ -48,6 +44,15 @@ export default function DeliveryInfo(props) {
       .then(res => {
         if (res.status === 200) {
           setDeliveryTypes(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -118,8 +123,17 @@ export default function DeliveryInfo(props) {
                     setSubmitting(false);
                   }
                 })
-                .catch(err => {
+                .catch(ex => {
                   setSubmitting(false);
+                  if (ex.response.status === 417) {
+                    enqueueSnackbar(ex.response.data.error, {
+                      variant: 'error'
+                    });
+                  } else {
+                    enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                      variant: 'error'
+                    });
+                  }
                 });
             }}
           >

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Divider, Drawer } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Drawer } from '@mui/material';
 import LinkIconButton from 'src/components/Mobile/Button/LinkIcon';
 import LinkButton from 'src/components/Mobile/Button/Link';
 import InputLabel from 'src/components/Mobile/InputLabel';
@@ -14,9 +14,9 @@ import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import { useHistory } from 'react-router-dom';
 import MomentFa from 'src/utils/MomentFa';
-import UserClub from 'src/utils/userClub';
 import useScore from 'src/hooks/useScore';
 import ErrorImg from 'src/assets/img/icons/error.svg';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -36,6 +36,7 @@ export default function GetAwardMobile(props) {
   const { setScore } = useScore();
   const [openError, setOpenError] = useState(false);
   const [error, setError] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <>
@@ -275,11 +276,21 @@ export default function GetAwardMobile(props) {
                         setScore();
                       }
                     })
-                    .catch(err => {
-                      if (err.response.status === 417) {
+                    .catch(ex => {
+                      if (ex.response.status === 417) {
                         setOpenError(true);
-                        setError(err.response.data.error);
+                        setError(ex.response.data.error);
                         setOpenFirst(false);
+                        enqueueSnackbar(ex.response.data.error, {
+                          variant: 'error'
+                        });
+                      } else {
+                        enqueueSnackbar(
+                          'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                          {
+                            variant: 'error'
+                          }
+                        );
                       }
                     });
                 } else {
@@ -296,11 +307,21 @@ export default function GetAwardMobile(props) {
                         // UserClub();
                       }
                     })
-                    .catch(err => {
-                      if (err.response.status === 417) {
+                    .catch(ex => {
+                      if (ex.response.status === 417) {
                         setOpenError(true);
-                        setError(err.response.data.error);
+                        setError(ex.response.data.error);
                         setOpenFirst(false);
+                        enqueueSnackbar(ex.response.data.error, {
+                          variant: 'error'
+                        });
+                      } else {
+                        enqueueSnackbar(
+                          'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                          {
+                            variant: 'error'
+                          }
+                        );
                       }
                     });
                 }

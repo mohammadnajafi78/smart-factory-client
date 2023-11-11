@@ -5,42 +5,14 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import { Box, Collapse } from '@mui/material';
-import Competition from 'src/assets/img/icons/competition.svg';
-import CompetitionSelected from 'src/assets/img/icons/competition-selected.svg';
-import Present from 'src/assets/img/icons/present.svg';
-import PresentsSelected from 'src/assets/img/icons/presents-selected.svg';
-import Comment from 'src/assets/img/icons/comment.svg';
-import CommentSelected from 'src/assets/img/icons/comment-selected.svg';
-import Received from 'src/assets/img/icons/received.svg';
-import ReceivedSelected from 'src/assets/img/icons/received-selected.svg';
-import Vector from 'src/assets/img/icons/Vector.svg';
 import { useHistory } from 'react-router-dom';
 import TopBar from '../TopBar';
-import { styled, useTheme } from '@mui/material/styles';
-import userMng from 'src/assets/img/icons/userMng.svg';
-import clubMng from 'src/assets/img/icons/clubMng.svg';
-import saleMng from 'src/assets/img/local_mall_mng.svg';
-import HomeMng from 'src/assets/img/icons/homeMng.js';
-import NewUserMng from 'src/assets/img/icons/newUserMng.js';
-import AllUserMng from 'src/assets/img/icons/allUserMng.js';
-import CompetitionMng from 'src/assets/img/icons/competitionMng.js';
-import LotteryMng from 'src/assets/img/icons/lotteryMng.js';
-import AwardsMng from 'src/assets/img/icons/awardsMng.js';
-import CommentMng from 'src/assets/img/icons/commentMng.js';
-import SettingMng from 'src/assets/img/icons/settingMng.js';
-import Inventory2Mng from 'src/assets/img/icons/Inventory2Mng.js';
-import { ArrowDown } from 'react-feather';
-import {
-  ArrowUpwardOutlined,
-  ArrowUpwardRounded,
-  KeyboardArrowDown,
-  KeyboardArrowUp
-} from '@mui/icons-material';
+import { styled } from '@mui/material/styles';
+import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { useSnackbar } from 'notistack';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -79,6 +51,7 @@ export default function DrawerComp(props) {
   const [menuId, setMenuId] = useState(-1);
   const history = useHistory();
   const [menu, setMenu] = useState([]);
+  const { enqueueSnackbar } = useSnackbar();
   // let menu = [
   //   {
   //     id: 0,
@@ -271,6 +244,15 @@ export default function DrawerComp(props) {
       .then(res => {
         if (res.status === 200) {
           setMenu(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);

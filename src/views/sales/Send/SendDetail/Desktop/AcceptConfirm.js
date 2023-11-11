@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Divider, Grid, Drawer, TextField, Button } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Divider, TextField, Button } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
-import { ArrowRight, Plus } from 'react-feather';
+import { ArrowRight } from 'react-feather';
 import { useHistory } from 'react-router-dom';
 import Upload from 'src/assets/img/icons/upload.svg';
 import Delete from 'src/assets/img/icons/delete.svg';
 import Attach from 'src/assets/img/icons/attach.svg';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -26,6 +27,7 @@ export default function AcceptConfirm(props) {
   const [comment, setComment] = useState(null);
   const history = useHistory();
   const [isLoading, setLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <>
@@ -220,6 +222,15 @@ export default function AcceptConfirm(props) {
                   })
                   .catch(ex => {
                     setLoading(false);
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
+                    }
                   });
               }}
             >

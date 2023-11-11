@@ -4,25 +4,49 @@ import FilterButton from 'src/components/Mobile/Button/Filter';
 import AwardItem from './AwardItem';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { useSnackbar } from 'notistack';
 
 export default function AwardsList() {
   const [awards, setAwards] = useState(null);
   const [all, setAll] = useState(null);
   const [filters, setFilters] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    httpService.get(`${API_BASE_URL}/api/club/gift_type/`).then(res => {
-      if (res.status === 200) {
-        setFilters(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}/api/club/gift_type/`)
+      .then(res => {
+        if (res.status === 200) {
+          setFilters(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
 
-    httpService.get(`${API_BASE_URL}/api/club/gifts/get_all/`).then(res => {
-      if (res.status === 200) {
-        setAwards(res.data);
-        setAll(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}/api/club/gifts/get_all/`)
+      .then(res => {
+        if (res.status === 200) {
+          setAwards(res.data);
+          setAll(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
   }, []);
 
   return (

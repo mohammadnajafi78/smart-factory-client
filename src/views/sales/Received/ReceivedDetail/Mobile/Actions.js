@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Divider,
-  Grid,
   Drawer,
   TextField,
   Button,
@@ -11,13 +10,10 @@ import {
 import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import CancelImg from 'src/assets/img/cancel.svg';
-import SaleCategory from 'src/assets/img/saleCategory.svg';
-import SaleSubCategory from 'src/assets/img/SaleSubCategory.svg';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import { ChevronLeft, Download, Plus } from 'react-feather';
+import { ChevronLeft } from 'react-feather';
 import { useHistory } from 'react-router-dom';
 import MomentFa from 'src/utils/MomentFa';
 import ProductList from './ProductList';
@@ -25,6 +21,7 @@ import PaidImg from 'src/assets/img/paid.svg';
 import LocalShipping from 'src/assets/img/local_shipping.svg';
 import Person from 'src/assets/img/person.svg';
 import Domain from 'src/assets/img/domain.svg';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -44,6 +41,7 @@ export default function Actions(props) {
   const [comment, setComment] = useState(null);
   const history = useHistory();
   const user_id = JSON.parse(localStorage.getItem('user')).user_id;
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <>
@@ -590,6 +588,20 @@ export default function Actions(props) {
                       if (res.status === 200) {
                         history.push('/sale/received');
                       }
+                    })
+                    .catch(ex => {
+                      if (ex.response.status === 417) {
+                        enqueueSnackbar(ex.response.data.error, {
+                          variant: 'error'
+                        });
+                      } else {
+                        enqueueSnackbar(
+                          'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                          {
+                            variant: 'error'
+                          }
+                        );
+                      }
                     });
                 }}
               >
@@ -734,6 +746,20 @@ export default function Actions(props) {
                             state: data.current_state.name
                           });
                         } else history.push('/sale/received');
+                      }
+                    })
+                    .catch(ex => {
+                      if (ex.response.status === 417) {
+                        enqueueSnackbar(ex.response.data.error, {
+                          variant: 'error'
+                        });
+                      } else {
+                        enqueueSnackbar(
+                          'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                          {
+                            variant: 'error'
+                          }
+                        );
                       }
                     });
                 }}

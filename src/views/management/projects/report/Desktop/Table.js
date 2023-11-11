@@ -13,12 +13,11 @@ import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import MomentFa from 'src/utils/MomentFa';
 import Table from 'src/components/Desktop/Table';
-
-const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
+import { useSnackbar } from 'notistack';
 
 let item = {};
 // let itemSort = {};
-const ReportTable = props => {
+const ReportTable = () => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -36,6 +35,7 @@ const ReportTable = props => {
   const [mahan, setMahan] = useState(true);
   //==================================================
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     setFilter('');
@@ -238,26 +238,6 @@ const ReportTable = props => {
   }
 
   function onFilterChange(column, filterList, type) {
-    let filterNames = [
-      'id',
-      'name',
-      'user_info.last_name',
-      '',
-      'create_date__gte',
-      'create_date',
-      'create_date__lte',
-      'current_state.label'
-    ];
-    let filterType = [
-      '',
-      '__contains',
-      '__contains',
-      '',
-      '',
-      '',
-      '__icontains'
-    ];
-
     switch (column) {
       case 'name':
         if (filterList[1][0]) {
@@ -314,7 +294,7 @@ const ReportTable = props => {
 
     let str = '';
     if (filterItems?.length > 0) {
-      filterItems.map((itm, index) => {
+      filterItems.map(itm => {
         str =
           str +
           itm[0] +
@@ -365,7 +345,7 @@ const ReportTable = props => {
 
     let str = '';
     if (filterItems?.length > 0) {
-      filterItems.map((itm, index) => {
+      filterItems.map(itm => {
         str = itm[1] === 'asc' ? itm[0] : `-${itm[0]}`;
       });
     }
@@ -383,7 +363,7 @@ const ReportTable = props => {
   // console.log(data?.filter(f => f.project.project_num === 'PRJ2302002230912'));
   function onRowsDelete(rowsDeleted, newData) {
     const matchNums = [];
-    rowsDeleted.data.map((item, index) => {
+    rowsDeleted.data.map(item => {
       matchNums.push(data[item.index].match_num);
     });
 
@@ -394,6 +374,15 @@ const ReportTable = props => {
       .then(res => {
         if (res.status === 200) {
           getData(page, rowsPerPage, '');
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }

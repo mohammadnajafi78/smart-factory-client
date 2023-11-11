@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Drawer } from '@mui/material';
-import { ChevronLeft, Star } from 'react-feather';
+import { Box } from '@mui/material';
 import InputLabel from 'src/components/Mobile/InputLabel';
-import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import LinkIconButton from 'src/components/Mobile/Button/LinkIcon';
-import Received from 'src/assets/img/icons/received.svg';
-import makeStyles from '@mui/styles/makeStyles';
-import { height } from '@mui/system';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import MomentFa from 'src/utils/MomentFa';
+import { useSnackbar } from 'notistack';
 
 export default function ReceivedItemMobile(props) {
   const [data, setData] = useState(props.location.state.data);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
@@ -23,6 +19,15 @@ export default function ReceivedItemMobile(props) {
       .then(res => {
         if (res.status === 200) {
           setData(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);

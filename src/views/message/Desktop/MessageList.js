@@ -7,6 +7,7 @@ import InputLabel from 'src/components/Desktop/InputLabel';
 import EmptyMessage from 'src/assets/img/icons/emptyMessage.svg';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { useSnackbar } from 'notistack';
 
 export default function MessageListDesktop({ selected, setSelected }) {
   const history = useHistory();
@@ -15,22 +16,45 @@ export default function MessageListDesktop({ selected, setSelected }) {
   const [filters, setFilters] = useState(null);
   const [filterSelected, setFilterSelected] = useState(1);
   const [refresh, setRefresh] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   function getAll() {
-    httpService.get(`${API_BASE_URL}/api/message/`).then(res => {
-      if (res.status === 200) {
-        setMessages(res.data);
-        setAll(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}/api/message/`)
+      .then(res => {
+        if (res.status === 200) {
+          setMessages(res.data);
+          setAll(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
   }
 
   useEffect(() => {
-    httpService.get(`${API_BASE_URL}/api/message/type/`).then(res => {
-      if (res.status === 200) {
-        setFilters(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}/api/message/type/`)
+      .then(res => {
+        if (res.status === 200) {
+          setFilters(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
   }, []);
 
   useEffect(() => {

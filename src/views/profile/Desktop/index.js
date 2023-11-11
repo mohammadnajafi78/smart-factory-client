@@ -1,25 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Avatar, Button, Divider, Drawer, TextField } from '@mui/material';
+import { Box, Avatar, Button, Divider, TextField } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
-import { Minus, Plus, Star } from 'react-feather';
-import Score from './Score';
-import { ArrowBack } from '@mui/icons-material';
-import profileImg from 'src/assets/img/icons/profile.png';
-import edit from 'src/assets/img/icons/edit.svg';
-import exit from 'src/assets/img/icons/exit.svg';
+import { Star } from 'react-feather';
 import useAuth from 'src/hooks/useAuth';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import CustomizedDialogs from 'src/components/Desktop/Dialog';
 import { styled } from '@mui/material/styles';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import useScore from 'src/hooks/useScore';
-import MomentFa from 'src/utils/MomentFa';
 import Main from './Main';
 import EditSquare from 'src/assets/img/icons/edit_square.svg';
 import ProfileEdit from 'src/assets/img/icons/profileEdit.svg';
+import { useSnackbar } from 'notistack';
 
 const CssTextField = styled(TextField)({
   '& .MuiOutlinedInput-input': {
@@ -36,14 +30,26 @@ export default function ProfileDesktop(props) {
   const { logout } = useAuth();
   const { setScore } = useScore();
   const [profileImage, setProfileImage] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   function getData() {
     setData(null);
-    httpService.get(`${API_BASE_URL}/api/users/get_user_profile/`).then(res => {
-      if (res.status === 200) {
-        setData(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}/api/users/get_user_profile/`)
+      .then(res => {
+        if (res.status === 200) {
+          setData(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
   }
 
   useEffect(() => {
@@ -60,6 +66,15 @@ export default function ProfileDesktop(props) {
           if (res.status === 200) {
             setProfileImage(null);
             getData();
+          }
+        })
+        .catch(ex => {
+          if (ex.response.status === 417) {
+            enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+          } else {
+            enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+              variant: 'error'
+            });
           }
         });
     }

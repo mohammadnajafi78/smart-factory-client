@@ -21,9 +21,11 @@ import MyCourse from './MyCourse';
 import MyExam from './MyExams';
 import SwipeableViews from 'react-swipeable-views';
 import { useTheme } from '@mui/material/styles';
+import { useSnackbar } from 'notistack';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <div
@@ -190,6 +192,18 @@ export default function ProfileDesktop() {
                   if (res.status === 201) {
                     setOpen(false);
                     setSubmitting(false);
+                  }
+                })
+                .catch(ex => {
+                  setSubmitting(false);
+                  if (ex.response.status === 417) {
+                    enqueueSnackbar(ex.response.data.error, {
+                      variant: 'error'
+                    });
+                  } else {
+                    enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                      variant: 'error'
+                    });
                   }
                 });
               setSubmitting(false);

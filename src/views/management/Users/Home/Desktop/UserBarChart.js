@@ -1,14 +1,6 @@
+import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  Label
-} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 import httpService from 'src/utils/httpService';
 import MomentEn from 'src/utils/MomentEn';
 import { API_BASE_URL } from 'src/utils/urls';
@@ -60,7 +52,7 @@ import { API_BASE_URL } from 'src/utils/urls';
 
 export default function UserBarChart() {
   const [data, setData] = useState();
-
+  const { enqueueSnackbar } = useSnackbar();
   const today = new Date();
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 7);
@@ -78,6 +70,15 @@ export default function UserBarChart() {
       .then(res => {
         if (res.status == 200) {
           setData(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);

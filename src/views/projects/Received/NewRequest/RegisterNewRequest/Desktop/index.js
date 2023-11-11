@@ -9,7 +9,7 @@ import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 import * as Yup from 'yup';
-import CustomizedProgressBars from 'src/components/Desktop/ProgressBar';
+import { useSnackbar } from 'notistack';
 
 function RegisterNewRequestMobile(props) {
   // let data = props.location.state;
@@ -17,6 +17,7 @@ function RegisterNewRequestMobile(props) {
   const [requestTypeId, setRequestTypeId] = useState(null);
   const [projectList, setProjectList] = useState(null);
   const [projectId, setProjectId] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   const history = useHistory();
 
@@ -26,6 +27,15 @@ function RegisterNewRequestMobile(props) {
       .then(res => {
         if (res.status === 200) {
           setRequestTypeList(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -39,6 +49,15 @@ function RegisterNewRequestMobile(props) {
         .then(res => {
           if (res.status === 200) {
             setProjectList(res.data);
+          }
+        })
+        .catch(ex => {
+          if (ex.response.status === 417) {
+            enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+          } else {
+            enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+              variant: 'error'
+            });
           }
         });
     }
@@ -122,6 +141,15 @@ function RegisterNewRequestMobile(props) {
                       }
                     });
                   setSubmitting(false);
+                }
+              })
+              .catch(ex => {
+                if (ex.response.status === 417) {
+                  enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+                } else {
+                  enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                    variant: 'error'
+                  });
                 }
               });
             setSubmitting(false);

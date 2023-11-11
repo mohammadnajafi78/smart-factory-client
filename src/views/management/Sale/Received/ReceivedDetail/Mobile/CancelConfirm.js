@@ -6,6 +6,7 @@ import { API_BASE_URL } from 'src/utils/urls';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { useHistory } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -23,6 +24,7 @@ export default function CancelConfirm(props) {
   const [comment, setComment] = useState(null);
   const [isLoading, setLoading] = useState(false);
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <>
@@ -113,6 +115,15 @@ export default function CancelConfirm(props) {
                   })
                   .catch(ex => {
                     setLoading(false);
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
+                    }
                   });
               }}
             >

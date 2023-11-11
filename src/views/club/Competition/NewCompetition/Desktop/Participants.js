@@ -4,10 +4,12 @@ import { useHistory } from 'react-router-dom';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import InputLabel from 'src/components/Desktop/InputLabel';
+import { useSnackbar } from 'notistack';
 
 export default function Item({ data }) {
   const history = useHistory();
   const [selected, setSelected] = useState(data);
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <Box
@@ -62,6 +64,15 @@ export default function Item({ data }) {
                 if (res.status === 200) {
                   // console.log('ok');
                   setSelected(res.data);
+                }
+              })
+              .catch(ex => {
+                if (ex.response.status === 417) {
+                  enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+                } else {
+                  enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                    variant: 'error'
+                  });
                 }
               });
           }}

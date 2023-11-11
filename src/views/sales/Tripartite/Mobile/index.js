@@ -4,12 +4,14 @@ import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import useSaleSearch from 'src/hooks/useSaleSearch';
 import TripartiteList from './TripartiteList';
+import { useSnackbar } from 'notistack';
 
 export default function TripartiteMobile() {
   const [openCategory, setOpenCategory] = useState();
   const [category, setCategory] = useState();
   const [Tripartite, setTripartite] = useState(null);
   const { result, searched } = useSaleSearch();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
@@ -17,6 +19,15 @@ export default function TripartiteMobile() {
       .then(res => {
         if (res.status === 200) {
           setTripartite(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);

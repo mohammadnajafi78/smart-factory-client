@@ -3,6 +3,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import makeStyles from '@mui/styles/makeStyles';
+import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
@@ -27,6 +28,7 @@ export default function ExamQuestionMobile(props) {
   const [open, setOpen] = useState(false);
   const history = useHistory();
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
@@ -39,6 +41,15 @@ export default function ExamQuestionMobile(props) {
         if (res.status === 200) {
           setExamQuestion(res.data.results);
           setPageCount(res.data.page_count);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, [page]);
@@ -155,6 +166,20 @@ export default function ExamQuestionMobile(props) {
                           })
                           .then(res => {
                             if (res.status === 200) {
+                            }
+                          })
+                          .catch(ex => {
+                            if (ex.response.status === 417) {
+                              enqueueSnackbar(ex.response.data.error, {
+                                variant: 'error'
+                              });
+                            } else {
+                              enqueueSnackbar(
+                                'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                                {
+                                  variant: 'error'
+                                }
+                              );
                             }
                           });
                       }}

@@ -17,6 +17,7 @@ import * as Yup from 'yup';
 import { AttachFile } from '@mui/icons-material';
 import { API_BASE_URL } from 'src/utils/urls';
 import httpService from 'src/utils/httpService';
+import { useSnackbar } from 'notistack';
 
 export default function NewProductType({
   open,
@@ -27,6 +28,7 @@ export default function NewProductType({
   ...props
 }) {
   const [file, setFile] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <>
@@ -93,6 +95,17 @@ export default function NewProductType({
                       props.reloadData();
                       setSubmitting(false);
                     }
+                  })
+                  .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
+                    }
                   });
               } else {
                 httpService
@@ -105,6 +118,17 @@ export default function NewProductType({
                       handleClose();
                       props.setData(res.data);
                       setSubmitting(false);
+                    }
+                  })
+                  .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
                     }
                   });
               }
@@ -431,6 +455,21 @@ export default function NewProductType({
                                           setFieldValue('images', res.data);
                                           props.setImages(res.data);
                                         }
+                                      })
+                                      .catch(ex => {
+                                        if (ex.response.status === 417) {
+                                          enqueueSnackbar(
+                                            ex.response.data.error,
+                                            { variant: 'error' }
+                                          );
+                                        } else {
+                                          enqueueSnackbar(
+                                            'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                                            {
+                                              variant: 'error'
+                                            }
+                                          );
+                                        }
                                       });
                                   }}
                                 >
@@ -461,6 +500,21 @@ export default function NewProductType({
                                         if (res.status === 200) {
                                           setFieldValue('images', res.data);
                                           props.setImages(res.data);
+                                        }
+                                      })
+                                      .catch(ex => {
+                                        if (ex.response.status === 417) {
+                                          enqueueSnackbar(
+                                            ex.response.data.error,
+                                            { variant: 'error' }
+                                          );
+                                        } else {
+                                          enqueueSnackbar(
+                                            'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                                            {
+                                              variant: 'error'
+                                            }
+                                          );
                                         }
                                       });
                                   }}

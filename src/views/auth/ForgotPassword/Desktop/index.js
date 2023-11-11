@@ -8,11 +8,13 @@ import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 import useAuth from 'src/hooks/useAuth';
+import { useSnackbar } from 'notistack';
 
 function ForgotPasswordDesktop(props) {
   const recaptchaRef = useRef();
   const history = useHistory();
   const { registry } = useAuth();
+  const { enqueueSnackbar } = useSnackbar();
 
   function onChange(value) {
     console.log('Captcha value:', value);
@@ -66,6 +68,13 @@ function ForgotPasswordDesktop(props) {
                 }
               })
               .catch(ex => {
+                if (ex.response.status === 417) {
+                  enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+                } else {
+                  enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                    variant: 'error'
+                  });
+                }
                 setSubmitting(false);
               });
           }}

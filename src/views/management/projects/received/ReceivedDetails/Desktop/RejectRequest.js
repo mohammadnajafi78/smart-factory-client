@@ -4,7 +4,6 @@ import React from 'react';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import { Comment } from 'src/assets/img/icons/comment.svg';
 import { useSnackbar } from 'notistack';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 const RejectRequest = ({ cancel, num, api, state, postInfo }) => {
@@ -52,24 +51,26 @@ const RejectRequest = ({ cancel, num, api, state, postInfo }) => {
             })
             .then(res => {
               if (res.status === 200) {
-                enqueueSnackbar('عدم تایید با موفقیت انجام شد', {
-                  variant: 'success'
-                });
+                // enqueueSnackbar('عدم تایید با موفقیت انجام شد', {
+                //   variant: 'success'
+                // });
                 setSubmitting(false);
                 history.goBack();
               } else {
                 setSubmitting(false);
-                enqueueSnackbar('دوباره تلاش کنید', {
+                // enqueueSnackbar('دوباره تلاش کنید', {
+                //   variant: 'error'
+                // });
+              }
+            })
+            .catch(ex => {
+              if (ex.response.status === 417) {
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
                   variant: 'error'
                 });
               }
-            })
-            .catch(err => {
-              console.log(err);
-              enqueueSnackbar('دوباره تلاش کنید', {
-                variant: 'error'
-              });
-              setSubmitting(false);
             });
         }}
       >

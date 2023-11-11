@@ -8,12 +8,13 @@ import InputLabelFooter from 'src/components/Mobile/InputLabel/InputLabelFooter'
 import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
-import { isSubmitting } from 'redux-form';
 import p2e from 'src/utils/P2E';
+import { useSnackbar } from 'notistack';
 
 function LoginMobile() {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
   return (
     <>
       <Box
@@ -89,6 +90,18 @@ function LoginMobile() {
                         } else console.log('error');
                       })
                       .catch(ex => {
+                        if (ex.response.status === 417) {
+                          enqueueSnackbar(ex.response.data.error, {
+                            variant: 'error'
+                          });
+                        } else {
+                          enqueueSnackbar(
+                            'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                            {
+                              variant: 'error'
+                            }
+                          );
+                        }
                         setLoading(false);
                       });
                   } else if (res.status === 200) {
@@ -103,6 +116,15 @@ function LoginMobile() {
                   }
                 })
                 .catch(ex => {
+                  if (ex.response.status === 417) {
+                    enqueueSnackbar(ex.response.data.error, {
+                      variant: 'error'
+                    });
+                  } else {
+                    enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                      variant: 'error'
+                    });
+                  }
                   setLoading(false);
                 });
               // setSubmitting(false);

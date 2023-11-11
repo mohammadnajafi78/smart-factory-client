@@ -10,12 +10,14 @@ import { API_BASE_URL } from 'src/utils/urls';
 import axios from 'axios';
 import * as Yup from 'yup';
 import httpService from 'src/utils/httpService';
+import { useSnackbar } from 'notistack';
 
 // import axios from 'axios';
 // import axiosInstance from 'src/utils/axios';
 
 function IdentityInfoDesktop(props) {
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <LoginFrame>
@@ -64,8 +66,15 @@ function IdentityInfoDesktop(props) {
                   setSubmitting(false);
                 }
               })
-              .catch(err => {
-                err.response.data.map(e => {
+              .catch(ex => {
+                if (ex.response.status === 417) {
+                  enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+                } else {
+                  enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                    variant: 'error'
+                  });
+                }
+                ex.response.data.map(e => {
                   setFieldError(e.field, e.error);
                 });
                 setSubmitting(false);
@@ -191,9 +200,7 @@ function IdentityInfoDesktop(props) {
                 >
                   {'قبلی'}
                 </ConfirmButton> */}
-                <ConfirmButton 
-                disabled={isSubmitting} 
-                loading={isSubmitting}>
+                <ConfirmButton disabled={isSubmitting} loading={isSubmitting}>
                   {'ثبت'}
                 </ConfirmButton>
               </Box>

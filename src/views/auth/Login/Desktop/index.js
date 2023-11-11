@@ -11,10 +11,12 @@ import { API_BASE_URL } from 'src/utils/urls';
 import httpService from 'src/utils/httpService';
 import p2e from 'src/utils/P2E';
 import * as Yup from 'yup';
+import { useSnackbar } from 'notistack';
 
 function LoginDesktop() {
   const history = useHistory();
   const [message, setMessage] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <LoginFrame>
@@ -79,6 +81,18 @@ function LoginDesktop() {
                       } else console.log('error');
                     })
                     .catch(ex => {
+                      if (ex.response.status === 417) {
+                        enqueueSnackbar(ex.response.data.error, {
+                          variant: 'error'
+                        });
+                      } else {
+                        enqueueSnackbar(
+                          'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                          {
+                            variant: 'error'
+                          }
+                        );
+                      }
                       setSubmitting(false);
                     });
                 } else if (res.status === 200) {
@@ -94,7 +108,14 @@ function LoginDesktop() {
                   setMessage('مشکلی رخ داده است');
                 }
               })
-              .catch(error => {
+              .catch(ex => {
+                if (ex.response.status === 417) {
+                  enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+                } else {
+                  enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                    variant: 'error'
+                  });
+                }
                 setSubmitting(false);
                 setFieldError('input', 'مشکلی رخ داده است');
               });

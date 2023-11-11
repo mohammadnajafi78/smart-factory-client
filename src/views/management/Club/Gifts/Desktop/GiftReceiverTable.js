@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes, { string } from 'prop-types';
 
 import {
   TextField,
   FormControl,
   InputLabel,
-  Autocomplete,
   ToggleButtonGroup,
   ToggleButton,
-  Tooltip,
   IconButton,
   Box
 } from '@mui/material';
@@ -17,8 +14,8 @@ import { API_BASE_URL } from 'src/utils/urls';
 import Table from 'src/components/Desktop/Table';
 import { useHistory } from 'react-router-dom';
 import FaTOEn from 'src/utils/FaTOEn';
-import Confirm from 'src/components/Desktop/Button/Confirm';
 import { Plus } from 'react-feather';
+import { useSnackbar } from 'notistack';
 
 let item = {};
 // let itemSort = {};
@@ -34,7 +31,7 @@ const GiftReceiverTable = props => {
   const [filter, setFilter] = useState('');
   const [reset, setReset] = useState(false);
   const [state, setState] = useState(null);
-
+  const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
 
   useEffect(() => {
@@ -310,6 +307,15 @@ const GiftReceiverTable = props => {
           setData(res.data.results);
           setCount(res.data.count);
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }
 
@@ -443,6 +449,15 @@ const GiftReceiverTable = props => {
         if (res.status === 200) {
           getData(page, rowsPerPage, '');
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }
   function onRowSelectionChange(rowsSelectedData, allRows, rowsSelected) {
@@ -465,6 +480,15 @@ const GiftReceiverTable = props => {
             .then(res => {
               if (res.status === 200) {
                 getData(page, rowsPerPage, '');
+              }
+            })
+            .catch(ex => {
+              if (ex.response.status === 417) {
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                  variant: 'error'
+                });
               }
             });
         }}

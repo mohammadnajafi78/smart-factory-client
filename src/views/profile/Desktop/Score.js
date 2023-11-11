@@ -10,6 +10,7 @@ import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
 import Text from 'src/components/Desktop/Text';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -29,7 +30,7 @@ export default function Score({ data }) {
   const [openTransfer, setOpenTransfer] = useState(false);
   const [count, setCount] = useState(0);
   const [userId, setUserId] = useState();
-
+  const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
 
   return (
@@ -324,6 +325,17 @@ export default function Score({ data }) {
                     if (res.status === 200) {
                       setOpenTransfer(false);
                       setScore();
+                    }
+                  })
+                  .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
                     }
                   });
               }}

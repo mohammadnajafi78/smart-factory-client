@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Box, TextField } from '@mui/material';
+import { Box } from '@mui/material';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import { Formik } from 'formik';
-import Autocomplete from '@mui/material/Autocomplete';
 import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
@@ -12,10 +11,12 @@ import * as Yup from 'yup';
 import CustomizedProgressBars from 'src/components/Desktop/ProgressBar';
 import { Download } from 'react-feather';
 import Article from 'src/assets/img/article.png';
+import { useSnackbar } from 'notistack';
 
 function InstructionInfoDesktop(props) {
   let data = props.location.state;
   const [files, setFiles] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   const history = useHistory();
   useEffect(() => {
@@ -26,6 +27,15 @@ function InstructionInfoDesktop(props) {
       .then(res => {
         if (res.status === 200) {
           setFiles(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -73,6 +83,15 @@ function InstructionInfoDesktop(props) {
                   // state: res.data
                 });
                 setSubmitting(false);
+              }
+            })
+            .catch(ex => {
+              if (ex.response.status === 417) {
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                  variant: 'error'
+                });
               }
             });
           setSubmitting(false);

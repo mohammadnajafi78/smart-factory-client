@@ -18,6 +18,7 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { Plus } from 'react-feather';
 import NewProductType from './NewProductCategory';
+import { useSnackbar } from 'notistack';
 
 let item = {};
 // let itemSort = {};
@@ -38,6 +39,7 @@ const ProductTypeTable = props => {
   const [filter, setFilter] = useState('');
   const [reset, setReset] = useState(false);
   const [openNew, setOpenNew] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const history = useHistory();
 
@@ -47,6 +49,15 @@ const ProductTypeTable = props => {
       .then(res => {
         if (res.status === 200) {
           setProvinces(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -383,6 +394,15 @@ const ProductTypeTable = props => {
           setData(res.data.results);
           setCount(res.data.count);
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }
 
@@ -543,6 +563,15 @@ const ProductTypeTable = props => {
       .then(res => {
         if (res.status === 200) {
           getData(page, rowsPerPage, '');
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }

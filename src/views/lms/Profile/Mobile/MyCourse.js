@@ -1,4 +1,5 @@
 import { Box, Divider } from '@mui/material';
+import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { ChevronLeft } from 'react-feather';
 import { useHistory } from 'react-router-dom';
@@ -12,6 +13,7 @@ import { API_BASE_URL } from 'src/utils/urls';
 export default function MyCourse(props) {
   const [courses, setCourses] = useState(null);
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
@@ -19,6 +21,15 @@ export default function MyCourse(props) {
       .then(res => {
         if (res.status === 200) {
           setCourses(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);

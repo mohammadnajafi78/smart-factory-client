@@ -22,6 +22,7 @@ import Table from 'src/components/Desktop/Table';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { useSnackbar } from 'notistack';
 
 const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
@@ -41,6 +42,7 @@ const SuggestionTopicTable = props => {
   const [type, setType] = useState([]);
   const [typeId, setTypeId] = useState([]);
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     setFilter('');
@@ -60,6 +62,15 @@ const SuggestionTopicTable = props => {
       .then(res => {
         if (res.status === 200) {
           setType(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -240,11 +251,19 @@ const SuggestionTopicTable = props => {
           search: search
         }
       )
-
       .then(res => {
         if (res.status === 200) {
           setData(res.data.results);
           setCount(res.data.count);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }
@@ -357,6 +376,15 @@ const SuggestionTopicTable = props => {
         if (res.status === 200) {
           getData(page, rowsPerPage, '');
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }
 
@@ -448,8 +476,20 @@ const SuggestionTopicTable = props => {
                         setSubmitting(false);
                       }
                     })
-                    .catch(err => {
+                    .catch(ex => {
                       setSubmitting(false);
+                      if (ex.response.status === 417) {
+                        enqueueSnackbar(ex.response.data.error, {
+                          variant: 'error'
+                        });
+                      } else {
+                        enqueueSnackbar(
+                          'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                          {
+                            variant: 'error'
+                          }
+                        );
+                      }
                     });
                 }}
               >

@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Divider, Grid, Drawer, TextField } from '@mui/material';
+import { Box, Drawer, TextField } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import CancelImg from 'src/assets/img/cancel.svg';
-import Car from 'src/assets/img/car.svg';
-import Transport from 'src/assets/img/transport.svg';
-import Truck from 'src/assets/img/truck.svg';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import { Plus } from 'react-feather';
 import AdapterJalali from '@date-io/date-fns-jalali';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useHistory } from 'react-router-dom';
@@ -20,6 +15,7 @@ import useSaleOrder from 'src/hooks/useSaleOrder';
 import CAR from 'src/assets/img/car.svg';
 import TRANSPORTING_COMPANY from 'src/assets/img/transport.svg';
 import TRUCK from 'src/assets/img/truck.svg';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -42,12 +38,22 @@ export default function Delivery(props) {
   const history = useHistory();
   const order = props.order;
   const [isLoading, setLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
       .get(`${API_BASE_URL}/api/orders/delivery/get_delivery_type/`)
       .then(res => {
         setTypes(res.data);
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }, []);
 
@@ -261,6 +267,18 @@ export default function Delivery(props) {
                       })
                       .catch(ex => {
                         setLoading(false);
+                        if (ex.response.status === 417) {
+                          enqueueSnackbar(ex.response.data.error, {
+                            variant: 'error'
+                          });
+                        } else {
+                          enqueueSnackbar(
+                            'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                            {
+                              variant: 'error'
+                            }
+                          );
+                        }
                       });
                   } else {
                     setLoading(false);
@@ -268,6 +286,15 @@ export default function Delivery(props) {
                 })
                 .catch(ex => {
                   setLoading(false);
+                  if (ex.response.status === 417) {
+                    enqueueSnackbar(ex.response.data.error, {
+                      variant: 'error'
+                    });
+                  } else {
+                    enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                      variant: 'error'
+                    });
+                  }
                 });
             }}
           >

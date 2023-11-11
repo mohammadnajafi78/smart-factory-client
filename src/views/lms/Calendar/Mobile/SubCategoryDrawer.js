@@ -7,6 +7,7 @@ import ProductsList from './ProjectList';
 import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -20,6 +21,7 @@ const useStyles = makeStyles(theme => ({
 export default function SubCategoryDrawer({ subCategory, setSubCategory }) {
   const [data, setData] = useState(null);
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
@@ -27,6 +29,15 @@ export default function SubCategoryDrawer({ subCategory, setSubCategory }) {
       .then(res => {
         if (res.status === 200) {
           setData(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);

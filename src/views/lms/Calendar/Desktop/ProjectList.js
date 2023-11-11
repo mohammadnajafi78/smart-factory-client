@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
-import FilterButton from 'src/components/Desktop/Button/Filter';
 import { useHistory } from 'react-router-dom';
-import InputLabel from 'src/components/Desktop/InputLabel';
-import Scan from 'src/assets/img/icons/scan-qr.svg';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import CustomizedDialogs from 'src/components/Desktop/Dialog';
-import { QrReader } from 'react-qr-reader';
 import ProjectItem from './ProjectItem';
 import DomainAdd from 'src/assets/img/domain_add.png';
+import { useSnackbar } from 'notistack';
 
 export default function ProjectListDesktop({
   selected,
@@ -26,14 +22,26 @@ export default function ProjectListDesktop({
   const [filters, setFilters] = useState(null);
   const [filterSelected, setFilterSelected] = useState(1);
   const [scan, setScan] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   function getData() {
-    httpService.post(`${API_BASE_URL}/api/project/get_sent/`).then(res => {
-      if (res.status === 200) {
-        setProject(res.data);
-        setAll(res.data);
-      }
-    });
+    httpService
+      .post(`${API_BASE_URL}/api/project/get_sent/`)
+      .then(res => {
+        if (res.status === 200) {
+          setProject(res.data);
+          setAll(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
   }
 
   // useEffect(() => {

@@ -21,6 +21,7 @@ import AdapterJalali from '@date-io/date-fns-jalali';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import moment from 'jalali-moment';
+import { useSnackbar } from 'notistack';
 
 let item = {};
 // let itemSort = {};
@@ -44,6 +45,7 @@ const PriceListTable = props => {
   const [formType, setFormType] = useState('new');
   const [title, setTitle] = useState('لیست قیمت جدید');
   const [selectedData, setSelectedData] = useState({});
+  const { enqueueSnackbar } = useSnackbar();
 
   const history = useHistory();
 
@@ -241,6 +243,15 @@ const PriceListTable = props => {
           setData(res.data.results);
           setCount(res.data.count);
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }
 
@@ -361,6 +372,15 @@ const PriceListTable = props => {
       .then(res => {
         if (res.status === 200) {
           getData(page, rowsPerPage, '');
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }

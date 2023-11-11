@@ -11,6 +11,7 @@ import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import Details from './Details';
 import Users from './Users';
+import { useSnackbar } from 'notistack';
 // import Club from './Club';
 
 function TabPanel(props) {
@@ -50,6 +51,7 @@ export default function UserDetails(props) {
   const [value, setValue] = React.useState(0);
   const [userData, setUserData] = React.useState(null);
   const theme = useTheme();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -59,11 +61,22 @@ export default function UserDetails(props) {
   };
 
   React.useEffect(() => {
-    httpService.get(`${API_BASE_URL}/api/users/get_user_profile/`).then(res => {
-      if (res.status === 200) {
-        setUserData(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}/api/users/get_user_profile/`)
+      .then(res => {
+        if (res.status === 200) {
+          setUserData(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
   }, []);
 
   return (

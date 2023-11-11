@@ -2,11 +2,11 @@ import { Box, Divider } from '@mui/material';
 import React from 'react';
 import { ChevronLeft } from 'react-feather';
 import InputLabel from 'src/components/Desktop/InputLabel';
-import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 import { useHistory } from 'react-router-dom';
 import MomentFa from 'src/utils/MomentFa';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { useSnackbar } from 'notistack';
 
 export default function Item({
   data,
@@ -16,6 +16,7 @@ export default function Item({
   setRefresh
 }) {
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
   return (
     <Box
       sx={{
@@ -41,6 +42,15 @@ export default function Item({
               if (res.status === 200) {
                 setSelected(res.data);
                 setRefresh(!refresh);
+              }
+            })
+            .catch(ex => {
+              if (ex.response.status === 417) {
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                  variant: 'error'
+                });
               }
             });
         else setSelected(data);

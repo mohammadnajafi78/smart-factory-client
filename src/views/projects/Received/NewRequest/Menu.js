@@ -5,23 +5,14 @@ import Box from '@mui/material/Box';
 import TreeView from '@mui/lab/TreeView';
 import TreeItem, { treeItemClasses } from '@mui/lab/TreeItem';
 import Typography from '@mui/material/Typography';
-import {
-  Checkbox,
-  Divider,
-  FormControlLabel,
-  FormGroup,
-  IconButton
-} from '@mui/material';
+import { Checkbox } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import InputLabelHeader from 'src/components/Desktop/InputLabel';
 import { useEffect } from 'react';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import { useState } from 'react';
-import useSaleSearch from 'src/hooks/useSaleSearch';
-import ConfirmButton from 'src/components/Desktop/Button/Confirm';
-import { FilterAlt, FilterAltOff } from '@mui/icons-material';
+import { useSnackbar } from 'notistack';
 
 const MenuRoot = styled(TreeItem)(({ theme }) => ({
   color: theme.palette.text.secondary,
@@ -152,16 +143,28 @@ Menu.propTypes = {
 
 export default function ProjectTreeView(props) {
   const [data, setData] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
   // const [props.designType, props.setDesignType] = useState([]);
 
   useEffect(() => {
     props.setDesignType([]);
 
-    httpService.get(`${API_BASE_URL}` + props.url).then(res => {
-      if (res.status === 200) {
-        setData(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}` + props.url)
+      .then(res => {
+        if (res.status === 200) {
+          setData(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
   }, []);
 
   return (

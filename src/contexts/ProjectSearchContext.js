@@ -3,6 +3,7 @@ import React, { createContext, useEffect, useReducer } from 'react';
 import { useHistory } from 'react-router-dom';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { useSnackbar } from 'notistack';
 
 const initialProjectSearchState = {
   projects: null,
@@ -56,6 +57,7 @@ const ProjectSearchContext = createContext({
 
 export const ProjectSearchProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialProjectSearchState);
+  const { enqueueSnackbar } = useSnackbar();
 
   // useEffect(() => {
   //   if (localStorage/api/products/type/get_product/Item('user')) {
@@ -98,6 +100,15 @@ export const ProjectSearchProvider = ({ children }) => {
               }
             });
           }
+        })
+        .catch(ex => {
+          if (ex.response.status === 417) {
+            enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+          } else {
+            enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+              variant: 'error'
+            });
+          }
         });
     } else {
       getProjects();
@@ -105,27 +116,38 @@ export const ProjectSearchProvider = ({ children }) => {
   };
 
   const getProjects = () => {
-    httpService.post(`${API_BASE_URL}/api/project/get_sent/`).then(result => {
-      if (result.status === 200) {
-        dispatch({
-          type: 'GET_PROJECTS',
-          payload: {
-            projects: result.data,
-            searched: false,
-            filtered: false
-          }
-        });
-      } else {
-        dispatch({
-          type: 'GET_PROJECTS',
-          payload: {
-            projects: null,
-            searched: false,
-            filtered: false
-          }
-        });
-      }
-    });
+    httpService
+      .post(`${API_BASE_URL}/api/project/get_sent/`)
+      .then(result => {
+        if (result.status === 200) {
+          dispatch({
+            type: 'GET_PROJECTS',
+            payload: {
+              projects: result.data,
+              searched: false,
+              filtered: false
+            }
+          });
+        } else {
+          dispatch({
+            type: 'GET_PROJECTS',
+            payload: {
+              projects: null,
+              searched: false,
+              filtered: false
+            }
+          });
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
   };
 
   // const setFilterProjects = (cat, subCat) => {

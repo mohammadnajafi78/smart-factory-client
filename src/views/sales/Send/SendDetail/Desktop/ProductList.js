@@ -1,17 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Divider, Grid, Drawer, TextField } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
-import httpService from 'src/utils/httpService';
-import { API_BASE_URL } from 'src/utils/urls';
+import React from 'react';
+import { Box, Divider } from '@mui/material';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
-import CancelImg from 'src/assets/img/cancel.svg';
-import SaleCategory from 'src/assets/img/saleCategory.svg';
-import SaleSubCategory from 'src/assets/img/SaleSubCategory.svg';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import { Download, Plus } from 'react-feather';
-import { useHistory } from 'react-router-dom';
-import MomentFa from 'src/utils/MomentFa';
 import FilesMenu from 'src/views/sales/FilesMenu';
 
 export default function ProductList({ data }) {
@@ -37,7 +27,11 @@ export default function ProductList({ data }) {
             >
               لیست سفارشات
             </InputLabelHeader>
-            {data && <FilesMenu data={data?.files?.filter((item) => item.subject !== 'EXCEL')} />}
+            {data && (
+              <FilesMenu
+                data={data?.files?.filter(item => item.subject !== 'EXCEL')}
+              />
+            )}
           </Box>
           <Box sx={{ height: '300px', overflow: 'auto' }}>
             {product?.products?.map((item, key) => {

@@ -3,17 +3,12 @@ import {
   Box,
   ButtonGroup,
   Divider,
-  Drawer,
   Grid,
   TextField,
   Button,
   InputAdornment
 } from '@mui/material';
-import IconButton from 'src/components/Desktop/Button/Icon';
-import LinkButton from 'src/components/Desktop/Button/Link';
 import InputLabel from 'src/components/Desktop/InputLabel';
-import Received from 'src/assets/img/icons/received.svg';
-import Presents from 'src/assets/img/icons/presents.svg';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import makeStyles from '@mui/styles/makeStyles';
@@ -21,17 +16,15 @@ import CustomizedDialogs from 'src/components/Desktop/Dialog';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import { useHistory } from 'react-router-dom';
-import useScore from 'src/hooks/useScore';
-import ErrorImg from 'src/assets/img/icons/error.svg';
 import { ChevronRight } from 'react-feather';
 import ShopProducts from 'src/assets/img/shopProducts.svg';
 import SaleCategory from 'src/assets/img/saleCategory.svg';
 import SaleSubCategory from 'src/assets/img/SaleSubCategory.svg';
 import CancelImg from 'src/assets/img/cancel.svg';
-import LargeSize from 'src/assets/img/largeSize.svg';
 import SmallSize from 'src/assets/img/smallSize.svg';
 import useSaleOrder from 'src/hooks/useSaleOrder';
 import SwiperImg from './Swiper';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -54,6 +47,7 @@ export default function GetAwardDesktop(props) {
   const [selectedList, setSelectedList] = useState([]);
   const [isLoadingAdd, setLoadingAdd] = useState(false);
   const [isLoadingRemove, setLoadingRemove] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     getOrder();
@@ -63,6 +57,15 @@ export default function GetAwardDesktop(props) {
       )
       .then(res => {
         setProduct(res.data);
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
     setUnitSelected('SINGULAR');
   }, []);
@@ -731,17 +734,31 @@ export default function GetAwardDesktop(props) {
                 }}
                 loading={isLoadingRemove}
                 onClick={() => {
-                  setLoadingRemove(true)
+                  setLoadingRemove(true);
                   httpService
                     .post(`${API_BASE_URL}/api/orders/remove_product/`, {
                       order_num: order.order_num,
                       code: selected.code
                     })
                     .then(res => {
-                      setLoadingRemove(false)
+                      setLoadingRemove(false);
                       if (res.status === 200) {
                         getOrder();
                         setOpen(false);
+                      }
+                    })
+                    .catch(ex => {
+                      if (ex.response.status === 417) {
+                        enqueueSnackbar(ex.response.data.error, {
+                          variant: 'error'
+                        });
+                      } else {
+                        enqueueSnackbar(
+                          'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                          {
+                            variant: 'error'
+                          }
+                        );
                       }
                     });
                 }}
@@ -753,7 +770,7 @@ export default function GetAwardDesktop(props) {
                 disabled={false}
                 loading={isLoadingAdd}
                 onClick={() => {
-                  setLoadingAdd(true)
+                  setLoadingAdd(true);
                   if (order) {
                     httpService
                       .post(`${API_BASE_URL}/api/orders/add_product/`, {
@@ -767,11 +784,25 @@ export default function GetAwardDesktop(props) {
                         ]
                       })
                       .then(res => {
-                        setLoadingAdd(false)
+                        setLoadingAdd(false);
                         if (res.status === 200) {
                           setOpen(false);
                           setOrder(res.data);
                           setSelected(null);
+                        }
+                      })
+                      .catch(ex => {
+                        if (ex.response.status === 417) {
+                          enqueueSnackbar(ex.response.data.error, {
+                            variant: 'error'
+                          });
+                        } else {
+                          enqueueSnackbar(
+                            'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                            {
+                              variant: 'error'
+                            }
+                          );
                         }
                       });
                   } else {
@@ -786,11 +817,25 @@ export default function GetAwardDesktop(props) {
                         ]
                       })
                       .then(res => {
-                        setLoadingAdd(false)
+                        setLoadingAdd(false);
                         if (res.status === 201) {
                           setOpen(false);
                           setOrder(res.data);
                           setSelected(null);
+                        }
+                      })
+                      .catch(ex => {
+                        if (ex.response.status === 417) {
+                          enqueueSnackbar(ex.response.data.error, {
+                            variant: 'error'
+                          });
+                        } else {
+                          enqueueSnackbar(
+                            'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                            {
+                              variant: 'error'
+                            }
+                          );
                         }
                       });
                   }

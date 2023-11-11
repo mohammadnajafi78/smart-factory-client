@@ -13,6 +13,7 @@ import bcrypt from 'bcryptjs';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import useScore from 'src/hooks/useScore';
 import { askForPermissionToReceiveNotifications } from 'src/push-notification';
+import { useSnackbar } from 'notistack';
 
 const TEST_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
 function LoginPassMobile(props) {
@@ -21,6 +22,7 @@ function LoginPassMobile(props) {
   const recaptchaRef = useRef();
   const { registry } = useAuth();
   const { setScore } = useScore();
+  const { enqueueSnackbar } = useSnackbar();
 
   function onChange(value) {
     console.log('Captcha value:', value);
@@ -73,6 +75,16 @@ function LoginPassMobile(props) {
                 localStorage.setItem('user', JSON.stringify(res.data));
                 setScore();
                 history.push('/' + res.data.profile_state.toLowerCase());
+              }
+            })
+            .catch(ex => {
+              setSubmitting(false);
+              if (ex.response.status === 417) {
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                  variant: 'error'
+                });
               }
             });
         }}
@@ -173,6 +185,20 @@ function LoginPassMobile(props) {
                             status: 'forgot'
                           }
                         });
+                      }
+                    })
+                    .catch(ex => {
+                      if (ex.response.status === 417) {
+                        enqueueSnackbar(ex.response.data.error, {
+                          variant: 'error'
+                        });
+                      } else {
+                        enqueueSnackbar(
+                          'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                          {
+                            variant: 'error'
+                          }
+                        );
                       }
                     });
                 }}

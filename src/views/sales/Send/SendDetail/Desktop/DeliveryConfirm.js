@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import Close from 'src/assets/img/close2.svg';
 import Done from 'src/assets/img/done2.svg';
 import ProductListSelectable from './ProductListSelectable';
+import { useSnackbar } from 'notistack';
 
 export default function DeliveryConfirm(props) {
   const [file, setFile] = useState();
@@ -18,6 +19,7 @@ export default function DeliveryConfirm(props) {
   const history = useHistory();
   const data = props.state;
   const [isLoading, setLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     // if (selected === 'yes') {
@@ -148,6 +150,15 @@ export default function DeliveryConfirm(props) {
                 })
                 .catch(ex => {
                   setLoading(false);
+                  if (ex.response.status === 417) {
+                    enqueueSnackbar(ex.response.data.error, {
+                      variant: 'error'
+                    });
+                  } else {
+                    enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                      variant: 'error'
+                    });
+                  }
                 });
             }}
           >

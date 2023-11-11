@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, TextField, Divider } from '@mui/material';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -9,6 +8,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
+import { useSnackbar } from 'notistack';
 
 function LocationMobile(props) {
   const data = props?.data;
@@ -22,6 +22,7 @@ function LocationMobile(props) {
   const [cities, setCities] = useState([]);
   const [cityId, setCityId] = useState(props.data?.user_location?.city);
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
@@ -29,6 +30,15 @@ function LocationMobile(props) {
       .then(res => {
         if (res.status === 200) {
           setProvinces(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -40,6 +50,15 @@ function LocationMobile(props) {
         .then(res => {
           if (res.status === 200) {
             setCities(res.data);
+          }
+        })
+        .catch(ex => {
+          if (ex.response.status === 417) {
+            enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+          } else {
+            enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+              variant: 'error'
+            });
           }
         });
     }
@@ -81,8 +100,15 @@ function LocationMobile(props) {
               setSubmitting(false);
             }
           })
-          .catch(err => {
+          .catch(ex => {
             setSubmitting(false);
+            if (ex.response.status === 417) {
+              enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+            } else {
+              enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                variant: 'error'
+              });
+            }
           });
       }}
     >

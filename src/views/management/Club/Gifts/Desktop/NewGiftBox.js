@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Autocomplete,
-  Box,
-  Button,
-  Divider,
-  Grid,
-  TextField
-} from '@mui/material';
+import { Autocomplete, Box, Divider, Grid, TextField } from '@mui/material';
 import InputLabelHeader from 'src/components/Desktop/InputLabel';
 import { Formik } from 'formik';
 import InputLabel from 'src/components/Desktop/InputLabel';
@@ -15,14 +8,14 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import AdapterJalali from '@date-io/date-fns-jalali';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import Upload from 'src/assets/img/icons/upload.svg';
 import { useHistory } from 'react-router-dom';
 import MomentEn from 'src/utils/MomentEn';
+import { useSnackbar } from 'notistack';
 
 export default function NewGiftBox() {
   const [gifts, setGifts] = useState([]);
   const [grades, setGrades] = useState([]);
-
+  const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
 
   useEffect(() => {
@@ -31,6 +24,15 @@ export default function NewGiftBox() {
       .then(res => {
         if (res.status === 200) {
           setGifts(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -44,6 +46,15 @@ export default function NewGiftBox() {
       .then(res => {
         if (res.status === 200) {
           setGrades(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -98,8 +109,15 @@ export default function NewGiftBox() {
                   history.push('/management/club/gifts');
                 }
               })
-              .catch(err => {
+              .catch(ex => {
                 setSubmitting(false);
+                if (ex.response.status === 417) {
+                  enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+                } else {
+                  enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                    variant: 'error'
+                  });
+                }
               });
           }}
         >

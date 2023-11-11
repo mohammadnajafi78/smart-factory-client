@@ -8,6 +8,7 @@ import { ArrowRight, Download } from 'react-feather';
 import { useHistory } from 'react-router-dom';
 import MomentFa from 'src/utils/MomentFa';
 import makeStyles from '@mui/styles/makeStyles';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -28,6 +29,7 @@ export default function AddPayment(props) {
   const history = useHistory();
   const data = props.location.state;
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
@@ -35,6 +37,15 @@ export default function AddPayment(props) {
       .then(res => {
         if (res.status === 200) {
           setPaymentTypes(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -299,6 +310,15 @@ export default function AddPayment(props) {
                   })
                   .catch(ex => {
                     setLoading(false);
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
+                    }
                   });
               }}
             >
@@ -400,6 +420,18 @@ export default function AddPayment(props) {
                     })
                     .catch(ex => {
                       setLoading(false);
+                      if (ex.response.status === 417) {
+                        enqueueSnackbar(ex.response.data.error, {
+                          variant: 'error'
+                        });
+                      } else {
+                        enqueueSnackbar(
+                          'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                          {
+                            variant: 'error'
+                          }
+                        );
+                      }
                     });
                 }}
               >

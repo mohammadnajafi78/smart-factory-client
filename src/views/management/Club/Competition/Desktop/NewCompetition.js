@@ -4,19 +4,19 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel';
 import { Formik } from 'formik';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
-import IconButton from 'src/components/Desktop/Button/Icon';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import AdapterJalali from '@date-io/date-fns-jalali';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import { Plus } from 'react-feather';
 import p2e from 'src/utils/P2E';
 import { useHistory } from 'react-router-dom';
 import MomentEn from 'src/utils/MomentEn';
+import { useSnackbar } from 'notistack';
 
 export default function NewCompetition() {
   const [gifts, setGifts] = useState([]);
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
@@ -24,6 +24,15 @@ export default function NewCompetition() {
       .then(res => {
         if (res.status === 200) {
           setGifts(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -79,6 +88,15 @@ export default function NewCompetition() {
                 if (res.status === 201) {
                   setSubmitting(false);
                   history.push('/management/club/competition');
+                }
+              })
+              .catch(ex => {
+                if (ex.response.status === 417) {
+                  enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+                } else {
+                  enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                    variant: 'error'
+                  });
                 }
               });
           }}

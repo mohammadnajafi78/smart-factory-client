@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Divider,
-  Grid,
-  Drawer,
   TextField,
   InputAdornment,
   ButtonGroup,
@@ -15,13 +13,11 @@ import { API_BASE_URL } from 'src/utils/urls';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import CancelImg from 'src/assets/img/cancel.svg';
-import SaleCategory from 'src/assets/img/saleCategory.svg';
-import SaleSubCategory from 'src/assets/img/SaleSubCategory.svg';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { useHistory } from 'react-router-dom';
 import useSaleOrder from 'src/hooks/useSaleOrder';
-import { Edit } from 'react-feather';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -42,12 +38,22 @@ export default function Products(props) {
   const [unitSelected, setUnitSelected] = useState('SINGULAR');
   const [isLoadingAdd, setLoadingAdd] = useState(false);
   const [isLoadingRemove, setLoadingRemove] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   function get_products() {
     httpService
       .get(`${API_BASE_URL}/api/orders/get_order?order_num=${order.order_num}`)
       .then(res => {
         setProduct(res.data);
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }
   useEffect(() => {
@@ -532,20 +538,34 @@ export default function Products(props) {
                 }}
                 loading={isLoadingRemove}
                 onClick={() => {
-                  setLoadingRemove(true)
+                  setLoadingRemove(true);
                   httpService
                     .post(`${API_BASE_URL}/api/orders/remove_product/`, {
                       order_num: order.order_num,
                       code: selected.product_detail.code
                     })
                     .then(res => {
-                      setLoadingRemove(false)
+                      setLoadingRemove(false);
                       if (res.status === 200) {
                         getOrder();
                         setOpen(false);
                         get_products();
                         setOrder(res.data);
                         setSelected(null);
+                      }
+                    })
+                    .catch(ex => {
+                      if (ex.response.status === 417) {
+                        enqueueSnackbar(ex.response.data.error, {
+                          variant: 'error'
+                        });
+                      } else {
+                        enqueueSnackbar(
+                          'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                          {
+                            variant: 'error'
+                          }
+                        );
                       }
                     });
                 }}
@@ -558,8 +578,8 @@ export default function Products(props) {
                 loading={isLoadingAdd}
                 onClick={() => {
                   if (order) {
-                    console.log("isLoadingAdd", isLoadingAdd)
-                    setLoadingAdd(true)
+                    console.log('isLoadingAdd', isLoadingAdd);
+                    setLoadingAdd(true);
                     httpService
                       .post(`${API_BASE_URL}/api/orders/add_product/`, {
                         order_num: order.order_num,
@@ -572,12 +592,26 @@ export default function Products(props) {
                         ]
                       })
                       .then(res => {
-                        setLoadingAdd(false)
+                        setLoadingAdd(false);
                         if (res.status === 200) {
                           get_products();
                           setOpen(false);
                           setOrder(res.data);
                           setSelected(null);
+                        }
+                      })
+                      .catch(ex => {
+                        if (ex.response.status === 417) {
+                          enqueueSnackbar(ex.response.data.error, {
+                            variant: 'error'
+                          });
+                        } else {
+                          enqueueSnackbar(
+                            'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                            {
+                              variant: 'error'
+                            }
+                          );
                         }
                       });
                   }

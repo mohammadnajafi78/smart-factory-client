@@ -3,9 +3,9 @@ import { Box, Drawer, TextField } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import Typography from '@mui/material/Typography';
 import makeStyles from '@mui/styles/makeStyles';
 import { Formik } from 'formik';
+import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Domain from 'src/assets/img/domain22.png';
@@ -43,6 +43,7 @@ function SupervisorInfoMobile(props) {
   const [designer, setDesigner] = useState(null);
   const [other, setOther] = useState(null);
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   const data = props.location.state.data;
 
@@ -99,6 +100,15 @@ function SupervisorInfoMobile(props) {
                   state: data
                 });
                 setSubmitting(false);
+              }
+            })
+            .catch(ex => {
+              if (ex.response.status === 417) {
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                  variant: 'error'
+                });
               }
             });
           setSubmitting(false);
@@ -352,6 +362,17 @@ function SupervisorInfoMobile(props) {
                     setOpenDesigner(false);
                     setSubmitting(false);
                   }
+                })
+                .catch(ex => {
+                  if (ex.response.status === 417) {
+                    enqueueSnackbar(ex.response.data.error, {
+                      variant: 'error'
+                    });
+                  } else {
+                    enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                      variant: 'error'
+                    });
+                  }
                 });
               setSubmitting(false);
             }}
@@ -464,6 +485,17 @@ function SupervisorInfoMobile(props) {
                     setOther(res.data);
                     setOpenOther(false);
                     setSubmitting(false);
+                  }
+                })
+                .catch(ex => {
+                  if (ex.response.status === 417) {
+                    enqueueSnackbar(ex.response.data.error, {
+                      variant: 'error'
+                    });
+                  } else {
+                    enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                      variant: 'error'
+                    });
                   }
                 });
               setSubmitting(false);

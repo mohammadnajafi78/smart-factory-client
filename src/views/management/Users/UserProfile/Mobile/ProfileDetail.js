@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Button, Divider } from '@mui/material';
+import React from 'react';
+import { Box, Button } from '@mui/material';
 import { useHistory } from 'react-router-dom';
-import Score from './Score';
-import { ArrowBack, KeyboardArrowLeft, Logout } from '@mui/icons-material';
-import InputLabel from 'src/components/Mobile/InputLabel';
+import { KeyboardArrowLeft } from '@mui/icons-material';
 import useAuth from 'src/hooks/useAuth';
-import httpService from 'src/utils/httpService';
-import { API_BASE_URL } from 'src/utils/urls';
 
 export default function ProfileDetailMobile(props) {
   const data = props.location.state.data;

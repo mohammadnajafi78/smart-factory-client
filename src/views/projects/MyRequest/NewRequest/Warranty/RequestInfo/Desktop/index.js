@@ -1,20 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Box, TextField } from '@mui/material';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
-import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import { Formik } from 'formik';
-import Autocomplete from '@mui/material/Autocomplete';
 import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 import * as Yup from 'yup';
-import CustomizedProgressBars from 'src/components/Desktop/ProgressBar';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
+import { useSnackbar } from 'notistack';
 
 function RequestInfoDesktop(props) {
   let data = props.location.state.data;
@@ -22,6 +15,7 @@ function RequestInfoDesktop(props) {
   const [requestTypeId, setRequestTypeId] = useState(null);
   const [projectList, setProjectList] = useState(null);
   const [projectId, setProjectId] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   const history = useHistory();
 
@@ -79,8 +73,28 @@ function RequestInfoDesktop(props) {
                     if (res.status === 200) {
                       history.push('/project/request');
                     }
+                  })
+                  .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
+                    }
                   });
                 setSubmitting(false);
+              }
+            })
+            .catch(ex => {
+              if (ex.response.status === 417) {
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                  variant: 'error'
+                });
               }
             });
           setSubmitting(false);

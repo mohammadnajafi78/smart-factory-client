@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import InputLabel from 'src/components/Desktop/InputLabel';
@@ -8,6 +9,7 @@ import { API_BASE_URL } from 'src/utils/urls';
 export default function HomeDesktop() {
   const history = useHistory();
   const [programs, setPrograms] = useState([]);
+  const { enqueueSnackbar } = useSnackbar();
 
   // { name: 'club', path: '/club/awards', text: 'کلاب' },
   // { name: 'management', path: '/management/user/allUsers', text: 'مدیریت' }
@@ -20,6 +22,15 @@ export default function HomeDesktop() {
       .then(res => {
         if (res.status === 200) {
           setPrograms(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);

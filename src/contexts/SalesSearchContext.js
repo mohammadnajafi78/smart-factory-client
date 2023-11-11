@@ -3,6 +3,7 @@ import React, { createContext, useEffect, useReducer } from 'react';
 import { useHistory } from 'react-router-dom';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { useSnackbar } from 'notistack';
 
 const initialSaleSearchState = {
   products: null,
@@ -56,6 +57,7 @@ const SaleSearchContext = createContext({
 
 export const SaleSearchProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialSaleSearchState);
+  const { enqueueSnackbar } = useSnackbar();
 
   // useEffect(() => {
   //   if (localStorage/api/products/type/get_product/Item('user')) {
@@ -100,6 +102,15 @@ export const SaleSearchProvider = ({ children }) => {
               }
             });
           }
+        })
+        .catch(ex => {
+          if (ex.response.status === 417) {
+            enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+          } else {
+            enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+              variant: 'error'
+            });
+          }
         });
     } else {
       getProducts();
@@ -127,6 +138,15 @@ export const SaleSearchProvider = ({ children }) => {
               searched: false,
               filtered: false
             }
+          });
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
           });
         }
       });
@@ -157,6 +177,15 @@ export const SaleSearchProvider = ({ children }) => {
                 searched: false,
                 filtered: true
               }
+            });
+          }
+        })
+        .catch(ex => {
+          if (ex.response.status === 417) {
+            enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+          } else {
+            enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+              variant: 'error'
             });
           }
         });

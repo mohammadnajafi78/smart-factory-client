@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Rating } from '@mui/material';
+import { Box } from '@mui/material';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
-import InputLabel from 'src/components/Desktop/InputLabel';
 import makeStyles from '@mui/styles/makeStyles';
-import axios from 'axios';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import MomentFa from 'src/utils/MomentFa';
 import AdminChat from './AdminChat';
 import UserChat from './UserChat';
 import SendMessage from './SendMessage';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -32,6 +30,7 @@ export default function GetCommentDesktop({ selected }) {
   const classes = useStyles();
   const [chat, setChat] = useState();
   const userId = JSON.parse(localStorage.getItem('user')).user_id;
+  const { enqueueSnackbar } = useSnackbar();
 
   function getData() {
     httpService
@@ -39,6 +38,15 @@ export default function GetCommentDesktop({ selected }) {
       .then(res => {
         if (res.status === 200) {
           setChat(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }

@@ -13,6 +13,7 @@ import bcrypt from 'bcryptjs';
 import * as Yup from 'yup';
 import useScore from 'src/hooks/useScore';
 import axios from 'axios';
+import { useSnackbar } from 'notistack';
 
 // const TEST_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
 function EnterPasswordMobile(props) {
@@ -22,6 +23,7 @@ function EnterPasswordMobile(props) {
   const history = useHistory();
   const { registry } = useAuth();
   const { setScore } = useScore();
+  const { enqueueSnackbar } = useSnackbar();
 
   function onChange(value) {
     console.log('Captcha value:', value);
@@ -92,6 +94,13 @@ function EnterPasswordMobile(props) {
               }
             })
             .catch(ex => {
+              if (ex.response.status === 417) {
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                  variant: 'error'
+                });
+              }
               setSubmitting(false);
             });
         }}

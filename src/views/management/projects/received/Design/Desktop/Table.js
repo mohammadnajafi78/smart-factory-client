@@ -18,6 +18,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import moment from 'jalali-moment';
 import Table from 'src/components/Desktop/Table';
+import { useSnackbar } from 'notistack';
 
 const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
@@ -37,7 +38,7 @@ const ReceiveTable = props => {
   const [state, setState] = useState(null);
   const [statusList, setStatusList] = useState([]);
   const [statusId, setStatusId] = useState(null);
-
+  const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
 
   useEffect(() => {
@@ -261,6 +262,15 @@ const ReceiveTable = props => {
           setData(res.data.results);
           setCount(res.data.count);
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }
 
@@ -412,9 +422,14 @@ const ReceiveTable = props => {
           });
         }
       })
-      .catch(err => {
-        enqueueSnackbar('پروژه معتبر نیست', { variant: 'error' });
-        console.log(err);
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }
 

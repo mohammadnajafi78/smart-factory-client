@@ -1,5 +1,6 @@
 import { Https } from '@mui/icons-material';
 import { Box } from '@mui/material';
+import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import InputLabel from 'src/components/Mobile/InputLabel';
@@ -9,6 +10,7 @@ import { API_BASE_URL } from 'src/utils/urls';
 export default function HomeMobile() {
   const history = useHistory();
   const [programs, setPrograms] = useState([]);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
@@ -16,6 +18,15 @@ export default function HomeMobile() {
       .then(res => {
         if (res.status === 200) {
           setPrograms(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);

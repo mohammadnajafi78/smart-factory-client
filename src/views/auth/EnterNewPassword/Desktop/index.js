@@ -12,6 +12,7 @@ import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import bcrypt from 'bcryptjs';
 import * as Yup from 'yup';
+import { useSnackbar } from 'notistack';
 
 function EnterNewPasswordDesktop(props) {
   const [showPassword, setShowPassword] = useState(false);
@@ -19,6 +20,7 @@ function EnterNewPasswordDesktop(props) {
   const recaptchaRef = useRef();
   const history = useHistory();
   const { registry } = useAuth();
+  const { enqueueSnackbar } = useSnackbar();
 
   function onChange(value) {
     console.log('Captcha value:', value);
@@ -100,6 +102,13 @@ function EnterNewPasswordDesktop(props) {
                 }
               })
               .catch(ex => {
+                if (ex.response.status === 417) {
+                  enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+                } else {
+                  enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                    variant: 'error'
+                  });
+                }
                 setSubmitting(false);
               });
           }}

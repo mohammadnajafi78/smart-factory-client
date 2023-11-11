@@ -1,4 +1,5 @@
 import { Box, Divider } from '@mui/material';
+import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { Download } from 'react-feather';
 import { useHistory } from 'react-router-dom';
@@ -11,13 +12,25 @@ import { API_BASE_URL } from 'src/utils/urls';
 export default function MyCertificate(props) {
   const [certificates, setCertificates] = useState();
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    httpService.get(`${API_BASE_URL}/api/lms/certificate/`).then(res => {
-      if (res.status === 200) {
-        setCertificates(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}/api/lms/certificate/`)
+      .then(res => {
+        if (res.status === 200) {
+          setCertificates(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
   }, []);
 
   return (

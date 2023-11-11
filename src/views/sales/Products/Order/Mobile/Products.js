@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Divider, Grid, Drawer, TextField } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Mobile/InputLabel';
-import CancelImg from 'src/assets/img/cancel.svg';
-import SaleCategory from 'src/assets/img/saleCategory.svg';
-import SaleSubCategory from 'src/assets/img/SaleSubCategory.svg';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import { useHistory } from 'react-router-dom';
 import useSaleOrder from 'src/hooks/useSaleOrder';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -25,12 +23,22 @@ export default function Products(props) {
   const [product, setProduct] = useState(null);
   const history = useHistory();
   const { order, getOrder } = useSaleOrder();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
       .get(`${API_BASE_URL}/api/orders/get_order?order_num=${order.order_num}`)
       .then(res => {
         setProduct(res.data);
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }, []);
 

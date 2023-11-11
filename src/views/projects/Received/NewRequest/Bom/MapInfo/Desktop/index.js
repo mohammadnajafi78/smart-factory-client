@@ -1,5 +1,6 @@
 import { Box, Button } from '@mui/material';
 import { Formik } from 'formik';
+import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Upload from 'src/assets/img/icons/upload.svg';
@@ -19,6 +20,7 @@ function MapInfoDesktop(props) {
   const [statusList, setStatusList] = useState([]);
   const [file, setFile] = useState();
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
   let data = props.location.state;
 
   return (
@@ -84,7 +86,27 @@ function MapInfoDesktop(props) {
                         setSubmitting(false);
                       }
                     }
+                  })
+                  .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
+                    }
                   });
+              }
+            })
+            .catch(ex => {
+              if (ex.response.status === 417) {
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                  variant: 'error'
+                });
               }
             });
           setSubmitting(false);

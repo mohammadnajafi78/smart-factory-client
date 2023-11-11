@@ -20,18 +20,31 @@ import Delete from 'src/assets/img/icons/delete.svg';
 import Attach from 'src/assets/img/icons/attach.svg';
 import MomentEn from 'src/utils/MomentEn';
 import { useHistory } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 
 export default function NewCompetition() {
   const [giftType, setGiftType] = useState([]);
   const [grades, setGrades] = useState([]);
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    httpService.get(`${API_BASE_URL}/api/club/gift_type/`).then(res => {
-      if (res.status === 200) {
-        setGiftType(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}/api/club/gift_type/`)
+      .then(res => {
+        if (res.status === 200) {
+          setGiftType(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
   }, []);
 
   useEffect(() => {
@@ -43,6 +56,15 @@ export default function NewCompetition() {
       .then(res => {
         if (res.status === 200) {
           setGrades(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -102,8 +124,15 @@ export default function NewCompetition() {
                   history.push('/management/club/gifts');
                 }
               })
-              .catch(err => {
+              .catch(ex => {
                 setSubmitting(false);
+                if (ex.response.status === 417) {
+                  enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+                } else {
+                  enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                    variant: 'error'
+                  });
+                }
               });
           }}
         >

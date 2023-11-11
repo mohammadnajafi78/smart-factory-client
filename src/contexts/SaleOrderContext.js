@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useReducer } from 'react';
 import { useHistory } from 'react-router-dom';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { useSnackbar } from 'notistack';
 
 const initialScoreState = {
   order: null
@@ -39,6 +40,7 @@ const SaleOrderContext = createContext({
 export const SaleOrderProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialScoreState);
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   // useEffect(() => {
   //   if (localStorage.getItem('user')) {
@@ -79,13 +81,16 @@ export const SaleOrderProvider = ({ children }) => {
           });
         }
       })
-      .catch(err => {
+      .catch(ex => {
         dispatch({
           type: 'GET_ORDER',
           payload: {
             order: null
           }
         });
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        }
       });
   };
 

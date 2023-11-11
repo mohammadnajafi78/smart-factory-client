@@ -1,13 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Box } from '@mui/material';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import LinkIconButton from 'src/components/Desktop/Button/LinkIcon';
-import Received from 'src/assets/img/icons/received.svg';
-import makeStyles from '@mui/styles/makeStyles';
-import CustomizedDialogs from 'src/components/Desktop/Dialog';
-import ConfirmButton from 'src/components/Desktop/Button/Confirm';
-import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 
 export default function ReceivedItemDesktop({ selected, setSelected }) {

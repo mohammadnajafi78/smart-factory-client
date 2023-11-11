@@ -1,30 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes, { string } from 'prop-types';
 
 import {
   Box,
-  Card,
-  Typography,
-  Link,
   TextField,
   FormControl,
   InputLabel,
-  Autocomplete,
-  colors,
-  ToggleButtonGroup,
-  ToggleButton,
-  Tab
+  Autocomplete
 } from '@mui/material';
 
-import { Link as RouterLink, useHistory } from 'react-router-dom';
-import SearchIcon from '@mui/icons-material/Search';
-import DownloadIcon from '@mui/icons-material/FileUpload';
-import ViewColumnIcon from '@mui/icons-material/ViewColumn';
-import FilterIcon from '@mui/icons-material/FilterAlt';
+import { useHistory } from 'react-router-dom';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import { consoleSandbox } from '@sentry/utils';
-import FaTOEn from 'src/utils/FaTOEn';
 import MomentFa from 'src/utils/MomentFa';
 // import Datepicker from 'src/components/Desktop/Datepicker';
 import AdapterJalali from '@date-io/date-fns-jalali';
@@ -35,7 +21,7 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader
 import { Plus, Star } from 'react-feather';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import Table from 'src/components/Desktop/Table';
-import { ArrowBack, ArrowRight } from '@mui/icons-material';
+import { useSnackbar } from 'notistack';
 
 const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
@@ -56,7 +42,7 @@ const GiftBoxTable = props => {
   const [giftType, setGiftType] = useState([]);
   const [grades, setGrades] = useState([]);
   const [giftList, setGiftList] = useState([]);
-
+  const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
 
   useEffect(() => {
@@ -65,6 +51,15 @@ const GiftBoxTable = props => {
       .then(res => {
         if (res.status === 200) {
           setGiftList(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -78,6 +73,15 @@ const GiftBoxTable = props => {
       .then(res => {
         if (res.status === 200) {
           setGrades(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -373,11 +377,19 @@ const GiftBoxTable = props => {
           search: search
         }
       )
-
       .then(res => {
         if (res.status === 200) {
           setData(res.data.results);
           setCount(res.data.count);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }
@@ -510,6 +522,15 @@ const GiftBoxTable = props => {
       .then(res => {
         if (res.status === 200) {
           getData(page, rowsPerPage, '');
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }

@@ -1,4 +1,5 @@
 import { Box, Divider } from '@mui/material';
+import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { ChevronLeft } from 'react-feather';
 import { useHistory } from 'react-router-dom';
@@ -12,13 +13,25 @@ import { API_BASE_URL } from 'src/utils/urls';
 export default function MyExam(props) {
   const [exams, setExams] = useState();
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    httpService.get(`${API_BASE_URL}/api/lms/exam/get_user_exam/`).then(res => {
-      if (res.status === 200) {
-        setExams(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}/api/lms/exam/get_user_exam/`)
+      .then(res => {
+        if (res.status === 200) {
+          setExams(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
   }, []);
 
   return (

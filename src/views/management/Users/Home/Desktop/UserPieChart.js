@@ -1,5 +1,6 @@
-import React, { PureComponent, useEffect, useState } from 'react';
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
+import { useSnackbar } from 'notistack';
+import React, { useEffect, useState } from 'react';
+import { PieChart, Pie, Cell } from 'recharts';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 
@@ -7,9 +8,7 @@ const COLORS = ['#D3D2D2', 'url(#colorUv)'];
 
 export default function UserPieChart({ allUser }) {
   const [completed, setCompleted] = useState(0);
-
-  console.log('allUser', allUser);
-  console.log('completed', completed);
+  const { enqueueSnackbar } = useSnackbar();
 
   const data = [
     { name: 'Group A', value: allUser - completed },
@@ -24,6 +23,15 @@ export default function UserPieChart({ allUser }) {
       .then(res => {
         if (res.status === 200) {
           setCompleted(res.data[0].count);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);

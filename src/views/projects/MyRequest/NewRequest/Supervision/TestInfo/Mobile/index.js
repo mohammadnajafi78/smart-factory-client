@@ -9,10 +9,11 @@ import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 import * as Yup from 'yup';
 import CustomizedProgressBars from 'src/components/Mobile/ProgressBar';
+import { useSnackbar } from 'notistack';
 
 function TestInfoMobile(props) {
   // let data = props.location.state;
-
+  const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
 
   return (
@@ -48,6 +49,15 @@ function TestInfoMobile(props) {
                   // state: res.data
                 });
                 setSubmitting(false);
+              }
+            })
+            .catch(ex => {
+              if (ex.response.status === 417) {
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                  variant: 'error'
+                });
               }
             });
           setSubmitting(false);

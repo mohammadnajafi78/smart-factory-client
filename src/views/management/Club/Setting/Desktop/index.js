@@ -7,8 +7,6 @@ import Box from '@mui/material/Box';
 import SwipeableViews from 'react-swipeable-views';
 import { useTheme } from '@mui/material/styles';
 // import UserProfile from './UserProfile';
-import httpService from 'src/utils/httpService';
-import { API_BASE_URL } from 'src/utils/urls';
 import ClubGrade from './clubGrade';
 import GiftTypes from './giftTypes';
 import SuggestionType from './suggestionType';

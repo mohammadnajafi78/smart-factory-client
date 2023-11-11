@@ -53,24 +53,26 @@ const AcceptRequest = ({ accept, postInfo, api }) => {
             .post(`${API_BASE_URL}${api}`, formData)
             .then(res => {
               if (res.status === 200) {
-                enqueueSnackbar('تایید با موفقیت انجام شد', {
-                  variant: 'success'
-                });
+                // enqueueSnackbar('تایید با موفقیت انجام شد', {
+                //   variant: 'success'
+                // });
                 setSubmitting(false);
                 history.goBack();
               } else {
                 setSubmitting(false);
-                enqueueSnackbar('دوباره تلاش کنید', {
+                // enqueueSnackbar('دوباره تلاش کنید', {
+                //   variant: 'error'
+                // });
+              }
+            })
+            .catch(ex => {
+              if (ex.response.status === 417) {
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
                   variant: 'error'
                 });
               }
-            })
-            .catch(err => {
-              console.log(err);
-              setSubmitting(false);
-              enqueueSnackbar('دوباره تلاش کنید', {
-                variant: 'error'
-              });
             });
         }}
       >

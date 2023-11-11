@@ -10,6 +10,7 @@ import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import QRCode from 'react-qr-code';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -24,7 +25,7 @@ export default function ReceivedItemDesktop({ selected, setRefresh }) {
   const [open, setOpen] = useState(false);
   const [qr, setQr] = useState(null);
   const classes = useStyles();
-  console.log('selected', selected);
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <>
@@ -116,6 +117,17 @@ export default function ReceivedItemDesktop({ selected, setRefresh }) {
                 .then(res => {
                   if (res.status === 200) {
                     setQr(res.data.qr_code);
+                  }
+                })
+                .catch(ex => {
+                  if (ex.response.status === 417) {
+                    enqueueSnackbar(ex.response.data.error, {
+                      variant: 'error'
+                    });
+                  } else {
+                    enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                      variant: 'error'
+                    });
                   }
                 });
             }}

@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 import Upload from 'src/assets/img/icons/upload.svg';
 import Delete from 'src/assets/img/icons/delete.svg';
 import Attach from 'src/assets/img/icons/attach.svg';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -27,6 +28,7 @@ export default function AcceptConfirm(props) {
   const [comment, setComment] = useState(null);
   const history = useHistory();
   const [isLoading, setLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <>
@@ -225,6 +227,15 @@ export default function AcceptConfirm(props) {
                   })
                   .catch(ex => {
                     setLoading(false);
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
+                    }
                   });
               }}
             >

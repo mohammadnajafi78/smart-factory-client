@@ -8,6 +8,7 @@ import MomentEn from 'src/utils/MomentEn';
 import SalePieChart from './SalePieChart';
 import SaleBarChart from './SaleBarChart';
 import SaleBarChart2 from './SaleBarChart2';
+import { useSnackbar } from 'notistack';
 
 export default function HomeDesktop() {
   const [orderCounts, setOrderCounts] = useState(null);
@@ -15,7 +16,7 @@ export default function HomeDesktop() {
   const [confirmOrders, setConfirmOrders] = useState(null);
   const [userSend, setUserSend] = useState(null);
   const [userReceived, setUserReceived] = useState(null);
-
+  const { enqueueSnackbar } = useSnackbar();
   const today = new Date();
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 7);
@@ -31,6 +32,15 @@ export default function HomeDesktop() {
           console.log('rees', res);
           setOrderCounts(res.data);
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }
 
@@ -44,6 +54,15 @@ export default function HomeDesktop() {
       .then(res => {
         if (res.status == 200) {
           setDeliveryOrders(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }
@@ -59,6 +78,15 @@ export default function HomeDesktop() {
         if (res.status == 200) {
           setConfirmOrders(res.data);
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }
 
@@ -69,6 +97,15 @@ export default function HomeDesktop() {
         if (res.status === 200) {
           setUserSend(res.data);
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }
 
@@ -78,6 +115,15 @@ export default function HomeDesktop() {
       .then(res => {
         if (res.status === 200) {
           setUserReceived(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }

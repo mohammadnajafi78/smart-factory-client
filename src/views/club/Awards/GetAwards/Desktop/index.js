@@ -14,6 +14,7 @@ import { API_BASE_URL } from 'src/utils/urls';
 import { useHistory } from 'react-router-dom';
 import useScore from 'src/hooks/useScore';
 import ErrorImg from 'src/assets/img/icons/error.svg';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -32,6 +33,7 @@ export default function GetAwardDesktop({ selected }) {
   const history = useHistory();
   const [openError, setOpenError] = useState(false);
   const [error, setError] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <>
@@ -150,11 +152,21 @@ export default function GetAwardDesktop({ selected }) {
                         setScore();
                       }
                     })
-                    .catch(err => {
-                      if (err.response.status === 417) {
+                    .catch(ex => {
+                      if (ex.response.status === 417) {
                         setOpenError(true);
-                        setError(err.response.data.error);
+                        setError(ex.response.data.error);
                         setOpenFirst(false);
+                        enqueueSnackbar(ex.response.data.error, {
+                          variant: 'error'
+                        });
+                      } else {
+                        enqueueSnackbar(
+                          'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                          {
+                            variant: 'error'
+                          }
+                        );
                       }
                     });
                 } else {
@@ -169,11 +181,21 @@ export default function GetAwardDesktop({ selected }) {
                         setScore();
                       }
                     })
-                    .catch(err => {
-                      if (err.response.status === 417) {
+                    .catch(ex => {
+                      if (ex.response.status === 417) {
                         setOpenError(true);
-                        setError(err.response.data.error);
+                        setError(ex.response.data.error);
                         setOpenFirst(false);
+                        enqueueSnackbar(ex.response.data.error, {
+                          variant: 'error'
+                        });
+                      } else {
+                        enqueueSnackbar(
+                          'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                          {
+                            variant: 'error'
+                          }
+                        );
                       }
                     });
                 }

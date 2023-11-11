@@ -1,13 +1,6 @@
-import { Box, Drawer } from '@mui/material';
+import { Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import CategoryButton from 'src/components/Mobile/Button/Category';
-import BasketSale from 'src/assets/img/basketSale.svg';
 import ProjectList from './ProjectList';
-import makeStyles from '@mui/styles/makeStyles';
-import httpService from 'src/utils/httpService';
-import { API_BASE_URL } from 'src/utils/urls';
-import CategoryDrawer from './CategoryDrawer';
-import SubCategoryDrawer from './SubCategoryDrawer';
 import useProjectSearch from 'src/hooks/useProjectSearch';
 import { useHistory } from 'react-router';
 import useSaleOrder from 'src/hooks/useSaleOrder';

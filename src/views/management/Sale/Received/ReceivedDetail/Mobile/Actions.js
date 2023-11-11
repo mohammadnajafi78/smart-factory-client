@@ -21,6 +21,7 @@ import PaidImg from 'src/assets/img/paid.svg';
 import LocalShipping from 'src/assets/img/local_shipping.svg';
 import Person from 'src/assets/img/person.svg';
 import Domain from 'src/assets/img/domain.svg';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -41,6 +42,7 @@ export default function Actions(props) {
   const [isLoading, setLoading] = useState(false);
   const history = useHistory();
   const user_id = JSON.parse(localStorage.getItem('user')).user_id;
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <>
@@ -596,6 +598,18 @@ export default function Actions(props) {
                     })
                     .catch(ex => {
                       setLoading(false);
+                      if (ex.response.status === 417) {
+                        enqueueSnackbar(ex.response.data.error, {
+                          variant: 'error'
+                        });
+                      } else {
+                        enqueueSnackbar(
+                          'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                          {
+                            variant: 'error'
+                          }
+                        );
+                      }
                     });
                 }}
               >
@@ -750,6 +764,18 @@ export default function Actions(props) {
                     })
                     .catch(ex => {
                       setLoading(false);
+                      if (ex.response.status === 417) {
+                        enqueueSnackbar(ex.response.data.error, {
+                          variant: 'error'
+                        });
+                      } else {
+                        enqueueSnackbar(
+                          'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                          {
+                            variant: 'error'
+                          }
+                        );
+                      }
                     });
                 }}
               >

@@ -1,16 +1,18 @@
-import { Box, Drawer } from '@mui/material';
+import { Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import ReceivedList from './ReceivedList';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import { useHistory } from 'react-router';
 import FilterButton from 'src/components/Mobile/Button/Filter';
+import { useSnackbar } from 'notistack';
 
 export default function ReceivedMobile() {
   const [received, setReceived] = useState();
   const [filters, setFilters] = useState(null);
   const [filterSelected, setFilterSelected] = useState('DESIGN');
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
@@ -21,6 +23,15 @@ export default function ReceivedMobile() {
         if (res.status === 200) {
           setReceived(res.data);
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }, [filterSelected]);
 
@@ -30,6 +41,15 @@ export default function ReceivedMobile() {
       .then(res => {
         if (res.status === 200) {
           setFilters(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);

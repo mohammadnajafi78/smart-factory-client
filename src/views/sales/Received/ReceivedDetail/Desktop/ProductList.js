@@ -5,10 +5,12 @@ import { API_BASE_URL } from 'src/utils/urls';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import FilesMenu from 'src/views/sales/FilesMenu';
+import { useSnackbar } from 'notistack';
 
 export default function ProductList({ data, incomplete }) {
   const [product, setProduct] = useState();
   const [isMobileNavOpen, setMobileNavOpen] = useState(true);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (incomplete === true) {
@@ -19,6 +21,15 @@ export default function ProductList({ data, incomplete }) {
         .then(res => {
           if (res.status === 200) {
             setProduct(res.data);
+          }
+        })
+        .catch(ex => {
+          if (ex.response.status === 417) {
+            enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+          } else {
+            enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+              variant: 'error'
+            });
           }
         });
     } else {

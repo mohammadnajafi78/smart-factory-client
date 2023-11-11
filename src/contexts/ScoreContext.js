@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useReducer } from 'react';
 import { useHistory } from 'react-router-dom';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { useSnackbar } from 'notistack';
 
 const initialScoreState = {
   spent_credit: 0,
@@ -33,6 +34,7 @@ const ScoreContext = createContext({
 export const ScoreProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialScoreState);
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (localStorage.getItem('user')) {
@@ -54,19 +56,30 @@ export const ScoreProvider = ({ children }) => {
   }, []);
 
   const setScore = () => {
-    httpService.get(`${API_BASE_URL}/api/users/refresh_user`).then(result => {
-      if (result.status === 200) {
-        localStorage.setItem('user', JSON.stringify(result.data));
+    httpService
+      .get(`${API_BASE_URL}/api/users/refresh_user`)
+      .then(result => {
+        if (result.status === 200) {
+          localStorage.setItem('user', JSON.stringify(result.data));
 
-        dispatch({
-          type: 'SET_SCORE',
-          payload: {
-            spent_credit: result.data.user_club.spent_credit,
-            total_credit: result.data.user_club.total_credit
-          }
-        });
-      }
-    });
+          dispatch({
+            type: 'SET_SCORE',
+            payload: {
+              spent_credit: result.data.user_club.spent_credit,
+              total_credit: result.data.user_club.total_credit
+            }
+          });
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
   };
 
   // if (!state.isInitialised) {

@@ -1,5 +1,6 @@
 import { Box, TextField } from '@mui/material';
 import { Formik } from 'formik';
+import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
@@ -13,6 +14,7 @@ import * as Yup from 'yup';
 function TechnicalInfoDesktop(props) {
   let data = props.location.state;
   const [questions, setQuestions] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   const history = useHistory();
 
@@ -24,6 +26,15 @@ function TechnicalInfoDesktop(props) {
       .then(res => {
         if (res.status === 200) {
           setQuestions(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -71,6 +82,15 @@ function TechnicalInfoDesktop(props) {
                   // state: res.data
                 });
                 setSubmitting(false);
+              }
+            })
+            .catch(ex => {
+              if (ex.response.status === 417) {
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                  variant: 'error'
+                });
               }
             });
           setSubmitting(false);

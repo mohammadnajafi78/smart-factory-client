@@ -9,11 +9,13 @@ import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 import * as Yup from 'yup';
 import CustomizedProgressBars from 'src/components/Desktop/ProgressBar';
+import { useSnackbar } from 'notistack';
 
 function TestInfoDesktop(props) {
   // let data = props.location.state;
 
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <Box
@@ -58,6 +60,15 @@ function TestInfoDesktop(props) {
                   // state: res.data
                 });
                 setSubmitting(false);
+              }
+            })
+            .catch(ex => {
+              if (ex.response.status === 417) {
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                  variant: 'error'
+                });
               }
             });
           setSubmitting(false);

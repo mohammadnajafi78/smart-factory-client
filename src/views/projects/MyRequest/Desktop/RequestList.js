@@ -3,15 +3,12 @@ import { Box } from '@mui/material';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import FilterButton from 'src/components/Desktop/Button/Filter';
 import { useHistory } from 'react-router-dom';
-import InputLabel from 'src/components/Desktop/InputLabel';
-import Scan from 'src/assets/img/icons/scan-qr.svg';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import CustomizedDialogs from 'src/components/Desktop/Dialog';
-import { QrReader } from 'react-qr-reader';
 import DomainAdd from 'src/assets/img/domain_add.png';
 import RequestItem from './RequestItem';
+import { useSnackbar } from 'notistack';
 
 export default function RequestListDesktop({
   selected,
@@ -27,6 +24,7 @@ export default function RequestListDesktop({
   const [request, setRequest] = useState();
   const [filters, setFilters] = useState([{ name: 'DESIGN', label: 'طراحی' }]);
   const [filterSelected, setFilterSelected] = useState('DESIGN');
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     setType(filterSelected.toLowerCase());
@@ -40,6 +38,15 @@ export default function RequestListDesktop({
         if (res.status === 200) {
           setRequest(res.data);
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }, [filterSelected]);
 
@@ -49,6 +56,15 @@ export default function RequestListDesktop({
       .then(res => {
         if (res.status === 200) {
           setFilters(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);

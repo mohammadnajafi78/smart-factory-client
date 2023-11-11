@@ -14,11 +14,12 @@ import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import * as Yup from 'yup';
 import ProjectTreeView from '../../../Menu';
+import { useSnackbar } from 'notistack';
 
 function RegisterNewRequestMobile(props) {
   const [designType, setDesignType] = useState([]);
   const [control, setControl] = useState('MANUAL');
-
+  const { enqueueSnackbar } = useSnackbar();
   const state = props.location.state;
 
   const history = useHistory();
@@ -54,6 +55,15 @@ function RegisterNewRequestMobile(props) {
                   state: res.data
                 });
                 setSubmitting(false);
+              }
+            })
+            .catch(ex => {
+              if (ex.response.status === 417) {
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                  variant: 'error'
+                });
               }
             });
           setSubmitting(false);

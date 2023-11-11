@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 import * as Yup from 'yup';
 import CustomizedProgressBars from 'src/components/Desktop/ProgressBar';
+import { useSnackbar } from 'notistack';
 
 function ProjectInfoDesktop(props) {
   // let data = props.location.state;
@@ -25,6 +26,7 @@ function ProjectInfoDesktop(props) {
   const [statusId, setStatusId] = useState(
     data ? data.project_state.name : null
   );
+  const { enqueueSnackbar } = useSnackbar();
   // const [data, setData] = useState(
   //   props.location.state?.back === true
   //     ? props.location.state?.data
@@ -39,6 +41,15 @@ function ProjectInfoDesktop(props) {
         if (res.status === 200) {
           setProvinces(res.data);
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }, []);
 
@@ -50,6 +61,15 @@ function ProjectInfoDesktop(props) {
           if (res.status === 200) {
             setCities(res.data);
           }
+        })
+        .catch(ex => {
+          if (ex.response.status === 417) {
+            enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+          } else {
+            enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+              variant: 'error'
+            });
+          }
         });
     }
   }, [provinceId]);
@@ -60,6 +80,15 @@ function ProjectInfoDesktop(props) {
       .then(res => {
         if (res.status === 200) {
           setStatusList(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -74,6 +103,15 @@ function ProjectInfoDesktop(props) {
           if (res.status === 200) {
             console.log('inja', res.data);
             // setSelected(res.data);
+          }
+        })
+        .catch(ex => {
+          if (ex.response.status === 417) {
+            enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+          } else {
+            enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+              variant: 'error'
+            });
           }
         });
     }
@@ -130,6 +168,15 @@ function ProjectInfoDesktop(props) {
                   });
                   setSubmitting(false);
                 }
+              })
+              .catch(ex => {
+                if (ex.response.status === 417) {
+                  enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+                } else {
+                  enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                    variant: 'error'
+                  });
+                }
               });
             setSubmitting(false);
           } else {
@@ -150,6 +197,15 @@ function ProjectInfoDesktop(props) {
                     state: res.data
                   });
                   setSubmitting(false);
+                }
+              })
+              .catch(ex => {
+                if (ex.response.status === 417) {
+                  enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+                } else {
+                  enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                    variant: 'error'
+                  });
                 }
               });
             setSubmitting(false);

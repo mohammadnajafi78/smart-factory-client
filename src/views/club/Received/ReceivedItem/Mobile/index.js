@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import { Box, Drawer } from '@mui/material';
-import { ChevronLeft, Star } from 'react-feather';
+import { Star } from 'react-feather';
 import InputLabel from 'src/components/Mobile/InputLabel';
-import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import LinkIconButton from 'src/components/Mobile/Button/LinkIcon';
 import Received from 'src/assets/img/icons/received.svg';
 import makeStyles from '@mui/styles/makeStyles';
-import { height } from '@mui/system';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import MomentFa from 'src/utils/MomentFa';
 import QRCode from 'react-qr-code';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -27,6 +26,7 @@ export default function ReceivedItemMobile(props) {
   const [open, setOpen] = useState(false);
   const [qr, setQr] = useState(null);
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <>
@@ -201,6 +201,17 @@ export default function ReceivedItemMobile(props) {
                 .then(res => {
                   if (res.status === 200) {
                     setQr(res.data.qr_code);
+                  }
+                })
+                .catch(ex => {
+                  if (ex.response.status === 417) {
+                    enqueueSnackbar(ex.response.data.error, {
+                      variant: 'error'
+                    });
+                  } else {
+                    enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                      variant: 'error'
+                    });
                   }
                 });
             }}

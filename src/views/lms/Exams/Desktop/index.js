@@ -5,12 +5,14 @@ import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import { useHistory } from 'react-router';
 import FilterButton from 'src/components/Mobile/Button/Filter';
+import { useSnackbar } from 'notistack';
 
 export default function ExamDesktop() {
   const [exams, setExams] = useState();
   const [filters, setFilters] = useState(null);
   const [filterSelected, setFilterSelected] = useState(1);
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
@@ -21,15 +23,35 @@ export default function ExamDesktop() {
         if (res.status === 200) {
           setExams(res.data);
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }, [filterSelected]);
 
   useEffect(() => {
-    httpService.get(`${API_BASE_URL}/api/lms/category/`).then(res => {
-      if (res.status === 200) {
-        setFilters(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}/api/lms/category/`)
+      .then(res => {
+        if (res.status === 200) {
+          setFilters(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
   }, []);
 
   return (

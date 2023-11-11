@@ -7,11 +7,13 @@ import UserBarChart from './UserBarChart';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import MomentEn from 'src/utils/MomentEn';
+import { useSnackbar } from 'notistack';
 
 export default function HomeDesktop() {
   const [allUser, setAllUser] = useState(0);
   const [verified, setVerified] = useState(0);
   const [todayUser, setTodayUser] = useState(0);
+  const { enqueueSnackbar } = useSnackbar();
 
   const today = new Date();
   const tomorrow = new Date(today);
@@ -27,6 +29,15 @@ export default function HomeDesktop() {
         if (res.status === 200) {
           setAllUser(res.data[0].count);
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }
 
@@ -38,6 +49,15 @@ export default function HomeDesktop() {
       .then(res => {
         if (res.status === 200) {
           setVerified(res.data[0].count);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }
@@ -51,6 +71,15 @@ export default function HomeDesktop() {
       .then(res => {
         if (res.status === 200) {
           setTodayUser(res.data[0].count);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }

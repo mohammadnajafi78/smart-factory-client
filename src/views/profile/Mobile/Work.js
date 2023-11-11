@@ -1,6 +1,7 @@
 import { Box, TextField } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Formik } from 'formik';
+import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
@@ -21,6 +22,7 @@ function WorkMobile(props) {
   const [cityId, setCityId] = useState(
     props.data?.company?.location_info?.city
   );
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
@@ -28,6 +30,15 @@ function WorkMobile(props) {
       .then(res => {
         if (res.status === 200) {
           setProvinces(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -39,6 +50,15 @@ function WorkMobile(props) {
         .then(res => {
           if (res.status === 200) {
             setCities(res.data);
+          }
+        })
+        .catch(ex => {
+          if (ex.response.status === 417) {
+            enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+          } else {
+            enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+              variant: 'error'
+            });
           }
         });
     }
@@ -88,8 +108,15 @@ function WorkMobile(props) {
               setSubmitting(false);
             }
           })
-          .catch(err => {
+          .catch(ex => {
             setSubmitting(false);
+            if (ex.response.status === 417) {
+              enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+            } else {
+              enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                variant: 'error'
+              });
+            }
           });
       }}
     >

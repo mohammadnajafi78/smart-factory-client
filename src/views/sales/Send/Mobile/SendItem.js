@@ -9,9 +9,11 @@ import ContentCopy from 'src/assets/img/content_copy.svg';
 import Share from 'src/assets/img/share.svg';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { useSnackbar } from 'notistack';
 
 export default function SendItem({ data }) {
   const { searched } = useSaleSearch();
+  const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
 
   return (
@@ -251,6 +253,15 @@ export default function SendItem({ data }) {
                   history.push({
                     pathname: '/sale/send/detail',
                     state: res.data
+                  });
+                }
+              })
+              .catch(ex => {
+                if (ex.response.status === 417) {
+                  enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+                } else {
+                  enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                    variant: 'error'
                   });
                 }
               });

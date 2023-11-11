@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import {
-  TextField,
-  FormControl,
-  InputLabel} from '@mui/material';
+import { TextField, FormControl, InputLabel } from '@mui/material';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import Table from 'src/components/Desktop/Table';
@@ -12,6 +9,7 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { Plus } from 'react-feather';
 import NewPrice from './NewPrice';
+import { useSnackbar } from 'notistack';
 // import Datepicker from 'src/components/Desktop/Datepicker';
 
 let item = {};
@@ -36,6 +34,7 @@ const PriceTable = props => {
   const [formType, setFormType] = useState('new');
   const [title, setTitle] = useState('لیست قیمت جدید');
   const [selectedData, setSelectedData] = useState({});
+  const { enqueueSnackbar } = useSnackbar();
 
   const history = useHistory();
 
@@ -254,6 +253,15 @@ const PriceTable = props => {
           setData(res.data.results);
           setCount(res.data.count);
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }
 
@@ -390,6 +398,15 @@ const PriceTable = props => {
       .then(res => {
         if (res.status === 200) {
           getData(page, rowsPerPage, '');
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }

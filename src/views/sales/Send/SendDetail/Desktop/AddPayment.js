@@ -20,12 +20,14 @@ import { AttachFile } from '@mui/icons-material';
 import MomentEn from 'src/utils/MomentEn';
 import Delete from 'src/assets/img/icons/delete.svg';
 import Attach from 'src/assets/img/icons/attach.svg';
+import { useSnackbar } from 'notistack';
 
 export default function AddPayment(props) {
   const [file, setFile] = useState();
   const [payment, setPayment] = useState(null);
   const [paymentTypes, setPaymentTypes] = useState([]);
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
   const data = props.location.state.dataPayment
     ? props.location.state.dataPayment
     : props.location.state.data;
@@ -37,6 +39,15 @@ export default function AddPayment(props) {
       .then(res => {
         if (res.status === 200) {
           setPaymentTypes(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -107,8 +118,17 @@ export default function AddPayment(props) {
                     setSubmitting(false);
                   }
                 })
-                .catch(err => {
+                .catch(ex => {
                   setSubmitting(false);
+                  if (ex.response.status === 417) {
+                    enqueueSnackbar(ex.response.data.error, {
+                      variant: 'error'
+                    });
+                  } else {
+                    enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                      variant: 'error'
+                    });
+                  }
                 });
             }}
           >
@@ -410,6 +430,20 @@ export default function AddPayment(props) {
                           .then(res => {
                             if (res.status === 200) {
                               history.goBack();
+                            }
+                          })
+                          .catch(ex => {
+                            if (ex.response.status === 417) {
+                              enqueueSnackbar(ex.response.data.error, {
+                                variant: 'error'
+                              });
+                            } else {
+                              enqueueSnackbar(
+                                'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                                {
+                                  variant: 'error'
+                                }
+                              );
                             }
                           });
                       }}

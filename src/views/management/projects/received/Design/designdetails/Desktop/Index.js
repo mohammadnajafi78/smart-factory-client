@@ -4,22 +4,19 @@ import React, { useEffect, useState } from 'react';
 // import Delivery from './Deleivery';
 // import Message from './Message';
 import { Box } from '@mui/system';
-import { Button, Divider, Grid, TextField } from '@mui/material';
+import { Divider, Grid } from '@mui/material';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import { ChevronRight } from 'react-feather';
 import { useHistory } from 'react-router-dom';
 import {
   BusinessOutlined,
-  ChevronLeft,
   Close,
   CollectionsBookmarkOutlined,
   ConstructionOutlined,
-  DesignServicesOutlined,
   Done,
   EngineeringOutlined,
   LiveHelpOutlined,
   LocationOnOutlined,
-  ManageAccountsOutlined,
   PaidOutlined,
   ScaleOutlined,
   TuneOutlined
@@ -31,13 +28,12 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel';
 // import Actions from './Actions';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 
-import moment from 'jalali-moment';
 import RejectRequest from '../../../ReceivedDetails/Desktop/RejectRequest';
 import AcceptRequest from '../../../ReceivedDetails/Desktop/AcceptRequest';
 import MomentFa from 'src/utils/MomentFa';
-import Loading from 'src/components/Desktop/Loading';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { useSnackbar } from 'notistack';
 
 export default function OrderMobile(props) {
   console.log('props', props);
@@ -48,7 +44,7 @@ export default function OrderMobile(props) {
   const [cancel, setCancel] = useState();
   const [accept, setAccept] = useState();
   const [loading, setLoading] = useState(false);
-
+  const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
 
   useEffect(() => {
@@ -565,6 +561,20 @@ export default function OrderMobile(props) {
                                   .then(res => {
                                     if (res.status === 200) {
                                       history.goBack();
+                                    }
+                                  })
+                                  .catch(ex => {
+                                    if (ex.response.status === 417) {
+                                      enqueueSnackbar(ex.response.data.error, {
+                                        variant: 'error'
+                                      });
+                                    } else {
+                                      enqueueSnackbar(
+                                        'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                                        {
+                                          variant: 'error'
+                                        }
+                                      );
                                     }
                                   });
                               }}

@@ -12,17 +12,28 @@ import { API_BASE_URL } from 'src/utils/urls';
 // import httpService from 'src/utils/httpService';
 import httpService from 'src/utils/httpService';
 import * as Yup from 'yup';
+import { useSnackbar } from 'notistack';
 
 function WorkDesktop() {
   const [works, setWorks] = useState([]);
   const [selected, setSelected] = useState([]);
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
       .get(`${API_BASE_URL}/api/users/user_type/activity_list`)
       .then(res => {
         if (res.status === 200) setWorks(res.data);
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }, []);
 
@@ -76,6 +87,15 @@ function WorkDesktop() {
                 if (res.status === 200) {
                   history.push('/home');
                   setSubmitting(false);
+                }
+              })
+              .catch(ex => {
+                if (ex.response.status === 417) {
+                  enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+                } else {
+                  enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                    variant: 'error'
+                  });
                 }
               });
             setSubmitting(false);
@@ -217,9 +237,7 @@ function WorkDesktop() {
                 >
                   {'قبلی'}
                 </ConfirmButton> */}
-                <ConfirmButton 
-                disabled={isSubmitting} 
-                loading={isSubmitting}>
+                <ConfirmButton disabled={isSubmitting} loading={isSubmitting}>
                   {'ثبت'}
                 </ConfirmButton>
               </Box>

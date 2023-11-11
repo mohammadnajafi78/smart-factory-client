@@ -9,6 +9,8 @@ import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader'
 import CustomizedProgressBars from 'src/components/Mobile/ProgressBar';
 
 import makeStyles from '@mui/styles/makeStyles';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -159,6 +161,17 @@ function ConfirmInfoMobile(props) {
                 .then(res => {
                   if (res.status === 200) {
                     history.push('/project/request/');
+                  }
+                })
+                .catch(ex => {
+                  if (ex.response.status === 417) {
+                    enqueueSnackbar(ex.response.data.error, {
+                      variant: 'error'
+                    });
+                  } else {
+                    enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                      variant: 'error'
+                    });
                   }
                 });
             }}

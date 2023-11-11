@@ -7,10 +7,12 @@ import LinkButton from 'src/components/Desktop/Button/Link';
 import { useHistory } from 'react-router-dom';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { useSnackbar } from 'notistack';
 
 function EntryDesktop(props) {
   const [isLoading, setLoading] = useState(false);
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <LoginFrame>
@@ -100,6 +102,15 @@ function EntryDesktop(props) {
                     }
                   })
                   .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
+                    }
                     setLoading(false);
                   });
               }}

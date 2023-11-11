@@ -14,6 +14,7 @@ import { API_BASE_URL } from 'src/utils/urls';
 import Table from 'src/components/Desktop/Table';
 import { useHistory } from 'react-router-dom';
 import FaTOEn from 'src/utils/FaTOEn';
+import { useSnackbar } from 'notistack';
 
 let item = {};
 // let itemSort = {};
@@ -33,6 +34,7 @@ const AllUsersTable = props => {
   const [sort, setSort] = useState('');
   const [filter, setFilter] = useState('');
   const [reset, setReset] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const history = useHistory();
 
@@ -42,6 +44,15 @@ const AllUsersTable = props => {
       .then(res => {
         if (res.status === 200) {
           setProvinces(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -54,6 +65,15 @@ const AllUsersTable = props => {
           if (res.status === 200) {
             setCities(res.data);
           }
+        })
+        .catch(ex => {
+          if (ex.response.status === 417) {
+            enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+          } else {
+            enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+              variant: 'error'
+            });
+          }
         });
     }
   }, [provinceId]);
@@ -64,6 +84,15 @@ const AllUsersTable = props => {
       .then(res => {
         if (res.status === 200) {
           setWorks(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -496,6 +525,15 @@ const AllUsersTable = props => {
           setData(res.data.results);
           setCount(res.data.count);
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }
 
@@ -666,6 +704,15 @@ const AllUsersTable = props => {
       .then(res => {
         if (res.status === 200) {
           getData(page, rowsPerPage, '');
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }

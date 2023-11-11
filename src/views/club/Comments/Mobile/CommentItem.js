@@ -1,20 +1,17 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { ChevronLeft, Star } from 'react-feather';
-import { NavLink } from 'react-router-dom';
+import { ChevronLeft } from 'react-feather';
 import InputLabel from 'src/components/Mobile/InputLabel';
-import iphone13 from 'src/assets/img/icons/iphone13.jpeg';
 import { Drawer } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { useHistory } from 'react-router-dom';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
-import LinkButton from 'src/components/Mobile/Button/Link';
 import Rating from '@mui/material/Rating';
-import { ClassNames } from '@emotion/react';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import MomentFa from 'src/utils/MomentFa';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -38,6 +35,7 @@ export default function CommentItem({ data }) {
   const history = useHistory();
   const [open, setOpen] = useState(false);
   const [rating, setRating] = useState(data.rate);
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <>
@@ -331,6 +329,20 @@ export default function CommentItem({ data }) {
                     .then(res => {
                       if (res.status === 200) {
                         alert('success');
+                      }
+                    })
+                    .catch(ex => {
+                      if (ex.response.status === 417) {
+                        enqueueSnackbar(ex.response.data.error, {
+                          variant: 'error'
+                        });
+                      } else {
+                        enqueueSnackbar(
+                          'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                          {
+                            variant: 'error'
+                          }
+                        );
                       }
                     });
                 }}

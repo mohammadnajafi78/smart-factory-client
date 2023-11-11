@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 import * as Yup from 'yup';
 import CustomizedProgressBars from 'src/components/Mobile/ProgressBar';
+import { useSnackbar } from 'notistack';
 
 function ProjectInfoMobile(props) {
   let data = props.location.state;
@@ -24,6 +25,7 @@ function ProjectInfoMobile(props) {
     data ? data.project_state.name : null
   );
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
@@ -31,6 +33,15 @@ function ProjectInfoMobile(props) {
       .then(res => {
         if (res.status === 200) {
           setProvinces(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -43,6 +54,15 @@ function ProjectInfoMobile(props) {
           if (res.status === 200) {
             setCities(res.data);
           }
+        })
+        .catch(ex => {
+          if (ex.response.status === 417) {
+            enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+          } else {
+            enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+              variant: 'error'
+            });
+          }
         });
     }
   }, [provinceId]);
@@ -53,6 +73,15 @@ function ProjectInfoMobile(props) {
       .then(res => {
         if (res.status === 200) {
           setStatusList(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -98,6 +127,15 @@ function ProjectInfoMobile(props) {
                   });
                   setSubmitting(false);
                 }
+              })
+              .catch(ex => {
+                if (ex.response.status === 417) {
+                  enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+                } else {
+                  enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                    variant: 'error'
+                  });
+                }
               });
             setSubmitting(false);
           } else {
@@ -118,6 +156,15 @@ function ProjectInfoMobile(props) {
                     state1: res.data
                   });
                   setSubmitting(false);
+                }
+              })
+              .catch(ex => {
+                if (ex.response.status === 417) {
+                  enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+                } else {
+                  enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                    variant: 'error'
+                  });
                 }
               });
             setSubmitting(false);

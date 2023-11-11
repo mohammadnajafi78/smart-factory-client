@@ -7,6 +7,7 @@ import InputLabel from 'src/components/Desktop/InputLabel';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { ArrowRight } from 'react-feather';
 import { useHistory } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -24,6 +25,7 @@ export default function CancelConfirm(props) {
   const [comment, setComment] = useState(null);
   const history = useHistory();
   const [isLoading, setLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <>
@@ -128,6 +130,15 @@ export default function CancelConfirm(props) {
                   })
                   .catch(ex => {
                     setLoading(false);
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
+                    }
                   });
               }}
             >

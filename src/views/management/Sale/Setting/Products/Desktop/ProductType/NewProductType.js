@@ -8,12 +8,7 @@ import {
   Button
 } from '@mui/material';
 import InputLabel from 'src/components/Desktop/InputLabel';
-import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
-import { Plus, Star } from 'react-feather';
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
-import EditNote from 'src/assets/img/icons/edit_note.svg';
-import MomentFa from 'src/utils/MomentFa';
-import Upload from 'src/assets/img/icons/upload.svg';
 import Delete from 'src/assets/img/icons/delete.svg';
 import Attach from 'src/assets/img/icons/attach.svg';
 import CustomizedDialogs from 'src/components/Desktop/Dialog';
@@ -22,6 +17,7 @@ import * as Yup from 'yup';
 import { AttachFile } from '@mui/icons-material';
 import { API_BASE_URL } from 'src/utils/urls';
 import httpService from 'src/utils/httpService';
+import { useSnackbar } from 'notistack';
 
 export default function NewProductType({
   open,
@@ -33,6 +29,7 @@ export default function NewProductType({
 }) {
   const [file, setFile] = useState(null);
   const [subCategory, setSubCategory] = useState([]);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
@@ -42,6 +39,15 @@ export default function NewProductType({
       .then(res => {
         if (res.status === 200) {
           setSubCategory(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -122,6 +128,17 @@ export default function NewProductType({
                       props.reloadData();
                       setSubmitting(false);
                     }
+                  })
+                  .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
+                    }
                   });
               } else {
                 httpService
@@ -134,6 +151,17 @@ export default function NewProductType({
                       handleClose();
                       props.setData(res.data);
                       setSubmitting(false);
+                    }
+                  })
+                  .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
                     }
                   });
               }
@@ -601,6 +629,21 @@ export default function NewProductType({
                                           setFieldValue('images', res.data);
                                           props.setImages(res.data);
                                         }
+                                      })
+                                      .catch(ex => {
+                                        if (ex.response.status === 417) {
+                                          enqueueSnackbar(
+                                            ex.response.data.error,
+                                            { variant: 'error' }
+                                          );
+                                        } else {
+                                          enqueueSnackbar(
+                                            'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                                            {
+                                              variant: 'error'
+                                            }
+                                          );
+                                        }
                                       });
                                   }}
                                 >
@@ -631,6 +674,21 @@ export default function NewProductType({
                                         if (res.status === 200) {
                                           setFieldValue('images', res.data);
                                           props.setImages(res.data);
+                                        }
+                                      })
+                                      .catch(ex => {
+                                        if (ex.response.status === 417) {
+                                          enqueueSnackbar(
+                                            ex.response.data.error,
+                                            { variant: 'error' }
+                                          );
+                                        } else {
+                                          enqueueSnackbar(
+                                            'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                                            {
+                                              variant: 'error'
+                                            }
+                                          );
                                         }
                                       });
                                   }}

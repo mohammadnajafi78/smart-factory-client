@@ -1,9 +1,5 @@
-import React from 'react';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
-import { useHistory } from 'react-router-dom';
-import { useSnackbar } from 'notistack';
-import snackBar from './snackBar';
 
 let token = null;
 let headers = {

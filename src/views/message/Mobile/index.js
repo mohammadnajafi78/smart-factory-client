@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Drawer } from '@mui/material';
-import ConfirmButton from 'src/components/Mobile/Button/Confirm';
+import { Box } from '@mui/material';
 import FilterButton from 'src/components/Mobile/Button/Filter';
 import ReceivedItem from './Item';
 import { useHistory } from 'react-router-dom';
-import Scan from 'src/assets/img/icons/scan-qr.svg';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
-import { QrReader } from 'react-qr-reader';
 import makeStyles from '@mui/styles/makeStyles';
 import EmptyMessage from 'src/assets/img/icons/emptyMessage.svg';
 import InputLabel from 'src/components/Mobile/InputLabel';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -30,20 +28,43 @@ export default function MessageMobile() {
   const [filters, setFilters] = useState(null);
   const [filterSelected, setFilterSelected] = useState(1);
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    httpService.get(`${API_BASE_URL}/api/message/`).then(res => {
-      if (res.status === 200) {
-        setMessages(res.data);
-        setAll(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}/api/message/`)
+      .then(res => {
+        if (res.status === 200) {
+          setMessages(res.data);
+          setAll(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
 
-    httpService.get(`${API_BASE_URL}/api/message/type/`).then(res => {
-      if (res.status === 200) {
-        setFilters(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}/api/message/type/`)
+      .then(res => {
+        if (res.status === 200) {
+          setFilters(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
   }, []);
 
   function handleScan(data) {

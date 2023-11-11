@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import { Box, Divider, Grid } from '@mui/material';
 import InputLabel from 'src/components/Desktop/InputLabel';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
-import Call from 'src/assets/img/icons/call.svg';
-import ChatUser from 'src/assets/img/icons/chatUser.svg';
 import AdminChat from './AdminChat';
 import UserChat from './UserChat';
 import SendMessage from './SendMessage';
 import MomentFa from 'src/utils/MomentFa';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { useSnackbar } from 'notistack';
 
 export default function Details(props) {
   const [data, setData] = useState(props.location.state.data[0]);
   const userId = JSON.parse(localStorage.getItem('user')).user_id;
+  const { enqueueSnackbar } = useSnackbar();
 
   function getData() {
     httpService
@@ -21,6 +21,15 @@ export default function Details(props) {
       .then(res => {
         if (res.status === 200) {
           setData(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }

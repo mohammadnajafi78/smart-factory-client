@@ -17,12 +17,14 @@ import useScore from 'src/hooks/useScore';
 import * as Yup from 'yup';
 import p2e from 'src/utils/P2E';
 import { askForPermissionToReceiveNotifications } from 'src/push-notification';
+import { useSnackbar } from 'notistack';
 
 function LoginOTPMobile(props) {
   const history = useHistory();
   const [reSend, setReSend] = useState(false);
   const { registry } = useAuth();
   const { setScore } = useScore();
+  const { enqueueSnackbar } = useSnackbar();
 
   function remainingTime(finish) {
     let today = moment();
@@ -97,7 +99,7 @@ function LoginOTPMobile(props) {
                 });
               }
             })
-            .catch(err => {
+            .catch(ex => {
               setErrors({
                 input1: true,
                 input2: true,
@@ -106,6 +108,13 @@ function LoginOTPMobile(props) {
                 input5: true,
                 input6: true
               });
+              if (ex.response.status === 417) {
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                  variant: 'error'
+                });
+              }
             });
         } else if (props.location.state.status === 'forgot') {
           history.push({
@@ -141,8 +150,14 @@ function LoginOTPMobile(props) {
                   }
                 });
             })
-            .catch(err => {
-              console.log('err');
+            .catch(ex => {
+              if (ex.response.status === 417) {
+                enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+              } else {
+                enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                  variant: 'error'
+                });
+              }
             });
         }
       }}

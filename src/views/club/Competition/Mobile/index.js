@@ -8,12 +8,14 @@ import LinkIconButton from 'src/components/Mobile/Button/LinkIcon';
 import Present from 'src/assets/img/icons/present.svg';
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
+import { useSnackbar } from 'notistack';
 
 export default function CompetitionMobile() {
   const history = useHistory();
   const [competition, setCompetition] = useState([]);
   const [newComp, setNewComp] = useState([]);
   const [scroll, setScroll] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   function handleScroll() {
     setScroll(window.pageYOffset);
@@ -27,17 +29,39 @@ export default function CompetitionMobile() {
   }, []);
 
   useEffect(() => {
-    httpService.get(`${API_BASE_URL}/api/club/matches/?type=new`).then(res => {
-      if (res.status === 200) {
-        setNewComp(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}/api/club/matches/?type=new`)
+      .then(res => {
+        if (res.status === 200) {
+          setNewComp(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
 
-    httpService.get(`${API_BASE_URL}/api/club/matches/`).then(res => {
-      if (res.status === 200) {
-        setCompetition(res.data);
-      }
-    });
+    httpService
+      .get(`${API_BASE_URL}/api/club/matches/`)
+      .then(res => {
+        if (res.status === 200) {
+          setCompetition(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
+      });
   }, []);
 
   return (

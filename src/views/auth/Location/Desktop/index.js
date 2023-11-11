@@ -10,6 +10,7 @@ import httpService from 'src/utils/httpService';
 import { useHistory } from 'react-router-dom';
 import { API_BASE_URL } from 'src/utils/urls';
 import * as Yup from 'yup';
+import { useSnackbar } from 'notistack';
 
 function LocationDesktop() {
   const [provinces, setProvinces] = useState([]);
@@ -17,6 +18,7 @@ function LocationDesktop() {
   const [cities, setCities] = useState([]);
   const [cityId, setCityId] = useState(null);
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     httpService
@@ -24,6 +26,15 @@ function LocationDesktop() {
       .then(res => {
         if (res.status === 200) {
           setProvinces(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);
@@ -35,6 +46,15 @@ function LocationDesktop() {
         .then(res => {
           if (res.status === 200) {
             setCities(res.data);
+          }
+        })
+        .catch(ex => {
+          if (ex.response.status === 417) {
+            enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+          } else {
+            enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+              variant: 'error'
+            });
           }
         });
     }
@@ -83,6 +103,13 @@ function LocationDesktop() {
                 }
               })
               .catch(ex => {
+                if (ex.response.status === 417) {
+                  enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+                } else {
+                  enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                    variant: 'error'
+                  });
+                }
                 setSubmitting(false);
               });
             setSubmitting(false);

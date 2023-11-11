@@ -6,21 +6,20 @@ import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader
 import httpService from 'src/utils/httpService';
 import { API_BASE_URL } from 'src/utils/urls';
 import ReceivedItem from './ReceivedItem';
+import { useSnackbar } from 'notistack';
 
 export default function ReceivedListDesktop({
   selected,
   setSelected,
-  refresh,
-  setRefresh,
   type,
   typeName,
   setType,
   setTypeName
 }) {
-  const history = useHistory();
   const [received, setReceived] = useState();
   const [filters, setFilters] = useState([{ name: 'DESIGN', label: 'طراحی' }]);
   const [filterSelected, setFilterSelected] = useState('DESIGN');
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     setType(filterSelected.toLowerCase());
@@ -34,6 +33,15 @@ export default function ReceivedListDesktop({
         if (res.status === 200) {
           setReceived(res.data);
         }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }, [filterSelected]);
 
@@ -43,6 +51,15 @@ export default function ReceivedListDesktop({
       .then(res => {
         if (res.status === 200) {
           setFilters(res.data);
+        }
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
         }
       });
   }, []);

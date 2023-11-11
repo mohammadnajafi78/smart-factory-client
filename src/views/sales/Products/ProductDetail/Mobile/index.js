@@ -19,9 +19,9 @@ import SaleCategory from 'src/assets/img/saleCategory.svg';
 import SaleSubCategory from 'src/assets/img/SaleSubCategory.svg';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import { useHistory } from 'react-router-dom';
-import LargeSize from 'src/assets/img/largeSize.svg';
 import SmallSize from 'src/assets/img/smallSize.svg';
 import useSaleOrder from 'src/hooks/useSaleOrder';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -45,6 +45,7 @@ export default function ProductDetailMobile(props) {
   const { order, setOrder, getOrder } = useSaleOrder();
   const [isLoadingAdd, setLoadingAdd] = useState(false);
   const [isLoadingRemove, setLoadingRemove] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const history = useHistory();
 
@@ -56,6 +57,15 @@ export default function ProductDetailMobile(props) {
       )
       .then(res => {
         setProduct(res.data);
+      })
+      .catch(ex => {
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
     setUnitSelected('SINGULAR');
   }, []);
@@ -540,17 +550,28 @@ export default function ProductDetailMobile(props) {
               }}
               loading={isLoadingRemove}
               onClick={() => {
-                setLoadingRemove(true)
+                setLoadingRemove(true);
                 httpService
                   .post(`${API_BASE_URL}/api/orders/remove_product/`, {
                     order_num: order.order_num,
                     code: selected.code
                   })
                   .then(res => {
-                    setLoadingRemove(false)
+                    setLoadingRemove(false);
                     if (res.status === 200) {
                       getOrder();
                       setOpen(false);
+                    }
+                  })
+                  .catch(ex => {
+                    if (ex.response.status === 417) {
+                      enqueueSnackbar(ex.response.data.error, {
+                        variant: 'error'
+                      });
+                    } else {
+                      enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                        variant: 'error'
+                      });
                     }
                   });
               }}
@@ -562,7 +583,7 @@ export default function ProductDetailMobile(props) {
               disabled={false}
               loading={isLoadingAdd}
               onClick={() => {
-                setLoadingAdd(true)
+                setLoadingAdd(true);
                 if (order) {
                   httpService
                     .post(`${API_BASE_URL}/api/orders/add_product/`, {
@@ -576,11 +597,25 @@ export default function ProductDetailMobile(props) {
                       ]
                     })
                     .then(res => {
-                      setLoadingAdd(false)
+                      setLoadingAdd(false);
                       if (res.status === 200) {
                         setOpen(false);
                         setOrder(res.data);
                         setSelected(null);
+                      }
+                    })
+                    .catch(ex => {
+                      if (ex.response.status === 417) {
+                        enqueueSnackbar(ex.response.data.error, {
+                          variant: 'error'
+                        });
+                      } else {
+                        enqueueSnackbar(
+                          'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                          {
+                            variant: 'error'
+                          }
+                        );
                       }
                     });
                 } else {
@@ -595,11 +630,25 @@ export default function ProductDetailMobile(props) {
                       ]
                     })
                     .then(res => {
-                      setLoadingAdd(false)
+                      setLoadingAdd(false);
                       if (res.status === 201) {
                         setOpen(false);
                         setOrder(res.data);
                         setSelected(null);
+                      }
+                    })
+                    .catch(ex => {
+                      if (ex.response.status === 417) {
+                        enqueueSnackbar(ex.response.data.error, {
+                          variant: 'error'
+                        });
+                      } else {
+                        enqueueSnackbar(
+                          'مشکلی پیش آمده! لطفا دوباره سعی کنید',
+                          {
+                            variant: 'error'
+                          }
+                        );
                       }
                     });
                 }
