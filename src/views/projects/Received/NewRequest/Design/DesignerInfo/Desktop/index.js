@@ -131,8 +131,6 @@ function DesignerInfoDesktop(props) {
           <form
             noValidate
             onSubmit={handleSubmit}
-            noValidate
-            onSubmit={handleSubmit}
             style={{
               display: 'flex',
               flexDirection: 'column',

@@ -533,20 +533,20 @@ const ReceiveTable = props => {
       case 'order_num':
         itemSort['order_num'] = direction;
         break;
-      case 'name':
-        itemSort['name'] = direction;
+      case 'user_info.first_name':
+        itemSort['user__first_name'] = direction;
         break;
-      case 'start_date':
-        itemSort['start_date'] = direction;
+      case 'user_info.last_name':
+        itemSort['user__last_name'] = direction;
         break;
-      case 'end_date':
-        itemSort['end_date'] = direction;
+      case 'create_date':
+        itemSort['create_date'] = direction;
         break;
-      case 'participant_count':
-        itemSort['participant_count'] = direction;
+      case 'final_price':
+        itemSort['final_price'] = direction;
         break;
-      case 'status':
-        itemSort['status'] = direction;
+      case 'current_state':
+        itemSort['order_state'] = direction;
         break;
       default:
         itemSort = itemSort;

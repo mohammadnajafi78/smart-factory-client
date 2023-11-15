@@ -577,22 +577,22 @@ const OrdersTable = props => {
         itemSort['order_num'] = direction;
         break;
       case 'user_info.first_name':
-        itemSort['user_info.first_name'] = direction;
+        itemSort['user__first_name'] = direction;
         break;
       case 'user_info.last_name':
-        itemSort['user_info.last_name'] = direction;
+        itemSort['user__last_name'] = direction;
         break;
       case 'supplier_info.first_name':
-        itemSort['supplier_info.first_name'] = direction;
+        itemSort['supplier__first_name'] = direction;
         break;
       case 'supplier_info.last_name':
-        itemSort['supplier_info.last_name'] = direction;
+        itemSort['supplier__last_name'] = direction;
         break;
       case 'create_date':
         itemSort['create_date'] = direction;
         break;
       case 'current_state':
-        itemSort['current_state'] = direction;
+        itemSort['order_state'] = direction;
         break;
       // case 'end_date':
       //   itemSort['end_date'] = direction;
