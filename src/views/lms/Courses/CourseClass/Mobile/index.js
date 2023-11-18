@@ -7,6 +7,7 @@ import Chat from 'src/assets/img/chat.png';
 import DownloadImg from 'src/assets/img/download.png';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import jwtDecode from 'jwt-decode';
+import MomentTimeFa from 'src/utils/MomentTimeFa';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -14,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     zIndex: 999,
     position: 'fixed',
     bottom: 0,
-    minHeight: '40%'
+    minHeight: '60%'
   }
 }));
 
@@ -22,7 +23,7 @@ export default function CourseClassMobile(props) {
   const [courseDetail, setCourseDetail] = useState(null);
   const [openChat, setOpenChat] = useState(false);
   const [openUsers, setOpenUsers] = useState(false);
-  const [users, setUsers] = useState();
+  const [users, setUsers] = useState([]);
   const [comments, setComments] = useState([]);
   const history = useHistory();
   const classes = useStyles();
@@ -36,23 +37,7 @@ export default function CourseClassMobile(props) {
     )
   );
 
-  // const ws_scheme = window.location.protocol === 'https:' ? 'wss' : 'ws';
-  // const ws_path =
-  //   ws_scheme + '://' + window.location.host + '/chat/{{room_id}}/';
-
   useEffect(() => {
-    console.log('comments', comments);
-  }, [comments]);
-
-  useEffect(() => {
-    // setChatSocket(
-    //   new WebSocket(
-    //     `ws://192.168.1.3:8000/chat/${session.session_num}/?token=${
-    //       jwtDecode(localStorage.getItem('token')).chat_token
-    //     }`
-    //   )
-    // );
-
     chatSocket.onmessage = function(message) {
       console.log('Chat Message: ', message.data);
       const data = JSON.parse(message.data);
@@ -61,25 +46,35 @@ export default function CourseClassMobile(props) {
       if (data.msg_type === 'NORMAL') {
         appendChatMessage(data);
       } else if (data.msg_type === 'JOIN') {
-        console.log('کاربر {{user.first_name}} به چت پیوست');
+        console.log(
+          'کاربر به چت پیوست',
+          JSON.parse(localStorage.getItem('user')).user_id
+        );
         getRoomChatMessages();
       } else if (data.msg_type === 'LEAVE') {
-        console.log('کاربر {{user.first_name}} چت را ترک کرد');
+        console.log('leave user', data);
+        console.log(
+          'کاربر چت را ترک کرد',
+          JSON.parse(localStorage.getItem('user')).user_id
+        );
       } else if (data.msg_type === 'ERROR') {
-        console.log('{{data.message}}');
-      } else if (data.msg_type === 'ALL') {
-        console.log('{{data.message}}', data.message);
+        console.log('error', data?.error);
+      } else if (data.msg_type === 'ROOM_CHAT') {
+        console.log('All message', data.message);
         handleMessagesPayload(data.message, data.new_page_number);
       } else if (data.msg_type === 'INFORMATION') {
-        console.log('{{data}}', data);
+        console.log('data', data);
         // if (data.is_display !== null) displayChatRoomLoading(data.is_display);
+        console.log('user count', data.user_count);
 
-        if (data.user_count !== null) {
+        if (data.user_count !== 0) {
           setConnectedUserCount(data.user_count);
         }
 
-        if (data.users !== null) {
-          setConnectedUserList(data.users);
+        if (data?.users) {
+          setUsers(data.users);
+          console.log('user list', data.users);
+          // setConnectedUserList(data.users);
         }
       }
     };
@@ -115,6 +110,18 @@ export default function CourseClassMobile(props) {
     } else if (chatSocket.readyState === WebSocket.CLOSED) {
       console.log('Chat Socket State: CLOSED');
     }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      console.log('leave the page');
+      chatSocket.send(
+        JSON.stringify({
+          command: 'LEAVE',
+          room: session.session_num
+        })
+      );
+    };
   }, []);
 
   // on send message
@@ -234,10 +241,14 @@ export default function CourseClassMobile(props) {
     // userCountElement.innerHTML = count;
   }
 
-  function setConnectedUserList(users) {
+  function setConnectedUserList() {
     // update user list
-    console.log('user list', users);
-    setUsers(users);
+    console.log('user list22', users);
+    // if (users2.length !== 0) {
+    // setUsers(users2);
+    // }
+
+    // setUsers([1, 2]);
   }
 
   // useEffect(() => {
@@ -377,13 +388,13 @@ export default function CourseClassMobile(props) {
                   // page_number: pageNumber
                 })
               );
-              chatSocket.send(
-                JSON.stringify({
-                  command: 'ALL',
-                  room: session.session_num
-                  // page_number: 1
-                })
-              );
+              // chatSocket.send(
+              //   JSON.stringify({
+              //     command: 'ALL',
+              //     room: session.session_num
+              //     // page_number: 1
+              //   })
+              // );
               // };
             }}
           >
@@ -399,7 +410,7 @@ export default function CourseClassMobile(props) {
                     justifyContent: 'flex-end',
                     alignItems: 'flex-start',
                     // padding: '0px 30px 0px 20px',
-                    gap: '10px'
+                    gap: '3px'
                   }}
                 >
                   <Box
@@ -455,7 +466,7 @@ export default function CourseClassMobile(props) {
                           color: '#FFFFFF'
                         }}
                       >
-                        {item?.message.length > 0 && (
+                        {item?.message?.length > 0 && (
                           <InputLabel
                             style={{
                               fontWeight: 400,
@@ -469,7 +480,7 @@ export default function CourseClassMobile(props) {
                         )}
                       </Box>
                     </Box>
-                    <Box
+                    {/* <Box
                       sx={{
                         display: 'flex',
                         flexDirection: 'row',
@@ -488,9 +499,9 @@ export default function CourseClassMobile(props) {
                           direction: 'ltr'
                         }}
                       >
-                        {/* {MomentTimeFa(message?.create_date)} */}
+                        {MomentTimeFa(item?.timestamp)}
                       </InputLabel>
-                    </Box>
+                    </Box> */}
                   </Box>
                 </Box>
               );
@@ -519,12 +530,33 @@ export default function CourseClassMobile(props) {
           }}
         >
           <InputLabel style={{ color: '#335D8A' }}>شرکت کنندگان</InputLabel>
-          <Box sx={{ display: 'inline-flex' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
             {users?.map((item, index) => {
               return (
-                <Box>
+                <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'flex-start',
+                      gap: '10px',
+                      background: '#CCD6E2',
+                      borderRadius: '20px',
+                      marginRight: '5px'
+                    }}
+                  >
+                    <img
+                      src={item?.profile_image}
+                      style={{
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '30px'
+                      }}
+                    />
+                  </Box>
                   <InputLabel>
                     {item.first_name + ' ' + item.last_name}
+                    {/* {'فریده' + ' ' + 'حسینی'} */}
                   </InputLabel>
                 </Box>
               );

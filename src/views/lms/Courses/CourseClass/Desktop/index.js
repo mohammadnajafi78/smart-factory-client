@@ -35,28 +35,31 @@ export default function CourseDetailDesktop(props) {
   const history = useHistory();
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
+  console.log('props', props);
+  const session = props.location.state.session;
+  const course = props.location.state.course;
 
-  useEffect(() => {
-    httpService
-      .post(
-        `${API_BASE_URL}/api/lms/course/get_course_info/?course_num=${props.location.state.course_num}`
-      )
-      .then(res => {
-        if (res.status === 200) {
-          console.log('detail', res.data);
-          setCourseDetail(res.data[0]);
-        }
-      })
-      .catch(ex => {
-        if (ex.response.status === 417) {
-          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
-        } else {
-          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
-            variant: 'error'
-          });
-        }
-      });
-  }, []);
+  // useEffect(() => {
+  //   httpService
+  //     .post(
+  //       `${API_BASE_URL}/api/lms/course/get_course_info/?course_num=${props.location.state.course_num}`
+  //     )
+  //     .then(res => {
+  //       if (res.status === 200) {
+  //         console.log('detail', res.data);
+  //         setCourseDetail(res.data[0]);
+  //       }
+  //     })
+  //     .catch(ex => {
+  //       if (ex.response.status === 417) {
+  //         enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+  //       } else {
+  //         enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+  //           variant: 'error'
+  //         });
+  //       }
+  //     });
+  // }, []);
 
   return (
     <>
@@ -81,7 +84,7 @@ export default function CourseDetailDesktop(props) {
             paddingBottom: '100px'
           }}
         >
-          {courseDetail && (
+          {/* {courseDetail && (
             <Box
               sx={{
                 padding: '12px',
@@ -437,7 +440,7 @@ export default function CourseDetailDesktop(props) {
                 </Grid>
               </Grid>
             </Box>
-          )}
+          )} */}
         </Box>
 
         <CustomizedDialogs

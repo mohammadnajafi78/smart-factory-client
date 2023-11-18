@@ -17,8 +17,16 @@ import ProjectTreeView from '../../../Menu';
 import { useSnackbar } from 'notistack';
 
 function RegisterNewRequestMobile(props) {
-  const [designType, setDesignType] = useState([]);
-  const [control, setControl] = useState('MANUAL');
+  const [designType, setDesignType] = useState(
+    props?.location?.design_type
+      ? props?.location?.design_type.map(f => f.id)
+      : []
+  );
+  const [control, setControl] = useState(
+    props?.location?.state?.control?.name
+      ? props?.location?.state?.control?.name
+      : 'MANUAL'
+  );
   const { enqueueSnackbar } = useSnackbar();
   const state = props.location.state;
 
@@ -181,11 +189,7 @@ function RegisterNewRequestMobile(props) {
                 gap: 2
               }}
             >
-              <ConfirmButton
-                disabled={false}
-                variant="outlined"
-                type={'button'}
-              >
+              <ConfirmButton disabled={true} variant="outlined" type={'button'}>
                 {'بازگشت'}
               </ConfirmButton>
               <ConfirmButton type="submit">{'بعدی'}</ConfirmButton>

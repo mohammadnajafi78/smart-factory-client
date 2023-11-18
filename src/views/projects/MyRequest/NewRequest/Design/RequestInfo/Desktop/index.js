@@ -17,11 +17,19 @@ import ProjectTreeView from '../../../Menu';
 import { useSnackbar } from 'notistack';
 
 function RegisterNewRequestDesktop(props) {
-  const [designType, setDesignType] = useState([]);
-  const [control, setControl] = useState('MANUAL');
+  const [designType, setDesignType] = useState(
+    props?.location?.state?.data?.design_type
+      ? props?.location?.state?.data?.design_type.map(f => f.id)
+      : []
+  );
+  const [control, setControl] = useState(
+    props?.location?.state?.data?.control?.name
+      ? props?.location?.state?.data?.control?.name
+      : 'MANUAL'
+  );
   const { enqueueSnackbar } = useSnackbar();
   const state = props.location.state;
-  console.log('State', state);
+  console.log('state', state);
 
   const history = useHistory();
 
@@ -53,6 +61,7 @@ function RegisterNewRequestDesktop(props) {
         })}
         onSubmit={(values, { setErrors, setSubmitting }) => {
           setSubmitting(true);
+          console.log('state2', state);
           httpService
             .post(`${API_BASE_URL}/api/project/design/update_design/`, {
               ref_num: state.data.ref_num,
@@ -190,11 +199,7 @@ function RegisterNewRequestDesktop(props) {
                 width: '95%'
               }}
             >
-              <ConfirmButton
-                disabled={false}
-                variant="outlined"
-                type={'button'}
-              >
+              <ConfirmButton disabled={true} variant="outlined" type={'button'}>
                 {'بازگشت'}
               </ConfirmButton>
               <ConfirmButton type="submit">{'بعدی'}</ConfirmButton>

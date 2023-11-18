@@ -14,7 +14,8 @@ export default function RequestList({ request, type, typeName }) {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        height: '74vh'
+        height: '74vh',
+        marginBottom: '30px'
       }}
     >
       <Box
@@ -47,6 +48,12 @@ export default function RequestList({ request, type, typeName }) {
             pathname: '/project/request/new'
             // state: data
           });
+        }}
+        style={{
+          position: 'fixed',
+          bottom: '90px',
+          left: '20px',
+          width: '90%'
         }}
       >
         <img

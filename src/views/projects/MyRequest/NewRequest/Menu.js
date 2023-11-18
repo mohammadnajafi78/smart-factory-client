@@ -90,7 +90,7 @@ function Menu(props) {
                 //     : false
                 // }
                 onClick={() => {
-                  // console.log('id', id);
+                  console.log('id', id);
                   props.setDesignType([...props.designType, id]);
                 }}
               />

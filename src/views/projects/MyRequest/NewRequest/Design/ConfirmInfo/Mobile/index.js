@@ -7,6 +7,7 @@ import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import InputLabelHeader from 'src/components/Mobile/InputLabel/InputLabelHeader';
 import CustomizedProgressBars from 'src/components/Mobile/ProgressBar';
+import { useSnackbar } from 'notistack';
 
 import makeStyles from '@mui/styles/makeStyles';
 import httpService from 'src/utils/httpService';
@@ -22,7 +23,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 function ConfirmInfoMobile(props) {
-  // let data = props.location.state;
+  let data = props.location.state;
+  const { enqueueSnackbar } = useSnackbar();
 
   const history = useHistory();
 
@@ -152,12 +154,9 @@ function ConfirmInfoMobile(props) {
           <ConfirmButton
             onClick={() => {
               httpService
-                .post(
-                  `${API_BASE_URL}/project/request/new/design/designerInfo`,
-                  {
-                    ref_num: data?.ref_num
-                  }
-                )
+                .post(`${API_BASE_URL}/api/project/design/submit_design/`, {
+                  ref_num: data?.ref_num
+                })
                 .then(res => {
                   if (res.status === 200) {
                     history.push('/project/request/');

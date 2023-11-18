@@ -16,7 +16,7 @@ export default function RequestMobile() {
 
   useEffect(() => {
     httpService
-      .get(
+      .post(
         `${API_BASE_URL}/api/project/get_sent_request/?type=${filterSelected}`
       )
       .then(res => {

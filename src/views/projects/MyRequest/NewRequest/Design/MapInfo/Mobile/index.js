@@ -11,6 +11,8 @@ import * as Yup from 'yup';
 import CustomizedProgressBars from 'src/components/Mobile/ProgressBar';
 import Upload from 'src/assets/img/icons/upload.svg';
 import { useSnackbar } from 'notistack';
+import Delete from 'src/assets/img/icons/delete.svg';
+import Attach from 'src/assets/img/icons/attach.svg';
 
 function MapInfoMobile(props) {
   const [provinces, setProvinces] = useState(null);
@@ -44,7 +46,7 @@ function MapInfoMobile(props) {
             'ref_num',
             data ? data.ref_num : props.location.state1.ref_num
           );
-          formData.append('RAW_PLAN', values.files);
+          formData.append('RAW_PLAN', values.filess);
 
           setSubmitting(true);
           httpService
@@ -109,45 +111,111 @@ function MapInfoMobile(props) {
                 <InputLabel style={{ fontSize: '13px' }}>
                   نقشه Autocad پروژه را بارگذاری کنید:
                 </InputLabel>
-                <Button
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: '40px 0px',
-                    // gap: '30px',
-                    // width: '480',
-                    height: '150px',
-                    border: '2px dashed #99DDE1',
-                    borderRadius: '4px',
-                    color: '#4F4C4D',
-                    fontFamily: 'IRANSans',
-                    fontWeight: 400,
-                    fontSize: '16px'
-                  }}
-                  component="label"
-                  onChange={event => {
-                    console.log('files', event.target.files);
-                    setFieldValue('files', event.target.files);
-                  }}
-                >
-                  <img src={Upload} with="33px" height="28px" />
-                  <InputLabel style={{ color: '#00346D', fontSize: '14px' }}>
-                    {'انتخاب فایل'}
-                  </InputLabel>
-                  <InputLabel style={{ color: '#00346D', fontSize: '12px' }}>
-                    {'حداکثر حجم فایل 3M'}
-                  </InputLabel>
-                  <InputLabel style={{ color: '#00346D', fontSize: '10px' }}>
-                    {'فرمت فایل ها:‌DWG, DGN, ACIS'}
-                  </InputLabel>
-                  <input type="file" hidden />
-                </Button>
+                {!values.files ? (
+                  <Button
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '40px 0px',
+                      // gap: '30px',
+                      // width: '480',
+                      height: '150px',
+                      border: '2px dashed #99DDE1',
+                      borderRadius: '4px',
+                      color: '#4F4C4D',
+                      fontFamily: 'IRANSans',
+                      fontWeight: 400,
+                      fontSize: '16px'
+                    }}
+                    component="label"
+                    onChange={event => {
+                      console.log('files', event.target.files);
+                      setFieldValue('files', event.target.files[0]);
+                    }}
+                  >
+                    <img src={Upload} with="33px" height="28px" />
+                    <InputLabel style={{ color: '#00346D', fontSize: '14px' }}>
+                      {'انتخاب فایل'}
+                    </InputLabel>
+                    <InputLabel style={{ color: '#00346D', fontSize: '12px' }}>
+                      {'حداکثر حجم فایل 3M'}
+                    </InputLabel>
+                    <InputLabel style={{ color: '#00346D', fontSize: '10px' }}>
+                      {'فرمت فایل ها:‌DWG, DGN, ACIS'}
+                    </InputLabel>
+                    <input type="file" hidden />
+                  </Button>
+                ) : (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'flex-end',
+                      alignItems: 'center',
+                      padding: '20px 10px 5px',
+                      gap: '20px',
+                      // width: '480px',
+                      height: '320px',
+                      border: '2px dashed #99DDE1',
+                      borderRadius: '4px'
+                    }}
+                  >
+                    <img
+                      src={URL.createObjectURL(values.files)}
+                      width="300px"
+                      height="180px"
+                      style={{ borderRadius: '8px' }}
+                    />
+                    <InputLabel style={{ color: '#335D8A', fontSize: '11px' }}>
+                      {values.files.name}
+                    </InputLabel>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-around',
+                        width: '100%'
+                      }}
+                    >
+                      <Button
+                        sx={{
+                          fontFamily: 'IRANSans',
+                          fontSize: '12px',
+                          fontWeight: 400
+                        }}
+                        onClick={() => {
+                          // setFile(null);
+                          setFieldValue('files', '');
+                        }}
+                      >
+                        <img src={Delete} width="13px" height="13px" />
+                        پاک کردن
+                      </Button>
+                      <Button
+                        sx={{
+                          fontFamily: 'IRANSans',
+                          fontSize: '12px',
+                          fontWeight: 400
+                        }}
+                        component="label"
+                        onChange={e => {
+                          // setFile(e.target.files[0]);
+                          setFieldValue('files', event.target.files[0]);
+                        }}
+                      >
+                        <img src={Attach} width="13px" height="20px" />
+                        تغییر فایل
+                        <input type="file" hidden multiple={false} />
+                      </Button>
+                    </Box>
+                  </Box>
+                )}
               </Box>
-              {/* {values.files !== undefined &&
-                values.files !== null &&
-                values.files.map(item => {
+              {/* {values.filess !== undefined &&
+                values.filess !== null &&
+                values.filess.map(item => {
                   return (
                     <Box
                       sx={{

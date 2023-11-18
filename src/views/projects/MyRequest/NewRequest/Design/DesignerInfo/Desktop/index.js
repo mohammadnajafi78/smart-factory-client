@@ -104,8 +104,8 @@ function DesignerInfoDesktop(props) {
             .then(res => {
               if (res.status === 200) {
                 history.push({
-                  pathname: '/project/request/new/design/confirmInfo'
-                  // state: res.data
+                  pathname: '/project/request/new/design/confirmInfo',
+                  state: res.data
                 });
                 setSubmitting(false);
               }
@@ -354,6 +354,7 @@ function DesignerInfoDesktop(props) {
                 // project: Yup.string().required('پروژه مورد نظر اجباری می باشد')
               })}
               onSubmit={(values, { setErrors, setSubmitting }) => {
+                console.log('Data2222');
                 setSubmitting(true);
                 httpService
                   .post(`${API_BASE_URL}/api/project/design/add_designer/`, {
@@ -362,7 +363,7 @@ function DesignerInfoDesktop(props) {
                   })
                   .then(res => {
                     if (res.status === 200) {
-                      console.log('designer', designer);
+                      console.log('designer', res);
                       setDesigner(res.data);
                       setOpenDesigner(false);
                       setSubmitting(false);

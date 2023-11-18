@@ -242,7 +242,9 @@ function TechnicalInfoDesktop(props) {
                 onClick={() => {
                   history.push({
                     pathname: '/project/request/new/design/reqInfo',
-                    state: data
+                    state: {
+                      data
+                    }
                   });
                 }}
                 type={'button'}

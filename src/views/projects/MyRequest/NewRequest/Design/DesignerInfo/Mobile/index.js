@@ -36,7 +36,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 function DesignerInfoMobile(props) {
-  // let data = props.location.state;
+  let data = props.location.state;
+  console.log('Data7777', data);
   const [selected, setSelected] = useState('BTS_WE');
   const [openDesigner, setOpenDesigner] = useState(false);
   const [openOther, setOpenOther] = useState(false);
@@ -80,7 +81,6 @@ function DesignerInfoMobile(props) {
           // project: Yup.string().required('پروژه مورد نظر اجباری می باشد')
         })}
         onSubmit={(values, { setErrors, setSubmitting }) => {
-          console.log('data', data);
           setSubmitting(true);
           httpService
             .post(`${API_BASE_URL}/api/project/design/update_design/`, {
@@ -91,8 +91,8 @@ function DesignerInfoMobile(props) {
             .then(res => {
               if (res.status === 200) {
                 history.push({
-                  pathname: '/project/request/new/design/confirmInfo'
-                  // state: res.data
+                  pathname: '/project/request/new/design/confirmInfo',
+                  state: res.data
                 });
                 setSubmitting(false);
               }

@@ -32,7 +32,7 @@ function ConfirmInfoDesktop(props) {
 
   useEffect(() => {
     if (props.location.state) {
-      setData(props.location.state.data);
+      setData(props.location.state);
     } else {
       history.push({
         pathname: '/project/request/'
