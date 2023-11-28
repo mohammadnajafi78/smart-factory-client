@@ -31,7 +31,9 @@ export default function CourseClassMobile(props) {
   const course = props.location.state.course;
   const [chatSocket, setChatSocket] = useState(
     new WebSocket(
-      `ws://192.168.1.3:8000/chat/${session.session_num}/?token=${
+      // `ws://192.168.1.3:8000/chat/${session.session_num}/?token=${
+      // `ws://193.141.127.244:8001/chat/${session.session_num}/?token=${
+      `ws://apidev.bts-co.app/chat/${session.session_num}/?token=${
         jwtDecode(localStorage.getItem('token')).chat_token
       }`
     )

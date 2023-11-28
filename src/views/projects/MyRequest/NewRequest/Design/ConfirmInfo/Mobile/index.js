@@ -139,7 +139,7 @@ function ConfirmInfoMobile(props) {
             gap: 2
           }}
         >
-          <ConfirmButton
+          {/* <ConfirmButton
             disabled={false}
             variant="outlined"
             onClick={() => {
@@ -150,7 +150,7 @@ function ConfirmInfoMobile(props) {
             }}
           >
             {'بازگشت'}
-          </ConfirmButton>
+          </ConfirmButton> */}
           <ConfirmButton
             onClick={() => {
               httpService

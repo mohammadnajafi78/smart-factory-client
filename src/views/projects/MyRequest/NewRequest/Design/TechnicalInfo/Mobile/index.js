@@ -222,7 +222,7 @@ function TechnicalInfoMobile(props) {
                 gap: 2
               }}
             >
-              <ConfirmButton
+              {/* <ConfirmButton
                 disabled={false}
                 variant="outlined"
                 onClick={() => {
@@ -234,7 +234,7 @@ function TechnicalInfoMobile(props) {
                 type={'button'}
               >
                 {'بازگشت'}
-              </ConfirmButton>
+              </ConfirmButton> */}
               <ConfirmButton type="submit">{'بعدی'}</ConfirmButton>
             </Box>
           </form>
