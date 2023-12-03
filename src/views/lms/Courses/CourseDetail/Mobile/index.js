@@ -37,7 +37,7 @@ export default function CourseDetailMobile(props) {
 
   useEffect(() => {
     httpService
-      .post(
+      .get(
         `${API_BASE_URL}/api/lms/course/get_course_info/?course_num=${props.location.state.course}`
       )
       .then(res => {
