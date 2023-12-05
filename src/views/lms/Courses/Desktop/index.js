@@ -16,7 +16,7 @@ export default function ProfileDesktop() {
 
   useEffect(() => {
     httpService
-      .get(
+      .post(
         `${API_BASE_URL}/api/lms/course/get_course_list?category_id=${filterSelected}`
       )
       .then(res => {
