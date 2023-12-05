@@ -33,7 +33,7 @@ export default function CourseClassMobile(props) {
     new WebSocket(
       // `ws://192.168.1.3:8000/chat/${session.session_num}/?token=${
       // `ws://193.141.127.244:8001/chat/${session.session_num}/?token=${
-      `ws://apidev.bts-co.app/ws/${session.session_num}/?token=${
+      `ws://0.0.0.0:8001/chat/${session.session_num}/?token=${
         jwtDecode(localStorage.getItem('token')).chat_token
       }`
     )
