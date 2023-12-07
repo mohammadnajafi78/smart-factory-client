@@ -22,7 +22,7 @@ const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
 let item = {};
 // let itemSort = {};
-const ExamsTable = props => {
+const Participations = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -224,9 +224,8 @@ const ExamsTable = props => {
   function getData(page, rowsPerPage, search) {
     httpService
       .post(
-        `${API_BASE_URL}/api/management/lms/exam/get_exam_list/?limit=10&offset=0`,
-        // `${API_BASE_URL}/api/management/lms/exam/get_exam_list/?limit=${rowsPerPage}&offset=${page *
-        //   rowsPerPage}${filter !== '' ? `&${filter}` : ''}`,
+        `${API_BASE_URL}/api/management/lms/course/get_course_students/?course_num=C012309001&limit=10&offset=0&first_name=Ali&last_name=Alavai&mobile=09123456789&user_id=345345`,
+
         {
           search: 'text',
           order: 'name'
@@ -241,7 +240,13 @@ const ExamsTable = props => {
         }
       })
       .catch(ex => {
-        console.log(ex);
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }
 
@@ -335,31 +340,7 @@ const ExamsTable = props => {
     setSort(str);
   }
 
-  function onRowClick(rowData, rowState) {
-    httpService
-      .get(
-        `${API_BASE_URL}/api/management/project/get_project/?project_num=${rowData[0]}`
-      )
-      .then(res => {
-        if (res.status === 200) {
-          history.push({
-            pathname: '/management/project/received/project/details',
-            state: {
-              data: res.data
-            }
-          });
-        }
-      })
-      .catch(ex => {
-        if (ex.response.status === 417) {
-          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
-        } else {
-          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
-            variant: 'error'
-          });
-        }
-      });
-  }
+  function onRowClick(rowData, rowState) {}
   function onRowsDelete(rowsDeleted, newData) {}
 
   function onRowSelectionChange(rowsSelectedData, allRows, rowsSelected) {}
@@ -367,28 +348,7 @@ const ExamsTable = props => {
   return (
     <>
       <Table
-        title={
-          <>
-            <InputLabelHeader
-              style={{
-                color: '#00346D',
-                display: 'flex',
-                alignItems: 'center'
-              }}
-            >
-              لیست
-            </InputLabelHeader>
-            <ConfirmButton
-              style={{ width: '180px' }}
-              onClick={() => {
-                console.log('new exam');
-              }}
-            >
-              <Plus />
-              <di>جایزه جدید</di>
-            </ConfirmButton>
-          </>
-        }
+        title={'لیست'}
         data={data}
         columns={columns}
         rowsPerPage={rowsPerPage}
@@ -420,4 +380,4 @@ const ExamsTable = props => {
   );
 };
 
-export default ExamsTable;
+export default Participations;

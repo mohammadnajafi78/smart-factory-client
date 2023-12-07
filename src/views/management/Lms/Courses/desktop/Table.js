@@ -22,7 +22,7 @@ const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
 let item = {};
 // let itemSort = {};
-const ExamsTable = props => {
+const CoursesTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -54,41 +54,15 @@ const ExamsTable = props => {
   useEffect(() => {
     setColumns([
       {
-        // name: 'project.project_num',
-        label: 'نام آزمون',
+        name: 'name',
+        label: 'عنوان دوره',
         options: {
           filter: false
         }
       },
       {
-        // name: 'create_date',
-        label: 'تاریخ برگزاری',
-        options: {
-          filter: true,
-          customBodyRender: value => {
-            return (
-              <div>
-                {/* {moment(value, 'YYYY/MM/DD HH:mm:ss', 'fa')
-                  .format.p2e('YYYY/MM/DD')
-                  .toLocaleLowerCase('fa')} */}
-                {MomentFa(value)}
-              </div>
-            );
-          }
-        }
-      },
-      {
-        // name: 'project.name',
-        label: 'ساعت برگزاری',
-        options: {
-          filter: true
-        }
-      },
-
-      {
-        //should edit
-        // name: 'project.user',
-        label: 'تعداد سوالات',
+        name: 'teacher',
+        label: 'مدرس',
         options: {
           filter: true,
           customBodyRender: value => {
@@ -112,37 +86,25 @@ const ExamsTable = props => {
         }
       },
       {
-        // name: 'project.supplier',
-        label: 'مدت زمان آزمون',
+        name: 'session_count',
+        label: 'تعداد جلسات',
         options: {
-          filter: false,
+          filter: true,
           customBodyRender: value => {
-            return (
-              <>
-                {
-                  <div
-                    style={{
-                      fontSize: '12px',
-                      paddingRight: '8px',
-                      display: 'flex',
-                      justifyContent: 'start'
-                    }}
-                  >
-                    {value.first_name} {value.last_name}
-                  </div>
-                }
-              </>
-            );
+            return <div style={{ paddingRight: '2.5rem' }}>{value}</div>;
           }
         }
       },
+
       {
-        // name: 'project.name',
-        label: 'نوع آزمون',
+        //should edit, course_Type doesnt exist
+        name: 'name',
+        label: 'نوع دوره',
         options: {
-          filter: true
+          filter: false
         }
       },
+
       {
         name: 'status',
         label: 'وضعیت',
@@ -155,8 +117,8 @@ const ExamsTable = props => {
                     sx={{
                       display: 'flex',
                       flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
+                      // justifyContent: 'center',
+                      // alignItems: 'center',
                       padding: '3px 6px !important',
                       background: JSON.parse(value.data).back,
                       borderRadius: '4px',
@@ -224,9 +186,8 @@ const ExamsTable = props => {
   function getData(page, rowsPerPage, search) {
     httpService
       .post(
-        `${API_BASE_URL}/api/management/lms/exam/get_exam_list/?limit=10&offset=0`,
-        // `${API_BASE_URL}/api/management/lms/exam/get_exam_list/?limit=${rowsPerPage}&offset=${page *
-        //   rowsPerPage}${filter !== '' ? `&${filter}` : ''}`,
+        `${API_BASE_URL}/api/management/lms/course/course_list/?limit=${rowsPerPage}&offset=${page *
+          rowsPerPage}${filter !== '' ? `&${filter}` : ''}`,
         {
           search: 'text',
           order: 'name'
@@ -241,7 +202,13 @@ const ExamsTable = props => {
         }
       })
       .catch(ex => {
-        console.log(ex);
+        if (ex.response.status === 417) {
+          enqueueSnackbar(ex.response.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+            variant: 'error'
+          });
+        }
       });
   }
 
@@ -338,12 +305,14 @@ const ExamsTable = props => {
   function onRowClick(rowData, rowState) {
     httpService
       .get(
-        `${API_BASE_URL}/api/management/project/get_project/?project_num=${rowData[0]}`
+        `${API_BASE_URL}/api/management/lms/course/get_course_info/?course_num=${
+          data?.filter(f => f?.name === rowData[0])[0].course_num
+        }`
       )
       .then(res => {
         if (res.status === 200) {
           history.push({
-            pathname: '/management/project/received/project/details',
+            pathname: '/management/lms/course/details',
             state: {
               data: res.data
             }
@@ -371,9 +340,12 @@ const ExamsTable = props => {
           <>
             <InputLabelHeader
               style={{
+                fontSize: '18px',
+                fontWeight: '600',
                 color: '#00346D',
                 display: 'flex',
-                alignItems: 'center'
+                alignItems: 'center',
+                padding: '1rem'
               }}
             >
               لیست
@@ -420,4 +392,4 @@ const ExamsTable = props => {
   );
 };
 
-export default ExamsTable;
+export default CoursesTable;

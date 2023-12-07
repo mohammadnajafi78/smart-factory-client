@@ -81,8 +81,8 @@ function LoginDesktop() {
                       } else console.log('error');
                     })
                     .catch(ex => {
-                      if (ex.response.status === 417) {
-                        enqueueSnackbar(ex.response.data.error, {
+                      if (ex?.response?.status === 417) {
+                        enqueueSnackbar(ex?.response?.data?.error, {
                           variant: 'error'
                         });
                       } else {
