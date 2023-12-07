@@ -161,7 +161,7 @@ function ConfirmInfoDesktop(props) {
             gap: 2
           }}
         >
-          <ConfirmButton
+          {/* <ConfirmButton
             disabled={false}
             variant="outlined"
             onClick={() => {
@@ -172,7 +172,7 @@ function ConfirmInfoDesktop(props) {
             }}
           >
             {'بازگشت'}
-          </ConfirmButton>
+          </ConfirmButton> */}
           <ConfirmButton
             onClick={() => {
               httpService

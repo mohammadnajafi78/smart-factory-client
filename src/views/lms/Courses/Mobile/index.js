@@ -16,8 +16,8 @@ export default function CoursesMobile() {
 
   useEffect(() => {
     httpService
-      .get(
-        `${API_BASE_URL}/api/lms/course/get_course_list?category_id=${filterSelected}`
+      .post(
+        `${API_BASE_URL}/api/lms/course/get_course_list/?category_id=${filterSelected}`
       )
       .then(res => {
         if (res.status === 200) {

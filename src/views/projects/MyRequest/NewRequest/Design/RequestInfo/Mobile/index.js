@@ -189,9 +189,9 @@ function RegisterNewRequestMobile(props) {
                 gap: 2
               }}
             >
-              <ConfirmButton disabled={true} variant="outlined" type={'button'}>
+              {/* <ConfirmButton disabled={true} variant="outlined" type={'button'}>
                 {'بازگشت'}
-              </ConfirmButton>
+              </ConfirmButton> */}
               <ConfirmButton type="submit">{'بعدی'}</ConfirmButton>
             </Box>
           </form>

@@ -84,14 +84,16 @@ function Menu(props) {
                   width: '12px',
                   fontSize: '14px'
                 }}
-                // checked={
-                //   isChild
-                //     ? subprops.designType.filter(item => item === id).length > 0
-                //     : false
-                // }
+                checked={
+                  props.designType.filter(item => item === id).length > 0
+                    ? true
+                    : false
+                }
                 onClick={() => {
-                  console.log('id', id);
-                  props.setDesignType([...props.designType, id]);
+                  if (props.designType.filter(item => item === id).length <= 0)
+                    props.setDesignType([...props.designType, id]);
+                  else
+                    props.setDesignType(props.designType.filter(f => f !== id));
                 }}
               />
               <Typography

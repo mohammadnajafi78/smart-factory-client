@@ -171,19 +171,13 @@ function InstructionInfoMobile(props) {
                 gap: 2
               }}
             >
-              <ConfirmButton
+              {/* <ConfirmButton
                 disabled={false}
                 variant="outlined"
-                // onClick={() => {
-                //   history.push({
-                //     pathname: '/project/project/new/2',
-                //     state: data
-                //   });
-                // }}
                 type={'button'}
               >
                 {'بازگشت'}
-              </ConfirmButton>
+              </ConfirmButton> */}
               <ConfirmButton type="submit">{'ثبت'}</ConfirmButton>
             </Box>
           </form>
