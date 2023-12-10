@@ -19,12 +19,11 @@ import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import { Plus } from 'react-feather';
 import InputLabelHeader from 'src/components/Desktop/InputLabel';
 import moment from 'jalali-moment';
-import NewExam from '../examDetails/desktop/NewExam';
 const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
 let item = {};
 // let itemSort = {};
-const ExamsTable = props => {
+const ExamsPersonsTable = props => {
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -56,41 +55,52 @@ const ExamsTable = props => {
   useEffect(() => {
     setColumns([
       {
-        name: 'name',
-        label: 'نام آزمون',
+        name: 'user',
+        label: 'نام و نام خانوادگی',
         options: {
-          filter: false
-        }
-      },
-      {
-        name: 'date',
-        label: 'تاریخ برگزاری',
-        options: {
-          filter: true,
+          filter: false,
           customBodyRender: value => {
-            return <div>{MomentFa(value)}</div>;
+            return (
+              <span>
+                {value.first_name} {value.last_name}
+              </span>
+            );
           }
         }
       },
       {
-        name: 'start_time',
-        label: 'ساعت برگزاری',
+        name: 'user.user_id',
+        label: 'کد کاربری',
+        options: {
+          filter: true
+        }
+      },
+      {
+        name: 'user.mobile',
+        label: 'شماره موبایل',
         options: {
           filter: true
         }
       },
 
       {
-        name: 'question_count',
-        label: 'تعداد سوالات'
+        name: 'true_answers',
+        label: 'جواب درست'
       },
       {
-        name: 'duration',
-        label: 'مدت زمان آزمون'
+        name: 'false_answers',
+        label: 'جواب نادرست'
       },
       {
-        name: 'category.name',
-        label: 'نوع آزمون',
+        name: 'null_answers',
+        label: 'پاسخ داده نشده',
+        options: {
+          filter: true
+        }
+      },
+      {
+        name: 'final_grade',
+        label: 'نمره نهایی',
         options: {
           filter: true
         }
@@ -172,13 +182,17 @@ const ExamsTable = props => {
       }
     ]);
   }, [state, statusList]);
-
   function getData(page, rowsPerPage, search) {
     httpService
       .post(
-        // `${API_BASE_URL}/api/management/lms/exam/get_exam_list/?limit=10&offset=0`,
-        `${API_BASE_URL}/api/management/lms/exam/get_exam_list/?limit=${rowsPerPage}&offset=${page *
-          rowsPerPage}${filter !== '' ? `&${filter}` : ''}`,
+        // `${API_BASE_URL}/api/management/lms/exam/get_exam_participant_list/?ref_num=EX012310001&limit=10&offset=0`,
+        `${API_BASE_URL}/api/management/lms/exam/get_exam_participant_list/?ref_num=${props?.ref_num}&limit=10&offset=0`,
+        // `${API_BASE_URL}/api/management/lms/exam/get_exam_participant_list/?${
+        //   props.ref_num
+        // }&limit=${rowsPerPage}&offset=${page * rowsPerPage}${
+        //   filter !== '' ? `&${filter}` : ''
+        // }`
+
         {
           search: 'text',
           order: 'name'
@@ -285,48 +299,50 @@ const ExamsTable = props => {
     console.log(str);
     setSort(str);
   }
-
-  function onRowClick(rowData, rowState) {
-    const ref_num = data?.filter(f => f?.name === rowData[0])[0].ref_num;
-    history.push({
-      pathname: '/management/lms/exam/details',
-      state: {
-        data: ref_num
-      }
-    });
-  }
-  function onRowsDelete(rowsDeleted, newData) {}
-
-  function onRowSelectionChange(rowsSelectedData, allRows, rowsSelected) {}
-  const [open, setOpen] = useState(false);
-
   return (
     <>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          marginBottom: '1rem'
+        }}
+      >
+        <InputLabelHeader
+          style={{
+            fontWeight: '700',
+            fontSize: '20px',
+            color: '#00346D',
+            display: 'flex',
+            alignItems: 'center'
+          }}
+        >
+          شرکت کنندگان
+        </InputLabelHeader>
+        <span> {data?.length} </span>
+      </div>
       <Table
         title={
-          <>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}
+          >
             <InputLabelHeader
               style={{
                 fontWeight: '700',
+                fontSize: '20px',
                 color: '#00346D',
                 display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                marginLeft: '8px'
+                alignItems: 'center'
               }}
             >
               لیست
             </InputLabelHeader>
-            <ConfirmButton
-              style={{ width: '150px' }}
-              onClick={() => {
-                setOpen(true);
-              }}
-            >
-              <Plus />
-              <div>آزمون جدید</div>
-            </ConfirmButton>
-          </>
+          </div>
         }
         data={data}
         columns={columns}
@@ -338,32 +354,15 @@ const ExamsTable = props => {
         sort={sort}
         selectableRows={false}
         setReset={setReset}
-        onRowSelectionChange={(rowsSelectedData, allRows, rowsSelected) =>
-          onRowSelectionChange(rowsSelectedData, allRows, rowsSelected)
-        }
-        onRowsDelete={(rowsDeleted, newData) =>
-          onRowsDelete(rowsDeleted, newData)
-        }
         getData={(page, rowsPerPage, search) =>
           getData(page, rowsPerPage, search)
-        }
-        onRowClick={(rowData, rowState) => onRowClick(rowData, rowState)}
-        onFilterChange={(column, filterList, type) =>
-          onFilterChange(column, filterList, type)
         }
         onColumnSortChange={(changedColumn, direction) =>
           onColumnSortChange(changedColumn, direction)
         }
       />
-      <NewExam
-        open={open}
-        handleClose={() => setOpen(false)}
-        title="آزمون جدید "
-        data={data}
-        type="new"
-      />
     </>
   );
 };
 
-export default ExamsTable;
+export default ExamsPersonsTable;

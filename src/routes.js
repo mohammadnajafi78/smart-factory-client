@@ -1085,6 +1085,14 @@ const routes = [
         component: lazy(() => import('src/views/management/Lms/exams/index'))
       },
       {
+        exact: true,
+        guard: AuthGuard,
+        path: '/management/lms/exam/details',
+        component: lazy(() =>
+          import('src/views/management/Lms/exams/examDetails/Index')
+        )
+      },
+      {
         component: () => <Redirect to="/management/user/home" />
       }
     ]

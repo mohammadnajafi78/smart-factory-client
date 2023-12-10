@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMediaQuery, useTheme } from '@mui/material';
 // import ReceivedDetailMobile from './Mobile';
-import CourseDetails from './desktop/Index';
+import ExamDetails from './desktop/Index';
 
 function ReceivedDetails(props) {
   const theme = useTheme();
@@ -13,7 +13,7 @@ function ReceivedDetails(props) {
           /* <CourseDetails {...props} /> */
         }
       ) : (
-        <CourseDetails {...props} />
+        <ExamDetails {...props} />
       )}
     </>
   );

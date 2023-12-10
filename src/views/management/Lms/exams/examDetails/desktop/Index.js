@@ -1,115 +1,287 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import SwipeableViews from 'react-swipeable-views';
-import { useTheme } from '@mui/material/styles';
+import { Box } from '@mui/system';
+import { Divider, Grid } from '@mui/material';
+import InputLabel from 'src/components/Desktop/InputLabel';
+import { ChevronRight } from 'react-feather';
+import InputLabelHeader from 'src/components/Desktop/InputLabel';
+import {
+  AttachFileOutlined,
+  CalendarMonthOutlined,
+  CalendarTodayOutlined,
+  CategoryOutlined,
+  ContentCopyOutlined,
+  EditNote,
+  InfoOutlined,
+  PersonOutlineOutlined,
+  TimerOutlined
+} from '@mui/icons-material';
+import ConfirmButton from 'src/components/Desktop/Button/Confirm';
+
 import { useEffect } from 'react';
 import { useState } from 'react';
-import AboutCourse from './AboutCourse';
-import Participations from './Participations';
+import MomentFa from 'src/utils/MomentFa';
+import httpService from 'src/utils/httpService';
+import { API_BASE_URL } from 'src/utils/urls';
+import ExamsPersonsTable from './Table';
+import CustomizedDialogs from 'src/components/Desktop/Dialog';
+import NewExam from './NewExam';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
-// import Club from './Club';
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired
-};
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`
-  };
-}
-
-export default function CourseDetails(props) {
-  const [value, setValue] = useState(0);
+export default function ExamDetails(props) {
+  const [ref_num, setRefNum] = useState();
   const [data, setData] = useState();
-  const theme = useTheme();
+  const [open, setOpen] = useState(false);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-  const handleChangeIndex = index => {
-    setValue(index);
-  };
   useEffect(() => {
     if (props.location.state) {
-      setData(props?.location?.state?.data[0]);
+      httpService
+        .get(
+          `${API_BASE_URL}/api/management/lms/exam/get_exam_info/?ref_num=${props?.location?.state?.data}`
+        )
+        .then(res => {
+          if (res.status === 200) {
+            setData(res.data);
+          }
+        })
+        .catch(ex => {
+          console.log(ex);
+        });
     } else {
       return <>error</>;
     }
-  });
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
+  }, [props.location.state]);
+  const history = useHistory();
   return (
     <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
+      <Grid sx={{ paddingBottom: '12px' }}>
+        <div
+          style={{
+            display: 'inline-flex',
+            color: '#335D8A',
+            cursor: 'pointer'
+          }}
+          onClick={() => {
+            history.goBack();
+          }}
         >
-          <Tab
-            label="مشخصات دوره"
-            {...a11yProps(0)}
-            sx={{
-              fontFamily: 'IRANSans',
-              fontSize: '16px',
-              fontWeight: 400,
-              color: '#335D8A'
-            }}
-          />
-          <Tab
-            label="شرکت کننده ها"
-            {...a11yProps(1)}
-            sx={{
-              fontFamily: 'IRANSans',
-              fontSize: '16px',
-              fontWeight: 400,
-              color: '#335D8A'
-            }}
-          />
-        </Tabs>
-      </Box>
-      <SwipeableViews
-        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-        index={value}
-        onChangeIndex={handleChangeIndex}
-      >
-        <TabPanel value={value} index={0} dir={theme.direction}>
-          <AboutCourse data={data} />
-        </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
-          <Participations />{' '}
-        </TabPanel>
-      </SwipeableViews>
+          <ChevronRight color="#335D8A" width={'15px'} />
+          بازگشت
+        </div>
+        <Box
+          sx={{
+            alignItems: 'flex-start',
+            padding: '16px',
+            gap: '50px',
+            background: '#FFFFFF',
+            borderRadius: '8px',
+            width: '100%'
+          }}
+        >
+          <Box>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                width: '100%'
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  width: '100%'
+                }}
+              >
+                <InputLabelHeader
+                  sx={{
+                    color: '#00346D',
+                    fontWeight: 700,
+                    fontSize: '20px'
+                  }}
+                >
+                  {data?.name}
+                </InputLabelHeader>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    padding: '3px 6px !important',
+                    background:
+                      data?.status?.data &&
+                      JSON.parse(data?.status?.data)?.back,
+                    borderRadius: '4px',
+                    color:
+                      data?.status?.data && JSON.parse(data?.status?.data)?.text
+                  }}
+                >
+                  <InputLabel
+                    style={{
+                      fontSize: '1rem',
+                      color:
+                        data?.status?.data &&
+                        JSON.parse(data?.status?.data)?.text,
+                      paddingLeft: 0
+                    }}
+                  >
+                    {data?.status?.label}
+                  </InputLabel>
+                </Box>
+              </Box>
+              <ConfirmButton
+                variant="outlined"
+                style={{
+                  marginLeft: '8px',
+                  width: '160px',
+                  height: '3rem',
+                  borderRadius: '8px',
+                  fontSize: '12px'
+                }}
+                onClick={() => {
+                  console.log('new exam');
+                }}
+              >
+                <AttachFileOutlined style={{ fontSize: '22px' }} />
+                فایل سوالات
+              </ConfirmButton>
+              <ConfirmButton
+                style={{
+                  width: '160px',
+                  height: '3rem',
+                  borderRadius: '8px',
+                  fontSize: '12px'
+                }}
+                onClick={() => {
+                  setOpen(true);
+                }}
+              >
+                <EditNote style={{ fontSize: '22px' }} />
+                ویرایش آزمون
+              </ConfirmButton>
+            </Box>
+          </Box>
+          <Divider sx={{ margin: '16px 0' }} />
+          <Box>
+            <Grid
+              container
+              rowSpacing={1}
+              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            >
+              <Grid item xs={6}>
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    width: '100%',
+                    marginBottom: 16
+                  }}
+                >
+                  <CategoryOutlined
+                    style={{ color: '#00AAB5', fontSize: '22px' }}
+                  />
+                  <InputLabel style={{ color: '#00AAB5' }}>
+                    روز برگزاری:
+                  </InputLabel>
+                  <InputLabel style={{ color: '#335D8A' }}>
+                    {MomentFa(data?.date)}
+                  </InputLabel>
+                </div>
+              </Grid>
+
+              <Grid item xs={6}>
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    width: '100%',
+                    marginBottom: 16
+                  }}
+                >
+                  <TimerOutlined
+                    style={{ color: '#00AAB5', fontSize: '22px' }}
+                  />
+                  <InputLabel style={{ color: '#00AAB5' }}>
+                    ساعت برگزاری:{' '}
+                  </InputLabel>
+                  <InputLabel style={{ color: '#335D8A' }}>
+                    {data?.start_time}
+                  </InputLabel>
+                </div>
+              </Grid>
+              <Grid item xs={6}>
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    width: '100%',
+                    marginBottom: 16
+                  }}
+                >
+                  <CalendarMonthOutlined
+                    style={{ color: '#00AAB5', fontSize: '22px' }}
+                  />
+                  <InputLabel style={{ color: '#00AAB5' }}>
+                    تعداد سوالات:{' '}
+                  </InputLabel>
+                  <InputLabel style={{ color: '#335D8A' }}>
+                    {data?.question_count}
+                  </InputLabel>
+                </div>
+              </Grid>
+              <Grid item xs={6}>
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    width: '100%',
+                    marginBottom: 16
+                  }}
+                >
+                  <PersonOutlineOutlined
+                    style={{ color: '#00AAB5', fontSize: '22px' }}
+                  />
+                  <InputLabel style={{ color: '#00AAB5' }}>
+                    نمره قبولی:{' '}
+                  </InputLabel>
+                  <InputLabel style={{ color: '#335D8A' }}>{}</InputLabel>
+                </div>
+              </Grid>
+            </Grid>
+          </Box>
+          <Divider style={{ marginBottom: '16px' }} />
+          <Box>
+            <div
+              style={{
+                display: 'inline-flex',
+                width: '100%',
+                marginBottom: 16
+              }}
+            >
+              <InfoOutlined style={{ color: '#00AAB5', fontSize: '22px' }} />
+              <InputLabel style={{ color: '#00AAB5' }}>شرح دوره: </InputLabel>
+              <p>{data?.description}</p>
+            </div>
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            alignItems: 'flex-start',
+            padding: '16px',
+            gap: '50px',
+            background: '#FFFFFF',
+            borderRadius: '8px',
+            width: '100%',
+            marginTop: '1rem'
+          }}
+        >
+          <ExamsPersonsTable ref_num={props?.location?.state?.data} />
+        </Box>
+      </Grid>
+      <NewExam
+        open={open}
+        handleClose={() => setOpen(false)}
+        title="ویرایش محصول "
+        data={data}
+        type="edit"
+        setData={setData}
+      />
     </Box>
   );
 }
