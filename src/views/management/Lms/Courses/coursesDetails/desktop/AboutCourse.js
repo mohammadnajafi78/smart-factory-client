@@ -31,6 +31,7 @@ import {
 
 import ConfirmButton from 'src/components/Desktop/Button/Confirm';
 import MomentFa from 'src/utils/MomentFa';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 const AboutCourse = ({ data }, ...props) => {
   const [expanded, setExpanded] = React.useState(false);
 
@@ -38,7 +39,7 @@ const AboutCourse = ({ data }, ...props) => {
     setExpanded(isExpanded ? panel : false);
   };
 
-  console.log(data);
+  // const history = useHistory();
   return (
     <>
       <Grid sx={{ paddingBottom: '12px' }}>
@@ -462,16 +463,23 @@ const AboutCourse = ({ data }, ...props) => {
               </Box>
             </Box>
             <Divider style={{ margin: '16px 0' }} />
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem',
+                justifyContent: 'space-between'
+              }}
+            >
               {data?.sessions?.map(x => {
                 return (
-                  <Card sx={{ width: '100%' }} className={'sessioncard'}>
+                  <Card sx={{ width: '100%' }}>
                     <a
                       target="_blank"
                       style={{
                         textDecoration: 'none',
-                        cursor: 'pointer',
-                        color: 'initial'
+                        color: 'initial',
+                        cursor: 'default'
                       }}
                       href={x.link}
                     >
@@ -499,6 +507,7 @@ const AboutCourse = ({ data }, ...props) => {
                               sx={{
                                 color: '#00346D',
                                 fontWeight: 400,
+                                cursor: 'pointer',
                                 fontSize: '16px'
                               }}
                             >
@@ -543,12 +552,18 @@ const AboutCourse = ({ data }, ...props) => {
                         justifyContent={'end'}
                         padding={'12px'}
                       >
-                        <a>
+                        <a
+                          style={{ textDecoration: 'none' }}
+                          href={data?.image?.url}
+                          target="_blank"
+                          download={true}
+                        >
                           <InputLabelHeader
                             sx={{
                               display: 'flex',
                               color: '#00346D',
                               fontWeight: 500,
+                              cursor: 'pointer',
                               fontSize: '14px'
                             }}
                           >

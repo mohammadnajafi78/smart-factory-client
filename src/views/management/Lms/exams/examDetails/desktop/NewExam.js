@@ -91,29 +91,23 @@ export default function NewExam({
                   });
               } else {
                 console.log('edit');
-                // httpService
-                //   .patch(
-                //     `${API_BASE_URL}/api/management/product/product/${data.id}/`,
-                //     formData
-                //   )
-                //   .then(res => {
-                //     if (res.status === 200) {
-                //       handleClose();
-                //       props.setData(res.data);
-                //       setSubmitting(false);
-                //     }
-                //   })
-                //   .catch(ex => {
-                //     if (ex.response.status === 417) {
-                //       enqueueSnackbar(ex.response.data.error, {
-                //         variant: 'error'
-                //       });
-                //     } else {
-                //       enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
-                //         variant: 'error'
-                //       });
-                //     }
-                //   });
+                httpService
+                  .patch(
+                    `${API_BASE_URL}/api/management/lms/exam/update_exam/?ref_num=${data?.ref_num}`,
+                    formData
+                  )
+                  .then(res => {
+                    if (res.status === 200) {
+                      handleClose();
+                      props.setData(res.data);
+                      setSubmitting(false);
+                    }
+                  })
+                  .catch(ex => {
+                    enqueueSnackbar('مشکلی پیش آمده! لطفا دوباره سعی کنید', {
+                      variant: 'error'
+                    });
+                  });
               }
               setSubmitting(false);
             }}
