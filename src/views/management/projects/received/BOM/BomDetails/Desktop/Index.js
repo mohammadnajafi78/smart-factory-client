@@ -1,8 +1,4 @@
 import React, { useEffect, useState } from 'react';
-// import Products from './Products';
-// import Location from './Location';
-// import Delivery from './Deleivery';
-// import Message from './Message';
 import { Box } from '@mui/system';
 import { Button, Divider, Grid, TextField } from '@mui/material';
 import InputLabel from 'src/components/Desktop/InputLabel';

@@ -1060,6 +1060,40 @@ const routes = [
         )
       },
       {
+        exact: true,
+        guard: AuthGuard,
+        path: '/management/lms/home',
+        component: lazy(() => import('src/views/management/Lms/home/Index'))
+      },
+      {
+        exact: true,
+        guard: AuthGuard,
+        path: '/management/lms/course',
+        component: lazy(() => import('src/views/management/Lms/Courses/index'))
+      },
+      {
+        exact: true,
+        guard: AuthGuard,
+        path: '/management/lms/course/details',
+        component: lazy(() =>
+          import('src/views/management/Lms/Courses/coursesDetails/Index')
+        )
+      },
+      {
+        exact: true,
+        guard: AuthGuard,
+        path: '/management/lms/exam',
+        component: lazy(() => import('src/views/management/Lms/exams/index'))
+      },
+      {
+        exact: true,
+        guard: AuthGuard,
+        path: '/management/lms/exam/details',
+        component: lazy(() =>
+          import('src/views/management/Lms/exams/examDetails/Index')
+        )
+      },
+      {
         component: () => <Redirect to="/management/user/home" />
       }
     ]
