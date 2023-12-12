@@ -17,6 +17,7 @@ import ProjectDashboardLayoutForm from './layouts/Projects/ProjectsDashboardLayo
 import ProjectDashboardLayoutBack from './layouts/Projects/ProjectsDashboardLayoutBack';
 import LmsDashboardLayout from './layouts/Lms/LmsDashboardLayout';
 import LmsDashboardLayoutBack from './layouts/Lms/LmsDashboardLayoutBack';
+import LmsDashboardLayoutBack2 from './layouts/Lms/LmsDashboardLayoutBack2';
 
 export const renderRoutes = (routes = []) => (
   <Suspense fallback={<LoadingScreen />}>
@@ -650,7 +651,7 @@ const routes = [
       {
         exact: true,
         path: '/lms/course/class',
-        layout: LmsDashboardLayoutBack,
+        layout: LmsDashboardLayoutBack2,
         component: lazy(() => import('src/views/lms/Courses/CourseClass'))
       },
       {

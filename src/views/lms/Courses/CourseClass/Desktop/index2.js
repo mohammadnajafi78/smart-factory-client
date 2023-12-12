@@ -19,8 +19,7 @@ const useStyles = makeStyles(theme => ({
     zIndex: 999,
     position: 'fixed',
     bottom: 0,
-    height: '60%',
-    overflow: 'auto'
+    minHeight: '60%'
   }
 }));
 const CssTextField = styled(TextField)({
@@ -41,7 +40,7 @@ const CssTextField = styled(TextField)({
   }
 });
 
-export default function CourseClassMobile(props) {
+export default function CourseClassDesktop(props) {
   const [courseDetail, setCourseDetail] = useState(null);
   const [openChat, setOpenChat] = useState(false);
   const [openUsers, setOpenUsers] = useState(false);
@@ -326,12 +325,12 @@ export default function CourseClassMobile(props) {
       <Box
         sx={{
           position: 'fixed',
-          bottom: '0%',
+          top: '0%',
           width: '100%',
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
           height: '70px',
           padding: '10px',
           background: '#00346D',
@@ -367,31 +366,18 @@ export default function CourseClassMobile(props) {
           </InputLabel>
         </Box>
 
-        <a
-          href={session?.note?.url}
-          download
-          target="_blank"
-          style={{
-            textDecoration: 'none',
-            // width: '100%',
+        <Box
+          sx={{
             display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-end'
+            flexDirection: 'column'
+            // alignItems: 'center'
           }}
         >
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column'
-              // alignItems: 'center'
-            }}
-          >
-            <img src={DownloadImg} width="20px" height={'20px'} />
-            <InputLabel style={{ color: 'white', fontSize: '14px' }}>
-              جزوه
-            </InputLabel>
-          </Box>
-        </a>
+          <img src={DownloadImg} width="20px" height={'20px'} />
+          <InputLabel style={{ color: 'white', fontSize: '14px' }}>
+            جزوه
+          </InputLabel>
+        </Box>
       </Box>
 
       <Drawer
@@ -410,7 +396,7 @@ export default function CourseClassMobile(props) {
             alignItems: 'flex-start',
             padding: '20px 20px 40px',
             gap: '20px',
-            // height: '200px',
+            height: '200px',
             background: '#FFFFFF'
           }}
         >
@@ -422,7 +408,7 @@ export default function CourseClassMobile(props) {
               alignItems: 'flex-start',
               padding: '20px 20px 40px',
               gap: '20px',
-              // height: '200px',
+              height: '200px',
               background: '#FFFFFF'
             }}
           >
@@ -730,7 +716,7 @@ export default function CourseClassMobile(props) {
             alignItems: 'flex-start',
             padding: '20px',
             gap: '20px',
-            // height: '200px',
+            height: '200px',
             background: '#FFFFFF'
           }}
         >

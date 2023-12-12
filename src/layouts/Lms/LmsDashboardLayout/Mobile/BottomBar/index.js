@@ -44,7 +44,7 @@ const BottomBar = ({ className, onMobileNavOpen, ...rest }) => {
   let data = [
     { name: 'profile', title: 'پروفایل', path: '/lms/profile' },
     { name: 'course', title: 'دوره ها', path: '/lms/course' },
-    { name: 'calendar', title: 'برنامه هفتگی', path: '/lms/calendar' },
+    // { name: 'calendar', title: 'برنامه هفتگی', path: '/lms/calendar' },
     { name: 'exam', title: 'آزمون ها', path: '/lms/exam' }
   ];
 
