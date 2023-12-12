@@ -171,14 +171,14 @@ export default function CourseClassMobile(props) {
     let pageNumber = 1; // page number element value
     // if (pageNumber !== '-1') {
     //   setPageNumber('-1'); // query is in progress
-    chatSocket.send(
-      JSON.stringify({
-        command: 'SEND',
-        room: session.session_num,
-        message: 'first message'
-        // page_number: pageNumber
-      })
-    );
+    // chatSocket.send(
+    //   JSON.stringify({
+    //     command: 'SEND',
+    //     room: session.session_num,
+    //     message: 'first message'
+    //     // page_number: pageNumber
+    //   })
+    // );
     chatSocket.send(
       JSON.stringify({
         command: 'ALL',
