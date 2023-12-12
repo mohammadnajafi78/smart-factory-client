@@ -39,14 +39,13 @@ function PhotoInfoMobile(props) {
           // city: Yup.string().required('شهر اجباری می باشد')
         })}
         onSubmit={(values, { setErrors, setSubmitting }) => {
-          console.log('values', values);
           const formData = new FormData();
           formData.append(
             'project_num',
             data ? data.project_num : props.location.state1.project_num
           );
-          for (let i = 0; i < values.files.length; i++) {
-            formData.append('files' + i, values.files[i]);
+          for (let i = 0; i < file.length; i++) {
+            formData.append('files' + i, file[i]);
           }
 
           setSubmitting(true);
