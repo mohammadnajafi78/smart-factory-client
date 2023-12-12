@@ -16,8 +16,8 @@ export default function ExamDesktop() {
 
   useEffect(() => {
     httpService
-      .get(
-        `${API_BASE_URL}/api/lms/exam/get_exam_list?category_id=${filterSelected}`
+      .post(
+        `${API_BASE_URL}/api/lms/exam/get_exam_list/?category_id=${filterSelected}`
       )
       .then(res => {
         if (res.status === 200) {
