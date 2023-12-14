@@ -19,6 +19,8 @@ import Message from './Message';
 import Profile from './Profile';
 import { Close } from '@mui/icons-material';
 import InputLabelHeader from 'src/components/Desktop/InputLabel/InputLabelHeader';
+import HomeImg from 'src/assets/img/Frame3023.png';
+import CallImg from 'src/assets/img/Frame193.png';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -71,14 +73,29 @@ const TopBar = ({
       }}
     >
       <Toolbar className={classes.toolbar}>
-        <Box sx={{ display: 'flex', gap: '10px' }}>
-          <InputLabelHeader style={{ color: 'white' }}>
-            {selected === 'home'
-              ? 'خانه'
-              : selected === 'profile'
-              ? 'پروفایل'
-              : 'پیام ها'}
-          </InputLabelHeader>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: '10px',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '100%'
+          }}
+        >
+          {selected === 'home' ? (
+            <img src={HomeImg} height={'40px'} />
+          ) : selected === 'profile' ? (
+            <InputLabelHeader style={{ color: 'white' }}>
+              پروفایل
+            </InputLabelHeader>
+          ) : (
+            <InputLabelHeader style={{ color: 'white' }}>
+              پیام ها
+            </InputLabelHeader>
+          )}
+          {selected === 'home' && (
+            <img src={CallImg} height={'50px'} style={{ cursor: 'pointer' }} />
+          )}
         </Box>
       </Toolbar>
     </AppBar>

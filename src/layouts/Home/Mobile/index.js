@@ -7,8 +7,9 @@ import NavBar from './NavBar';
 const useStyles = makeStyles(theme => ({
   wrapper: {
     flex: '1 1 auto',
-    paddingTop: 49,
-    backgroundColor: '#E5E5E5'
+    // paddingTop: 49,
+    backgroundColor: 'white',
+    borderRadius: '20px'
   },
   contentContainer: {
     flex: '1 1 auto'
@@ -38,7 +39,7 @@ export default function HomeDashboardLayoutMobile(props) {
     <>
       <div
         style={{
-          backgroundColor: '#E5E5E5',
+          backgroundColor: 'white',
           width: '100%',
           height: '100%'
         }}
