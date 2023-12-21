@@ -31,6 +31,7 @@ import Smile from 'src/assets/img/icons/smile.svg';
 import ConfirmButton from 'src/components/Mobile/Button/Confirm';
 import SendMessageImage from 'src/assets/img/icons/sendMessage.svg';
 import { TextField, InputAdornment } from '@mui/material';
+import { API_CHAT_URL } from 'src/utils/urls';
 
 const drawerWidth = 350;
 
@@ -130,7 +131,7 @@ export default function PersistentDrawerLeft(props) {
       // `ws://192.168.1.3:8000/chat/${session.session_num}/?token=${
       // `ws://193.141.127.244:8001/chat/${session.session_num}/?token=${
       // `ws://0.0.0.0:8001/chat/${session.session_num}/?token=${
-      `ws://apidev.bts-co.app/ws/chat/${session.session_num}/?token=${
+      `${API_CHAT_URL}/chat/${session.session_num}/?token=${
         jwtDecode(localStorage.getItem('token')).chat_token
       }`
     )
