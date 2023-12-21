@@ -122,7 +122,7 @@ export default function HomeDesktop() {
                   >
                     {item.title['fa']}
                   </InputLabel>
-                  <img src={item?.image1} alt="image" />
+                  <img src={item?.image1} alt="image" width={'60px'} />
                 </Box>
               </Grid>
             );
