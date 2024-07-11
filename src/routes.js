@@ -65,7 +65,8 @@ const routes = [
     exact: true,
     guard: GuestGuard,
     path: '/',
-    component: lazy(() => import('src/views/auth/Login'))
+    // component: lazy(() => import('src/views/auth/Login'))
+    component: lazy(() => import('src/views/Smart/index'))
   },
   {
     exact: true,

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, TextField, Divider } from '@mui/material';
-import Logo from 'src/assets/img/LogoBTS.svg';
+// import Logo from 'src/assets/img/LogoBTS.svg';
 import { Formik } from 'formik';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import Button from 'src/components/Mobile/Button/Confirm';
@@ -44,11 +44,11 @@ function LoginMobile() {
             // height: '202px'
           }}
         >
-          <img
+          {/* <img
             src={Logo}
             alt="logo"
             style={{ width: '121.27px', height: '50px' }}
-          />
+          /> */}
 
           <Formik
             initialValues={{

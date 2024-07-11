@@ -8,7 +8,7 @@ const useStyles = makeStyles(() =>
         boxSizing: 'border-box',
         margin: 0,
         padding: 0,
-        fontFamily: 'IRANSans',
+        fontFamily: 'Montserrat',
         fontSize: '14px',
         fontWeight: 400
       },
@@ -17,17 +17,17 @@ const useStyles = makeStyles(() =>
         '-moz-osx-font-smoothing': 'grayscale',
         height: '100%',
         width: '100%',
-        fontFamily: 'IRANSans'
+        fontFamily: 'Montserrat'
       },
       body: {
         height: '100%',
         width: '100%',
-        fontFamily: 'IRANSans'
+        fontFamily: 'Montserrat'
       },
       '#root': {
         height: '100%',
         width: '100%',
-        fontFamily: 'IRANSans'
+        fontFamily: 'Montserrat'
       }
     }
   })

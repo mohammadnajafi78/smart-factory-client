@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import Logo from 'src/assets/img/LogoBTS.svg';
+// import Logo from 'src/assets/img/LogoBTS.svg';
 import InputLabel from 'src/components/Mobile/InputLabel';
 import LinkButton from 'src/components/Mobile/Button/Link';
 import { useHistory } from 'react-router-dom';
@@ -28,11 +28,11 @@ function EntryMobile(props) {
         top: '222px'
       }}
     >
-      <img
+      {/* <img
         src={Logo}
         alt="logo"
         style={{ width: '121.27px', height: '50px' }}
-      />
+      /> */}
 
       <Box
         sx={{

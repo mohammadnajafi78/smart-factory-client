@@ -1,5 +1,5 @@
 import React from 'react';
-import Logo from 'src/assets/img/LogoBTS.svg';
+// import Logo from 'src/assets/img/LogoBTS.svg';
 import { Grid, Box } from '@mui/material';
 
 export default function LoginFrame({ children, ...rest }) {
@@ -16,11 +16,11 @@ export default function LoginFrame({ children, ...rest }) {
             alignItems: 'center'
           }}
         >
-          <img
+          {/* <img
             src={Logo}
             alt="logo"
             style={{ width: '308px', height: '127px' }}
-          />
+          /> */}
         </Grid>
         <Grid
           item

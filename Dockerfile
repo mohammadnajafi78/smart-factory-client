@@ -1,58 +1,34 @@
-#FROM node:14.17.1-alpine3.13 AS build-step
+# Use an official Node runtime as the base image
+FROM node:18-alpine
 
-#WORKDIR /build
-#COPY package.json ./
-#ENV NODE_OPTIONS --max_old_space_size=4096
-#RUN yarn install --network-timeout 1000000
-
-#COPY . .
-#RUN yarn build
-
-#FROM nginx:1.12-alpine
-#COPY --from=build-step build/build /usr/share/nginx/html
-#COPY ./nginx.conf /etc/nginx/conf.d/default.conf
-
-
-
-# Install dependencies only when needed
-FROM node:14.17.1-alpine3.13 AS deps
-RUN apk add --no-cache libc6-compat
+# Set the working directory in the containera
 WORKDIR /app
-COPY package.json yarn.lock ./
-RUN yarn config set cache-folder /.yarn-cache/
-RUN yarn install --frozen-lockfile  --network-timeout 1000000
-LABEL keep-cache="YES"
 
-# Rebuild the source code only when needed
-FROM node:14.17.1-alpine3.13 AS builder
-WORKDIR /app
-ENV NODE_OPTIONS --max_old_space_size=4096
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /.yarn-cache /.yarn-cache
-RUN yarn config set cache-folder /.yarn-cache
+# Copy package.json and package-lock.json (or yarn.lock)
+COPY package*.json ./
+
+# Install dependencies using yarn
+RUN yarn install --force
+
+# Copy the rest of the application code
 COPY . .
-RUN yarn build && yarn install --production --ignore-scripts --prefer-offline
-LABEL keep-cache="YES"
 
-# nginx serve
-FROM nginx:1.12-alpine
+# Build the app
+RUN yarn run build
 
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+# Install a simple server for serving static content
+RUN npm install -g serve
 
-RUN cd /usr/share/nginx/html
+# Expose the port the app runs on
+EXPOSE 3000
 
-COPY --from=builder app/build /usr/share/nginx/html
+# Define environment variables
+ENV SKIP_PREFLIGHT_CHECK=true
+ENV GENERATE_SOURCEMAP=false
+ARG REACT_APP_API_BASE_URL=http://82.115.25.219:8000
+ENV REACT_APP_API_BASE_URL=${REACT_APP_API_BASE_URL}
+ARG REACT_APP_API_CHAT_URL=ws://82.115.25.219:8000/ws
+ENV REACT_APP_API_CHAT_URL=${REACT_APP_API_CHAT_URL}
 
-#COPY --from=builder /app/package.json ./package.json
-#COPY --from=builder /app/node_modules ./node_modules
-#COPY --from=builder /app/public ./public
-#COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
-#COPY --from=builder /app/server.js ./server.js
-#COPY --from=builder /app/static ./static
-
-
-
-
-
-
-
+# Start the application
+CMD ["serve", "-s", "build", "-l", "3000"]

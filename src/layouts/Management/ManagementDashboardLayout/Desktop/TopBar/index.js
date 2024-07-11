@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { AppBar, Toolbar } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import Profile from './Profile';
-import LogoBTS from 'src/assets/img/LogoBTS.svg';
+// import LogoBTS from 'src/assets/img/LogoBTS.svg';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,13 +41,13 @@ const TopBar = ({
   return (
     <AppBar position="fixed" className={classes.root}>
       <Toolbar className={classes.toolbar}>
-        <img
+        {/* <img
           src={LogoBTS}
           width="50px"
           height={'20px'}
           style={{ cursor: 'pointer' }}
           onClick={() => history.push('/home')}
-        />
+        /> */}
         <Profile />
       </Toolbar>
     </AppBar>

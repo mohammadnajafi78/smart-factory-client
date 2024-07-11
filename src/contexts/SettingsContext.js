@@ -3,8 +3,8 @@ import _ from 'lodash';
 import { THEMES } from 'src/constants';
 
 const defaultSettings = {
-  //direction: 'ltr',
-  direction: 'rtl',
+  direction: 'ltr',
+  // direction: 'rtl',
   responsiveFontSizes: true,
   //theme: THEMES.ONE_DARK
   theme: THEMES.LIGHT

@@ -1,13 +1,16 @@
-﻿@import url(fontiran.css); /* لینک فایلی که وظیفه بارگذاری فونت ها را برعهده دارد */
+﻿@import url(fontiran.css);
+/* @import url(fontiran.css); */
+ /* لینک فایلی که وظیفه بارگذاری فونت ها را برعهده دارد */
 body {
-	font-family: IRANSans !important;
+	font-family: Montserrat !important;
+	/* font-family: IRANSans !important; */
 	font-weight: 300;
 	direction: rtl;
 	background-color: #E2E2E2;
 	margin: 0;
 }
 h1, h2, h3, h4, h5, h6,input, textarea {
-	font-family: IRANSans !important;
+	font-family: Montserrat !important;
 }
 h1 {
 	font-weight: bold;

@@ -119,11 +119,11 @@ const themesOptions = [
       },
       primary: {
         // main: colors.indigo[600]
-        main: '#00AAB5'
+        main: '#0d3579'
       },
       secondary: {
         // main: '#5850EC'
-        main: '#00AAB5'
+        main: '#0d3579'
       },
       text: {
         primary: colors.blueGrey[900],
