@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkbts=self.webpackChunkbts||[]).push([[5],{5:(e,s,n)=>{n.r(s),n.d(s,{default:()=>u});n(9950);var t=n(44414);const u=function(){return(0,t.jsx)("div",{children:"LMS Home Index"})}}}]);
