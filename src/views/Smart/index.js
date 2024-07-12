@@ -36,7 +36,7 @@ export default function Index() {
   const [age, setAge] = React.useState('10');
   const [select, setSelect] = useState([]);
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setAge(event.target.value);
   };
   const handleClickOpen = () => {
@@ -365,7 +365,7 @@ export default function Index() {
                         if (select.indexOf(1) > -1) setSelect([1]);
                         else setSelect([]);
                       }
-                    } else setSelect(prevState => [...prevState, 0]);
+                    } else setSelect((prevState) => [...prevState, 0]);
                   }}
                 />
                 <PanToolAlt
@@ -384,7 +384,7 @@ export default function Index() {
                         if (select.indexOf(0) > -1) setSelect([0]);
                         else setSelect([]);
                       }
-                    } else setSelect(prevState => [...prevState, 1]);
+                    } else setSelect((prevState) => [...prevState, 1]);
                   }}
                 />
               </Box>

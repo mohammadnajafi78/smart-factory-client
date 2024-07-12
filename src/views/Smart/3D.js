@@ -29,7 +29,7 @@ import React from 'react';
 // import './App.css';
 
 function Model(props) {
-  const { scene } = useGLTF('/furnaceGLB.glb');
+  const { scene } = useGLTF(`/static/furnaceGLB.glb`);
   return <primitive object={scene} {...props} />;
 }
 
